@@ -1,0 +1,14 @@
+[gd_resource type="BoxMesh" load_steps=4 format=3 uid="uid://dmxg5o80lt2ci"]
+
+[ext_resource type="Texture2D" uid="uid://dcfyynx8yiu15" path="res://testText.tres" id="1_hr0ed"]
+[ext_resource type="Material" uid="uid://3gqc1v06pcf7" path="res://testMat.tres" id="2_ofhgo"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7yuw"]
+next_pass = ExtResource("2_ofhgo")
+albedo_texture = ExtResource("1_hr0ed")
+uv1_triplanar = true
+uv1_world_triplanar = true
+texture_filter = 0
+
+[resource]
+material = SubResource("StandardMaterial3D_h7yuw")
