@@ -6,6 +6,8 @@ public partial class CharacterBody3d : CharacterBody3D
     public Camera3D camera;
     public float cameraSensitivity = 0.01f;
     public float speed = 10;
+    public float jumpVelocity = 4.5f;
+    public float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 
     public override void _Ready()
     {
@@ -34,11 +36,26 @@ public partial class CharacterBody3d : CharacterBody3D
             movementInput += Vector2.Left;
         }
         
-        //add in jump stuff https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
+        var tempVelocity = Vector3.Zero;
+
+        if (IsOnFloor())
+        {
+            if (Input.IsKeyPressed(Key.Space))
+            {
+                tempVelocity.Y = jumpVelocity;
+            }
+        }
+        else
+        {
+            tempVelocity.Y = (float) (Velocity.Y - gravity * delta);
+        }
+        
+        //awesome reference https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
 
         var directionV2 = movementInput.Rotated(-camera.Rotation.Y);
-        var directionV3 = new Vector3(directionV2.X, 0, directionV2.Y);
-        Velocity = directionV3 * speed;
+        tempVelocity.X = directionV2.X * speed;
+        tempVelocity.Z = directionV2.Y * speed;
+        Velocity = tempVelocity;
         MoveAndSlide();
     }
 
