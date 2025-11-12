@@ -1,5 +1,7 @@
-using Godot;
 using System;
+using Godot;
+
+namespace FirstPerson;
 
 public partial class CharacterBody3d : CharacterBody3D
 {
