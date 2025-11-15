@@ -1,0 +1,17 @@
+// Game: GodotFirstPerson
+// Format: Valve
+// entity 0
+{
+"mapversion" "220"
+"wad" ""
+"classname" "worldspawn"
+// brush 0
+{
+( -256 96 -16 ) ( -256 97 -16 ) ( -256 96 -15 ) RedBoxWhiteOutline [ 0 -1 0 0 ] [ 0 0 -1 0 ] 90 0.5 0.5
+( 128 -288 -16 ) ( 128 -288 -15 ) ( 129 -288 -16 ) RedBoxWhiteOutline [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 0.5 0.5
+( 128 96 -16 ) ( 129 96 -16 ) ( 128 97 -16 ) RedBoxWhiteOutline [ -1 0 0 0 ] [ 0 -1 0 0 ] 180 0.5 0.5
+( 256 224 16 ) ( 256 225 16 ) ( 257 224 16 ) RedBoxWhiteOutline [ 1 0 0 0 ] [ 0 -1 0 0 ] 180 0.5 0.5
+( 256 224 16 ) ( 257 224 16 ) ( 256 224 17 ) RedBoxWhiteOutline [ -1 0 0 0 ] [ 0 0 -1 0 ] 180 0.5 0.5
+( 256 224 16 ) ( 256 224 17 ) ( 256 225 16 ) RedBoxWhiteOutline [ 0 1 0 0 ] [ 0 0 -1 0 ] 180 0.5 0.5
+}
+}
