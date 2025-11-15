@@ -6,20 +6,32 @@ namespace FirstPerson;
 public partial class CharacterBody3d : CharacterBody3D
 {
     public Camera3D camera;
+    public CapsuleShape3D collisionCapsuleShape;
     public float cameraSensitivity = 0.01f;
     public float speed = 10;
     public float jumpVelocity = 4.5f;
     public float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+    public float crouchCameraHeightMult = 0.5f;
+    public float crouchCollisionShapeHeightMult = 0.5f;
+
+    private float defaultCameraHeight;
+    private float defaultColliderShapeHeight;
+
+    private bool isCrouching = false;
 
     public override void _Ready()
     {
         base._Ready();
         camera = GetNode<Camera3D>("Camera3D");
+        defaultCameraHeight = camera.Position.Y;
+        collisionCapsuleShape = (CapsuleShape3D)GetNode<CollisionShape3D>("CollisionShape3D").Shape;
+        defaultColliderShapeHeight = collisionCapsuleShape.Height;
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        HandleCrouch();
         var movementInput = Vector2.Zero;
         if (Input.IsKeyPressed(Key.W)) //forward
         {
@@ -61,6 +73,26 @@ public partial class CharacterBody3d : CharacterBody3D
         MoveAndSlide();
     }
 
+    public void HandleCrouch()
+    {
+        //this needs to be "action just pressed"
+        if (Input.IsActionJustPressed("Crouch") && IsOnFloor())
+        {
+            if (isCrouching)
+            {
+                camera.Position = new Vector3(camera.Position.X, defaultCameraHeight, camera.Position.Z);
+                collisionCapsuleShape.Height = defaultColliderShapeHeight;
+                isCrouching = false;
+            }
+            else
+            {
+                camera.Position = new Vector3(camera.Position.X, defaultCameraHeight * crouchCameraHeightMult, camera.Position.Z);
+                collisionCapsuleShape.Height = defaultColliderShapeHeight * crouchCollisionShapeHeightMult;
+                isCrouching = true;
+            }
+        }
+    }
+
     public override void _UnhandledInput(InputEvent @event)
     {
         base._UnhandledInput(@event);
@@ -68,7 +100,8 @@ public partial class CharacterBody3d : CharacterBody3D
         {
             var lookDir = mouseMotionEvent.Relative;
             var rotationY = camera.Rotation.Y - lookDir.X * cameraSensitivity;
-            var rotationX = Math.Clamp(camera.Rotation.X - lookDir.Y * cameraSensitivity, Mathf.DegToRad(-90), Mathf.DegToRad(90));
+            var rotationX = Math.Clamp(camera.Rotation.X - lookDir.Y * cameraSensitivity, 
+                Mathf.DegToRad(-90), Mathf.DegToRad(90));
             camera.SetRotation(new Vector3(rotationX, rotationY, 0));
         }
     }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="BoxMesh" uid="uid://dmxg5o80lt2ci" path="res://test.tres" id="1_37kl0"]
-[ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://CharacterBody3d.cs" id="2_6uqi0"]
+[ext_resource type="Script" uid="uid://ueb030ebiki5" path="res://CharacterBody3d.cs" id="2_6uqi0"]
 [ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://testPlayerShape.tres" id="2_8uh7m"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
