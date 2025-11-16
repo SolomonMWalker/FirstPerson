@@ -22,6 +22,7 @@ public partial class CharacterBody3d : CharacterBody3D
     public override void _Ready()
     {
         base._Ready();
+        Input.MouseMode = Input.MouseModeEnum.Captured;
         camera = GetNode<Camera3D>("Camera3D");
         defaultCameraHeight = camera.Position.Y;
         collisionCapsuleShape = (CapsuleShape3D)GetNode<CollisionShape3D>("CollisionShape3D").Shape;
