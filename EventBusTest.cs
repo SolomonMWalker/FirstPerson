@@ -21,7 +21,7 @@ public partial class EventBusTest : Node3D
         EventSubscriber.DequeueAndPerformActions();
         if (Input.IsKeyLabelPressed(Key.R))
         {
-            if (EventPublisher.TryPublishEvent("testEvent", "Red"))
+            if (EventPublisher.TryPublishEvent("testEvent", new EventBusTestParameters("Red")))
             {
                 GD.Print("Red event sent");
             }
@@ -33,22 +33,24 @@ public partial class EventBusTest : Node3D
         else if (Input.IsKeyLabelPressed(Key.G))
         {
             GD.Print("Green event sent");
-            EventPublisher.TryPublishEvent("testEvent", "Green");
+            EventPublisher.TryPublishEvent("testEvent", new EventBusTestParameters("Green"));
         }
     }
 
     public void SetColorRect(object colorObj)
     {
-        var colorString = (string)colorObj;
-        if (colorString == "Red")
+        var colorString = (EventBusTestParameters)colorObj;
+        if (colorString.colorName == "Red")
         {
             GD.Print("Red event received");
             ColorRect.Color = Colors.Red;
         }
-        else if (colorString == "Green")
+        else if (colorString.colorName == "Green")
         {
             GD.Print("Green event received");
             ColorRect.Color = Colors.Green;
         }
     }
 }
+
+public record EventBusTestParameters(string colorName);
