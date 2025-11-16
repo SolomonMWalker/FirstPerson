@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cg6f3kg08rel0"]
+
+[ext_resource type="Texture2D" uid="uid://b1m8ywrci1uvv" path="res://trenchbroom/textures/RedBoxWhiteOutline.png" id="1_ebgi6"]
+
+[resource]
+albedo_texture = ExtResource("1_ebgi6")
+metallic_specular = 0.0
+texture_filter = 2
