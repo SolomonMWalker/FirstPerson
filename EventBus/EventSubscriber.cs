@@ -28,22 +28,27 @@ public class EventSubscriber
         }
     }
 
-    public bool TryListenToEvent(string eventName, Action<object> eventAction)
+    private bool TryCreateQueueAndAddToEventBus(string eventName)
     {
-        if (_eventQueues.Any(q => q.EventName == eventName))
+        var eq = new EventQueue(eventName, _dequeueMax);
+        if (_eventQueues.Any(eventQueue => eventQueue.EventName == eventName))
         {
             return false;
         }
-
-        var eq = new EventQueue(eventName, _dequeueMax);
         _eventQueues.Add(eq);
         EventBus.AddEventQueue(eq);
+        return true;
+    }
 
+    public bool SubscribeToEvent(string eventName, Action<object> eventAction)
+    {
+        if (!TryCreateQueueAndAddToEventBus(eventName)) return false;
         if (!_eventActions.TryAdd(eventName, [eventAction]))
         {
             _eventActions[eventName].Add(eventAction);
         }
         
         return true;
+
     }
 }

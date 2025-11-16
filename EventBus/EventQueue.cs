@@ -6,6 +6,7 @@ namespace FirstPerson.EventBus;
 
 public class EventQueue
 {
+    public readonly Guid Id = new Guid();
     public readonly string EventName;
     public readonly int DequeueMaxPerCall;
     private readonly Queue<object> _queue = [];
