@@ -6,8 +6,10 @@ namespace FirstPerson;
 public partial class Player : CharacterBody3D
 {
     public Camera3D Camera;
+    public RayCast3D SightRaycast;
     public CollisionShape3D CollisionShape3d;
     public BoxShape3D CollisionBoxShape;
+    public AnimationPlayer AnimationPlayer;
     public float cameraSensitivity = 0.01f;
     public float speed = 10;
     public float jumpVelocity = 6.5f;
@@ -37,8 +39,10 @@ public partial class Player : CharacterBody3D
     {
         base._Ready();
         Input.MouseMode = Input.MouseModeEnum.Captured;
+        AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        SightRaycast = GetNode<RayCast3D>("Camera3D/RayCast3D");
         CollisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
-        Camera = CollisionShape3d.GetNode<Camera3D>("Camera3D");
+        Camera = GetNode<Camera3D>("Camera3D");
         defaultCameraHeight = Camera.Position.Y;
         CollisionBoxShape = (BoxShape3D)CollisionShape3d.Shape;
         defaultColliderShapeHeight = CollisionBoxShape.Size.Y;
@@ -118,6 +122,19 @@ public partial class Player : CharacterBody3D
             var rotationX = Math.Clamp(Camera.Rotation.X - lookDir.Y * cameraSensitivity, 
                 Mathf.DegToRad(-90), Mathf.DegToRad(90));
             Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
+        }
+        else if (@event is InputEventMouseButton mouseButtonEvent)
+        {
+            if (mouseButtonEvent.ButtonIndex == MouseButton.Left)
+            {
+                AnimationPlayer.Play("FireGun");
+                if (SightRaycast.CollideWithBodies)
+                {
+                    var body = SightRaycast.GetCollider();
+                    //if body is something that reacts to being shot
+                    //shoot it
+                }
+            }
         }
     }
 
