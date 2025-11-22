@@ -6,11 +6,11 @@ namespace FirstPerson;
 
 public partial class Player : CharacterBody3D
 {
-    public Camera3D Camera;
-    public RayCast3D SightRaycast;
-    public CollisionShape3D CollisionShape3d;
-    public BoxShape3D CollisionBoxShape;
-    public AnimationPlayer AnimationPlayer;
+    public Camera3D camera;
+    public RayCast3D sightRaycast;
+    public CollisionShape3D collisionShape3d;
+    public BoxShape3D collisionBoxShape;
+    public AnimationPlayer animationPlayer;
     public float cameraSensitivity = 0.01f;
     public float speed = 10;
     public float jumpVelocity = 6.5f;
@@ -19,6 +19,7 @@ public partial class Player : CharacterBody3D
     public float crouchCameraHeightMult = 0.4f;
     public float crouchCollisionShapeHeightMult = 0.5f;
     public float crouchAnimationInSeconds = 0.25f;
+    public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
 
@@ -40,14 +41,15 @@ public partial class Player : CharacterBody3D
     {
         base._Ready();
         Input.MouseMode = Input.MouseModeEnum.Captured;
-        AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        SightRaycast = GetNode<RayCast3D>("Camera3D/RayCast3D");
-        CollisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
-        Camera = GetNode<Camera3D>("Camera3D");
-        defaultCameraHeight = Camera.Position.Y;
-        CollisionBoxShape = (BoxShape3D)CollisionShape3d.Shape;
-        defaultColliderShapeHeight = CollisionBoxShape.Size.Y;
-        defaultCollisionShapePositionY = CollisionShape3d.Position.Y;
+        animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        sightRaycast = GetNode<RayCast3D>("Camera3D/RayCast3D");
+        collisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
+        camera = GetNode<Camera3D>("Camera3D");
+        defaultCameraHeight = camera.Position.Y;
+        collisionBoxShape = (BoxShape3D)collisionShape3d.Shape;
+        defaultColliderShapeHeight = collisionBoxShape.Size.Y;
+        defaultCollisionShapePositionY = collisionShape3d.Position.Y;
+        sightRaycast.TargetPosition = new Vector3(0, 0, -shootRange);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -88,7 +90,7 @@ public partial class Player : CharacterBody3D
         
         //awesome reference https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
 
-        var directionV2 = movementInput.Rotated(-Camera.Rotation.Y);
+        var directionV2 = movementInput.Rotated(-camera.Rotation.Y);
         tempVelocity.X = directionV2.X * speed;
         tempVelocity.Z = directionV2.Y * speed;
         Velocity = tempVelocity;
@@ -119,19 +121,19 @@ public partial class Player : CharacterBody3D
         if (@event is InputEventMouseMotion mouseMotionEvent)
         {
             var lookDir = mouseMotionEvent.Relative;
-            var rotationY = Camera.Rotation.Y - lookDir.X * cameraSensitivity;
-            var rotationX = Math.Clamp(Camera.Rotation.X - lookDir.Y * cameraSensitivity, 
+            var rotationY = camera.Rotation.Y - lookDir.X * cameraSensitivity;
+            var rotationX = Math.Clamp(camera.Rotation.X - lookDir.Y * cameraSensitivity, 
                 Mathf.DegToRad(-90), Mathf.DegToRad(90));
-            Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
+            camera.SetRotation(new Vector3(rotationX, rotationY, 0));
         }
         else if (@event is InputEventMouseButton mouseButtonEvent)
         {
             if (mouseButtonEvent.ButtonIndex == MouseButton.Left)
             {
-                AnimationPlayer.Play("FireGun");
-                if (SightRaycast.CollideWithBodies)
+                animationPlayer.Play("FireGun");
+                if (sightRaycast.CollideWithBodies)
                 {
-                    var body = SightRaycast.GetCollider();
+                    var body = sightRaycast.GetCollider();
                     if (body is ShootableCharacterBody3D shootable)
                     {
                         shootable.Shot(new ShotParameters(1));
@@ -144,18 +146,18 @@ public partial class Player : CharacterBody3D
     public void PlayEnterCrouchAnim()
     {
         enterCrouchTween = GetTree().CreateTween();
-        enterCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
+        enterCrouchTween.TweenProperty(collisionBoxShape, "size:y",
             defaultColliderShapeHeight * crouchCollisionShapeHeightMult, crouchAnimationInSeconds);
-        enterCrouchTween.TweenProperty(CollisionShape3d, "position:y",
+        enterCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY * crouchCollisionShapeHeightMult, crouchAnimationInSeconds);
     }
 
     public void PlayExitCrouchAnim()
     {
         exitCrouchTween = GetTree().CreateTween();
-        exitCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
+        exitCrouchTween.TweenProperty(collisionBoxShape, "size:y",
             defaultColliderShapeHeight, crouchAnimationInSeconds);
-        exitCrouchTween.TweenProperty(CollisionShape3d, "position:y",
+        exitCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY, crouchAnimationInSeconds);
     }
 }
