@@ -1,5 +1,4 @@
 using System;
-using FirstPerson.CustomTypes;
 using Godot;
 
 namespace FirstPerson;
@@ -130,6 +129,7 @@ public partial class Player : CharacterBody3D
         {
             if (mouseButtonEvent.ButtonIndex == MouseButton.Left)
             {
+                //add in "mouseButtonPressed" bool to hold state
                 animationPlayer.Play("FireGun");
                 if (sightRaycast.CollideWithBodies)
                 {

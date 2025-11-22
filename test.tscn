@@ -33,10 +33,10 @@ tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_colo
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1), Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1)]
+"values": [Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_ppyta"]
@@ -87,6 +87,7 @@ shape = SubResource("CapsuleShape3D_8uh7m")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy"]
 mesh = SubResource("CapsuleMesh_8uh7m")
+skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_6uqi0")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy"]

@@ -1,7 +1,5 @@
 ﻿using Godot;
 
-namespace FirstPerson.CustomTypes;
-
 [GlobalClass]
 public partial class ShootableCharacterBody3D : CharacterBody3D
 {
