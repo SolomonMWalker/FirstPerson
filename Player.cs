@@ -1,4 +1,5 @@
 using System;
+using FirstPerson.CustomTypes;
 using Godot;
 
 namespace FirstPerson;
@@ -131,8 +132,10 @@ public partial class Player : CharacterBody3D
                 if (SightRaycast.CollideWithBodies)
                 {
                     var body = SightRaycast.GetCollider();
-                    //if body is something that reacts to being shot
-                    //shoot it
+                    if (body is ShootableCharacterBody3D shootable)
+                    {
+                        shootable.Shot(new ShotParameters(1));
+                    }
                 }
             }
         }

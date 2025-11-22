@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8hkoeuua7otf"]
+[gd_scene load_steps=10 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://player.tscn" id="2_8uh7m"]
+[ext_resource type="Script" uid="uid://dk2tcntvhrrr1" path="res://Enemy.cs" id="3_6uqi0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -15,6 +16,12 @@ background_mode = 2
 sky = SubResource("Sky_ppyta")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8uh7m"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8uh7m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6uqi0"]
 
 [node name="Test" type="Node3D"]
 
@@ -30,3 +37,17 @@ shadow_enabled = true
 [node name="funcGodotTest" parent="map" instance=ExtResource("1_6uqi0")]
 
 [node name="Player" parent="." instance=ExtResource("2_8uh7m")]
+
+[node name="Enemy" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.044, 1, 0)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("3_6uqi0")
+metadata/_custom_type_script = "uid://bspdm2cmm76n3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy"]
+shape = SubResource("CapsuleShape3D_8uh7m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy"]
+mesh = SubResource("CapsuleMesh_8uh7m")
+surface_material_override/0 = SubResource("StandardMaterial3D_6uqi0")

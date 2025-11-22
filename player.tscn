@@ -113,7 +113,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 fov = 90.0
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
-target_position = Vector3(0, 0, -1)
+target_position = Vector3(0, 0, -100)
+collision_mask = 2
 
 [node name="Hand" type="Node3D" parent="Camera3D"]
 transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.293, -0.292, -0.397)
