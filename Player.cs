@@ -3,7 +3,7 @@ using Godot;
 
 namespace FirstPerson;
 
-public partial class Player : CharacterBody3D
+public partial class Player : ShootableCharacterBody3D
 {
     public Camera3D camera;
     public RayCast3D sightRaycast;
@@ -18,6 +18,7 @@ public partial class Player : CharacterBody3D
     public float crouchCameraHeightMult = 0.4f;
     public float crouchCollisionShapeHeightMult = 0.5f;
     public float crouchAnimationInSeconds = 0.25f;
+    public float crouchMovementMult = 0.6f;
     public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
@@ -35,6 +36,14 @@ public partial class Player : CharacterBody3D
         InAir,
         CoyoteTime //InAir, but can still jump
     }
+    
+    /*
+     * Need to create headbob animations
+     * different ones for each movement state
+     * when the player leaves each state, need to blend animation to new state
+     * should probably use animation tree
+     * https://docs.godotengine.org/en/latest/tutorials/animation/animation_tree.html
+     */
 
     public override void _Ready()
     {
@@ -51,24 +60,41 @@ public partial class Player : CharacterBody3D
         sightRaycast.TargetPosition = new Vector3(0, 0, -shootRange);
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (Input.IsActionJustPressed("Fire"))
+        {
+            animationPlayer.Play("FireGun");
+            if (sightRaycast.CollideWithBodies)
+            {
+                var body = sightRaycast.GetCollider();
+                if (body is ShootableCharacterBody3D shootable)
+                {
+                    shootable.Shot(new ShotParameters(1));
+                }
+            }
+        }
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
         HandleCrouch();
         var movementInput = Vector2.Zero;
-        if (Input.IsKeyPressed(Key.W)) //forward
+        if (Input.IsActionPressed("MoveForward")) //forward
         {
             movementInput += Vector2.Up;
         }
-        if (Input.IsKeyPressed(Key.S)) //backward
+        if (Input.IsActionPressed("MoveBackward")) //backward
         {
             movementInput += Vector2.Down;
         }
-        if (Input.IsKeyPressed(Key.D)) //right
+        if (Input.IsActionPressed("MoveRight")) //right
         {
             movementInput += Vector2.Right;
         }
-        if (Input.IsKeyPressed(Key.A)) //left
+        if (Input.IsActionPressed("MoveLeft")) //left
         {
             movementInput += Vector2.Left;
         }
@@ -77,7 +103,8 @@ public partial class Player : CharacterBody3D
 
         if (IsOnFloor())
         {
-            if (Input.IsActionJustPressed("jump"))
+            
+            if (Input.IsActionJustPressed("Jump"))
             {
                 tempVelocity.Y = jumpVelocity;
             }
@@ -86,20 +113,24 @@ public partial class Player : CharacterBody3D
         {
             tempVelocity.Y = (float) (Velocity.Y - gravity * delta);
         }
+
+        var movementMult = 1f;
+        if (currentMovementState == MovementState.Crouching)
+        {
+            movementMult = crouchMovementMult;
+        }
         
         //awesome reference https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
-
         var directionV2 = movementInput.Rotated(-camera.Rotation.Y);
-        tempVelocity.X = directionV2.X * speed;
-        tempVelocity.Z = directionV2.Y * speed;
+        tempVelocity.X = directionV2.X * speed * movementMult;
+        tempVelocity.Z = directionV2.Y * speed * movementMult;
         Velocity = tempVelocity;
         MoveAndSlide();
     }
 
     public void HandleCrouch()
     {
-        //this needs to be "action just pressed"
-        if (Input.IsActionJustPressed("crouch") && IsOnFloor())
+        if (Input.IsActionJustPressed("Crouch") && IsOnFloor())
         {
             if (currentMovementState == MovementState.Crouching)
             {
@@ -124,22 +155,6 @@ public partial class Player : CharacterBody3D
             var rotationX = Math.Clamp(camera.Rotation.X - lookDir.Y * cameraSensitivity, 
                 Mathf.DegToRad(-90), Mathf.DegToRad(90));
             camera.SetRotation(new Vector3(rotationX, rotationY, 0));
-        }
-        else if (@event is InputEventMouseButton mouseButtonEvent)
-        {
-            if (mouseButtonEvent.ButtonIndex == MouseButton.Left)
-            {
-                //add in "mouseButtonPressed" bool to hold state
-                animationPlayer.Play("FireGun");
-                if (sightRaycast.CollideWithBodies)
-                {
-                    var body = sightRaycast.GetCollider();
-                    if (body is ShootableCharacterBody3D shootable)
-                    {
-                        shootable.Shot(new ShotParameters(1));
-                    }
-                }
-            }
         }
     }
 

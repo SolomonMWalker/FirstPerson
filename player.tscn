@@ -99,6 +99,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_onrkg")
+metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -110,6 +111,7 @@ shape = ExtResource("2_i3pqv")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+current = true
 fov = 90.0
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
