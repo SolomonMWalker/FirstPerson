@@ -41,8 +41,12 @@ public partial class Player : ShootableCharacterBody3D
      * Need to create headbob animations
      * different ones for each movement state
      * when the player leaves each state, need to blend animation to new state
-     * should probably use animation tree
-     * https://docs.godotengine.org/en/latest/tutorials/animation/animation_tree.html
+     * Could make a number correspond to where you are in the animation to help transition to new state
+     * 1 - start left from middle, 2 - going left, 3 - left maximum, start right
+     * 4 - going right from right, 5 - in middle going right, 6 - going right
+     * 7 - right maximum, start left, 8 - going left, 1 - start left from middle
+     * might still have to use animation tree
+     * https://docs.godotengine.org/en/stable/tutorials/animation/animation_tree.html#
      */
 
     public override void _Ready()
