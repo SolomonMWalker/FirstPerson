@@ -19,6 +19,10 @@ public partial class Player : ShootableCharacterBody3D
     public float crouchCollisionShapeHeightMult = 0.5f;
     public float crouchAnimationInSeconds = 0.25f;
     public float crouchMovementMult = 0.6f;
+    public float defaultFov;
+    public float sprintFovMult = 1.05f;
+    public float sprintAnimationInSeconds = 0.15f;
+    public float sprintMovementMult = 1.5f;
     public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
@@ -62,6 +66,7 @@ public partial class Player : ShootableCharacterBody3D
         defaultColliderShapeHeight = collisionBoxShape.Size.Y;
         defaultCollisionShapePositionY = collisionShape3d.Position.Y;
         sightRaycast.TargetPosition = new Vector3(0, 0, -shootRange);
+        defaultFov = camera.Fov;
     }
 
     public override void _Process(double delta)
@@ -123,12 +128,17 @@ public partial class Player : ShootableCharacterBody3D
         {
             movementMult = crouchMovementMult;
         }
+        else if (currentMovementState == MovementState.Sprinting)
+        {
+            movementMult = sprintMovementMult;
+        }
         
         //awesome reference https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
         var directionV2 = movementInput.Rotated(-camera.Rotation.Y);
         tempVelocity.X = directionV2.X * speed * movementMult;
         tempVelocity.Z = directionV2.Y * speed * movementMult;
         Velocity = tempVelocity;
+        HandleSprint();
         MoveAndSlide();
     }
 
@@ -146,6 +156,28 @@ public partial class Player : ShootableCharacterBody3D
                 PlayEnterCrouchAnim();
                 currentMovementState = MovementState.Crouching;
             }
+        }
+    }
+
+    public void HandleSprint()
+    {
+        if (Input.IsActionJustPressed("Sprint") && IsOnFloor())
+        {
+            if (currentMovementState == MovementState.Sprinting)
+            {
+                PlayExitSprintAnim();
+                currentMovementState = MovementState.Walking;
+            }
+            else
+            {
+                PlayEnterSprintAnim();
+                currentMovementState = MovementState.Sprinting;
+            }
+        }
+        else if (currentMovementState == MovementState.Sprinting && Velocity == Vector3.Zero)
+        {
+            PlayExitSprintAnim();
+            currentMovementState = MovementState.Walking;
         }
     }
 
@@ -178,5 +210,17 @@ public partial class Player : ShootableCharacterBody3D
             defaultColliderShapeHeight, crouchAnimationInSeconds);
         exitCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY, crouchAnimationInSeconds);
+    }
+
+    public void PlayEnterSprintAnim()
+    {
+        var tween = CreateTween();
+        tween.TweenProperty(camera, "fov", defaultFov * sprintFovMult, sprintAnimationInSeconds);
+    }
+
+    public void PlayExitSprintAnim()
+    {
+        var tween = CreateTween();
+        tween.TweenProperty(camera, "fov", defaultFov, sprintAnimationInSeconds);
     }
 }
