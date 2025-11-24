@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FuncGodotFGDPointClass" load_steps=2 format=3 uid="uid://bnqu2c6ee5mtg"]
+
+[ext_resource type="Script" uid="uid://cxsqwtsqd8w33" path="res://addons/func_godot/src/fgd/func_godot_fgd_point_class.gd" id="1_rf32b"]
+
+[resource]
+script = ExtResource("1_rf32b")
+classname = "omni"
+description = "omnidirectional light"
+class_properties = {
+"energy": 1,
+"light_color": "255_255_255",
+"range": 5
+}
+node_class = "OmniLight3D"
+metadata/_custom_type_script = "uid://cxsqwtsqd8w33"
