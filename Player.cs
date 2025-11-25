@@ -31,7 +31,7 @@ public partial class Player : ShootableCharacterBody3D
     public Vector2 clamberStartPointXZ;
     public Vector2 clamberXZDirection;
     public float clamberXZDistanceSquared;
-    public float clamberVelocity = 1f;
+    public float clamberVelocity = 10f;
     public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;

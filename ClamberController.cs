@@ -9,7 +9,7 @@ public partial class ClamberController : Node3D
     [Export] public int numRaycastsWide = 3;
     [Export] public int numRaycastsHigh = 5;
     [Export] public float raycastLength = 0.1f;
-    [Export] public float clamberMargin = 0.4f;
+    [Export] public float clamberMargin = 0.26f;
     [Export] public float maxAngleInDeg = 10f;
 
     private RayCast3D _topRaycast;
