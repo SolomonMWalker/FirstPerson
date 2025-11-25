@@ -18,8 +18,12 @@ public partial class ClamberController : Node3D
     {
         base._Ready();
         _raycastsParent = GetNode<Node3D>("Raycasts");
-        _topLeftCorner = new Vector2(-(width / 2), height / 2);
-        BuildRaycasts();
+        foreach (var child in _raycastsParent.GetChildren())
+        {
+            _raycasts.Add((RayCast3D)child);
+        }
+        //_topLeftCorner = new Vector2(-(width / 2), height / 2);
+        //BuildRaycasts();
         GD.Print($"Built raycasts with {_raycasts.Count} rays");
     }
 
@@ -31,11 +35,12 @@ public partial class ClamberController : Node3D
             for (int j = numRaycastsHigh; j > 0; j--)
             {
                 var ray = new RayCast3D();
+                ray.Enabled = true;
                 ray.Position = new Vector3(
                     _topLeftCorner.X + (i / (float)numRaycastsWide) * width,
                     _topLeftCorner.Y - (i / (float)numRaycastsHigh) * height,
                     0f);
-                ray.TargetPosition = ray.Position + new Vector3(0, 0, raycastLength);
+                ray.TargetPosition = ray.Position + new Vector3(0, 0, -raycastLength);
                 _raycasts.Add(ray);
                 _raycastsParent.AddChild(ray);
             }
@@ -45,12 +50,7 @@ public partial class ClamberController : Node3D
     public List<Vector3> GetRaycastCollisions()
     {
         List<Vector3> collisions = [];
-        foreach (var rc in _raycasts)
-        {
-            if (!rc.CollideWithBodies) continue;
-            collisions.Add(rc.GetCollisionPoint());
-        }
-
+        collisions.AddRange(_raycasts.Where(rc => rc.IsColliding()).Select(rc => rc.GetCollisionPoint()));
         return collisions;
     }
 
@@ -61,18 +61,16 @@ public partial class ClamberController : Node3D
 
     public RaycastCollisionResult GetRaycastCollisionResult()
     {
-        var collisions = GetRaycastCollisions().Select(c => c.Y).Distinct().ToList();
-        if (collisions.Count == 0) return new RaycastCollisionResult();
-        if (collisions.Count == 1)
-        {
-            return new RaycastCollisionResult
-            {
-                angleOfCollisions = null,
-                heightToRise = collisions[0] + height / numRaycastsHigh
-            };
-        }
+        var rawCollisions = GetRaycastCollisions();
+        if (rawCollisions.Count == 0) return new RaycastCollisionResult();
 
-        var top2Collisions = collisions.OrderByDescending(c => c).Take(2).ToList();
+        return new RaycastCollisionResult
+        {
+            angleOfCollisions = null,
+            heightToRise = rawCollisions.Max(c => c.Y) + 0.15f
+        };
+
+        //var top2Collisions = collisions.OrderByDescending(c => c).Take(2).ToList();
         //get angle of top 2 collisions to see if we can clamber
     }
 
@@ -80,6 +78,6 @@ public partial class ClamberController : Node3D
 
 public class RaycastCollisionResult
 {
-    public float? angleOfCollisions;
-    public float heightToRise;
+    public float? angleOfCollisions = null;
+    public float heightToRise = 0;
 }

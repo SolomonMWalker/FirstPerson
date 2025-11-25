@@ -26,6 +26,10 @@ public partial class Player : ShootableCharacterBody3D
     public float sprintAnimationInSeconds = 0.15f;
     public float sprintMovementMult = 1.5f;
     public float bottomOfCharacter;
+    public float clamberY;
+    public float clamberYVelocity = 10f;
+    public float clamberZ;
+    public float clamberZVelocity = 10f;
     public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
@@ -41,6 +45,7 @@ public partial class Player : ShootableCharacterBody3D
         Crouching,
         Sprinting,
         InAir,
+        Clambering,
         CoyoteTime //InAir, but can still jump
     }
     
@@ -94,6 +99,11 @@ public partial class Player : ShootableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        if (currentMovementState == MovementState.Clambering)
+        {
+            Clamber();
+            return;
+        }
         HandleCrouch();
         var movementInput = Vector2.Zero;
         if (Input.IsActionPressed("MoveForward")) //forward
@@ -121,7 +131,16 @@ public partial class Player : ShootableCharacterBody3D
             if (Input.IsActionJustPressed("Jump"))
             {
                 tempVelocity.Y = jumpVelocity;
-                
+            }
+        }
+        else if(Input.IsActionPressed("Jump") && ClamberCheck().canClamber)
+        {
+            var clamberCheck = ClamberCheck();
+            if (clamberCheck is { canClamber: true, clamberGlobalY: not null } && clamberCheck.clamberGlobalY != 0)
+            {
+                currentMovementState = MovementState.Clambering;
+                clamberY = clamberCheck.clamberGlobalY.Value;
+                clamberZ = clamberController.raycastLength;
             }
         }
         else
@@ -232,11 +251,34 @@ public partial class Player : ShootableCharacterBody3D
         tween.TweenProperty(camera, "fov", defaultFov, sprintAnimationInSeconds);
     }
 
-    public bool ClamberCheck()
+    public (bool canClamber, float? clamberGlobalY) ClamberCheck()
     {
-        var collisions = clamberController.GetRaycastCollisions();
-        if (collisions.Count == 0) return false;
+        var clamberResult = clamberController.GetRaycastCollisionResult();
+        if (clamberResult.heightToRise == 0) return (false, null);
+        GD.Print($"Clamber to {clamberResult.heightToRise} and forward to {GlobalPosition.Z + clamberController.raycastLength}");
+        return (true, clamberResult.heightToRise);
+    }
+
+    public void Clamber()
+    {
+        //move up to clamber Y
+        if (GlobalPosition.Y < clamberY)
+        {
+            GD.Print("Clambering up");
+            Velocity = Vector3.Up * clamberYVelocity;
+            return;
+        }
         
-        return true;
+        //move forward to clamber Z
+        if (GlobalPosition.Z < clamberZ)
+        {
+            GD.Print("Clambering forward");
+            Velocity = Vector3.Forward * clamberZVelocity;
+            return;
+        }
+        
+        GD.Print("done Clambering");
+        //when done, switch movement type to walking
+        currentMovementState = MovementState.Walking;
     }
 }
