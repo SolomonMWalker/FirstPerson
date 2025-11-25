@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Godot;
 
 namespace FirstPerson;
@@ -10,6 +11,7 @@ public partial class Player : ShootableCharacterBody3D
     public CollisionShape3D collisionShape3d;
     public BoxShape3D collisionBoxShape;
     public AnimationPlayer animationPlayer;
+    public ClamberController clamberController;
     public float cameraSensitivity = 0.01f;
     public float speed = 10;
     public float jumpVelocity = 6.5f;
@@ -23,6 +25,7 @@ public partial class Player : ShootableCharacterBody3D
     public float sprintFovMult = 1.05f;
     public float sprintAnimationInSeconds = 0.15f;
     public float sprintMovementMult = 1.5f;
+    public float bottomOfCharacter;
     public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
@@ -60,6 +63,7 @@ public partial class Player : ShootableCharacterBody3D
         animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         sightRaycast = GetNode<RayCast3D>("Camera3D/RayCast3D");
         collisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
+        clamberController = GetNode<ClamberController>("CollisionShape3D/ClamberController");
         camera = GetNode<Camera3D>("Camera3D");
         defaultCameraHeight = camera.Position.Y;
         collisionBoxShape = (BoxShape3D)collisionShape3d.Shape;
@@ -67,6 +71,7 @@ public partial class Player : ShootableCharacterBody3D
         defaultCollisionShapePositionY = collisionShape3d.Position.Y;
         sightRaycast.TargetPosition = new Vector3(0, 0, -shootRange);
         defaultFov = camera.Fov;
+        bottomOfCharacter = GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
     }
 
     public override void _Process(double delta)
@@ -116,6 +121,7 @@ public partial class Player : ShootableCharacterBody3D
             if (Input.IsActionJustPressed("Jump"))
             {
                 tempVelocity.Y = jumpVelocity;
+                
             }
         }
         else
@@ -201,6 +207,7 @@ public partial class Player : ShootableCharacterBody3D
             defaultColliderShapeHeight * crouchCollisionShapeHeightMult, crouchAnimationInSeconds);
         enterCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY * crouchCollisionShapeHeightMult, crouchAnimationInSeconds);
+        bottomOfCharacter = GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
     }
 
     public void PlayExitCrouchAnim()
@@ -210,6 +217,7 @@ public partial class Player : ShootableCharacterBody3D
             defaultColliderShapeHeight, crouchAnimationInSeconds);
         exitCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY, crouchAnimationInSeconds);
+        bottomOfCharacter = GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
     }
 
     public void PlayEnterSprintAnim()
@@ -222,5 +230,13 @@ public partial class Player : ShootableCharacterBody3D
     {
         var tween = CreateTween();
         tween.TweenProperty(camera, "fov", defaultFov, sprintAnimationInSeconds);
+    }
+
+    public bool ClamberCheck()
+    {
+        var collisions = clamberController.GetRaycastCollisions();
+        if (collisions.Count == 0) return false;
+        
+        return true;
     }
 }
