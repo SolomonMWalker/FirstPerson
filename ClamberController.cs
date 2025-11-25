@@ -11,7 +11,9 @@ public partial class ClamberController : Node3D
     [Export] public float raycastLength = 0.1f;
     [Export] public float clamberMargin = 0.26f;
     [Export] public float maxAngleInDeg = 10f;
+    [Export] public float waitPerCallInSec = 0.15f;
 
+    private double _timeSinceLastClamberCall = 0;
     private RayCast3D _topRaycast;
     private List<RayCast3D> _raycasts = [];
     private Node3D _raycastsParent;
@@ -28,6 +30,13 @@ public partial class ClamberController : Node3D
 
         _topRaycast = _raycasts.OrderByDescending(rc => rc.GlobalPosition.Y).First();
         GD.Print($"Built raycasts with {_raycasts.Count} rays");
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        _timeSinceLastClamberCall += delta;
+        _timeSinceLastClamberCall = Mathf.Clamp(_timeSinceLastClamberCall, 0, waitPerCallInSec);
     }
 
 
@@ -77,9 +86,12 @@ public partial class ClamberController : Node3D
         
         return collisions;
     }
+    
 
     public (bool success, RaycastCollisionResult result) AttemptClamber()
     {
+        if (_timeSinceLastClamberCall < waitPerCallInSec) return (false, null);
+        _timeSinceLastClamberCall = 0;
         var rawCollisions = GetRaycastEndPoints();
         if (rawCollisions.All(c => !c.collided)) return (false, null);
         if (rawCollisions.Count(c => c.collided) == 1)

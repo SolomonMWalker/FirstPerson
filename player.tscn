@@ -115,6 +115,13 @@ width = 1.0
 height = 0.5
 numRaycastsHigh = 3
 
+[node name="Timer" type="Timer" parent="CollisionShape3D/ClamberController"]
+process_callback = 0
+wait_time = 0.15
+one_shot = true
+autostart = true
+ignore_time_scale = true
+
 [node name="Raycasts" type="Node3D" parent="CollisionShape3D/ClamberController"]
 
 [node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
