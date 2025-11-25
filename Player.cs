@@ -14,7 +14,7 @@ public partial class Player : ShootableCharacterBody3D
     public ClamberController clamberController;
     public float cameraSensitivity = 0.01f;
     public float speed = 10;
-    public float jumpVelocity = 6.5f;
+    public float jumpVelocity = 5.5f;
     public float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     public float defaultCollisionShapePositionY;
     public float crouchCameraHeightMult = 0.4f;
@@ -25,11 +25,13 @@ public partial class Player : ShootableCharacterBody3D
     public float sprintFovMult = 1.05f;
     public float sprintAnimationInSeconds = 0.15f;
     public float sprintMovementMult = 1.5f;
-    public float bottomOfCharacter;
-    public float clamberY;
-    public float clamberYVelocity = 10f;
-    public float clamberZ;
-    public float clamberZVelocity = 10f;
+    public Vector3 clamberDestination;
+    public Vector2 clamberDestinationXZ;
+    public Vector3 clamberStartPoint;
+    public Vector2 clamberStartPointXZ;
+    public Vector2 clamberXZDirection;
+    public float clamberXZDistanceSquared;
+    public float clamberVelocity = 1f;
     public int shootRange = 50;
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
@@ -76,8 +78,9 @@ public partial class Player : ShootableCharacterBody3D
         defaultCollisionShapePositionY = collisionShape3d.Position.Y;
         sightRaycast.TargetPosition = new Vector3(0, 0, -shootRange);
         defaultFov = camera.Fov;
-        bottomOfCharacter = GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
     }
+    
+    public float GetBottomOfCharacter() => GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
 
     public override void _Process(double delta)
     {
@@ -133,31 +136,36 @@ public partial class Player : ShootableCharacterBody3D
                 tempVelocity.Y = jumpVelocity;
             }
         }
-        else if(Input.IsActionPressed("Jump") && ClamberCheck().canClamber)
-        {
-            var clamberCheck = ClamberCheck();
-            if (clamberCheck is { canClamber: true, clamberGlobalY: not null } && clamberCheck.clamberGlobalY != 0)
-            {
-                currentMovementState = MovementState.Clambering;
-                clamberY = clamberCheck.clamberGlobalY.Value;
-                clamberZ = clamberController.raycastLength;
-            }
-        }
         else
         {
             tempVelocity.Y = (float) (Velocity.Y - gravity * delta);
+            //Clamber
+            if(Input.IsActionPressed("Jump"))
+            {
+                var clamberCheck = clamberController.AttemptClamber();
+                GD.Print($"Attempting clamber with success {clamberCheck.success}");
+                if (clamberCheck.success)
+                {
+                    currentMovementState = MovementState.Clambering;
+                    clamberDestination = clamberCheck.result.globalPositionToClamberTo ?? Vector3.Zero;
+                    clamberDestinationXZ = new Vector2(clamberDestination.X, clamberDestination.Z);
+                    clamberStartPoint = GlobalPosition;
+                    clamberStartPointXZ = new Vector2(GlobalPosition.X, GlobalPosition.Z);
+                    clamberXZDirection = clamberStartPointXZ
+                        .DirectionTo(new Vector2(clamberDestination.X, clamberDestination.Z));
+                    clamberXZDistanceSquared = clamberStartPointXZ.DistanceSquaredTo(clamberDestinationXZ);
+                    return;
+                }
+            }
         }
 
-        var movementMult = 1f;
-        if (currentMovementState == MovementState.Crouching)
+        var movementMult = currentMovementState switch
         {
-            movementMult = crouchMovementMult;
-        }
-        else if (currentMovementState == MovementState.Sprinting)
-        {
-            movementMult = sprintMovementMult;
-        }
-        
+            MovementState.Crouching => crouchMovementMult,
+            MovementState.Sprinting => sprintMovementMult,
+            _ => 1f
+        };
+
         //awesome reference https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
         var directionV2 = movementInput.Rotated(-camera.Rotation.Y);
         tempVelocity.X = directionV2.X * speed * movementMult;
@@ -216,6 +224,7 @@ public partial class Player : ShootableCharacterBody3D
             var rotationX = Math.Clamp(camera.Rotation.X - lookDir.Y * cameraSensitivity, 
                 Mathf.DegToRad(-90), Mathf.DegToRad(90));
             camera.SetRotation(new Vector3(rotationX, rotationY, 0));
+            collisionShape3d.SetRotation(new Vector3(0, camera.Rotation.Y, 0));
         }
     }
 
@@ -226,7 +235,6 @@ public partial class Player : ShootableCharacterBody3D
             defaultColliderShapeHeight * crouchCollisionShapeHeightMult, crouchAnimationInSeconds);
         enterCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY * crouchCollisionShapeHeightMult, crouchAnimationInSeconds);
-        bottomOfCharacter = GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
     }
 
     public void PlayExitCrouchAnim()
@@ -236,7 +244,6 @@ public partial class Player : ShootableCharacterBody3D
             defaultColliderShapeHeight, crouchAnimationInSeconds);
         exitCrouchTween.TweenProperty(collisionShape3d, "position:y",
             defaultCollisionShapePositionY, crouchAnimationInSeconds);
-        bottomOfCharacter = GlobalPosition.Y - collisionBoxShape.Size.Y / 2;
     }
 
     public void PlayEnterSprintAnim()
@@ -251,29 +258,25 @@ public partial class Player : ShootableCharacterBody3D
         tween.TweenProperty(camera, "fov", defaultFov, sprintAnimationInSeconds);
     }
 
-    public (bool canClamber, float? clamberGlobalY) ClamberCheck()
-    {
-        var clamberResult = clamberController.GetRaycastCollisionResult();
-        if (clamberResult.heightToRise == 0) return (false, null);
-        GD.Print($"Clamber to {clamberResult.heightToRise} and forward to {GlobalPosition.Z + clamberController.raycastLength}");
-        return (true, clamberResult.heightToRise);
-    }
-
     public void Clamber()
     {
+        
         //move up to clamber Y
-        if (GlobalPosition.Y < clamberY)
+        if (GetBottomOfCharacter() < clamberDestination.Y + clamberController.clamberMargin)
         {
-            GD.Print("Clambering up");
-            Velocity = Vector3.Up * clamberYVelocity;
+            GD.Print($"Clambering up to {clamberDestination} from {GetBottomOfCharacter()}");
+            Velocity = Vector3.Up * clamberVelocity;
+            MoveAndSlide();
             return;
         }
         
         //move forward to clamber Z
-        if (GlobalPosition.Z < clamberZ)
+        
+        if (clamberXZDistanceSquared > clamberStartPointXZ.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
         {
-            GD.Print("Clambering forward");
-            Velocity = Vector3.Forward * clamberZVelocity;
+            GD.Print($"Clambering forward to {clamberDestination} from {clamberStartPoint}");
+            Velocity = new Vector3(clamberXZDirection.X, 0, clamberXZDirection.Y) * clamberVelocity;
+            MoveAndSlide();
             return;
         }
         

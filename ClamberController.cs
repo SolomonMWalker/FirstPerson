@@ -9,7 +9,10 @@ public partial class ClamberController : Node3D
     [Export] public int numRaycastsWide = 3;
     [Export] public int numRaycastsHigh = 5;
     [Export] public float raycastLength = 0.1f;
+    [Export] public float clamberMargin = 0.4f;
+    [Export] public float maxAngleInDeg = 10f;
 
+    private RayCast3D _topRaycast;
     private List<RayCast3D> _raycasts = [];
     private Node3D _raycastsParent;
     private Vector2 _topLeftCorner;
@@ -22,8 +25,8 @@ public partial class ClamberController : Node3D
         {
             _raycasts.Add((RayCast3D)child);
         }
-        //_topLeftCorner = new Vector2(-(width / 2), height / 2);
-        //BuildRaycasts();
+
+        _topRaycast = _raycasts.OrderByDescending(rc => rc.GlobalPosition.Y).First();
         GD.Print($"Built raycasts with {_raycasts.Count} rays");
     }
 
@@ -47,31 +50,82 @@ public partial class ClamberController : Node3D
         }
     }
 
-    public List<Vector3> GetRaycastCollisions()
+    public List<(Vector2 localSlice, Vector3 globalEndpoint, bool collided)> GetRaycastEndPoints()
     {
-        List<Vector3> collisions = [];
-        collisions.AddRange(_raycasts.Where(rc => rc.IsColliding()).Select(rc => rc.GetCollisionPoint()));
+        List<(Vector2, Vector3, bool)> collisions = [];
+        foreach (var rc in _raycasts)
+        {
+            //switch this shit to 2d with global z and y
+            if (rc.IsColliding())
+            {
+                var globalEndpoint = rc.GetCollisionPoint();
+                var endpoint = ToLocal(globalEndpoint);
+                collisions.Add((new Vector2(endpoint.Z, endpoint.Y), globalEndpoint, true));
+            }
+            else
+            {
+                var globalEndpoint = rc.ToGlobal(rc.TargetPosition);
+                var endpointLocalToThis = ToLocal(globalEndpoint);
+                collisions.Add((new Vector2(endpointLocalToThis.Z, endpointLocalToThis.Y), globalEndpoint, false));
+            }
+        }
+
+        /*foreach (var c in collisions)
+        {
+            GD.Print($"collision {c.Item1} globalCollision {c.Item2} collided {c.Item3}");
+        }*/
+        
         return collisions;
     }
 
-    public (float w, float h) DistanceBetweenRaycasts()
+    public (bool success, RaycastCollisionResult result) AttemptClamber()
     {
-        return (width / numRaycastsWide, height / numRaycastsHigh);
-    }
-
-    public RaycastCollisionResult GetRaycastCollisionResult()
-    {
-        var rawCollisions = GetRaycastCollisions();
-        if (rawCollisions.Count == 0) return new RaycastCollisionResult();
-
-        return new RaycastCollisionResult
+        var rawCollisions = GetRaycastEndPoints();
+        if (rawCollisions.All(c => !c.collided)) return (false, null);
+        if (rawCollisions.Count(c => c.collided) == 1)
         {
-            angleOfCollisions = null,
-            heightToRise = rawCollisions.Max(c => c.Y) + 0.15f
-        };
+            var collision = rawCollisions.First(c => c.collided);
+            return (true, new RaycastCollisionResult
+            {
+                angleOfCollisions = null,
+                globalPositionToClamberTo = collision.globalEndpoint
+            });
+        }
 
-        //var top2Collisions = collisions.OrderByDescending(c => c).Take(2).ToList();
-        //get angle of top 2 collisions to see if we can clamber
+        var collisionsSorted = rawCollisions
+            .OrderByDescending(c => c.localSlice.Y)
+            .ToList();
+        //if top raycast didn't collide, try to mantle to top spot found
+        if (!collisionsSorted[0].collided)
+        {
+            var globalEndpoint = collisionsSorted
+                .First(c => c.collided)
+                .globalEndpoint;
+            
+            return (true, new RaycastCollisionResult
+            {
+                angleOfCollisions = null,
+                globalPositionToClamberTo = globalEndpoint
+            });
+        }
+        //find angle between top 2 collisions, if acceptable, mantle to top
+        var top2 = collisionsSorted.Where(c => c.collided).Take(2).ToList();
+        var top = top2[0];
+        var next = top2[1];
+        //top is past next z, then we have an upside down wedge, can't climb that
+        if (top.localSlice.X <= next.localSlice.X) return (false, null);
+        var angleToInRads = next.localSlice.AngleTo(top.localSlice);
+        var angleToInDeg = Mathf.RadToDeg(angleToInRads);
+        if (angleToInDeg > maxAngleInDeg)
+        {
+            return (false, null);
+        }
+
+        return (true, new RaycastCollisionResult
+        {
+            angleOfCollisions = angleToInDeg,
+            globalPositionToClamberTo = top.globalEndpoint
+        });
     }
 
 }
@@ -79,5 +133,5 @@ public partial class ClamberController : Node3D
 public class RaycastCollisionResult
 {
     public float? angleOfCollisions = null;
-    public float heightToRise = 0;
+    public Vector3? globalPositionToClamberTo;
 }

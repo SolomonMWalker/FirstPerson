@@ -94,3 +94,43 @@ surface_material_override/0 = SubResource("StandardMaterial3D_6uqi0")
 libraries = {
 &"": SubResource("AnimationLibrary_ykrsh")
 }
+
+[node name="Enemy2" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1726241, 1, 6.78831)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("3_6uqi0")
+metadata/_custom_type_script = "uid://bspdm2cmm76n3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy2"]
+shape = SubResource("CapsuleShape3D_8uh7m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy2"]
+mesh = SubResource("CapsuleMesh_8uh7m")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_6uqi0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy2"]
+libraries = {
+&"": SubResource("AnimationLibrary_ykrsh")
+}
+
+[node name="Enemy3" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.296158, 1, -17.612423)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("3_6uqi0")
+metadata/_custom_type_script = "uid://bspdm2cmm76n3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy3"]
+shape = SubResource("CapsuleShape3D_8uh7m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy3"]
+mesh = SubResource("CapsuleMesh_8uh7m")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_6uqi0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy3"]
+libraries = {
+&"": SubResource("AnimationLibrary_ykrsh")
+}
