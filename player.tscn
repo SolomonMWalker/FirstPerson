@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=10 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://Player.cs" id="1_onrkg"]
 [ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://testPlayerShape.tres" id="2_i3pqv"]
 [ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://ClamberController.cs" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://Reticle.cs" id="4_hqtel"]
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 resource_name = "FireGun"
@@ -98,6 +99,7 @@ material = SubResource("StandardMaterial3D_onrkg")
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 10
 script = ExtResource("1_onrkg")
+shootRange = 500
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -269,12 +271,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 current = true
 fov = 90.0
 
-[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
-target_position = Vector3(0, 0, -100)
-collision_mask = 2
-
 [node name="Hand" type="Node3D" parent="Camera3D"]
 transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.293, -0.292, -0.397)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D/Hand"]
 mesh = SubResource("BoxMesh_6uqi0")
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="Reticle" type="Container" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_hqtel")

@@ -15,7 +15,7 @@ public partial class Enemy : ShootableCharacterBody3D
     public override void Shot(ShotParameters shotParameters)
     {
         base.Shot(shotParameters);
-        _animationPlayer.Play("shot");
+        if(!_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
         DecreaseHealth(shotParameters.Damage);
     }
 
