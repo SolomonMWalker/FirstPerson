@@ -41,16 +41,22 @@ public partial class Player : ShootableCharacterBody3D
     private float defaultCameraHeight;
     private float defaultColliderShapeHeight;
 
-    private MovementState currentMovementState = MovementState.Walking;
+    private MovementState currentMovementState = MovementState.Default;
+    private MovementActionState currentActionState = MovementActionState.OnFloor;
 
     public enum MovementState
     {
-        Walking,
+        Default,
         Crouching,
-        Sprinting,
+        Sprinting
+    }
+
+    public enum MovementActionState
+    {
+        OnFloor,
         InAir,
         Clambering,
-        CoyoteTime //InAir, but can still jump
+        CoyoteTime
     }
     
     /*
@@ -104,20 +110,20 @@ public partial class Player : ShootableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        if (currentMovementState == MovementState.Clambering)
+        if (currentActionState == MovementActionState.Clambering)
         {
             Clamber();
             return;
         }
         
-        if (currentMovementState == MovementState.CoyoteTime)
+        if (currentActionState == MovementActionState.CoyoteTime)
         {
             _timeInCoyoteTime += delta;
             if (_timeInCoyoteTime > coyoteTimeInSec)
             {
                 //GD.Print("End coyote time");
                 _canJump = false;
-                currentMovementState = MovementState.InAir;
+                currentActionState = MovementActionState.InAir;
             }
         }
         HandleCrouch();
@@ -144,9 +150,9 @@ public partial class Player : ShootableCharacterBody3D
         if (IsOnFloor())
         {
             if (!_canJump) _canJump = true;
-            if (currentMovementState == MovementState.InAir)
+            if (currentActionState == MovementActionState.InAir)
             {
-                currentMovementState = MovementState.Walking;
+                currentActionState = MovementActionState.OnFloor;
             }
             
             if (Input.IsActionJustPressed("Jump") && _canJump)
@@ -157,16 +163,16 @@ public partial class Player : ShootableCharacterBody3D
         }
         else
         {
-            if (_canJump && currentMovementState != MovementState.CoyoteTime)
+            if (_canJump && currentActionState != MovementActionState.CoyoteTime)
             {
                 //GD.Print("Start coyote time");
-                currentMovementState = MovementState.CoyoteTime;
+                currentActionState = MovementActionState.CoyoteTime;
                 _timeInCoyoteTime = 0;
             }
-            else if(currentMovementState != MovementState.CoyoteTime &&
-                    currentMovementState != MovementState.InAir)
+            else if(currentActionState != MovementActionState.CoyoteTime &&
+                    currentActionState != MovementActionState.InAir)
             {
-                currentMovementState = MovementState.InAir;
+                currentActionState = MovementActionState.InAir;
             }
             
             tempVelocity.Y = (float) (Velocity.Y - gravity * delta);
@@ -177,7 +183,7 @@ public partial class Player : ShootableCharacterBody3D
                 //GD.Print($"Attempting clamber with success {clamberCheck.success}");
                 if (clamberCheck.success)
                 {
-                    currentMovementState = MovementState.Clambering;
+                    currentActionState = MovementActionState.Clambering;
                     clamberDestination = clamberCheck.result.globalPositionToClamberTo ?? Vector3.Zero;
                     clamberDestinationXZ = new Vector2(clamberDestination.X, clamberDestination.Z);
                     clamberStartPoint = GlobalPosition;
@@ -187,12 +193,12 @@ public partial class Player : ShootableCharacterBody3D
                     clamberXZDistanceSquared = clamberStartPointXZ.DistanceSquaredTo(clamberDestinationXZ);
                     return;
                 }
-                if (Input.IsActionJustPressed("Jump") && currentMovementState == MovementState.CoyoteTime)
+                if (Input.IsActionJustPressed("Jump") && currentActionState is MovementActionState.CoyoteTime)
                 {
                     //GD.Print("coyote time jump");
                     tempVelocity.Y = jumpVelocity;
                     _canJump = false;
-                    currentMovementState = MovementState.InAir;
+                    currentActionState = MovementActionState.InAir;
                 }
             }
         }
@@ -220,7 +226,7 @@ public partial class Player : ShootableCharacterBody3D
             if (currentMovementState == MovementState.Crouching)
             {
                 PlayExitCrouchAnim();
-                currentMovementState = MovementState.Walking;
+                currentMovementState = MovementState.Default;
             }
             else
             {
@@ -237,7 +243,7 @@ public partial class Player : ShootableCharacterBody3D
             if (currentMovementState == MovementState.Sprinting)
             {
                 PlayExitSprintAnim();
-                currentMovementState = MovementState.Walking;
+                currentMovementState = MovementState.Default;
             }
             else
             {
@@ -248,7 +254,7 @@ public partial class Player : ShootableCharacterBody3D
         else if (currentMovementState == MovementState.Sprinting && Velocity == Vector3.Zero)
         {
             PlayExitSprintAnim();
-            currentMovementState = MovementState.Walking;
+            currentMovementState = MovementState.Default;
         }
     }
 
@@ -318,8 +324,10 @@ public partial class Player : ShootableCharacterBody3D
             return;
         }
         
+        ApplyFloorSnap();
+        
         //GD.Print("done Clambering");
-        //when done, switch movement type to walking
-        currentMovementState = MovementState.Walking;
+        //when done, switch movement type to onfloor
+        currentActionState = MovementActionState.OnFloor;
     }
 }
