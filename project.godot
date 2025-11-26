@@ -72,6 +72,7 @@ Sprint={
 3d_physics/layer_2="Shootable"
 3d_physics/layer_3="Clamberable"
 3d_physics/layer_4="Player"
+3d_physics/layer_5="Interactable"
 
 [rendering]
 

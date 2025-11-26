@@ -8,7 +8,8 @@ public partial class Player : ShootableCharacterBody3D
     [Export] public float cameraSensitivity = 0.01f;
     [Export] public float speed = 8;
     [Export] public float jumpVelocity = 5f;
-    [Export] public int shootRange = 150;
+    [Export] public int shootRaycastLength = 50;
+    [Export] public int interactRaycastLength = 50;
     [Export] public float defaultCollisionShapePositionY;
     [Export] public float crouchCameraHeightMult = 0.4f;
     [Export] public float crouchCollisionShapeHeightMult = 0.5f;
@@ -40,6 +41,7 @@ public partial class Player : ShootableCharacterBody3D
     
     private Camera3D _camera;
     private Node3D _hand;
+    private RayCast3D _shootRaycast, _interactRaycast;
     private CollisionShape3D _collisionShape3d;
     private BoxShape3D _collisionBoxShape;
     private AnimationPlayer _animationPlayer;
@@ -85,6 +87,12 @@ public partial class Player : ShootableCharacterBody3D
         _collisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
         _clamberController = GetNode<ClamberController>("CollisionShape3D/ClamberController");
         _camera = GetNode<Camera3D>("Camera3D");
+        _shootRaycast = _camera.GetNode<RayCast3D>("ShootRayCast");
+        _shootRaycast.AddException(this);
+        _shootRaycast.SetTargetPosition(Vector3.Forward * shootRaycastLength);
+        _interactRaycast = _camera.GetNode<RayCast3D>("InteractRayCast");
+        _interactRaycast.AddException(this);
+        _interactRaycast.SetTargetPosition(Vector3.Forward * interactRaycastLength);
         _hand = _camera.GetNode<Node3D>("Hand");
         _defaultCameraHeight = _camera.Position.Y;
         _collisionBoxShape = (BoxShape3D)_collisionShape3d.Shape;
@@ -101,7 +109,7 @@ public partial class Player : ShootableCharacterBody3D
         if (Input.IsActionJustPressed("Fire"))
         {
             _animationPlayer.Play("FireGun");
-            GD.Print("Fired gun");
+            //GD.Print("Fired gun");
             _fireCameraRaycast = true;
         }
     }
@@ -261,24 +269,16 @@ public partial class Player : ShootableCharacterBody3D
     public void HandleFire()
     {
         //got from https://docs.godotengine.org/en/stable/tutorials/physics/ray-casting.html
+        //Then didn't use it lol
+
         if (!_fireCameraRaycast) return;
         _fireCameraRaycast = false;
-        var spaceState = GetWorld3D().DirectSpaceState;
-        var mousePos = GetViewport().GetMousePosition();
-        var from = _camera.ProjectRayOrigin(mousePos);
-        var to = from + _camera.ProjectRayNormal(mousePos) * shootRange;
-        var query = PhysicsRayQueryParameters3D.Create(from, to);
-        query.CollideWithBodies = true;
-        query.SetExclude([GetRid()]);
-        query.SetCollisionMask(2);
-            
-        var result = spaceState.IntersectRay(query);
-        if (!result.TryGetValue("collider", out var variant)) return;
-        var body = (GodotObject)variant;
-        if (body is not ShootableCharacterBody3D shootable) return;
-        var dist = Mathf.Abs(shootable.GlobalPosition.DistanceTo(GlobalPosition));
-        GD.Print($"name {shootable.Name} at distance {dist}");
-        shootable.Shot(new ShotParameters(1));
+        if (!_shootRaycast.IsColliding()) return;
+        var collided = _shootRaycast.GetCollider();
+        if (collided is ShootableCharacterBody3D shootable)
+        {
+            shootable.Shot(new ShotParameters(1));
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event)

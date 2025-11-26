@@ -99,7 +99,6 @@ material = SubResource("StandardMaterial3D_onrkg")
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 10
 script = ExtResource("1_onrkg")
-shootRange = 500
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -270,6 +269,13 @@ collision_mask = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 current = true
 fov = 90.0
+
+[node name="ShootRayCast" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, 0)
+collision_mask = 3
+
+[node name="InteractRayCast" type="RayCast3D" parent="Camera3D"]
+collision_mask = 16
 
 [node name="Hand" type="Node3D" parent="Camera3D"]
 transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.293, -0.292, -0.397)
