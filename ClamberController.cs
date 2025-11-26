@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ public partial class ClamberController : Node3D
     [Export] public float height = 0;
     [Export] public int numRaycastsWide = 3;
     [Export] public int numRaycastsHigh = 5;
-    [Export] public float raycastLength = 0.1f;
+    [Export] public float raycastLength = 0.25f;
     [Export] public float clamberMargin = 0.26f;
     [Export] public float maxAngleInDeg = 10f;
     [Export] public float waitPerCallInSec = 0.15f;
@@ -94,56 +95,31 @@ public partial class ClamberController : Node3D
         _timeSinceLastClamberCall = 0;
         var rawCollisions = GetRaycastEndPoints();
         if (rawCollisions.All(c => !c.collided)) return (false, null);
-        if (rawCollisions.Count(c => c.collided) == 1)
-        {
-            var collision = rawCollisions.First(c => c.collided);
-            return (true, new RaycastCollisionResult
-            {
-                angleOfCollisions = null,
-                globalPositionToClamberTo = collision.globalEndpoint
-            });
-        }
 
-        var collisionsSorted = rawCollisions
-            .OrderByDescending(c => c.localSlice.Y)
-            .ToList();
-        //if top raycast didn't collide, try to mantle to top spot found
-        if (!collisionsSorted[0].collided)
-        {
-            var globalEndpoint = collisionsSorted
-                .First(c => c.collided)
-                .globalEndpoint;
-            
-            return (true, new RaycastCollisionResult
-            {
-                angleOfCollisions = null,
-                globalPositionToClamberTo = globalEndpoint
-            });
-        }
-        //find angle between top 2 collisions, if acceptable, mantle to top
-        var top2 = collisionsSorted.Where(c => c.collided).Take(2).ToList();
-        var top = top2[0];
-        var next = top2[1];
-        //top is past next z, then we have an upside down wedge, can't climb that
-        if (top.localSlice.X <= next.localSlice.X) return (false, null);
-        var angleToInRads = next.localSlice.AngleTo(top.localSlice);
-        var angleToInDeg = Mathf.RadToDeg(angleToInRads);
-        if (angleToInDeg > maxAngleInDeg)
+        //If top raycast is colliding, we can't clamber
+        var maxY = rawCollisions.Select(rc => rc.localSlice.Y).Max();
+        var collidedCollisions = rawCollisions
+            .Where(rc => rc.collided)
+            .ToArray();
+        if (collidedCollisions.Any(rc => Math.Abs(rc.localSlice.Y - maxY) < 0.0001f))
         {
             return (false, null);
         }
 
+        var clamberPoint = collidedCollisions
+            .OrderByDescending(c => c.localSlice.Y)
+            .First();
         return (true, new RaycastCollisionResult
         {
-            angleOfCollisions = angleToInDeg,
-            globalPositionToClamberTo = top.globalEndpoint
+            globalPositionToClamberTo = clamberPoint.globalEndpoint
         });
+        
+        //took out extra "check for angle" code for now
     }
 
 }
 
 public class RaycastCollisionResult
 {
-    public float? angleOfCollisions = null;
     public Vector3? globalPositionToClamberTo;
 }

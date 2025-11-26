@@ -143,7 +143,7 @@ public partial class Player : ShootableCharacterBody3D
             if(Input.IsActionPressed("Jump"))
             {
                 var clamberCheck = clamberController.AttemptClamber();
-                GD.Print($"Attempting clamber with success {clamberCheck.success}");
+                //GD.Print($"Attempting clamber with success {clamberCheck.success}");
                 if (clamberCheck.success)
                 {
                     currentMovementState = MovementState.Clambering;
@@ -264,7 +264,7 @@ public partial class Player : ShootableCharacterBody3D
         //move up to clamber Y
         if (GetBottomOfCharacter() < clamberDestination.Y + clamberController.clamberMargin)
         {
-            GD.Print($"Clambering up to {clamberDestination} from {GetBottomOfCharacter()}");
+            //GD.Print($"Clambering up to {clamberDestination} from {GetBottomOfCharacter()}");
             Velocity = Vector3.Up * clamberVelocity;
             MoveAndSlide();
             return;
@@ -274,13 +274,13 @@ public partial class Player : ShootableCharacterBody3D
         
         if (clamberXZDistanceSquared > clamberStartPointXZ.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
         {
-            GD.Print($"Clambering forward to {clamberDestination} from {clamberStartPoint}");
+            //GD.Print($"Clambering forward to {clamberDestination} from {clamberStartPoint}");
             Velocity = new Vector3(clamberXZDirection.X, 0, clamberXZDirection.Y) * clamberVelocity;
             MoveAndSlide();
             return;
         }
         
-        GD.Print("done Clambering");
+        //GD.Print("done Clambering");
         //when done, switch movement type to walking
         currentMovementState = MovementState.Walking;
     }
