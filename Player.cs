@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Godot;
 
 namespace FirstPerson;
@@ -25,6 +24,7 @@ public partial class Player : ShootableCharacterBody3D
     public float sprintFovMult = 1.05f;
     public float sprintAnimationInSeconds = 0.15f;
     public float sprintMovementMult = 1.5f;
+    public float coyoteTimeInSec = 0.15f;
     public Vector3 clamberDestination;
     public Vector2 clamberDestinationXZ;
     public Vector3 clamberStartPoint;
@@ -36,6 +36,8 @@ public partial class Player : ShootableCharacterBody3D
     public Tween enterCrouchTween;
     public Tween exitCrouchTween;
 
+    private double _timeInCoyoteTime = 0;
+    private bool _canJump = false;
     private float defaultCameraHeight;
     private float defaultColliderShapeHeight;
 
@@ -107,6 +109,17 @@ public partial class Player : ShootableCharacterBody3D
             Clamber();
             return;
         }
+        
+        if (currentMovementState == MovementState.CoyoteTime)
+        {
+            _timeInCoyoteTime += delta;
+            if (_timeInCoyoteTime > coyoteTimeInSec)
+            {
+                //GD.Print("End coyote time");
+                _canJump = false;
+                currentMovementState = MovementState.InAir;
+            }
+        }
         HandleCrouch();
         var movementInput = Vector2.Zero;
         if (Input.IsActionPressed("MoveForward")) //forward
@@ -127,17 +140,35 @@ public partial class Player : ShootableCharacterBody3D
         }
         
         var tempVelocity = Vector3.Zero;
-
+        
         if (IsOnFloor())
         {
+            if (!_canJump) _canJump = true;
+            if (currentMovementState == MovementState.InAir)
+            {
+                currentMovementState = MovementState.Walking;
+            }
             
-            if (Input.IsActionJustPressed("Jump"))
+            if (Input.IsActionJustPressed("Jump") && _canJump)
             {
                 tempVelocity.Y = jumpVelocity;
+                _canJump = false;
             }
         }
         else
         {
+            if (_canJump && currentMovementState != MovementState.CoyoteTime)
+            {
+                //GD.Print("Start coyote time");
+                currentMovementState = MovementState.CoyoteTime;
+                _timeInCoyoteTime = 0;
+            }
+            else if(currentMovementState != MovementState.CoyoteTime &&
+                    currentMovementState != MovementState.InAir)
+            {
+                currentMovementState = MovementState.InAir;
+            }
+            
             tempVelocity.Y = (float) (Velocity.Y - gravity * delta);
             //Clamber
             if(Input.IsActionPressed("Jump"))
@@ -155,6 +186,13 @@ public partial class Player : ShootableCharacterBody3D
                         .DirectionTo(new Vector2(clamberDestination.X, clamberDestination.Z));
                     clamberXZDistanceSquared = clamberStartPointXZ.DistanceSquaredTo(clamberDestinationXZ);
                     return;
+                }
+                if (Input.IsActionJustPressed("Jump") && currentMovementState == MovementState.CoyoteTime)
+                {
+                    //GD.Print("coyote time jump");
+                    tempVelocity.Y = jumpVelocity;
+                    _canJump = false;
+                    currentMovementState = MovementState.InAir;
                 }
             }
         }

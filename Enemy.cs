@@ -4,10 +4,18 @@ public partial class Enemy : ShootableCharacterBody3D
 {
     public int health = 10;
 
+    private AnimationPlayer _animationPlayer;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    }
+
     public override void Shot(ShotParameters shotParameters)
     {
         base.Shot(shotParameters);
-        GetNode<AnimationPlayer>("AnimationPlayer").Play("shot");
+        _animationPlayer.Play("shot");
         DecreaseHealth(shotParameters.Damage);
     }
 

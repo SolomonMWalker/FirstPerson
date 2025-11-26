@@ -5,10 +5,6 @@ using System.Linq;
 
 public partial class ClamberController : Node3D
 {
-    [Export] public float width = 0;
-    [Export] public float height = 0;
-    [Export] public int numRaycastsWide = 3;
-    [Export] public int numRaycastsHigh = 5;
     [Export] public float raycastLength = 0.25f;
     [Export] public float clamberMargin = 0.26f;
     [Export] public float maxAngleInDeg = 10f;
@@ -26,15 +22,9 @@ public partial class ClamberController : Node3D
         foreach (var child in _raycastsParent.GetChildren())
         {
             List<RayCast3D> rcList = [];
-            foreach (var rc in child.GetChildren())
-            {
-                rcList.Add((RayCast3D)rc);
-            }
-
+            rcList.AddRange(child.GetChildren().Cast<RayCast3D>());
             _raycasts.Add(rcList);
         }
-
-        GD.Print($"Built raycasts with {_raycasts.Count} rays");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -43,8 +33,8 @@ public partial class ClamberController : Node3D
         _timeSinceLastClamberCall += delta;
         _timeSinceLastClamberCall = Mathf.Clamp(_timeSinceLastClamberCall, 0, waitPerCallInSec);
     }
-    
-    public List<(Vector2 localSlice, Vector3 globalEndpoint, bool collided)> GetRaycastEndPoints(List<RayCast3D> raycasts)
+
+    private List<(Vector2 localSlice, Vector3 globalEndpoint, bool collided)> GetRaycastEndPoints(List<RayCast3D> raycasts)
     {
         List<(Vector2, Vector3, bool)> collisions = [];
         foreach (var rc in raycasts)
@@ -63,12 +53,6 @@ public partial class ClamberController : Node3D
                 collisions.Add((new Vector2(endpointLocalToThis.Z, endpointLocalToThis.Y), globalEndpoint, false));
             }
         }
-
-        /*foreach (var c in collisions)
-        {
-            GD.Print($"collision {c.Item1} globalCollision {c.Item2} collided {c.Item3}");
-        }*/
-        
         return collisions;
     }
     
@@ -94,7 +78,6 @@ public partial class ClamberController : Node3D
         {
             globalPositionToClamberTo = clamberPoint.globalEndpoint
         });
-        
         //took out extra "check for angle" code for now
     }
 
