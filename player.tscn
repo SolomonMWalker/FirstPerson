@@ -124,47 +124,145 @@ ignore_time_scale = true
 
 [node name="Raycasts" type="Node3D" parent="CollisionShape3D/ClamberController"]
 
-[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="RaycastLine1" type="Node3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
+
+[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
 
-[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="RaycastLine2" type="Node3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+
+[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="RaycastLine3" type="Node3D" parent="CollisionShape3D/ClamberController/Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
+
+[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 5
+
+[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLine3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
 target_position = Vector3(0, 0, -0.25)
 collision_mask = 5
