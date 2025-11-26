@@ -6,14 +6,15 @@ namespace FirstPerson;
 public partial class Player : ShootableCharacterBody3D
 {
     public Camera3D camera;
+    public Node3D hand;
     public RayCast3D sightRaycast;
     public CollisionShape3D collisionShape3d;
     public BoxShape3D collisionBoxShape;
     public AnimationPlayer animationPlayer;
     public ClamberController clamberController;
     public float cameraSensitivity = 0.01f;
-    public float speed = 10;
-    public float jumpVelocity = 5.5f;
+    public float speed = 8;
+    public float jumpVelocity = 5f;
     public float gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     public float defaultCollisionShapePositionY;
     public float crouchCameraHeightMult = 0.4f;
@@ -80,6 +81,7 @@ public partial class Player : ShootableCharacterBody3D
         collisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
         clamberController = GetNode<ClamberController>("CollisionShape3D/ClamberController");
         camera = GetNode<Camera3D>("Camera3D");
+        hand = camera.GetNode<Node3D>("Hand");
         defaultCameraHeight = camera.Position.Y;
         collisionBoxShape = (BoxShape3D)collisionShape3d.Shape;
         defaultColliderShapeHeight = collisionBoxShape.Size.Y;
