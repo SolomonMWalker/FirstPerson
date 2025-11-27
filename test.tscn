@@ -31,10 +31,11 @@ shadow_enabled = true
 [node name="funcGodotTest" parent="map" instance=ExtResource("1_6uqi0")]
 
 [node name="Player" parent="." instance=ExtResource("2_8uh7m")]
-shootRange = 50
 
-[node name="Enemy" parent="." instance=ExtResource("3_6uqi0")]
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Enemy" parent="Enemies" instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.044, 1, 0)
 
-[node name="Enemy2" parent="." instance=ExtResource("3_6uqi0")]
+[node name="Enemy2" parent="Enemies" instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0134144, 1, 4.146764)

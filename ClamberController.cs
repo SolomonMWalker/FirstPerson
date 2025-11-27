@@ -39,7 +39,6 @@ public partial class ClamberController : Node3D
         List<(Vector2, Vector3, bool)> collisions = [];
         foreach (var rc in raycasts)
         {
-            //switch this shit to 2d with global z and y
             if (rc.IsColliding())
             {
                 var globalEndpoint = rc.GetCollisionPoint();

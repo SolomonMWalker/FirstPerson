@@ -5,7 +5,8 @@ public partial class Enemy : ShootableCharacterBody3D
     public int health = 10;
 
     private AnimationPlayer _animationPlayer;
-
+    private bool _queuedForDeath;
+    
     public override void _Ready()
     {
         base._Ready();
@@ -15,16 +16,15 @@ public partial class Enemy : ShootableCharacterBody3D
     public override void Shot(ShotParameters shotParameters)
     {
         base.Shot(shotParameters);
-        if(!_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
         DecreaseHealth(shotParameters.Damage);
+        if(!_queuedForDeath && !_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
     }
 
-    public void DecreaseHealth(int amount)
+    private void DecreaseHealth(int amount)
     {
         health -= amount;
-        if (health <= 0)
-        {
-            QueueFree();
-        }
+        if (health > 0) return;
+        QueueFree();
+        _queuedForDeath = true;
     }
 }
