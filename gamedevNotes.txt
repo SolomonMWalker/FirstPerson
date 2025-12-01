@@ -1,0 +1,1 @@
+﻿take your trenchbroom map, select only the top faces, skip the others, make it the ai path mesh
