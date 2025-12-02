@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://m6g0ehgunohp"]
+[gd_scene load_steps=13 format=4 uid="uid://m6g0ehgunohp"]
 
 [ext_resource type="Script" uid="uid://cwu5cf7a0awcd" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_bvqrb"]
 [ext_resource type="Resource" uid="uid://bkhxcqsquw1yg" path="res://addons/func_godot/func_godot_default_map_settings.tres" id="2_l3a3o"]
@@ -60,6 +60,10 @@ points = PackedVector3Array(-6, 4, -6, -6, 0, -6, -14, 4, -6, -14, 0, -6, -6, 4,
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_oefeb"]
 points = PackedVector3Array(0, 2, -6, 0, 0, -6, -6, 2, -6, -6, 0, -6, 0, 2, -54, 0, 0, -54, -6, 2, -54, -6, 0, -54)
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_nq3x0"]
+vertices = PackedVector3Array(36, 12, -27.999998, 36, 12, -56, 52, 12, -56, 52, 12, -27.999998, 52, 0, 33.000084, 36, 0, 33.000084, 36, 11.999999, -27.999905, 52, 11.999999, -27.999905, -68, 0, 63.999992, -68, 0, -64, 60, 0, -64, 60, 0, 63.999992, -22, 6, -6, -22, 6, -54, -14, 6, -54, -14, 6, -6, -14, 4, -6, -14, 4, -54, -6, 4, -54, -6, 4, -6, -6, 2, -6, -6, 2, -54, 0, 2, -54, 0, 2, -6)
+polygons = [PackedInt32Array(0, 1, 2), PackedInt32Array(0, 2, 3), PackedInt32Array(4, 5, 6), PackedInt32Array(4, 6, 7), PackedInt32Array(8, 9, 10), PackedInt32Array(8, 10, 11), PackedInt32Array(12, 13, 14), PackedInt32Array(12, 14, 15), PackedInt32Array(16, 17, 18), PackedInt32Array(16, 18, 19), PackedInt32Array(20, 21, 22), PackedInt32Array(20, 22, 23)]
+
 [node name="funcGodotTest" type="Node"]
 
 [node name="FuncGodotMap" type="Node3D" parent="."]
@@ -89,3 +93,12 @@ shape = SubResource("ConvexPolygonShape3D_ak5k3")
 
 [node name="entity_0_brush_4_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/entity_0_worldspawn"]
 shape = SubResource("ConvexPolygonShape3D_oefeb")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_nq3x0")
+
+[node name="FuncGodotNevMeshMap" type="Node3D" parent="."]
+script = ExtResource("1_bvqrb")
+local_map_file = "uid://drxyw1j6ji6pi"
+map_settings = ExtResource("2_l3a3o")
+metadata/_custom_type_script = "uid://cwu5cf7a0awcd"

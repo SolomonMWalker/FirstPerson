@@ -36,6 +36,11 @@ shadow_enabled = true
 
 [node name="Enemy" parent="Enemies" instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.044, 1, 0)
+targetPosition1 = Vector3(16.494, 0, 53.286)
+targetPosition2 = Vector3(18.763, 0, 4.097)
 
-[node name="Enemy2" parent="Enemies" instance=ExtResource("3_6uqi0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0134144, 1, 4.146764)
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.494, 1, 53.286)
+
+[node name="Node3D2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.763, 1, 4.097)

@@ -62,3 +62,5 @@ surface_material_override/0 = ExtResource("2_qi2p4")
 libraries = {
 &"": SubResource("AnimationLibrary_ykrsh")
 }
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://drxyw1j6ji6pi"
+path="res://.godot/imported/first_navmesh.map-32e289668ef8d1ed58a7e3a1be86aaca.tres"
+
+[deps]
+
+source_file="res://trenchbroom/maps/first_navmesh.map"
+dest_files=["res://.godot/imported/first_navmesh.map-32e289668ef8d1ed58a7e3a1be86aaca.tres"]
+
+[params]
+
