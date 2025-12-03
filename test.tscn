@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b8hkoeuua7otf"]
+[gd_scene load_steps=9 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://player.tscn" id="2_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://dgmlppgmwkqhi" path="res://enemy.tscn" id="3_6uqi0"]
+[ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://CoverSpotController.cs" id="4_ykrsh"]
+[ext_resource type="Script" uid="uid://b18qwxd0p3vgp" path="res://CoverSpot.cs" id="5_g14j6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -36,11 +38,14 @@ shadow_enabled = true
 
 [node name="Enemy" parent="Enemies" instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.044, 1, 0)
-targetPosition1 = Vector3(16.494, 0, 53.286)
-targetPosition2 = Vector3(18.763, 0, 4.097)
 
-[node name="Node3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.494, 1, 53.286)
+[node name="CoverSpotController" type="Node" parent="."]
+script = ExtResource("4_ykrsh")
 
-[node name="Node3D2" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.763, 1, 4.097)
+[node name="CoverSpot" type="Node3D" parent="CoverSpotController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.178612, 0, 33.03199)
+script = ExtResource("5_g14j6")
+
+[node name="CoverSpot2" type="Node3D" parent="CoverSpotController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.05407, 0, 34.211697)
+script = ExtResource("5_g14j6")

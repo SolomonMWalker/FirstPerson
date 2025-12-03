@@ -1,0 +1,92 @@
+using Godot;
+using System.Collections.Generic;
+using System.Linq;
+using FirstPerson;
+
+public partial class CoverSpotController : Node
+{
+    [Export] public float ReorderPolltime = 0.5f;
+    public List<CoverSpot> CoverSpots { get; private set; } = [];
+
+    private Player _player;
+    private double _timeSinceLastPoll;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        CoverSpots.AddRange(GetChildren().OfType<CoverSpot>());
+        _player = GetNode<Player>("../Player");
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (_timeSinceLastPoll > ReorderPolltime)
+        {
+            ReorderCoverSpotListBasedOnPlayerPosition();
+            _timeSinceLastPoll = 0;
+        }
+        else
+        {
+            _timeSinceLastPoll += delta;
+        }
+    }
+
+    public CoverSpot GetAndOccupyClosestUnoccupiedCoverSpot(ShootableCharacterBody3D occupier)
+    {
+        CoverSpot occupiedCoverSpot = null;
+        if (TryGetCoverSpotOccupiedBy(occupier, out var coverSpot))
+        {
+            occupiedCoverSpot = coverSpot;
+        }
+
+        var firstUnoccCoverSpot = GetFirstUnoccupiedCoverSpot();
+        if (occupiedCoverSpot != null)
+        {
+            //firstUnoccCoverSpot is closer than occupiedCoverSpot
+            if (CoverSpots.IndexOf(firstUnoccCoverSpot) < CoverSpots.IndexOf(occupiedCoverSpot))
+            {
+                //unoccupy the currently occupied spot
+                occupiedCoverSpot.occupier = null;
+                occupiedCoverSpot.occupied = false;
+            }
+            else
+            {
+                //no change
+                return occupiedCoverSpot;
+            }
+        }
+        
+        //if the occupied spot isn't the closest, grab first open spot
+        firstUnoccCoverSpot.occupier = occupier;
+        firstUnoccCoverSpot.occupied = true;
+        return firstUnoccCoverSpot;
+    }
+
+    public void UnoccupyCoverSpot(ShootableCharacterBody3D occupier)
+    {
+        if (!TryGetCoverSpotOccupiedBy(occupier, out var spot)) return;
+        spot.occupier = null;
+        spot.occupied = false;
+    }
+
+    private CoverSpot GetFirstUnoccupiedCoverSpot() => CoverSpots.FirstOrDefault(cs => !cs.occupied);
+
+    private bool TryGetCoverSpotOccupiedBy(ShootableCharacterBody3D occupier, out CoverSpot coverSpot)
+    {
+        coverSpot = null;
+        if(CoverSpots.All(cs => cs.occupier != occupier)) return false;
+        coverSpot = CoverSpots.FirstOrDefault(cs => cs.occupier == occupier);
+        return true;
+    }
+
+    private void ReorderCoverSpotListBasedOnPlayerPosition() =>
+        ReorderCoverSpotListBasedOnGlobalPosition(_player.GlobalPosition);
+
+    private void ReorderCoverSpotListBasedOnGlobalPosition(Vector3 globalPosition)
+    {
+        CoverSpots = CoverSpots
+            .OrderBy(c => c.GlobalPosition.DistanceSquaredTo(globalPosition))
+            .ToList();
+    }
+}

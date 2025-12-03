@@ -1,26 +1,30 @@
+using FirstPerson;
 using Godot;
 
 public partial class Enemy : ShootableCharacterBody3D
 {
     [Export] public int health = 10;
     [Export] public int speed = 10;
-    [Export] public Vector3 targetPosition1;
-    [Export] public Vector3 targetPosition2;
+    [Export] public float CoverSpotPollTimeInSeconds = 0.25f;
     
     public Vector3 MovementTarget
     {
         get => _navAgent.TargetPosition;
         set => _navAgent.TargetPosition = value;
     }
-
+    
+    private CoverSpotController _coverSpotController;
+    private CoverSpot _currentCoverSpot;
     private NavigationAgent3D _navAgent;
     private AnimationPlayer _animationPlayer;
     private bool _queuedForDeath;
+    private double _timeSincePlayerWasPolled;
     
     public override void _Ready()
     {
         base._Ready();
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        _coverSpotController = GetNode<CoverSpotController>("../../CoverSpotController");
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
         _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
@@ -37,16 +41,21 @@ public partial class Enemy : ShootableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        if (_navAgent.IsNavigationFinished())
+        //get player location   
+        if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
-            MovementTarget = MovementTarget == targetPosition1 ? targetPosition2 : targetPosition1;
+            var newCoverSpot = _coverSpotController.GetAndOccupyClosestUnoccupiedCoverSpot(this);
+            if (newCoverSpot != null && newCoverSpot != _currentCoverSpot)
+            {
+                _currentCoverSpot = newCoverSpot;
+                MovementTarget = _currentCoverSpot.GlobalPosition;
+            }
         }
-        
-        Vector3 currentAgentPosition = GlobalTransform.Origin;
-        Vector3 nextPathPosition = _navAgent.GetNextPathPosition();
-
-        Velocity = currentAgentPosition.DirectionTo(nextPathPosition) * speed;
-        MoveAndSlide();
+        else
+        {
+            _timeSincePlayerWasPolled += delta;
+        }
+        HandleNavigation();
     }
 
     public override void Shot(ShotParameters shotParameters)
@@ -54,6 +63,17 @@ public partial class Enemy : ShootableCharacterBody3D
         base.Shot(shotParameters);
         DecreaseHealth(shotParameters.Damage);
         if(!_queuedForDeath && !_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
+    }
+    
+    private void HandleNavigation()
+    {
+        if (_navAgent.IsNavigationFinished()) return;
+        
+        Vector3 currentAgentPosition = GlobalTransform.Origin;
+        Vector3 nextPathPosition = _navAgent.GetNextPathPosition();
+
+        Velocity = currentAgentPosition.DirectionTo(nextPathPosition) * speed;
+        MoveAndSlide();
     }
 
     private void DecreaseHealth(int amount)
@@ -70,6 +90,6 @@ public partial class Enemy : ShootableCharacterBody3D
         await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 
         // Now that the navigation map is no longer empty, set the movement target.
-        MovementTarget = targetPosition1;
+        MovementTarget = GlobalPosition;
     }
 }
