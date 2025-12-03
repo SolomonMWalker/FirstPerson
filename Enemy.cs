@@ -44,6 +44,7 @@ public partial class Enemy : ShootableCharacterBody3D
         //get player location   
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
+            _timeSincePlayerWasPolled = 0;
             var newCoverSpot = _coverSpotController.GetAndOccupyClosestUnoccupiedCoverSpot(this);
             if (newCoverSpot != null && newCoverSpot != _currentCoverSpot)
             {

@@ -47,6 +47,7 @@ public partial class CoverSpotController : Node
         }
 
         var firstUnoccCoverSpot = GetFirstUnoccupiedCoverSpot();
+        if (firstUnoccCoverSpot == null) return null;
         if (occupiedCoverSpot != null)
         {
             //firstUnoccCoverSpot is closer than occupiedCoverSpot
