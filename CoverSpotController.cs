@@ -5,6 +5,12 @@ using FirstPerson;
 
 public partial class CoverSpotController : Node
 {
+    //if I need to implement this for multiple cover groups
+    //ex. ally troops taking cover from enemies we're all fighting
+    //make CoverSpots a dictionary where each list is reordered by the thing to take cover from
+    //could get cumbersome, maybe each ally picks an enemy to shoot and cover is based off of that
+    //or group, not sure
+    //future problem
     [Export] public float ReorderPolltime = 0.5f;
     public List<CoverSpot> CoverSpots { get; private set; } = [];
 
