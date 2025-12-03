@@ -5,7 +5,7 @@ public partial class Enemy : ShootableCharacterBody3D
 {
     [Export] public int health = 10;
     [Export] public int speed = 10;
-    [Export] public float CoverSpotPollTimeInSeconds = 0.25f;
+    [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     
     public Vector3 MovementTarget
     {
