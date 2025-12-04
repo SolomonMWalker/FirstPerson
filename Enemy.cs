@@ -6,6 +6,8 @@ public partial class Enemy : ShootableCharacterBody3D
     [Export] public int health = 10;
     [Export] public int speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
+    //Maximum distance before leaving the current target and going to the player
+    [Export] public int CoverSpotMaxTargetDistance = 50;
     
     public Vector3 MovementTarget
     {
@@ -18,13 +20,17 @@ public partial class Enemy : ShootableCharacterBody3D
     private NavigationAgent3D _navAgent;
     private AnimationPlayer _animationPlayer;
     private bool _queuedForDeath;
-    private double _timeSincePlayerWasPolled;
+    private double _timeSincePlayerWasPolled = 5;
+
+    private Vector3 _initialPosition;
     
     public override void _Ready()
     {
         base._Ready();
+        _initialPosition = GlobalPosition;
+        
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        _coverSpotController = GetNode<CoverSpotController>("../../CoverSpotController");
+        _coverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
         _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
@@ -45,10 +51,16 @@ public partial class Enemy : ShootableCharacterBody3D
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
             _timeSincePlayerWasPolled = 0;
-            var newCoverSpot = _coverSpotController.GetAndOccupyClosestUnoccupiedCoverSpot(this);
-            if (newCoverSpot != null && newCoverSpot != _currentCoverSpot)
+            var bestCoverSpot = _coverSpotController.GetAndOccupyViableCoverSpot(this);
+            if (bestCoverSpot == null && _currentCoverSpot != null)
             {
-                _currentCoverSpot = newCoverSpot;
+                _currentCoverSpot?.Unoccupy();
+                _currentCoverSpot = null;
+                MovementTarget = _initialPosition;
+            }
+            else if (bestCoverSpot != null && bestCoverSpot != _currentCoverSpot)
+            {
+                _currentCoverSpot = bestCoverSpot;
                 MovementTarget = _currentCoverSpot.GlobalPosition;
             }
         }

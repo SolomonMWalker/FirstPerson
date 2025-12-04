@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://player.tscn" id="2_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://dgmlppgmwkqhi" path="res://enemy.tscn" id="3_6uqi0"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://CoverSpotController.cs" id="4_ykrsh"]
-[ext_resource type="Script" uid="uid://b18qwxd0p3vgp" path="res://CoverSpot.cs" id="5_g14j6"]
+[ext_resource type="PackedScene" uid="uid://jbcwqhyno5o3" path="res://cover_spot.tscn" id="5_ykrsh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -34,32 +34,13 @@ shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("2_8uh7m")]
 
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node3D" parent="."]
 
 [node name="Enemy" parent="Enemies" instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.044, 1, 0)
 
-[node name="Enemy2" parent="Enemies" instance=ExtResource("3_6uqi0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.32405, 1, 3.3031998)
-
-[node name="Enemy3" parent="Enemies" instance=ExtResource("3_6uqi0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.009827, 1, -5.4266834)
-
-[node name="CoverSpotController" type="Node" parent="."]
+[node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
 
-[node name="CoverSpot" type="Node3D" parent="CoverSpotController"]
+[node name="CoverSpot" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.178612, 0, 33.03199)
-script = ExtResource("5_g14j6")
-
-[node name="CoverSpot2" type="Node3D" parent="CoverSpotController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41.05407, 0, 34.211697)
-script = ExtResource("5_g14j6")
-
-[node name="CoverSpot3" type="Node3D" parent="CoverSpotController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.650534, 0, 4.718853)
-script = ExtResource("5_g14j6")
-
-[node name="CoverSpot4" type="Node3D" parent="CoverSpotController"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.381506, 0, 59.221638)
-script = ExtResource("5_g14j6")

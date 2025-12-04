@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://jbcwqhyno5o3"]
+
+[ext_resource type="Script" uid="uid://b18qwxd0p3vgp" path="res://CoverSpot.cs" id="1_pqk1n"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pqk1n"]
+size = Vector3(1, 1, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7k75p"]
+size = Vector3(1, 0.1, 1)
+
+[node name="CoverSpot" type="Node3D"]
+script = ExtResource("1_pqk1n")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1.075)
+mesh = SubResource("BoxMesh_pqk1n")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0.45)
+visible = false
+mesh = SubResource("BoxMesh_7k75p")
+
+[node name="LeftAngleDeterminant" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1.3000001)
+
+[node name="RightAngleDeterminant" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1.3000001)
