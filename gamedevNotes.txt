@@ -1,2 +1,9 @@
 ﻿take your trenchbroom map, select only the top faces, skip the others, make it the ai path mesh
     it worked!
+    
+ToDo
+    give enemies weapon
+    make enemy face player when at cover
+    shoot at player
+    player health
+    player ability to die
