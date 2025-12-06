@@ -3,32 +3,45 @@ using Godot;
 
 public partial class Enemy : ShootableCharacterBody3D
 {
-    [Export] public int health = 10;
-    [Export] public int speed = 10;
+    [Export] public int Health = 10;
+    [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     //Maximum distance before leaving the current target and going to the player
     [Export] public int CoverSpotMaxTargetDistance = 50;
+    [Export] public int PlayerFollowDistance = 10;
+
+    public enum BehaviorState
+    {
+        Default,
+        //Patrolling,
+        GoingToCover,
+        AtCover
+    }
     
     public Vector3 MovementTarget
     {
         get => _navAgent.TargetPosition;
         set => _navAgent.TargetPosition = value;
     }
-    
+
+    private Player _player;
     private CoverSpotController _coverSpotController;
-    private CoverSpot _currentCoverSpot;
     private NavigationAgent3D _navAgent;
     private AnimationPlayer _animationPlayer;
-    private bool _queuedForDeath;
-    private double _timeSincePlayerWasPolled = 5;
 
     private Vector3 _initialPosition;
+    private CoverSpot _currentCoverSpot;
+    private double _timeSincePlayerWasPolled = 5;
+    private bool _queuedForDeath;
+    private BehaviorState _currentBehaviorState = BehaviorState.Default;
+    private float _defaultTargetDistance = 0.5f;
     
     public override void _Ready()
     {
         base._Ready();
         _initialPosition = GlobalPosition;
-        
+
+        _player = GetNode<Player>("/root/Test/Player");
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         _coverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
         
@@ -38,30 +51,35 @@ public partial class Enemy : ShootableCharacterBody3D
         // These values need to be adjusted for the actor's speed
         // and the navigation layout.
         _navAgent.PathDesiredDistance = 0.5f;
-        _navAgent.TargetDesiredDistance = 0.5f;
+        _navAgent.TargetDesiredDistance = _defaultTargetDistance;
 
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
+        _currentBehaviorState = BehaviorState.GoingToCover;
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        //get player location   
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
             _timeSincePlayerWasPolled = 0;
-            var bestCoverSpot = _coverSpotController.GetAndOccupyViableCoverSpot(this);
-            if (bestCoverSpot == null && _currentCoverSpot != null)
+            var bestCoverSpot = _coverSpotController.GetAndOccupyViableCoverSpot(this, 
+                _currentCoverSpot, CoverSpotMaxTargetDistance);
+            if (bestCoverSpot == null)
             {
-                _currentCoverSpot?.Unoccupy();
-                _currentCoverSpot = null;
-                MovementTarget = _initialPosition;
+                //no valid cover spots, unoccupy and move to player
+                if (_currentCoverSpot != null)
+                {
+                    _currentCoverSpot?.Unoccupy();
+                    _currentCoverSpot = null;
+                }
+                MoveToPlayer(); 
             }
-            else if (bestCoverSpot != null && bestCoverSpot != _currentCoverSpot)
+            else
             {
                 _currentCoverSpot = bestCoverSpot;
-                MovementTarget = _currentCoverSpot.GlobalPosition;
+                MoveToCover();
             }
         }
         else
@@ -69,6 +87,7 @@ public partial class Enemy : ShootableCharacterBody3D
             _timeSincePlayerWasPolled += delta;
         }
         HandleNavigation();
+        HandleRotation();
     }
 
     public override void Shot(ShotParameters shotParameters)
@@ -80,19 +99,24 @@ public partial class Enemy : ShootableCharacterBody3D
     
     private void HandleNavigation()
     {
-        if (_navAgent.IsNavigationFinished()) return;
+        if (_navAgent.IsNavigationFinished())
+        {
+            _currentBehaviorState = BehaviorState.AtCover;
+            return;
+        }
+        _currentBehaviorState = BehaviorState.GoingToCover;
         
         Vector3 currentAgentPosition = GlobalTransform.Origin;
         Vector3 nextPathPosition = _navAgent.GetNextPathPosition();
 
-        Velocity = currentAgentPosition.DirectionTo(nextPathPosition) * speed;
+        Velocity = currentAgentPosition.DirectionTo(nextPathPosition) * Speed;
         MoveAndSlide();
     }
 
     private void DecreaseHealth(int amount)
     {
-        health -= amount;
-        if (health > 0) return;
+        Health -= amount;
+        if (Health > 0) return;
         QueueFree();
         _queuedForDeath = true;
     }
@@ -104,5 +128,36 @@ public partial class Enemy : ShootableCharacterBody3D
 
         // Now that the navigation map is no longer empty, set the movement target.
         MovementTarget = GlobalPosition;
+    }
+
+    private void MoveToPlayer()
+    {
+        _navAgent.TargetDesiredDistance = PlayerFollowDistance;
+        MovementTarget = _player.GlobalPosition;
+    }
+
+    private void MoveToCover()
+    {
+        _navAgent.TargetDesiredDistance = _defaultTargetDistance;
+        MovementTarget = _currentCoverSpot.GlobalPosition;
+    }
+
+    private void LookAtMovementDirection()
+    {
+        if (Velocity != Vector3.Zero)
+        {
+            LookAt(GlobalPosition + Velocity.Normalized(), Vector3.Up);
+        }
+    }
+    private void LookAtPlayer() => LookAt(_player.GlobalPosition);
+
+    private void HandleRotation()
+    {
+        if (_currentBehaviorState is BehaviorState.AtCover)
+        {
+            LookAtPlayer();
+            return;
+        }
+        LookAtMovementDirection();
     }
 }

@@ -21,7 +21,7 @@ public partial class CoverSpotController : Node
     {
         base._Ready();
         CoverSpots.AddRange(GetChildren().OfType<CoverSpot>());
-        _player = GetNode<Player>("../Player");
+        _player = GetNode<Player>("/root/Test/Player");
     }
 
     public override void _Process(double delta)
@@ -38,44 +38,43 @@ public partial class CoverSpotController : Node
         }
     }
 
-    public CoverSpot GetAndOccupyViableCoverSpot(ShootableCharacterBody3D occupier)
+    public CoverSpot GetAndOccupyViableCoverSpot(ShootableCharacterBody3D occupier,
+        CoverSpot currentlyOccupiedSpot = null, float? coverToPlayerMaxDistance = null)
     {
-        CoverSpot occupiedCoverSpot = null;
-        if (TryGetCoverSpotOccupiedBy(occupier, out var coverSpot) && coverSpot.playerInAngleRange)
+        var bestCoverSpot = GetFirstViableAndUnoccupiedCoverSpot();
+        if (bestCoverSpot == null)
         {
-            occupiedCoverSpot = coverSpot;
-        }
-
-        var firstViableCoverSpot = GetFirstViableCoverSpot();
-        if (firstViableCoverSpot == null) return occupiedCoverSpot;
-        if (occupiedCoverSpot != null)
-        {
-            //firstUnoccCoverSpot is closer than occupiedCoverSpot
-            if (CoverSpots.IndexOf(firstViableCoverSpot) < CoverSpots.IndexOf(occupiedCoverSpot))
-            {
-                //unoccupy the currently occupied spot
-                occupiedCoverSpot.Unoccupy();
-            }
-            else
-            {
-                //no change
-                return occupiedCoverSpot;
-            }
+            if (currentlyOccupiedSpot != null) bestCoverSpot = currentlyOccupiedSpot;
+            else return null;
         }
         
-        //if the occupied spot isn't the closest, grab first open spot
-        firstViableCoverSpot.Occupy(occupier);
-        return firstViableCoverSpot;
-    }
-    
+        if (currentlyOccupiedSpot != null)
+        {
+            if (CoverSpots.IndexOf(currentlyOccupiedSpot) < CoverSpots.IndexOf(bestCoverSpot))
+            {
+                bestCoverSpot = currentlyOccupiedSpot;
+            }
+        }
 
-    public void UnoccupyCoverSpot(ShootableCharacterBody3D occupier)
+        if (!bestCoverSpot.IsViable(coverToPlayerMaxDistance)) return null;
+        bestCoverSpot.Occupy(occupier, coverToPlayerMaxDistance);
+        return bestCoverSpot;
+    }
+
+    private void UnoccupyCoverSpot(ShootableCharacterBody3D occupier)
     {
         if (!TryGetCoverSpotOccupiedBy(occupier, out var spot)) return;
         spot.Unoccupy();
     }
 
-    private CoverSpot GetFirstViableCoverSpot() => CoverSpots.FirstOrDefault(cs => !cs.occupied && cs.playerInAngleRange);
+    private static bool IsCoverSpotViableAndUnoccupied(CoverSpot coverSpot) =>
+        !coverSpot.occupied && coverSpot.playerInAngleRange && coverSpot.playerInAngleRange;
+    
+    private static bool IsCoverSpotViable(CoverSpot coverSpot) =>
+        !coverSpot.occupied && coverSpot.playerInAngleRange && coverSpot.playerInAngleRange;
+    
+    private CoverSpot GetFirstViableAndUnoccupiedCoverSpot() => CoverSpots.FirstOrDefault(IsCoverSpotViableAndUnoccupied);
+    private CoverSpot GetFirstViableCoverSpot() => CoverSpots.FirstOrDefault(IsCoverSpotViable);
 
     private bool TryGetCoverSpotOccupiedBy(ShootableCharacterBody3D occupier, out CoverSpot coverSpot)
     {
