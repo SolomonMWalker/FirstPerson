@@ -11,11 +11,9 @@ public partial class CoverSpotController : Node
     //could get cumbersome, maybe each ally picks an enemy to shoot and cover is based off of that
     //or group, not sure
     //future problem
-    [Export] public float ReorderPolltime = 0.5f;
     public List<CoverSpot> CoverSpots { get; private set; } = [];
 
     private Player _player;
-    private double _timeSinceLastPoll = 5;
 
     public override void _Ready()
     {
@@ -23,73 +21,33 @@ public partial class CoverSpotController : Node
         CoverSpots.AddRange(GetChildren().OfType<CoverSpot>());
         _player = GetNode<Player>("/root/Test/Player");
     }
-
-    public override void _Process(double delta)
+    
+    
+    public CoverSpot GetViableCoverSpot(ShootableCharacterBody3D occupier, ShootableCharacterBody3D target,
+        CoverSpot currentlyOccupiedSpot = null)
     {
-        base._Process(delta);
-        if (_timeSinceLastPoll > ReorderPolltime)
-        {
-            ReorderCoverSpotListBasedOnPlayerPosition();
-            _timeSinceLastPoll = 0;
-        }
-        else
-        {
-            _timeSinceLastPoll += delta;
-        }
-    }
+        CalculateViabilityOfCoverSpots(target);
+        var tempCoverSpots = GetFilteredAndReorderedCoverSpots(target.GlobalPosition, currentlyOccupiedSpot);
+        CoverSpot bestCoverSpot = null;
+        if(tempCoverSpots.Count != 0) 
+            bestCoverSpot = tempCoverSpots.First();
 
-    public CoverSpot GetAndOccupyViableCoverSpot(ShootableCharacterBody3D occupier,
-        CoverSpot currentlyOccupiedSpot = null, float? coverToPlayerMaxDistance = null)
-    {
-        var bestCoverSpot = GetFirstViableAndUnoccupiedCoverSpot();
-        if (bestCoverSpot == null)
-        {
-            if (currentlyOccupiedSpot != null) bestCoverSpot = currentlyOccupiedSpot;
-            else return null;
-        }
-        
-        if (currentlyOccupiedSpot != null)
-        {
-            if (CoverSpots.IndexOf(currentlyOccupiedSpot) < CoverSpots.IndexOf(bestCoverSpot))
-            {
-                bestCoverSpot = currentlyOccupiedSpot;
-            }
-        }
-
-        if (!bestCoverSpot.IsViable(coverToPlayerMaxDistance)) return null;
-        bestCoverSpot.Occupy(occupier, coverToPlayerMaxDistance);
+        if (bestCoverSpot == null) return null;
+        //bestCoverSpot.Occupy(occupier);
         return bestCoverSpot;
     }
 
-    private void UnoccupyCoverSpot(ShootableCharacterBody3D occupier)
-    {
-        if (!TryGetCoverSpotOccupiedBy(occupier, out var spot)) return;
-        spot.Unoccupy();
-    }
-
     private static bool IsCoverSpotViableAndUnoccupied(CoverSpot coverSpot) =>
-        !coverSpot.occupied && coverSpot.playerInAngleRange && coverSpot.playerInAngleRange;
+        !coverSpot.occupied && coverSpot.isViable;
     
-    private static bool IsCoverSpotViable(CoverSpot coverSpot) =>
-        !coverSpot.occupied && coverSpot.playerInAngleRange && coverSpot.playerInAngleRange;
+    private void CalculateViabilityOfCoverSpots(ShootableCharacterBody3D target)
+        => CoverSpots.ForEach(cs => cs.CalculateViability(target));
     
-    private CoverSpot GetFirstViableAndUnoccupiedCoverSpot() => CoverSpots.FirstOrDefault(IsCoverSpotViableAndUnoccupied);
-    private CoverSpot GetFirstViableCoverSpot() => CoverSpots.FirstOrDefault(IsCoverSpotViable);
-
-    private bool TryGetCoverSpotOccupiedBy(ShootableCharacterBody3D occupier, out CoverSpot coverSpot)
+    private List<CoverSpot> GetFilteredAndReorderedCoverSpots(Vector3 globalPosition, CoverSpot currentlyOccupiedSpot = null)
     {
-        coverSpot = null;
-        if(CoverSpots.All(cs => cs.occupier != occupier)) return false;
-        coverSpot = CoverSpots.FirstOrDefault(cs => cs.occupier == occupier);
-        return true;
-    }
-
-    private void ReorderCoverSpotListBasedOnPlayerPosition() =>
-        ReorderCoverSpotListBasedOnGlobalPosition(_player.GlobalPosition);
-
-    private void ReorderCoverSpotListBasedOnGlobalPosition(Vector3 globalPosition)
-    {
-        CoverSpots = CoverSpots
+        return CoverSpots
+            .Where(c => IsCoverSpotViableAndUnoccupied(c) 
+                        || (currentlyOccupiedSpot is { isViable: true } && c == currentlyOccupiedSpot))
             .OrderBy(c => c.GlobalPosition.DistanceSquaredTo(globalPosition))
             .ToList();
     }

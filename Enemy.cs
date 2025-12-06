@@ -7,7 +7,7 @@ public partial class Enemy : ShootableCharacterBody3D
     [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     //Maximum distance before leaving the current target and going to the player
-    [Export] public int CoverSpotMaxTargetDistance = 50;
+    [Export] public int CoverSpotMaxTargetDistance = 25;
     [Export] public int PlayerFollowDistance = 10;
 
     public enum BehaviorState
@@ -64,21 +64,17 @@ public partial class Enemy : ShootableCharacterBody3D
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
             _timeSincePlayerWasPolled = 0;
-            var bestCoverSpot = _coverSpotController.GetAndOccupyViableCoverSpot(this, 
-                _currentCoverSpot, CoverSpotMaxTargetDistance);
-            if (bestCoverSpot == null)
+            var bestCoverSpot = _coverSpotController.GetViableCoverSpot(this, _player, _currentCoverSpot);
+            if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(_player.GlobalPosition) > CoverSpotMaxTargetDistance)
             {
-                //no valid cover spots, unoccupy and move to player
-                if (_currentCoverSpot != null)
-                {
-                    _currentCoverSpot?.Unoccupy();
-                    _currentCoverSpot = null;
-                }
+                _currentCoverSpot?.Unoccupy();
+                _currentCoverSpot = null;
                 MoveToPlayer(); 
             }
             else
             {
                 _currentCoverSpot = bestCoverSpot;
+                _currentCoverSpot.Occupy(this);
                 MoveToCover();
             }
         }
