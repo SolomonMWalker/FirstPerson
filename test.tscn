@@ -39,8 +39,20 @@ shadow_enabled = true
 [node name="Enemy" parent="Enemies" instance=ExtResource("3_6uqi0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.044, 1, 0)
 
+[node name="Enemy2" parent="Enemies" instance=ExtResource("3_6uqi0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.692377, 1, 0.50989056)
+
+[node name="Enemy3" parent="Enemies" instance=ExtResource("3_6uqi0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.54735, 1, 10.325297)
+
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
 
 [node name="CoverSpot" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.178612, 0, 33.03199)
+
+[node name="CoverSpot2" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8818817, 0, 42.59245)
+
+[node name="CoverSpot3" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.873108, 0, 27.423183)
