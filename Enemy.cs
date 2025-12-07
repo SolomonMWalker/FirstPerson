@@ -7,7 +7,7 @@ public partial class Enemy : ShootableCharacterBody3D
     [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     //Maximum distance before leaving the current target and going to the player
-    [Export] public int CoverSpotMaxTargetDistance = 25;
+    [Export] public int CoverSpotMaxTargetDistance = 35;
     [Export] public int PlayerFollowDistance = 10;
 
     public enum BehaviorState
@@ -73,8 +73,12 @@ public partial class Enemy : ShootableCharacterBody3D
             }
             else
             {
-                _currentCoverSpot = bestCoverSpot;
-                _currentCoverSpot.Occupy(this);
+                if (_currentCoverSpot != bestCoverSpot)
+                {
+                    _currentCoverSpot?.Unoccupy();
+                    _currentCoverSpot = bestCoverSpot;
+                    _currentCoverSpot.Occupy(this);
+                }
                 MoveToCover();
             }
         }
@@ -140,7 +144,9 @@ public partial class Enemy : ShootableCharacterBody3D
 
     private void LookAtMovementDirection()
     {
-        if (Velocity != Vector3.Zero)
+        //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
+        if (Velocity != Vector3.Zero &&
+            !(GlobalPosition + Velocity.Normalized()).Cross(Vector3.Up).IsZeroApprox() )
         {
             LookAt(GlobalPosition + Velocity.Normalized(), Vector3.Up);
         }
@@ -149,7 +155,7 @@ public partial class Enemy : ShootableCharacterBody3D
 
     private void HandleRotation()
     {
-        if (_currentBehaviorState is BehaviorState.AtCover)
+        if (_currentBehaviorState is BehaviorState.AtCover || Velocity == Vector3.Zero)
         {
             LookAtPlayer();
             return;

@@ -71,6 +71,7 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
 
 [node name="Hand" type="Node3D" parent="."]
 transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.5455811, 0.31740648, -0.5680038)
@@ -80,6 +81,6 @@ mesh = SubResource("BoxMesh_4gyqm")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.45539224, -0.5023635)
-modulate = Color(0.82962555, 0.10884405, 0.24564907, 1)
+modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
 texture_filter = 0
 texture = ExtResource("3_qi2p4")
