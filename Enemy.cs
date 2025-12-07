@@ -7,7 +7,7 @@ public partial class Enemy : ShootableCharacterBody3D
     [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     //Maximum distance before leaving the current target and going to the player
-    [Export] public int CoverSpotMaxTargetDistance = 35;
+    [Export] public int CoverSpotMaxTargetDistance = 100;
     [Export] public int PlayerFollowDistance = 10;
 
     public enum BehaviorState
@@ -56,6 +56,15 @@ public partial class Enemy : ShootableCharacterBody3D
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
         _currentBehaviorState = BehaviorState.GoingToCover;
+    }
+    
+    private async void ActorSetup()
+    {
+        // Wait for the first physics frame so the NavigationServer can sync.
+        await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+
+        // Now that the navigation map is no longer empty, set the movement target.
+        MovementTarget = GlobalPosition;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -120,15 +129,6 @@ public partial class Enemy : ShootableCharacterBody3D
         QueueFree();
         _queuedForDeath = true;
     }
-    
-    private async void ActorSetup()
-    {
-        // Wait for the first physics frame so the NavigationServer can sync.
-        await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
-
-        // Now that the navigation map is no longer empty, set the movement target.
-        MovementTarget = GlobalPosition;
-    }
 
     private void MoveToPlayer()
     {
@@ -145,17 +145,28 @@ public partial class Enemy : ShootableCharacterBody3D
     private void LookAtMovementDirection()
     {
         //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
-        if (Velocity != Vector3.Zero &&
-            !(GlobalPosition + Velocity.Normalized()).Cross(Vector3.Up).IsZeroApprox() )
+        if (Velocity != Vector3.Zero)
         {
-            LookAt(GlobalPosition + Velocity.Normalized(), Vector3.Up);
+            var lookAtDirection = GlobalPosition + Velocity.Normalized();
+            //if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox())
+            LookAt(lookAtDirection, Vector3.Up);
+        }
+        else
+        {
+            LookAtPlayer();
         }
     }
-    private void LookAtPlayer() => LookAt(_player.GlobalPosition);
+
+    private void LookAtPlayer()
+    {
+        var lookAtDirection = _player.GlobalPosition;
+        //if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox())
+        LookAt(lookAtDirection, Vector3.Up);
+    }
 
     private void HandleRotation()
     {
-        if (_currentBehaviorState is BehaviorState.AtCover || Velocity == Vector3.Zero)
+        if (_currentBehaviorState is BehaviorState.AtCover)
         {
             LookAtPlayer();
             return;
