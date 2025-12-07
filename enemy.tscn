@@ -50,6 +50,7 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_4gyqm"]
 material = SubResource("StandardMaterial3D_onrkg")
+size = Vector3(0.07, 0.07, 0.7)
 
 [node name="Enemy" type="CharacterBody3D"]
 collision_layer = 3
@@ -71,12 +72,15 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-avoidance_enabled = true
+simplify_path = true
+height = 2.0
+radius = 3.0
 
 [node name="Hand" type="Node3D" parent="."]
-transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.5455811, 0.31740648, -0.5680038)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.597726)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
+transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_4gyqm")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]

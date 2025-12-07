@@ -7,7 +7,7 @@ public partial class Enemy : ShootableCharacterBody3D
     [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     //Maximum distance before leaving the current target and going to the player
-    [Export] public int CoverSpotMaxTargetDistance = 100;
+    [Export] public int CoverSpotMaxTargetDistance = 40;
     [Export] public int PlayerFollowDistance = 10;
 
     public enum BehaviorState
@@ -70,6 +70,20 @@ public partial class Enemy : ShootableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        CalculateNavigation(delta);
+        HandleNavigation();
+        HandleRotation();
+    }
+
+    public override void Shot(ShotParameters shotParameters)
+    {
+        base.Shot(shotParameters);
+        DecreaseHealth(shotParameters.Damage);
+        if(!_queuedForDeath && !_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
+    }
+
+    private void CalculateNavigation(double delta)
+    {
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
             _timeSincePlayerWasPolled = 0;
@@ -95,15 +109,6 @@ public partial class Enemy : ShootableCharacterBody3D
         {
             _timeSincePlayerWasPolled += delta;
         }
-        HandleNavigation();
-        HandleRotation();
-    }
-
-    public override void Shot(ShotParameters shotParameters)
-    {
-        base.Shot(shotParameters);
-        DecreaseHealth(shotParameters.Damage);
-        if(!_queuedForDeath && !_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
     }
     
     private void HandleNavigation()
@@ -145,11 +150,12 @@ public partial class Enemy : ShootableCharacterBody3D
     private void LookAtMovementDirection()
     {
         //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
-        if (Velocity != Vector3.Zero)
+        if (!Velocity.IsZeroApprox())
         {
             var lookAtDirection = GlobalPosition + Velocity.Normalized();
-            //if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox())
-            LookAt(lookAtDirection, Vector3.Up);
+            lookAtDirection.Y = GlobalPosition.Y;
+            if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox())
+                LookAt(lookAtDirection, Vector3.Up);
         }
         else
         {
@@ -160,8 +166,10 @@ public partial class Enemy : ShootableCharacterBody3D
     private void LookAtPlayer()
     {
         var lookAtDirection = _player.GlobalPosition;
-        //if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox())
-        LookAt(lookAtDirection, Vector3.Up);
+        lookAtDirection.Y = GlobalPosition.Y;
+        if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
+           && !(lookAtDirection - GlobalPosition).IsZeroApprox())
+            LookAt(lookAtDirection, Vector3.Up);
     }
 
     private void HandleRotation()
