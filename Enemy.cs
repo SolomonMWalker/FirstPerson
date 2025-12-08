@@ -6,7 +6,6 @@ public partial class Enemy : ShootableCharacterBody3D
     [Export] public int Health = 10;
     [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
-    //Maximum distance before leaving the current target and going to the player
     [Export] public int CoverSpotMaxTargetDistance = 40;
     [Export] public int PlayerFollowDistance = 10;
 
@@ -24,24 +23,24 @@ public partial class Enemy : ShootableCharacterBody3D
         set => _navAgent.TargetPosition = value;
     }
 
-    private Player _player;
-    private CoverSpotController _coverSpotController;
-    private NavigationAgent3D _navAgent;
-    private AnimationPlayer _animationPlayer;
+    protected ShootableCharacterBody3D _target;
+    protected CoverSpotController _coverSpotController;
+    protected NavigationAgent3D _navAgent;
+    protected AnimationPlayer _animationPlayer;
 
-    private Vector3 _initialPosition;
-    private CoverSpot _currentCoverSpot;
-    private double _timeSincePlayerWasPolled = 5;
-    private bool _queuedForDeath;
-    private BehaviorState _currentBehaviorState = BehaviorState.Default;
-    private float _defaultTargetDistance = 0.5f;
+    protected Vector3 _initialPosition;
+    protected CoverSpot _currentCoverSpot;
+    protected double _timeSincePlayerWasPolled = 5;
+    protected bool _queuedForDeath;
+    protected BehaviorState _currentBehaviorState = BehaviorState.Default;
+    protected float _defaultTargetDistance = 0.5f;
     
     public override void _Ready()
     {
         base._Ready();
         _initialPosition = GlobalPosition;
 
-        _player = GetNode<Player>("/root/Test/Player");
+        _target = GetNode<Player>("/root/Test/Player");
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         _coverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
         
@@ -87,8 +86,8 @@ public partial class Enemy : ShootableCharacterBody3D
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
             _timeSincePlayerWasPolled = 0;
-            var bestCoverSpot = _coverSpotController.GetViableCoverSpot(this, _player, _currentCoverSpot);
-            if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(_player.GlobalPosition) > CoverSpotMaxTargetDistance)
+            var bestCoverSpot = _coverSpotController.GetViableCoverSpot(this, _target, _currentCoverSpot);
+            if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(_target.GlobalPosition) > CoverSpotMaxTargetDistance)
             {
                 _currentCoverSpot?.Unoccupy();
                 _currentCoverSpot = null;
@@ -138,7 +137,7 @@ public partial class Enemy : ShootableCharacterBody3D
     private void MoveToPlayer()
     {
         _navAgent.TargetDesiredDistance = PlayerFollowDistance;
-        MovementTarget = _player.GlobalPosition;
+        MovementTarget = _target.GlobalPosition;
     }
 
     private void MoveToCover()
@@ -149,12 +148,13 @@ public partial class Enemy : ShootableCharacterBody3D
 
     private void LookAtMovementDirection()
     {
-        //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
+
         if (!Velocity.IsZeroApprox())
         {
             var lookAtDirection = GlobalPosition + Velocity.Normalized();
             lookAtDirection.Y = GlobalPosition.Y;
-            if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox())
+            //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
+            if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()) 
                 LookAt(lookAtDirection, Vector3.Up);
         }
         else
@@ -165,7 +165,7 @@ public partial class Enemy : ShootableCharacterBody3D
 
     private void LookAtPlayer()
     {
-        var lookAtDirection = _player.GlobalPosition;
+        var lookAtDirection = _target.GlobalPosition;
         lookAtDirection.Y = GlobalPosition.Y;
         if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
            && !(lookAtDirection - GlobalPosition).IsZeroApprox())
