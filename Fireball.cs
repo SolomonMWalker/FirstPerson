@@ -1,29 +1,31 @@
 using Godot;
-using System;
-using Godot.NativeInterop;
 
 public partial class Fireball : CharacterBody3D
 {
-    private float _speed = 5;
-    private Vector3 _direction;
+    private bool _initialized;
+    private float _speed = 10;
+    private Vector3 _targetGlobalPosition;
+    private Vector3 _globalPositionSpawnPoint;
 
 
-    public void Initialize(Vector3 direction, Vector3 spawnPoint)
+    public void Initialize(Vector3 targetGlobalPosition, Vector3 spawnPoint)
     {
-        _direction = direction;
-        Position = spawnPoint;
+        _initialized = true;
+        _targetGlobalPosition = targetGlobalPosition;
+        _globalPositionSpawnPoint = spawnPoint;
     }
 
     public override void _Ready()
     {
         base._Ready();
-        LookAt(_direction);
+        GlobalPosition = _globalPositionSpawnPoint;
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        Velocity = Vector3.Forward * _speed;
+        var directionToTarget = GlobalPosition.DirectionTo(_targetGlobalPosition);
+        Velocity = directionToTarget * _speed;
         var collision = MoveAndCollide(Velocity * (float)delta);
         if (collision == null) return;
         if (collision.GetCollider() is ShootableCharacterBody3D shootable)

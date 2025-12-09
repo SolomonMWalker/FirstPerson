@@ -3,7 +3,7 @@ using Godot;
 
 public partial class Enemy : ShootableCharacterBody3D
 {
-    [Export] public int Health = 10;
+    [Export] public int Health = 100;
     [Export] public int Speed = 10;
     [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
     [Export] public int CoverSpotMaxTargetDistance = 40;
@@ -13,6 +13,7 @@ public partial class Enemy : ShootableCharacterBody3D
     {
         Default,
         //Patrolling,
+        ChasingTarget,
         GoingToCover,
         AtCover
     }
@@ -32,6 +33,7 @@ public partial class Enemy : ShootableCharacterBody3D
     protected CoverSpot _currentCoverSpot;
     protected double _timeSincePlayerWasPolled = 5;
     protected bool _queuedForDeath;
+    protected bool _freezeMotion;
     protected BehaviorState _currentBehaviorState = BehaviorState.Default;
     protected float _defaultTargetDistance = 0.5f;
     
@@ -86,6 +88,7 @@ public partial class Enemy : ShootableCharacterBody3D
         if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
         {
             _timeSincePlayerWasPolled = 0;
+            if (_freezeMotion) return;
             var bestCoverSpot = _coverSpotController.GetViableCoverSpot(this, _target, _currentCoverSpot);
             if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(_target.GlobalPosition) > CoverSpotMaxTargetDistance)
             {
@@ -110,13 +113,15 @@ public partial class Enemy : ShootableCharacterBody3D
         }
     }
     
-    private void HandleNavigation()
+    protected virtual void HandleNavigation()
     {
+        if (_freezeMotion) return;
         if (_navAgent.IsNavigationFinished())
         {
-            _currentBehaviorState = BehaviorState.AtCover;
+            _currentBehaviorState = _currentCoverSpot != null ? BehaviorState.AtCover : BehaviorState.ChasingTarget;
             return;
         }
+        _currentBehaviorState = _currentCoverSpot != null ? BehaviorState.GoingToCover : BehaviorState.ChasingTarget;
         _currentBehaviorState = BehaviorState.GoingToCover;
         
         Vector3 currentAgentPosition = GlobalTransform.Origin;
@@ -146,7 +151,7 @@ public partial class Enemy : ShootableCharacterBody3D
         MovementTarget = _currentCoverSpot.GlobalPosition;
     }
 
-    private void LookAtMovementDirection()
+    protected void LookAtMovementDirection()
     {
 
         if (!Velocity.IsZeroApprox())
@@ -159,11 +164,11 @@ public partial class Enemy : ShootableCharacterBody3D
         }
         else
         {
-            LookAtPlayer();
+            LookAtTarget();
         }
     }
 
-    private void LookAtPlayer()
+    protected void LookAtTarget()
     {
         var lookAtDirection = _target.GlobalPosition;
         lookAtDirection.Y = GlobalPosition.Y;
@@ -172,11 +177,11 @@ public partial class Enemy : ShootableCharacterBody3D
             LookAt(lookAtDirection, Vector3.Up);
     }
 
-    private void HandleRotation()
+    protected virtual void HandleRotation()
     {
         if (_currentBehaviorState is BehaviorState.AtCover)
         {
-            LookAtPlayer();
+            LookAtTarget();
             return;
         }
         LookAtMovementDirection();

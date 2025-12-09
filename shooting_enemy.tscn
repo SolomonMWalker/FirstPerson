@@ -90,4 +90,4 @@ texture_filter = 0
 texture = ExtResource("3_v4x0c")
 
 [node name="BulletSpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.0048528)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.4508407)

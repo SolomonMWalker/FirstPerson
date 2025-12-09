@@ -42,12 +42,27 @@ shadow_enabled = true
 [node name="Enemies" type="Node3D" parent="."]
 
 [node name="ShootingEnemy" parent="Enemies" instance=ExtResource("3_g14j6")]
+Health = 10
+
+[node name="ShootingEnemy2" parent="Enemies" instance=ExtResource("3_g14j6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.115196, 0, 56.326183)
+Health = 10
+
+[node name="ShootingEnemy3" parent="Enemies" instance=ExtResource("3_g14j6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.369194, 0, 55.01027)
+Health = 10
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
 
 [node name="CoverSpot" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.178612, 0, 33.03199)
+
+[node name="CoverSpot2" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.610588, 0, 42.600006)
+
+[node name="CoverSpot3" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.412956, 0, 29.531494)
 
 [node name="EnemyTarget" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.127518, 1, 13.036365)
@@ -59,3 +74,5 @@ shape = SubResource("CapsuleShape3D_vbegm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="EnemyTarget"]
 mesh = SubResource("CapsuleMesh_ehkex")
+
+[node name="ProjectilesParent" type="Node3D" parent="."]
