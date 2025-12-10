@@ -2,8 +2,11 @@
     it worked!
     
 ToDo
-    give enemies weapon
-    make enemy face player when at cover
-    shoot at player
+    X give enemies weapon
+    X make enemy face player when at cover
+    X shoot at player
     player health
     player ability to die
+    pull settings from JSON at beginning of game
+    make settings globally available
+    

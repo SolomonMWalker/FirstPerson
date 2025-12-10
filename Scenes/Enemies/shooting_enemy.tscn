@@ -1,0 +1,93 @@
+[gd_scene load_steps=11 format=3 uid="uid://5fo45uuf6sbv"]
+
+[ext_resource type="Script" uid="uid://dt20hhhowndui" path="res://Scenes/Enemies/ShootingEnemy.cs" id="1_s7nxt"]
+[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://Resources/Materials/testEnemyMat.tres" id="2_gwpd2"]
+[ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://Resources/Textures/circle.png" id="3_v4x0c"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8uh7m"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8uh7m"]
+
+[sub_resource type="Animation" id="Animation_ppyta"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6uqi0"]
+resource_name = "shot"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ykrsh"]
+_data = {
+&"RESET": SubResource("Animation_ppyta"),
+&"shot": SubResource("Animation_6uqi0")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
+albedo_color = Color(1, 0.20784314, 0.11372549, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_4gyqm"]
+material = SubResource("StandardMaterial3D_onrkg")
+size = Vector3(0.07, 0.07, 0.7)
+
+[node name="ShootingEnemy" type="CharacterBody3D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_s7nxt")
+metadata/_custom_type_script = "uid://bspdm2cmm76n3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8uh7m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_8uh7m")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("2_gwpd2")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ykrsh")
+}
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+simplify_path = true
+height = 2.0
+radius = 3.0
+
+[node name="Hand" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.597726)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
+transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_4gyqm")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.45539224, -0.5023635)
+modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
+texture_filter = 0
+texture = ExtResource("3_v4x0c")
+
+[node name="BulletSpawnPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.4508407)
