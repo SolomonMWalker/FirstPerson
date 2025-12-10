@@ -1,8 +1,0 @@
-﻿Make enemies move
-crouch camera vignette effect
-X sprint movement
-clamber/mantle movement
-headbob animation
-    walk, crouch, sprint
-fire gun camera effect
-decal on gun shot hit non-shootable object

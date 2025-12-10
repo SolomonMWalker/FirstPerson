@@ -10,6 +10,13 @@ ToDo
     X pull settings from JSON at beginning of game
         well, it lazy initialized, need to fix that
     X make settings globally available
+    crouch camera vignette effect
+    headbob animation
+        walk, crouch, sprint
+    fire gun camera effect
+    decal on gun shot hit non-shootable object
+    implement broad goal-oriented AI
+        run to cover, run away from enemy, chase enemy, etc.
     
 IDEA
     range enemies don't wanna be in close, always try to run away
