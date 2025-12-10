@@ -16,7 +16,8 @@ public partial class ShootingEnemy : Enemy
     public override void _Ready()
     {
         base._Ready();
-        _target = GetNode<ShootableCharacterBody3D>("/root/Test/EnemyTarget");
+        Target = GetNode<ShootableCharacterBody3D>("/root/Test/EnemyTarget");
+        //Target = GetNode<ShootableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         _fireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         _bulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
     }
@@ -37,7 +38,7 @@ public partial class ShootingEnemy : Enemy
             _isShooting = true;
             LookAtTarget();
             var fireBall = _fireballPackedScene.Instantiate<Fireball>();
-            fireBall.Initialize(_target.GlobalPosition, _bulletSpawnPoint.GlobalPosition);
+            fireBall.Initialize(Target.GlobalPosition, _bulletSpawnPoint.GlobalPosition);
             AddChild(fireBall);
         }
         else
@@ -59,7 +60,7 @@ public partial class ShootingEnemy : Enemy
         }
     }
 
-    protected override void HandleNavigation()
+    public override void HandleNavigation()
     {
         if (_isShooting)
         {
@@ -69,12 +70,15 @@ public partial class ShootingEnemy : Enemy
         base.HandleNavigation();
     }
 
-    protected override void HandleRotation()
+    public override void HandleRotation()
     {
         if (_isShooting)
         {
             LookAtTarget();
         }
-        base.HandleRotation();
+        else
+        {
+            base.HandleRotation();
+        }
     }
 }

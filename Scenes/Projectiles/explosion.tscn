@@ -19,6 +19,7 @@ script = ExtResource("1_4s5g4")
 [node name="ShapeCast3D" type="ShapeCast3D" parent="."]
 shape = SubResource("SphereShape3D_l4vhy")
 target_position = Vector3(0, 0, 0)
+collision_mask = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_lpwun")

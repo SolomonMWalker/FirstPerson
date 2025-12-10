@@ -42,6 +42,8 @@ shadow_enabled = true
 [node name="Enemies" type="Node3D" parent="."]
 
 [node name="ShootingEnemy" parent="Enemies" instance=ExtResource("3_g14j6")]
+collision_layer = 35
+collision_mask = 41
 
 [node name="ShootingEnemy2" parent="Enemies" instance=ExtResource("3_g14j6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25.115196, 0, 56.326183)

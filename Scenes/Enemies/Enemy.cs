@@ -4,60 +4,65 @@ using Godot;
 
 public partial class Enemy : ShootableCharacterBody3D
 {
-    [Export] public int Health = 100;
-    [Export] public int Speed = 10;
-    [Export] public float CoverSpotPollTimeInSeconds = 0.5f;
-    [Export] public int CoverSpotMaxTargetDistance = 40;
-    [Export] public int PlayerFollowDistance = 10;
+    [Export] public int Health { get; protected set; } = 100;
+    [Export] public int Speed { get; protected set; } = 10;
+    [Export] public float NavigationPollTimeInSeconds { get; protected set; } = 0.5f;
+    [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
+    [Export] public int TargetFollowDistance { get; protected set; } = 10;
 
-    public enum BehaviorState
+    public enum MovementState
     {
-        Default,
-        //Patrolling,
-        ChasingTarget,
-        GoingToCover,
-        AtCover
+        Still,
+        DefaultMoving,
+    }
+
+    public enum Goal
+    {
+        MoveToCover,
+        MoveToTarget,
+        Patrol,
+        Standby
     }
     
-    public Vector3 MovementTarget
+    public Vector3 NavAgentMovementTarget
     {
-        get => _navAgent.TargetPosition;
-        set => _navAgent.TargetPosition = value;
+        get => NavAgent.TargetPosition;
+        protected set => NavAgent.TargetPosition = value;
     }
 
-    protected ShootableCharacterBody3D _target;
-    protected CoverSpotController _coverSpotController;
-    protected NavigationAgent3D _navAgent;
-    protected AnimationPlayer _animationPlayer;
+    protected ShootableCharacterBody3D Target { get; set; }
+    protected CoverSpotController CoverSpotController { get; set; }
+    protected NavigationAgent3D NavAgent { get; set; }
+    protected AnimationPlayer AnimationPlayer { get; set; }
 
-    protected Vector3 _initialPosition;
-    protected CoverSpot _currentCoverSpot;
-    protected double _timeSincePlayerWasPolled = 5;
-    protected bool _queuedForDeath;
-    protected bool _freezeMotion;
-    protected BehaviorState _currentBehaviorState = BehaviorState.Default;
-    protected float _defaultTargetDistance = 0.5f;
+    protected Vector3 InitialPosition { get; set; }
+    protected CoverSpot CurrentCoverSpot { get; set; }
+    protected double TimeSinceTargetCoverPoll { get; set; } = 5;
+    protected bool QueuedForDeath { get; set; }
+    protected bool FreezeMotion { get; set; }
+    protected float DefaultTargetDistance { get; set; } = 0.5f;
+    protected MovementState CurrentMovementState { get; set; } = MovementState.Still;
+    protected Goal CurrentGoal { get; set; } = Goal.MoveToCover;
     
     public override void _Ready()
     {
         base._Ready();
-        _initialPosition = GlobalPosition;
+        InitialPosition = GlobalPosition;
 
-        _target = GetNode<Player>(Configuration.GetConfigValues().PlayerSceneTreePath);
-        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        _coverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
+        Target = GetNode<Player>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
-        _navAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
-        _navAgent.PathHeightOffset = -1;
+        NavAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+        NavAgent.PathHeightOffset = -1;
         // These values need to be adjusted for the actor's speed
         // and the navigation layout.
-        _navAgent.PathDesiredDistance = 0.5f;
-        _navAgent.TargetDesiredDistance = _defaultTargetDistance;
+        NavAgent.PathDesiredDistance = 0.5f;
+        NavAgent.TargetDesiredDistance = DefaultTargetDistance;
 
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
-        _currentBehaviorState = BehaviorState.GoingToCover;
     }
     
     private async void ActorSetup()
@@ -66,7 +71,7 @@ public partial class Enemy : ShootableCharacterBody3D
         await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 
         // Now that the navigation map is no longer empty, set the movement target.
-        MovementTarget = GlobalPosition;
+        NavAgentMovementTarget = GlobalPosition;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -75,86 +80,116 @@ public partial class Enemy : ShootableCharacterBody3D
         CalculateNavigation(delta);
         HandleNavigation();
         HandleRotation();
+        CalculateMovementState();
     }
 
     public override void Shot(ShotParameters shotParameters)
     {
         base.Shot(shotParameters);
         DecreaseHealth(shotParameters.Damage);
-        if(!_queuedForDeath && !_animationPlayer.IsPlaying()) _animationPlayer.Play("shot");
+        if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play("shot");
     }
 
-    private void CalculateNavigation(double delta)
+    public void SetGoal(Goal goal)
     {
-        if (_timeSincePlayerWasPolled > CoverSpotPollTimeInSeconds)
+        if (CurrentGoal == Goal.MoveToCover)
         {
-            _timeSincePlayerWasPolled = 0;
-            if (_freezeMotion) return;
-            var bestCoverSpot = _coverSpotController.GetViableCoverSpot(this, _target, _currentCoverSpot);
-            if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(_target.GlobalPosition) > CoverSpotMaxTargetDistance)
+            TimeSinceTargetCoverPoll = NavigationPollTimeInSeconds + 1;
+        }
+        CurrentGoal = goal;
+    }
+
+    public void CalculateMovementState() => 
+        CurrentMovementState = Velocity.IsZeroApprox() ? MovementState.Still : MovementState.DefaultMoving;
+
+    public void CalculateNavigation(double delta)
+    {
+        switch (CurrentGoal)
+        {
+            case Goal.MoveToCover:
+                MoveToCover(delta);
+                break;
+            case Goal.MoveToTarget:
+                MoveToTarget();
+                break;
+        }
+    }
+
+    public void MoveToTarget()
+    {
+        SetNavigationToTarget();
+    }
+    
+    public void MoveToCover(double delta)
+    {
+        if (TimeSinceTargetCoverPoll > NavigationPollTimeInSeconds)
+        {
+            TimeSinceTargetCoverPoll = 0;
+            if (FreezeMotion) return;
+            var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
+            if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
             {
-                _currentCoverSpot?.Unoccupy();
-                _currentCoverSpot = null;
-                MoveToPlayer(); 
+                CurrentCoverSpot?.Unoccupy();
+                CurrentCoverSpot = null;
+                SetNavigationToTarget(); 
             }
             else
             {
-                if (_currentCoverSpot != bestCoverSpot)
+                if (CurrentCoverSpot != bestCoverSpot)
                 {
-                    _currentCoverSpot?.Unoccupy();
-                    _currentCoverSpot = bestCoverSpot;
-                    _currentCoverSpot.Occupy(this);
+                    CurrentCoverSpot?.Unoccupy();
+                    CurrentCoverSpot = bestCoverSpot;
+                    CurrentCoverSpot.Occupy(this);
                 }
-                MoveToCover();
+
+                SetNavigationToCoverSpot();
             }
         }
         else
         {
-            _timeSincePlayerWasPolled += delta;
+            TimeSinceTargetCoverPoll += delta;
         }
     }
-    
-    protected virtual void HandleNavigation()
+
+    public virtual void HandleNavigation()
     {
-        if (_freezeMotion) return;
-        if (_navAgent.IsNavigationFinished())
+        if (FreezeMotion) return;
+        if (NavAgent.IsNavigationFinished())
         {
-            _currentBehaviorState = _currentCoverSpot != null ? BehaviorState.AtCover : BehaviorState.ChasingTarget;
+            Velocity = Vector3.Zero;
             return;
         }
-        _currentBehaviorState = _currentCoverSpot != null ? BehaviorState.GoingToCover : BehaviorState.ChasingTarget;
-        _currentBehaviorState = BehaviorState.GoingToCover;
-        
+
         Vector3 currentAgentPosition = GlobalTransform.Origin;
-        Vector3 nextPathPosition = _navAgent.GetNextPathPosition();
+        Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
 
         Velocity = currentAgentPosition.DirectionTo(nextPathPosition) * Speed;
         MoveAndSlide();
     }
 
-    private void DecreaseHealth(int amount)
+    public void DecreaseHealth(int amount)
     {
         GD.Print($"Health is at {Health}, decreasing by {amount}");
         Health -= amount;
         if (Health > 0) return;
         GD.Print($"We gonna die");
         QueueFree();
-        _queuedForDeath = true;
+        QueuedForDeath = true;
     }
 
-    private void MoveToPlayer()
+    public void SetNavigationToTarget()
     {
-        _navAgent.TargetDesiredDistance = PlayerFollowDistance;
-        MovementTarget = _target.GlobalPosition;
+        NavAgent.TargetDesiredDistance = TargetFollowDistance;
+        NavAgentMovementTarget = Target.GlobalPosition;
     }
 
-    private void MoveToCover()
+    public void SetNavigationToCoverSpot()
     {
-        _navAgent.TargetDesiredDistance = _defaultTargetDistance;
-        MovementTarget = _currentCoverSpot.GlobalPosition;
+        NavAgent.TargetDesiredDistance = DefaultTargetDistance;
+        NavAgentMovementTarget = CurrentCoverSpot.GlobalPosition;
     }
 
-    protected void LookAtMovementDirection()
+    public void LookAtMovementDirection()
     {
 
         if (!Velocity.IsZeroApprox())
@@ -171,18 +206,18 @@ public partial class Enemy : ShootableCharacterBody3D
         }
     }
 
-    protected void LookAtTarget()
+    public void LookAtTarget()
     {
-        var lookAtDirection = _target.GlobalPosition;
+        var lookAtDirection = Target.GlobalPosition;
         lookAtDirection.Y = GlobalPosition.Y;
         if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
            && !(lookAtDirection - GlobalPosition).IsZeroApprox())
             LookAt(lookAtDirection, Vector3.Up);
     }
 
-    protected virtual void HandleRotation()
+    public virtual void HandleRotation()
     {
-        if (_currentBehaviorState is BehaviorState.AtCover)
+        if (CurrentMovementState is MovementState.Still)
         {
             LookAtTarget();
             return;
