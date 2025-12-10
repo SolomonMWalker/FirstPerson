@@ -8,6 +8,11 @@ public static class Configuration
 {
     private static ConfigValues _configValues;
 
+    static Configuration()
+    {
+        SetUpConfiguration();
+    }
+    
     public static ConfigValues GetConfigValues()
     {
         if (_configValues == null)

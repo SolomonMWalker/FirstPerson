@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg8ru8xrtp16g"]
+
+[ext_resource type="Script" uid="uid://vor114u2bg8" path="res://Scenes/Projectiles/Explosion.cs" id="1_4s5g4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_l4vhy"]
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hnisa"]
+albedo_color = Color(0.9764706, 0.3764706, 0.30980393, 0.23921569)
+
+[sub_resource type="SphereMesh" id="SphereMesh_lpwun"]
+material = SubResource("StandardMaterial3D_hnisa")
+radius = 2.0
+height = 4.0
+
+[node name="Explosion" type="Node3D"]
+script = ExtResource("1_4s5g4")
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="."]
+shape = SubResource("SphereShape3D_l4vhy")
+target_position = Vector3(0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_lpwun")
