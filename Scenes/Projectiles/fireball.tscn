@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dimhkdl4vfx33"]
 
-[ext_resource type="Script" uid="uid://dil6alfbj7x1r" path="res://Scenes/Projectiles/Fireball.cs" id="1_sf4mh"]
+[ext_resource type="Script" uid="uid://bita4u5sx4s65" path="res://Scenes/Projectiles/Fireball.cs" id="1_sf4mh"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wi6of"]
 
