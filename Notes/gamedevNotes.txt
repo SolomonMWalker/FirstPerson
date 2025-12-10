@@ -1,0 +1,33 @@
+﻿take your trenchbroom map, select only the top faces, skip the others, make it the ai path mesh
+    it worked!
+    
+ToDo
+    X give enemies weapon
+    X make enemy face player when at cover
+    X shoot at player
+    player health
+    player ability to die
+    X pull settings from JSON at beginning of game
+        well, it lazy initialized, need to fix that
+    X make settings globally available
+    
+IDEA
+    range enemies don't wanna be in close, always try to run away
+        provide some melee enemies each encounter to increase pressure    
+    
+Enemy type ideas
+    fireball with explosion
+    lightning snipers
+    generic hitscan fodder
+    easy melee
+    other enemy buffer
+        bell on a stick, shooting the bell stuns local enemies
+    summon several slow moving projectiles that can be shot
+    slow melee with shield
+    shock trooper
+        comes in close, hits hard, runs away to reload
+    stilt boy
+        stays far away, goes up on hinged legs to shoot from up high
+    suicide bomber
+    berserker melee
+        big dude that hits big, can hurt other dudes
