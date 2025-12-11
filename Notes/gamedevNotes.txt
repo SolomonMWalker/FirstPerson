@@ -45,3 +45,4 @@ Enemy type ideas
         big dude that hits big, can hurt other dudes
     Automaton
         maybe include a limb removal mechanic
+    teleport on too much hurt or target too close
