@@ -6,7 +6,7 @@ using FirstPerson.Configuration;
 
 public partial class CoverSpotController : Node
 {
-    private double pollTimeInSeconds = 1;
+    private double PollTimeInSeconds { get; set; } = 1;
     private List<CoverSpot> CoverSpots { get; set; } = [];
 
     public class TargetToDistanceOrderedCoverSpots (List<CoverSpot> coverSpots, double timeSinceLastPoll)
@@ -24,7 +24,7 @@ public partial class CoverSpotController : Node
         CoverSpots.AddRange(GetChildren().OfType<CoverSpot>());
         _player = GetNode<Player>(Configuration.GetConfigValues().PlayerSceneTreePath);
         targetToCoverSpots.Add(_player, 
-            new TargetToDistanceOrderedCoverSpots(GetReorderedCoverSpots(_player), GD.Randf() * pollTimeInSeconds));
+            new TargetToDistanceOrderedCoverSpots(GetReorderedCoverSpots(_player), GD.Randf() * PollTimeInSeconds));
     }
 
     public override void _Process(double delta)
@@ -46,14 +46,14 @@ public partial class CoverSpotController : Node
     }
 
     private static bool IsCoverSpotViableAndUnoccupied(CoverSpot coverSpot) =>
-        !coverSpot.occupied && coverSpot.isViable;
+        !coverSpot.Occupied && coverSpot.IsViable;
     
     private void CalculateViabilityOfCoverSpots(ShootableCharacterBody3D target)
     {
         if (!targetToCoverSpots.TryGetValue(target, out var value))
         {
             value = new TargetToDistanceOrderedCoverSpots(GetReorderedCoverSpots(target), 
-                    GD.Randf() * pollTimeInSeconds);
+                    GD.Randf() * PollTimeInSeconds);
             targetToCoverSpots.Add(target,value);
         }
         foreach (var coverSpot in value._coverSpots)
@@ -73,7 +73,7 @@ public partial class CoverSpotController : Node
     {
         return CoverSpots
             .Where(c => IsCoverSpotViableAndUnoccupied(c) 
-                || (currentlyOccupiedSpot is { isViable: true } && c == currentlyOccupiedSpot))
+                || (currentlyOccupiedSpot is { IsViable: true } && c == currentlyOccupiedSpot))
             .OrderBy(c => c.GlobalPosition.DistanceSquaredTo(globalPosition))
             .ToList();
     }
@@ -82,7 +82,7 @@ public partial class CoverSpotController : Node
     {
         return coverSpots
             .Where(c => IsCoverSpotViableAndUnoccupied(c)
-                || (currentlyOccupiedSpot is { isViable: true } && c == currentlyOccupiedSpot))
+                || (currentlyOccupiedSpot is { IsViable: true } && c == currentlyOccupiedSpot))
             .ToList();
     }
 
@@ -90,7 +90,7 @@ public partial class CoverSpotController : Node
     {
         foreach (var key in targetToCoverSpots.Keys)
         {
-            if (targetToCoverSpots[key]._timeSinceLastPoll > pollTimeInSeconds)
+            if (targetToCoverSpots[key]._timeSinceLastPoll > PollTimeInSeconds)
             {
                 targetToCoverSpots[key]._coverSpots = GetReorderedCoverSpots(key);
             }

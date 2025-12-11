@@ -3,45 +3,46 @@ using System.Collections.Generic;
 
 public partial class Explosion : Node3D
 {
-    public double lifetimeInSec = 0.25;
-    public int damage = 0;
+    public double LifetimeInSec { get; private set; } = 0.25;
+    public int Damage { get; private set; } = 0;
 
-    private List<CollisionObject3D> _objectsHit = [];
-    private ShapeCast3D _shapeCast3D;
-    private Vector3 _initialGlobalPosition;
-    private double _timeAlive;
-    public void Initialize(Vector3 globalPosition) => _initialGlobalPosition = globalPosition;
+    private List<CollisionObject3D> ObjectsHit { get; set; } = [];
+    private ShapeCast3D ShapeCast3D { get; set; }
+    private Vector3 InitialGlobalPosition { get; set; }
+    private double TimeAlive { get; set; }
+    
+    public void Initialize(Vector3 globalPosition) => InitialGlobalPosition = globalPosition;
 
     public override void _Ready()
     {
         base._Ready();
-        GlobalPosition = _initialGlobalPosition;
-        _shapeCast3D = GetNode<ShapeCast3D>("ShapeCast3D");
+        GlobalPosition = InitialGlobalPosition;
+        ShapeCast3D = GetNode<ShapeCast3D>("ShapeCast3D");
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (_timeAlive > lifetimeInSec)
+        if (TimeAlive > LifetimeInSec)
         {
             QueueFree();
         }
         else
         {
-            _timeAlive += delta;
+            TimeAlive += delta;
         }
 
-        if (!_shapeCast3D.IsColliding()) return;
-        for (int index = 0; index < _shapeCast3D.GetCollisionCount(); index++)
+        if (!ShapeCast3D.IsColliding()) return;
+        for (int index = 0; index < ShapeCast3D.GetCollisionCount(); index++)
         {
-            var collided = _shapeCast3D.GetCollider(index);
+            var collided = ShapeCast3D.GetCollider(index);
             if (collided is CollisionObject3D colObj3D)
             {
-                _shapeCast3D.AddException(colObj3D);
-                _objectsHit.Add(colObj3D);  
+                ShapeCast3D.AddException(colObj3D);
+                ObjectsHit.Add(colObj3D);  
                 if (colObj3D is ShootableCharacterBody3D shootable)
                 {
-                    shootable.Shot(new ShotParameters(damage));
+                    shootable.Shot(new ShotParameters(Damage));
                 }
             }
         }

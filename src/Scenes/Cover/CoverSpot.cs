@@ -3,24 +3,27 @@ using System;
 
 public partial class CoverSpot : Node3D
 {
-    public bool occupied = false;
-    public ShootableCharacterBody3D occupier = null;
-    public bool isViable => isTargetInAngleRange;
+    public bool Occupied { get; private set; } = false;
+    public ShootableCharacterBody3D Occupier { get; private set; } = null;
+    public bool IsViable => IsTargetInAngleRange;
 
-    private Node3D _player, _leftAngleDeterminant, _rightAngleDeterminant;
-    private float _maxAngleInRads, _minAngleInRads;
-    private bool isTargetInAngleRange;
-    private bool isTargetInCoverRange;
+    private Node3D Player { get; set; }
+    private Node3D LeftAngleDeterminant { get; set; }
+    private Node3D RightAngleDeterminant { get; set; }
+    private float MaxAngleInRads { get; set; }
+    private float MinAngleInRads { get; set; }
+    private bool IsTargetInAngleRange { get; set; }
+    private bool IsTargetInCoverRange { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
-        _player = GetNode<Node3D>("/root/Test/Player");
-        _leftAngleDeterminant = GetNode<Node3D>("LeftAngleDeterminant");
-        _rightAngleDeterminant = GetNode<Node3D>("RightAngleDeterminant");
+        Player = GetNode<Node3D>("/root/Test/Player");
+        LeftAngleDeterminant = GetNode<Node3D>("LeftAngleDeterminant");
+        RightAngleDeterminant = GetNode<Node3D>("RightAngleDeterminant");
     
-        _maxAngleInRads = Vector2.Up.AngleTo(new Vector2(_rightAngleDeterminant.Position.X, _rightAngleDeterminant.Position.Z));
-        _minAngleInRads = Vector2.Up.AngleTo(new Vector2(_leftAngleDeterminant.Position.X, _leftAngleDeterminant.Position.Z));
+        MaxAngleInRads = Vector2.Up.AngleTo(new Vector2(RightAngleDeterminant.Position.X, RightAngleDeterminant.Position.Z));
+        MinAngleInRads = Vector2.Up.AngleTo(new Vector2(LeftAngleDeterminant.Position.X, LeftAngleDeterminant.Position.Z));
     }
     
     public void CalculateViability(ShootableCharacterBody3D target)
@@ -32,19 +35,19 @@ public partial class CoverSpot : Node3D
     {
         var targetRelativePosition = ToLocal(target.GlobalPosition);
         var angleToTarget = Vector2.Up.AngleTo(new Vector2(targetRelativePosition.X, targetRelativePosition.Z));
-        isTargetInAngleRange = angleToTarget >= _minAngleInRads && angleToTarget <= _maxAngleInRads;
+        IsTargetInAngleRange = angleToTarget >= MinAngleInRads && angleToTarget <= MaxAngleInRads;
     }
     
     
     public void Occupy(ShootableCharacterBody3D newOccupier)
     {
-        occupier = newOccupier;
-        occupied = true;
+        Occupier = newOccupier;
+        Occupied = true;
     }
 
     public void Unoccupy()
     {
-        occupier = null;
-        occupied = false;
+        Occupier = null;
+        Occupied = false;
     }
 }

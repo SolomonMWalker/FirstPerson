@@ -3,12 +3,12 @@ using System;
 
 public partial class Reticle : Container
 {
-    [Export] public float dotRadius = 1.0f;
-    [Export] public Color dotColor = Colors.White;
+    [Export] public float DotRadius { get; private set; } = 1.0f;
+    [Export] public Color DotColor { get; private set; } = Colors.White;
 
     public override void _Draw()
     {
         base._Draw();
-        DrawCircle(Vector2.Zero, dotRadius, dotColor);
+        DrawCircle(Vector2.Zero, DotRadius, DotColor);
     }
 }

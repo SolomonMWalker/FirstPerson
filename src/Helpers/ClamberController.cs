@@ -5,33 +5,33 @@ using System.Linq;
 
 public partial class ClamberController : Node3D
 {
-    [Export] public float raycastLength = 0.25f;
-    [Export] public float clamberMargin = 0.26f;
-    [Export] public float maxAngleInDeg = 10f;
-    [Export] public float waitPerCallInSec = 0.25f;
+    [Export] public float RaycastLength { get; private set; } = 0.25f;
+    [Export] public float ClamberMargin { get; private set; } = 0.26f;
+    //[Export] public float MaxAngleInDeg { get; private set; } = 10f;
+    [Export] public float WaitPerCallInSec { get; private set; } = 0.25f;
 
-    private double _timeSinceLastClamberCall = 0;
-    private List<List<RayCast3D>> _raycasts = [];
-    private Node3D _raycastsParent;
-    private Vector2 _topLeftCorner;
+    private double TimeSinceLastClamberCall { get; set; } = 0;
+    private List<List<RayCast3D>> Raycasts { get; set; } = [];
+    private Node3D RaycastsParent { get; set; }
+    private Vector2 TopLeftCorner { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
-        _raycastsParent = GetNode<Node3D>("Raycasts");
-        foreach (var child in _raycastsParent.GetChildren())
+        RaycastsParent = GetNode<Node3D>("Raycasts");
+        foreach (var child in RaycastsParent.GetChildren())
         {
             List<RayCast3D> rcList = [];
             rcList.AddRange(child.GetChildren().Cast<RayCast3D>());
-            _raycasts.Add(rcList);
+            Raycasts.Add(rcList);
         }
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        _timeSinceLastClamberCall += delta;
-        _timeSinceLastClamberCall = Mathf.Clamp(_timeSinceLastClamberCall, 0, waitPerCallInSec);
+        TimeSinceLastClamberCall += delta;
+        TimeSinceLastClamberCall = Mathf.Clamp(TimeSinceLastClamberCall, 0, WaitPerCallInSec);
     }
 
     private List<(Vector2 localSlice, Vector3 globalEndpoint, bool collided)> GetRaycastEndPoints(List<RayCast3D> raycasts)
@@ -82,9 +82,9 @@ public partial class ClamberController : Node3D
 
     public (bool success, RaycastCollisionResult result) AttemptClamber()
     {
-        if (_timeSinceLastClamberCall < waitPerCallInSec) return (false, null);
-        _timeSinceLastClamberCall = 0;
-        foreach (var rcList in _raycasts)
+        if (TimeSinceLastClamberCall < WaitPerCallInSec) return (false, null);
+        TimeSinceLastClamberCall = 0;
+        foreach (var rcList in Raycasts)
         {
             var clamberAttemptRow = AttemptClamberCheckRow(rcList);
             if (clamberAttemptRow.success) return clamberAttemptRow;

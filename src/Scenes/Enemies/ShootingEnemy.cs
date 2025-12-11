@@ -15,8 +15,8 @@ public partial class ShootingEnemy : Enemy
     public override void _Ready()
     {
         base._Ready();
-        //Target = GetNode<ShootableCharacterBody3D>("/root/Test/EnemyTarget");
-        Target = GetNode<ShootableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        Target = GetNode<ShootableCharacterBody3D>("/root/Test/EnemyTarget");
+        //Target = GetNode<ShootableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
     }
