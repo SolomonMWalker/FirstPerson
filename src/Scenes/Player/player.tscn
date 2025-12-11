@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://drh54gr5j0mhi"]
 
-[ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://Scenes/Player/Player.cs" id="1_onrkg"]
-[ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://Resources/Shapes/testPlayerShape.tres" id="2_i3pqv"]
-[ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://Scenes/Player/ClamberController.cs" id="3_i3pqv"]
-[ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://Scenes/UI/Reticle.cs" id="4_hqtel"]
+[ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/Scenes/Player/Player.cs" id="1_onrkg"]
+[ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://src/Resources/Shapes/testPlayerShape.tres" id="2_i3pqv"]
+[ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://src/Helpers/ClamberController.cs" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/Scenes/UI/Reticle.cs" id="4_hqtel"]
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 resource_name = "FireGun"

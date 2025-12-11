@@ -1,4 +1,4 @@
 ﻿{
   "PlayerSceneTreePath": "/root/Test/Player",
-  "ProjectileDirectoryPath": "res://Scenes/Projectiles" 
+  "ProjectileDirectoryPath": "res://src/Scenes/Projectiles" 
 }

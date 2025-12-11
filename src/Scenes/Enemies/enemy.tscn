@@ -1,8 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://5fo45uuf6sbv"]
+[gd_scene load_steps=11 format=3 uid="uid://dgmlppgmwkqhi"]
 
-[ext_resource type="Script" uid="uid://dt20hhhowndui" path="res://Scenes/Enemies/ShootingEnemy.cs" id="1_s7nxt"]
-[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://Resources/Materials/testEnemyMat.tres" id="2_gwpd2"]
-[ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://Resources/Textures/circle.png" id="3_v4x0c"]
+[ext_resource type="Script" uid="uid://dk2tcntvhrrr1" path="res://src/Scenes/Enemies/Enemy.cs" id="1_4gyqm"]
+[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_qi2p4"]
+[ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="3_qi2p4"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8uh7m"]
 
@@ -52,10 +52,10 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
-[node name="ShootingEnemy" type="CharacterBody3D"]
+[node name="Enemy" type="CharacterBody3D"]
 collision_layer = 3
 collision_mask = 3
-script = ExtResource("1_s7nxt")
+script = ExtResource("1_4gyqm")
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -64,7 +64,7 @@ shape = SubResource("CapsuleShape3D_8uh7m")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_8uh7m")
 skeleton = NodePath("")
-surface_material_override/0 = ExtResource("2_gwpd2")
+surface_material_override/0 = ExtResource("2_qi2p4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -87,7 +87,9 @@ mesh = SubResource("BoxMesh_4gyqm")
 transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.45539224, -0.5023635)
 modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
 texture_filter = 0
-texture = ExtResource("3_v4x0c")
+texture = ExtResource("3_qi2p4")
 
-[node name="BulletSpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.4508407)
+[node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5458455, 0.096024185, -1.0322562)
+collision_mask = 75
+hit_from_inside = true

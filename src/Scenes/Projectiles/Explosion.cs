@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public partial class Explosion : Node3D
 {
     public double lifetimeInSec = 0.25;
-    public int damage = 10;
+    public int damage = 0;
 
     private List<CollisionObject3D> _objectsHit = [];
     private ShapeCast3D _shapeCast3D;

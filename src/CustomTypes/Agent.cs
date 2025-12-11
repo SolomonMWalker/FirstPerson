@@ -1,28 +1,18 @@
-using FirstPerson;
-using FirstPerson.Configuration;
+using System.Collections.Generic;
+using System.Linq;
+using FirstPerson.Helpers;
 using Godot;
 
-public partial class Enemy : ShootableCharacterBody3D
+public abstract partial class Agent : ShootableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 100;
-    [Export] public int Speed { get; protected set; } = 10;
+    [Export] public int Speed { get; protected set; } = 4;
     [Export] public float NavigationPollTimeInSeconds { get; protected set; } = 0.5f;
+    [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
-    [Export] public int TargetFollowDistance { get; protected set; } = 10;
-
-    public enum MovementState
-    {
-        Still,
-        DefaultMoving,
-    }
-
-    public enum Goal
-    {
-        MoveToCover,
-        MoveToTarget,
-        Patrol,
-        Standby
-    }
+    [Export] public int TargetFollowDistance { get; protected set; } = 5;
+    [Export] public int LineOfSightCheckRange { get; protected set; } = 250;
+    [Export] public int PathStrayMaxDistance { get; protected set; } = 30;
     
     public Vector3 NavAgentMovementTarget
     {
@@ -34,30 +24,37 @@ public partial class Enemy : ShootableCharacterBody3D
     protected CoverSpotController CoverSpotController { get; set; }
     protected NavigationAgent3D NavAgent { get; set; }
     protected AnimationPlayer AnimationPlayer { get; set; }
-
-    protected Vector3 InitialPosition { get; set; }
+    protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
     protected double TimeSinceTargetCoverPoll { get; set; } = 5;
+    protected double TimeSinceLineOfSightPoll { get; set; } = 5;
     protected bool QueuedForDeath { get; set; }
+    protected bool TargetInLineOfSight { get; set; }
     protected bool FreezeMotion { get; set; }
+    protected List<bool> FreezeMotionBools = [];
     protected float DefaultTargetDistance { get; set; } = 0.5f;
-    protected MovementState CurrentMovementState { get; set; } = MovementState.Still;
-    protected Goal CurrentGoal { get; set; } = Goal.MoveToCover;
+    protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
+    protected Goal CurrentGoal { get; set; }
+    protected List<Goal> AllowedGoals = [];
+    protected List<AgentMovementState> MovementStates = [AgentMovementState.Still, AgentMovementState.DefaultMoving];
     
     public override void _Ready()
     {
         base._Ready();
-        InitialPosition = GlobalPosition;
-
-        Target = GetNode<Player>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        FreezeMotionBools.Add(FreezeMotion);
+        
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
+        
+        LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
+        LineOfSightRayCast3D.Enabled = false;
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
         NavAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
         NavAgent.PathHeightOffset = -1;
         // These values need to be adjusted for the actor's speed
         // and the navigation layout.
+        NavAgent.PathMaxDistance = PathStrayMaxDistance;
         NavAgent.PathDesiredDistance = 0.5f;
         NavAgent.TargetDesiredDistance = DefaultTargetDistance;
 
@@ -81,6 +78,7 @@ public partial class Enemy : ShootableCharacterBody3D
         HandleNavigation();
         HandleRotation();
         CalculateMovementState();
+        CalculateIfTargetInLineOfSight(delta);
     }
 
     public override void Shot(ShotParameters shotParameters)
@@ -90,7 +88,9 @@ public partial class Enemy : ShootableCharacterBody3D
         if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play("shot");
     }
 
-    public void SetGoal(Goal goal)
+    protected virtual bool IsMotionFrozen() => FreezeMotionBools.Any(b => b);
+
+    protected virtual void SetGoal(Goal goal)
     {
         if (CurrentGoal == Goal.MoveToCover)
         {
@@ -99,33 +99,37 @@ public partial class Enemy : ShootableCharacterBody3D
         CurrentGoal = goal;
     }
 
-    public void CalculateMovementState() => 
-        CurrentMovementState = Velocity.IsZeroApprox() ? MovementState.Still : MovementState.DefaultMoving;
-
-    public void CalculateNavigation(double delta)
+    protected void ChangeMovementState(AgentMovementState agentMovementState)
     {
-        switch (CurrentGoal)
+        if (!MovementStates.Contains(agentMovementState))
         {
-            case Goal.MoveToCover:
-                MoveToCover(delta);
-                break;
-            case Goal.MoveToTarget:
-                MoveToTarget();
-                break;
+            GD.PrintErr($"Movement state {agentMovementState} is not in the allowed agent movement states");
         }
+
+        CurrentAgentMovementState = agentMovementState;
     }
 
-    public void MoveToTarget()
+    protected virtual void CalculateMovementState()
     {
-        SetNavigationToTarget();
+        CurrentAgentMovementState = Velocity.IsZeroApprox() ? AgentMovementState.Still : AgentMovementState.DefaultMoving;
     }
+        
+
+    protected abstract void CalculateNavigation(double delta);
+
+    protected abstract void MoveToTarget();
     
-    public void MoveToCover(double delta)
+    protected virtual void MoveToCover(double delta)
     {
         if (TimeSinceTargetCoverPoll > NavigationPollTimeInSeconds)
         {
             TimeSinceTargetCoverPoll = 0;
-            if (FreezeMotion) return;
+            if (IsMotionFrozen() || Target is null) return;
+            if (!TargetInLineOfSight)
+            {
+                SetNavigationToTarget();
+                return;
+            }
             var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
             if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
             {
@@ -151,10 +155,9 @@ public partial class Enemy : ShootableCharacterBody3D
         }
     }
 
-    public virtual void HandleNavigation()
+    protected virtual void HandleNavigation()
     {
-        if (FreezeMotion) return;
-        if (NavAgent.IsNavigationFinished())
+        if (NavAgent.IsNavigationFinished() || IsMotionFrozen())
         {
             Velocity = Vector3.Zero;
             return;
@@ -167,7 +170,7 @@ public partial class Enemy : ShootableCharacterBody3D
         MoveAndSlide();
     }
 
-    public void DecreaseHealth(int amount)
+    protected virtual void DecreaseHealth(int amount)
     {
         GD.Print($"Health is at {Health}, decreasing by {amount}");
         Health -= amount;
@@ -177,19 +180,20 @@ public partial class Enemy : ShootableCharacterBody3D
         QueuedForDeath = true;
     }
 
-    public void SetNavigationToTarget()
+    protected virtual void SetNavigationToTarget()
     {
+        if (Target is null) return;
         NavAgent.TargetDesiredDistance = TargetFollowDistance;
         NavAgentMovementTarget = Target.GlobalPosition;
     }
 
-    public void SetNavigationToCoverSpot()
+    protected virtual void SetNavigationToCoverSpot()
     {
         NavAgent.TargetDesiredDistance = DefaultTargetDistance;
         NavAgentMovementTarget = CurrentCoverSpot.GlobalPosition;
     }
 
-    public void LookAtMovementDirection()
+    protected virtual void LookAtMovementDirection()
     {
 
         if (!Velocity.IsZeroApprox())
@@ -197,7 +201,8 @@ public partial class Enemy : ShootableCharacterBody3D
             var lookAtDirection = GlobalPosition + Velocity.Normalized();
             lookAtDirection.Y = GlobalPosition.Y;
             //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
-            if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()) 
+            if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
+               && !(lookAtDirection - GlobalPosition).IsZeroApprox()) 
                 LookAt(lookAtDirection, Vector3.Up);
         }
         else
@@ -206,8 +211,9 @@ public partial class Enemy : ShootableCharacterBody3D
         }
     }
 
-    public void LookAtTarget()
+    protected virtual void LookAtTarget()
     {
+        if (Target is null) return;
         var lookAtDirection = Target.GlobalPosition;
         lookAtDirection.Y = GlobalPosition.Y;
         if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
@@ -215,13 +221,45 @@ public partial class Enemy : ShootableCharacterBody3D
             LookAt(lookAtDirection, Vector3.Up);
     }
 
-    public virtual void HandleRotation()
+    protected virtual void HandleRotation()
     {
-        if (CurrentMovementState is MovementState.Still)
+        if (CurrentAgentMovementState is AgentMovementState.Still)
         {
             LookAtTarget();
             return;
         }
         LookAtMovementDirection();
+    }
+    
+    protected virtual void CalculateIfTargetInLineOfSight(double delta)
+    {
+        if (TimeSinceLineOfSightPoll > LineOfSightPollTimeInSeconds)
+        {
+            if (Target is null)
+            {
+                TargetInLineOfSight = false;
+                return;
+            }
+
+            var ray = LineOfSightRayCast3D.Position.DirectionTo(ToLocal(Target.GlobalPosition));
+            LineOfSightRayCast3D.TargetPosition = ray * LineOfSightCheckRange;
+            LineOfSightRayCast3D.ForceRaycastUpdate();
+            if (!LineOfSightRayCast3D.IsColliding())
+            {
+                TargetInLineOfSight = true;
+                return;
+            }
+            var collided = LineOfSightRayCast3D.GetCollider();
+            if (collided == null)
+            {
+                TargetInLineOfSight = false;
+                return;
+            }
+            TargetInLineOfSight = collided.GetInstanceId() == Target.GetInstanceId();
+        }
+        else
+        {
+            TimeSinceLineOfSightPoll += delta;
+        }
     }
 }
