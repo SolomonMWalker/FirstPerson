@@ -46,3 +46,4 @@ Enemy type ideas
     Automaton
         maybe include a limb removal mechanic
     teleport on too much hurt or target too close
+    stationary enemy summons danger spots on ground under target
