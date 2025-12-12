@@ -1,12 +1,11 @@
 using System;
-using FirstPerson.Helpers;
 using Godot;
 
 namespace FirstPerson;
 
-public partial class Player : ShootableCharacterBody3D
+public partial class Player : HittableCharacterBody3D
 {
-    [Export] public float CameraSensitivity { get; set; } = 0.01f;
+    [Export] public float CameraSensitivity { get; set; } = 0.005f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
     [Export] public int ShootRaycastLength { get; set; } = 50;
@@ -295,9 +294,9 @@ public partial class Player : ShootableCharacterBody3D
         FireCameraRaycast = false;
         if (!ShootRaycast.IsColliding()) return;
         var collided = ShootRaycast.GetCollider();
-        if (collided is ShootableCharacterBody3D shootable)
+        if (collided is HittableCharacterBody3D shootable)
         {
-            shootable.Shot(new ShotParameters(1));
+            shootable.Hit(new HitParameters(1));
         }
     }
 

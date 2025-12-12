@@ -4,7 +4,7 @@ using System;
 public partial class CoverSpot : Node3D
 {
     public bool Occupied { get; private set; } = false;
-    public ShootableCharacterBody3D Occupier { get; private set; } = null;
+    public HittableCharacterBody3D Occupier { get; private set; } = null;
     public bool IsViable => IsTargetInAngleRange;
 
     private Node3D Player { get; set; }
@@ -26,12 +26,12 @@ public partial class CoverSpot : Node3D
         MinAngleInRads = Vector2.Up.AngleTo(new Vector2(LeftAngleDeterminant.Position.X, LeftAngleDeterminant.Position.Z));
     }
     
-    public void CalculateViability(ShootableCharacterBody3D target)
+    public void CalculateViability(HittableCharacterBody3D target)
     {
         CalculateIsTargetInAngleRange(target);
     }
     
-    private void CalculateIsTargetInAngleRange(ShootableCharacterBody3D target)
+    private void CalculateIsTargetInAngleRange(HittableCharacterBody3D target)
     {
         var targetRelativePosition = ToLocal(target.GlobalPosition);
         var angleToTarget = Vector2.Up.AngleTo(new Vector2(targetRelativePosition.X, targetRelativePosition.Z));
@@ -39,7 +39,7 @@ public partial class CoverSpot : Node3D
     }
     
     
-    public void Occupy(ShootableCharacterBody3D newOccupier)
+    public void Occupy(HittableCharacterBody3D newOccupier)
     {
         Occupier = newOccupier;
         Occupied = true;

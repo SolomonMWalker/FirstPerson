@@ -75,6 +75,7 @@ Sprint={
 3d_physics/layer_5="Interactable"
 3d_physics/layer_6="Enemy"
 3d_physics/layer_7="PlayerAllies"
+3d_physics/layer_8="HittableNonCharacters"
 
 [rendering]
 

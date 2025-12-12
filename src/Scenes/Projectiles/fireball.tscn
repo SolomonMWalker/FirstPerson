@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dimhkdl4vfx33"]
 
-[ext_resource type="Script" uid="uid://bita4u5sx4s65" path="res://Scenes/Projectiles/Fireball.cs" id="1_sf4mh"]
+[ext_resource type="Script" uid="uid://bita4u5sx4s65" path="res://src/Scenes/Projectiles/Fireball.cs" id="1_sf4mh"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wi6of"]
 
@@ -13,7 +13,7 @@ material = SubResource("StandardMaterial3D_sf4mh")
 [node name="CharacterBody3D" type="CharacterBody3D"]
 top_level = true
 collision_layer = 0
-collision_mask = 3
+collision_mask = 73
 motion_mode = 1
 script = ExtResource("1_sf4mh")
 

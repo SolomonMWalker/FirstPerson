@@ -40,9 +40,9 @@ public partial class Explosion : Node3D
             {
                 ShapeCast3D.AddException(colObj3D);
                 ObjectsHit.Add(colObj3D);  
-                if (colObj3D is ShootableCharacterBody3D shootable)
+                if (colObj3D is HittableCharacterBody3D shootable)
                 {
-                    shootable.Shot(new ShotParameters(Damage));
+                    shootable.Hit(new HitParameters(Damage));
                 }
             }
         }

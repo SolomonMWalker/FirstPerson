@@ -53,9 +53,10 @@ material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
 [node name="ShootingEnemy" type="CharacterBody3D"]
-collision_layer = 3
+collision_layer = 34
 collision_mask = 3
 script = ExtResource("1_s7nxt")
+NavigationPollTimeInSeconds = 2.0
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

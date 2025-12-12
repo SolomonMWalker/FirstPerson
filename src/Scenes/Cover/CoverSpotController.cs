@@ -15,7 +15,7 @@ public partial class CoverSpotController : Node
         public double _timeSinceLastPoll = timeSinceLastPoll;
     }
 
-    private readonly Dictionary <ShootableCharacterBody3D, TargetToDistanceOrderedCoverSpots> targetToCoverSpots = [];
+    private readonly Dictionary <HittableCharacterBody3D, TargetToDistanceOrderedCoverSpots> targetToCoverSpots = [];
     private Player _player;
 
     public override void _Ready()
@@ -34,7 +34,7 @@ public partial class CoverSpotController : Node
     }
 
 
-    public CoverSpot GetViableCoverSpot(ShootableCharacterBody3D occupier, ShootableCharacterBody3D target,
+    public CoverSpot GetViableCoverSpot(HittableCharacterBody3D occupier, HittableCharacterBody3D target,
         CoverSpot currentlyOccupiedSpot = null)
     {
         CalculateViabilityOfCoverSpots(target);
@@ -48,7 +48,7 @@ public partial class CoverSpotController : Node
     private static bool IsCoverSpotViableAndUnoccupied(CoverSpot coverSpot) =>
         !coverSpot.Occupied && coverSpot.IsViable;
     
-    private void CalculateViabilityOfCoverSpots(ShootableCharacterBody3D target)
+    private void CalculateViabilityOfCoverSpots(HittableCharacterBody3D target)
     {
         if (!targetToCoverSpots.TryGetValue(target, out var value))
         {
@@ -62,7 +62,7 @@ public partial class CoverSpotController : Node
         }
     }
 
-    private List<CoverSpot> GetReorderedCoverSpots(ShootableCharacterBody3D target)
+    private List<CoverSpot> GetReorderedCoverSpots(HittableCharacterBody3D target)
     {
         return CoverSpots
             .OrderBy(c => c.GlobalPosition.DistanceSquaredTo(target.GlobalPosition))

@@ -1,9 +1,11 @@
-﻿namespace FirstPerson.Helpers;
+﻿namespace FirstPerson;
 
 public enum Goal
 {
     MoveToCover,
-    MoveToTarget,
+    MoveToTargetClose,
+    MoveToTargetMedium,
+    MoveToTargetFar,
     Patrol,
     Standby
 }

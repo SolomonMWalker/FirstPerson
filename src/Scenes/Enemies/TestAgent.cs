@@ -1,8 +1,8 @@
 using FirstPerson;
 using FirstPerson.Configuration;
-using FirstPerson.Helpers;using Godot;
+using Godot;
 
-public partial class Enemy : Agent
+public partial class TestAgent : Agent
 {
     public override void _Ready()
     {
@@ -10,7 +10,8 @@ public partial class Enemy : Agent
         AllowedGoals.Add(Goal.MoveToCover);
         CurrentGoal = Goal.MoveToCover;
         
-        Target = GetNode<Player>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
+        //Target = GetNode<ShootableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
     }
 
     protected override void CalculateNavigation(double delta)
@@ -20,7 +21,7 @@ public partial class Enemy : Agent
             case Goal.MoveToCover:
                 MoveToCover(delta);
                 break;
-            case Goal.MoveToTarget:
+            case Goal.MoveToTargetMedium:
                 MoveToTarget();
                 break;
         }

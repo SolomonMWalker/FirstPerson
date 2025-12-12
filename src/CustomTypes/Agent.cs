@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using FirstPerson.Helpers;
+using FirstPerson;
 using Godot;
 
-public abstract partial class Agent : ShootableCharacterBody3D
+public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 100;
     [Export] public int Speed { get; protected set; } = 4;
@@ -20,18 +20,18 @@ public abstract partial class Agent : ShootableCharacterBody3D
         protected set => NavAgent.TargetPosition = value;
     }
 
-    protected ShootableCharacterBody3D Target { get; set; }
+    protected HittableCharacterBody3D Target { get; set; }
     protected CoverSpotController CoverSpotController { get; set; }
     protected NavigationAgent3D NavAgent { get; set; }
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
-    protected double TimeSinceTargetCoverPoll { get; set; } = 5;
+    protected double TimeSinceNavPoll { get; set; } = 5;
     protected double TimeSinceLineOfSightPoll { get; set; } = 5;
     protected bool QueuedForDeath { get; set; }
     protected bool TargetInLineOfSight { get; set; }
     protected bool FreezeMotion { get; set; }
-    protected List<bool> FreezeMotionBools = [];
+    protected readonly List<bool> FreezeMotionBools = [];
     protected float DefaultTargetDistance { get; set; } = 0.5f;
     protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
     protected Goal CurrentGoal { get; set; }
@@ -74,17 +74,17 @@ public abstract partial class Agent : ShootableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        CalculateIfTargetInLineOfSight(delta);
         CalculateNavigation(delta);
         HandleNavigation();
         HandleRotation();
         CalculateMovementState();
-        CalculateIfTargetInLineOfSight(delta);
     }
 
-    public override void Shot(ShotParameters shotParameters)
+    public override void Hit(HitParameters hitParameters)
     {
-        base.Shot(shotParameters);
-        DecreaseHealth(shotParameters.Damage);
+        base.Hit(hitParameters);
+        DecreaseHealth(hitParameters.Damage);
         if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play("shot");
     }
 
@@ -94,7 +94,7 @@ public abstract partial class Agent : ShootableCharacterBody3D
     {
         if (CurrentGoal == Goal.MoveToCover)
         {
-            TimeSinceTargetCoverPoll = NavigationPollTimeInSeconds + 1;
+            TimeSinceNavPoll = NavigationPollTimeInSeconds + 1;
         }
         CurrentGoal = goal;
     }
@@ -121,9 +121,9 @@ public abstract partial class Agent : ShootableCharacterBody3D
     
     protected virtual void MoveToCover(double delta)
     {
-        if (TimeSinceTargetCoverPoll > NavigationPollTimeInSeconds)
+        if (TimeSinceNavPoll > NavigationPollTimeInSeconds)
         {
-            TimeSinceTargetCoverPoll = 0;
+            TimeSinceNavPoll = 0;
             if (IsMotionFrozen() || Target is null) return;
             if (!TargetInLineOfSight)
             {
@@ -151,7 +151,7 @@ public abstract partial class Agent : ShootableCharacterBody3D
         }
         else
         {
-            TimeSinceTargetCoverPoll += delta;
+            TimeSinceNavPoll += delta;
         }
     }
 
