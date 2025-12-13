@@ -6,6 +6,7 @@ public partial class ShootingEnemy : Agent
 {    
     public double TimeBetweenShots { get; protected set; } = 1.5;
     public double TimeToShoot { get; protected set; } = 0.3;
+    public float MediumFollowDistance { get; protected set; } = 10f;
     
     protected double TimeSinceLastShot { get; set; } = 0;
     protected double TimeSinceShotForMovement { get; set; } = 0;
@@ -20,6 +21,7 @@ public partial class ShootingEnemy : Agent
         //Target = GetNode<ShootableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
+        CurrentFollowDistance = MediumFollowDistance;
         AllowedGoals.Add(Goal.MoveToCover);
         CurrentGoal = Goal.MoveToCover;
     }
@@ -38,14 +40,9 @@ public partial class ShootingEnemy : Agent
                 MoveToCover(delta);
                 break;
             case Goal.MoveToTargetMedium:
-                MoveToTarget();
+                MoveToTarget(delta);
                 break;
         }
-    }
-
-    protected override void MoveToTarget()
-    {
-        SetNavigationToTarget();
     }
 
     public void HandleShooting(double delta)

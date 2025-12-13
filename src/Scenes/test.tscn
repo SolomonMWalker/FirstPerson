@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bkmprk5mnhfsx" path="res://src/Scenes/Enemies/melee_enemy.tscn" id="3_wnc5p"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://src/Scenes/Cover/CoverSpotController.cs" id="4_ykrsh"]
 [ext_resource type="PackedScene" uid="uid://jbcwqhyno5o3" path="res://src/Scenes/Cover/cover_spot.tscn" id="5_ykrsh"]
-[ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/ShootableCharacterBody3D.cs" id="6_g14j6"]
+[ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/HittableCharacterBody3D.cs" id="6_g14j6"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -44,15 +44,11 @@ shadow_opacity = 0.66
 [node name="Player" parent="." instance=ExtResource("2_8uh7m")]
 
 [node name="Enemies" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="MeleeEnemy" parent="Enemies" instance=ExtResource("3_wnc5p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.889256, 0, 14.748489)
-
-[node name="MeleeEnemy2" parent="Enemies" instance=ExtResource("3_wnc5p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.4815903, 0, 5.296418)
-
-[node name="MeleeEnemy3" parent="Enemies" instance=ExtResource("3_wnc5p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.933658, 0, 8.555754)
+Speed = 10
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")

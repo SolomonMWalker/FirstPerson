@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using FirstPerson;
+using FirstPerson.Helpers;
 using Godot;
 
 public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 100;
     [Export] public int Speed { get; protected set; } = 4;
-    [Export] public float NavigationPollTimeInSeconds { get; protected set; } = 0.5f;
+    [Export] public float NavigationPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
-    [Export] public int TargetFollowDistance { get; protected set; } = 5;
+    [Export] public float DefaultTargetDistance { get; protected set; } = 0.5f;
     [Export] public int LineOfSightCheckRange { get; protected set; } = 250;
     [Export] public int PathStrayMaxDistance { get; protected set; } = 30;
     
@@ -26,17 +27,19 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
+
+    protected float CharacterRadius { get; set; } = 0.5f;
     protected double TimeSinceNavPoll { get; set; } = 5;
     protected double TimeSinceLineOfSightPoll { get; set; } = 5;
     protected bool QueuedForDeath { get; set; }
     protected bool TargetInLineOfSight { get; set; }
     protected bool FreezeMotion { get; set; }
     protected readonly List<bool> FreezeMotionBools = [];
-    protected float DefaultTargetDistance { get; set; } = 0.5f;
     protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
     protected Goal CurrentGoal { get; set; }
     protected List<Goal> AllowedGoals = [];
     protected List<AgentMovementState> MovementStates = [AgentMovementState.Still, AgentMovementState.DefaultMoving];
+    protected float? CurrentFollowDistance;
     
     public override void _Ready()
     {
@@ -92,10 +95,6 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void SetGoal(Goal goal)
     {
-        if (CurrentGoal == Goal.MoveToCover)
-        {
-            TimeSinceNavPoll = NavigationPollTimeInSeconds + 1;
-        }
         CurrentGoal = goal;
     }
 
@@ -117,7 +116,17 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected abstract void CalculateNavigation(double delta);
 
-    protected abstract void MoveToTarget();
+    protected virtual void MoveToTarget(double delta)
+    {
+        if (TimeSinceNavPoll > NavigationPollTimeInSeconds)
+        {
+            SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
+        }
+        else
+        {
+            TimeSinceNavPoll += delta;
+        }
+    }
     
     protected virtual void MoveToCover(double delta)
     {
@@ -127,7 +136,7 @@ public abstract partial class Agent : HittableCharacterBody3D
             if (IsMotionFrozen() || Target is null) return;
             if (!TargetInLineOfSight)
             {
-                SetNavigationToTarget();
+                SetNavigationToTarget(CurrentFollowDistance);
                 return;
             }
             var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
@@ -135,7 +144,7 @@ public abstract partial class Agent : HittableCharacterBody3D
             {
                 CurrentCoverSpot?.Unoccupy();
                 CurrentCoverSpot = null;
-                SetNavigationToTarget(); 
+                SetNavigationToTarget(CurrentFollowDistance); 
             }
             else
             {
@@ -180,16 +189,19 @@ public abstract partial class Agent : HittableCharacterBody3D
         QueuedForDeath = true;
     }
 
-    protected virtual void SetNavigationToTarget()
+    protected virtual void SetNavigationToTarget(float? distance = null)
     {
         if (Target is null) return;
-        NavAgent.TargetDesiredDistance = TargetFollowDistance;
-        NavAgentMovementTarget = Target.GlobalPosition;
+        var point = HelperMethods.GetPointMetersFromTarget(Target.GlobalPosition, GlobalPosition,
+            CurrentFollowDistance ?? 0);
+        var target = !distance.HasValue || distance == 0 || !CurrentFollowDistance.HasValue 
+            ? Target.GlobalPosition : point;
+        //GD.Print($"distance is {distance} Target at {Target.GlobalPosition} source at {GlobalPosition}, going to {target}");
+        NavAgentMovementTarget = target;
     }
 
     protected virtual void SetNavigationToCoverSpot()
     {
-        NavAgent.TargetDesiredDistance = DefaultTargetDistance;
         NavAgentMovementTarget = CurrentCoverSpot.GlobalPosition;
     }
 

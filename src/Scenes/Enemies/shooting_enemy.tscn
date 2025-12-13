@@ -73,6 +73,7 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
 height = 2.0
 radius = 3.0
 

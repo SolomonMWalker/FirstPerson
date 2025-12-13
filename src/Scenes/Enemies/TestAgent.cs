@@ -22,13 +22,8 @@ public partial class TestAgent : Agent
                 MoveToCover(delta);
                 break;
             case Goal.MoveToTargetMedium:
-                MoveToTarget();
+                MoveToTarget(delta);
                 break;
         }
-    }
-
-    protected override void MoveToTarget()
-    {
-        SetNavigationToTarget();
     }
 }
