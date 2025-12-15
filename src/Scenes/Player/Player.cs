@@ -5,7 +5,7 @@ namespace FirstPerson;
 
 public partial class Player : HittableCharacterBody3D
 {
-    [Export] public float CameraSensitivity { get; set; } = 0.005f;
+    [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
     [Export] public int ShootRaycastLength { get; set; } = 50;
@@ -195,12 +195,7 @@ public partial class Player : HittableCharacterBody3D
         if (@event is InputEventMouseMotion mouseMotionEvent)
         {
             RelativeMousePosition = mouseMotionEvent.Relative;
-            var lookDir = mouseMotionEvent.Relative;
-            var rotationY = Camera.Rotation.Y - lookDir.X * CameraSensitivity;
-            var rotationX = Math.Clamp(Camera.Rotation.X - lookDir.Y * CameraSensitivity, 
-                Mathf.DegToRad(-90), Mathf.DegToRad(90));
-            Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
-            CollisionShape3d.SetRotation(new Vector3(0, Camera.Rotation.Y, 0));
+            RotateCamera = true;
         }
     }
 
