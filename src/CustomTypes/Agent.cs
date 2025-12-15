@@ -187,13 +187,7 @@ public abstract partial class Agent : HittableCharacterBody3D
 
         Vector3 currentAgentPosition = GlobalTransform.Origin;
         Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
-
-        if (currentAgentPosition.DistanceTo(nextPathPosition) < 1f)
-        {
-            Velocity = Vector3.Zero;
-            MoveAndSlide();
-            return;
-        }
+        
 
         var distance = currentAgentPosition.DistanceTo(nextPathPosition);
         
@@ -206,7 +200,7 @@ public abstract partial class Agent : HittableCharacterBody3D
             tempVelocity = direction;
         }
 
-        Velocity = Velocity.Lerp(tempVelocity, 0.2f);
+        Velocity = Velocity.Lerp(tempVelocity, 0.9f);
         MoveAndSlide();
     }
 
@@ -264,30 +258,22 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void LookAtPosition(Vector3 lookAt)
     {
-        //figure out how to get angle around y axis needed
-        // lookAt.Y = GlobalPosition.Y;
-        // if (!lookAt.Cross(Vector3.Up).IsZeroApprox()
-        //     && !(lookAt - GlobalPosition).IsZeroApprox())
-        // {
-        //     LookAt(lookAt);
-        // }
-
         var sourceXZ = new Vector2(GlobalPosition.X, GlobalPosition.Z);
         var targetXZ = new Vector2(lookAt.X, lookAt.Z);
         var direction = sourceXZ - targetXZ;
         Rotation = new Vector3(Rotation.X,
-            Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.5f),
+            Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.9f),
             Rotation.Z);
     }
 
     protected virtual void HandleRotation()
     {
-        if (CurrentGoal is Goal.MoveToCover)
+        if (CurrentAgentMovementState is AgentMovementState.Still)
         {
-            LookAtMovementDirection();
+            LookAtTarget();
             return;
         }
-        LookAtTarget();
+        LookAtMovementDirection();
     }
     
     protected virtual void CalculateIfTargetInLineOfSight(double delta)
