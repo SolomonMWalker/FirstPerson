@@ -17,8 +17,8 @@ public partial class ShootingEnemy : Agent
     public override void _Ready()
     {
         base._Ready();
-        Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
-        //Target = GetNode<ShootableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
+        Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
         CurrentFollowDistance = MediumFollowDistance;

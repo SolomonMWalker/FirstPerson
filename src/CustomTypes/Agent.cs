@@ -181,7 +181,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         //if magnitude of this frame of velocity will overshoot target, just go directly to target
         var direction = nextPathPosition - currentAgentPosition;
         var tempVelocity = currentAgentPosition.DirectionTo(nextPathPosition) * Speed;
-        if (direction.LengthSquared() > tempVelocity.LengthSquared())
+        if (direction.LengthSquared() < tempVelocity.LengthSquared())
         {
             tempVelocity = direction;
         }
@@ -256,12 +256,13 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void HandleRotation()
     {
-        if (CurrentAgentMovementState is AgentMovementState.Still)
-        {
-            LookAtTarget();
-            return;
-        }
-        LookAtMovementDirection();
+        // if (CurrentAgentMovementState is AgentMovementState.Still)
+        // {
+        //     LookAtTarget();
+        //     return;
+        // }
+        // LookAtMovementDirection();
+        LookAtTarget();
     }
     
     protected virtual void CalculateIfTargetInLineOfSight(double delta)
