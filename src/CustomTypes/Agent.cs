@@ -8,8 +8,7 @@ public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 100;
     [Export] public int Speed { get; protected set; } = 3;
-    [Export] public float TargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
-    [Export] public float HandleNavigationPollTimeInSeconds { get; protected set; } = 0.15f;
+    [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
     [Export] public float DefaultTargetDistance { get; protected set; } = 0.5f;
@@ -28,7 +27,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
-    protected Poll HandleNavigationPoll { get; set; }
     protected float CharacterRadius { get; set; } = 0.5f;
     protected double TimeSinceNavPoll { get; set; } = 5;
     protected double TimeSinceLineOfSightPoll { get; set; } = 5;
@@ -46,8 +44,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         base._Ready();
         FreezeMotionBools.Add(FreezeMotion);
-
-        HandleNavigationPoll = new Poll(HandleNavigationPollTimeInSeconds);
         
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
@@ -124,7 +120,7 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void MoveToTarget(double delta)
     {
-        if (TimeSinceNavPoll > TargetAcquisitionPollTimeInSeconds)
+        if (TimeSinceNavPoll > MovementTargetAcquisitionPollTimeInSeconds)
         {
             SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
         }
@@ -136,7 +132,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     
     protected virtual void MoveToCover(double delta)
     {
-        if (TimeSinceNavPoll > TargetAcquisitionPollTimeInSeconds)
+        if (TimeSinceNavPoll > MovementTargetAcquisitionPollTimeInSeconds)
         {
             TimeSinceNavPoll = 0;
             if (IsMotionFrozen() || Target is null) return;
@@ -174,22 +170,12 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (NavAgent.IsNavigationFinished() || IsMotionFrozen())
         {
-            HandleNavigationPoll.TimeSincePoll = double.MaxValue / 2;
             Velocity = Vector3.Zero;
             return;
         }
 
-        // if (!HandleNavigationPoll.IsPollPinged(delta))
-        // {
-        //     MoveAndSlide();
-        //     return;
-        // }
-
         Vector3 currentAgentPosition = GlobalTransform.Origin;
         Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
-        
-
-        var distance = currentAgentPosition.DistanceTo(nextPathPosition);
         
         //don't overshoot, I think
         //if magnitude of this frame of velocity will overshoot target, just go directly to target
@@ -200,7 +186,8 @@ public abstract partial class Agent : HittableCharacterBody3D
             tempVelocity = direction;
         }
 
-        Velocity = Velocity.Lerp(tempVelocity, 0.9f);
+        //Velocity = Velocity.Lerp(tempVelocity, 0.99f);
+        Velocity = tempVelocity;
         MoveAndSlide();
     }
 
@@ -262,7 +249,8 @@ public abstract partial class Agent : HittableCharacterBody3D
         var targetXZ = new Vector2(lookAt.X, lookAt.Z);
         var direction = sourceXZ - targetXZ;
         Rotation = new Vector3(Rotation.X,
-            Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.9f),
+            //Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.99f),
+            Mathf.Atan2(direction.X, direction.Y),
             Rotation.Z);
     }
 
