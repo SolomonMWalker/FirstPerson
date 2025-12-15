@@ -36,6 +36,8 @@ public partial class Player : HittableCharacterBody3D
     private double TimeInCoyoteTime { get; set; }
     private bool CanJump { get; set; }
     private bool FireCameraRaycast { get; set; }
+    private bool RotateCamera { get; set; }
+    private Vector2 RelativeMousePosition { get; set; }
     private float DefaultCameraHeight { get; set; }
     private float DefaultColliderShapeHeight { get; set; }
     
@@ -179,6 +181,12 @@ public partial class Player : HittableCharacterBody3D
         tempVelocity.Z = directionV2.Y * Speed * movementMult;
         Velocity = tempVelocity;
         MoveAndSlide();
+
+        if (RotateCamera)
+        {
+            RotateCamera = false;
+            LookAtMouse();
+        }
     }
     
     public override void _UnhandledInput(InputEvent @event)
@@ -186,6 +194,7 @@ public partial class Player : HittableCharacterBody3D
         base._UnhandledInput(@event);
         if (@event is InputEventMouseMotion mouseMotionEvent)
         {
+            RelativeMousePosition = mouseMotionEvent.Relative;
             var lookDir = mouseMotionEvent.Relative;
             var rotationY = Camera.Rotation.Y - lookDir.X * CameraSensitivity;
             var rotationX = Math.Clamp(Camera.Rotation.X - lookDir.Y * CameraSensitivity, 
@@ -193,6 +202,16 @@ public partial class Player : HittableCharacterBody3D
             Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
             CollisionShape3d.SetRotation(new Vector3(0, Camera.Rotation.Y, 0));
         }
+    }
+
+    public void LookAtMouse()
+    {
+        var lookDir = RelativeMousePosition;
+        var rotationY = Camera.Rotation.Y - lookDir.X * CameraSensitivity;
+        var rotationX = Math.Clamp(Camera.Rotation.X - lookDir.Y * CameraSensitivity, 
+            Mathf.DegToRad(-90), Mathf.DegToRad(90));
+        Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
+        CollisionShape3d.SetRotation(new Vector3(0, Camera.Rotation.Y, 0));
     }
     
     public void Clamber()

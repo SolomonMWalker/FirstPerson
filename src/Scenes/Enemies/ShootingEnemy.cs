@@ -77,14 +77,14 @@ public partial class ShootingEnemy : Agent
         }
     }
 
-    protected override void HandleNavigation()
+    protected override void HandleNavigation(double delta)
     {
         if (IsShooting)
         {
             Velocity = Vector3.Zero;
             return;
         }
-        base.HandleNavigation();
+        base.HandleNavigation(delta);
     }
 
     protected override void HandleRotation()

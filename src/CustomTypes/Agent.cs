@@ -8,7 +8,8 @@ public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 100;
     [Export] public int Speed { get; protected set; } = 3;
-    [Export] public float NavigationPollTimeInSeconds { get; protected set; } = 1.0f;
+    [Export] public float TargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
+    [Export] public float HandleNavigationPollTimeInSeconds { get; protected set; } = 0.15f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
     [Export] public float DefaultTargetDistance { get; protected set; } = 0.5f;
@@ -27,7 +28,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
-    protected Vector3? LastFrameTargetGlobalPosition { get; set; }
+    protected Poll HandleNavigationPoll { get; set; }
     protected float CharacterRadius { get; set; } = 0.5f;
     protected double TimeSinceNavPoll { get; set; } = 5;
     protected double TimeSinceLineOfSightPoll { get; set; } = 5;
@@ -45,6 +46,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         base._Ready();
         FreezeMotionBools.Add(FreezeMotion);
+
+        HandleNavigationPoll = new Poll(HandleNavigationPollTimeInSeconds);
         
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
@@ -80,9 +83,8 @@ public abstract partial class Agent : HittableCharacterBody3D
         CalculateIfTargetInLineOfSight(delta);
         CalculateNavigation(delta);
         HandleRotation();
-        HandleNavigation();
+        HandleNavigation(delta);
         CalculateMovementState();
-        SetLastFrameTargetTransform();
     }
 
     public override void Hit(HitParameters hitParameters)
@@ -122,7 +124,7 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void MoveToTarget(double delta)
     {
-        if (TimeSinceNavPoll > NavigationPollTimeInSeconds)
+        if (TimeSinceNavPoll > TargetAcquisitionPollTimeInSeconds)
         {
             SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
         }
@@ -134,7 +136,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     
     protected virtual void MoveToCover(double delta)
     {
-        if (TimeSinceNavPoll > NavigationPollTimeInSeconds)
+        if (TimeSinceNavPoll > TargetAcquisitionPollTimeInSeconds)
         {
             TimeSinceNavPoll = 0;
             if (IsMotionFrozen() || Target is null) return;
@@ -168,16 +170,32 @@ public abstract partial class Agent : HittableCharacterBody3D
         }
     }
 
-    protected virtual void HandleNavigation()
+    protected virtual void HandleNavigation(double delta)
     {
         if (NavAgent.IsNavigationFinished() || IsMotionFrozen())
         {
+            HandleNavigationPoll.TimeSincePoll = double.MaxValue / 2;
             Velocity = Vector3.Zero;
             return;
         }
 
+        // if (!HandleNavigationPoll.IsPollPinged(delta))
+        // {
+        //     MoveAndSlide();
+        //     return;
+        // }
+
         Vector3 currentAgentPosition = GlobalTransform.Origin;
         Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
+
+        if (currentAgentPosition.DistanceTo(nextPathPosition) < 1f)
+        {
+            Velocity = Vector3.Zero;
+            MoveAndSlide();
+            return;
+        }
+
+        var distance = currentAgentPosition.DistanceTo(nextPathPosition);
         
         //don't overshoot, I think
         //if magnitude of this frame of velocity will overshoot target, just go directly to target
@@ -188,7 +206,7 @@ public abstract partial class Agent : HittableCharacterBody3D
             tempVelocity = direction;
         }
 
-        Velocity = Velocity.Lerp(tempVelocity, 0.5f);
+        Velocity = Velocity.Lerp(tempVelocity, 0.2f);
         MoveAndSlide();
     }
 
@@ -247,22 +265,29 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected virtual void LookAtPosition(Vector3 lookAt)
     {
         //figure out how to get angle around y axis needed
-        lookAt.Y = GlobalPosition.Y;
-        if (!lookAt.Cross(Vector3.Up).IsZeroApprox()
-            && !(lookAt - GlobalPosition).IsZeroApprox())
-        {
-            LookAt(lookAt);
-        }
+        // lookAt.Y = GlobalPosition.Y;
+        // if (!lookAt.Cross(Vector3.Up).IsZeroApprox()
+        //     && !(lookAt - GlobalPosition).IsZeroApprox())
+        // {
+        //     LookAt(lookAt);
+        // }
+
+        var sourceXZ = new Vector2(GlobalPosition.X, GlobalPosition.Z);
+        var targetXZ = new Vector2(lookAt.X, lookAt.Z);
+        var direction = sourceXZ - targetXZ;
+        Rotation = new Vector3(Rotation.X,
+            Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.5f),
+            Rotation.Z);
     }
 
     protected virtual void HandleRotation()
     {
-        if (CurrentAgentMovementState is AgentMovementState.Still)
+        if (CurrentGoal is Goal.MoveToCover)
         {
-            LookAtTarget();
+            LookAtMovementDirection();
             return;
         }
-        LookAtMovementDirection();
+        LookAtTarget();
     }
     
     protected virtual void CalculateIfTargetInLineOfSight(double delta)
@@ -294,15 +319,6 @@ public abstract partial class Agent : HittableCharacterBody3D
         else
         {
             TimeSinceLineOfSightPoll += delta;
-        }
-    }
-
-    protected virtual void SetLastFrameTargetTransform()
-    {
-        if (Target == null) LastFrameTargetGlobalPosition = null;
-        else
-        {
-            LastFrameTargetGlobalPosition = Target.GlobalPosition;
         }
     }
 }
