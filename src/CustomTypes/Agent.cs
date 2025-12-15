@@ -246,12 +246,11 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void LookAtPosition(Vector3 lookAt)
     {
-        var forwardInGlobal = ToGlobal(Vector3.Forward);
         lookAt.Y = GlobalPosition.Y;
         if (!lookAt.Cross(Vector3.Up).IsZeroApprox()
             && !(lookAt - GlobalPosition).IsZeroApprox())
         {
-            LookAt(forwardInGlobal.Lerp(lookAt, 0.3f));
+            LookAt(lookAt);
         }
     }
 
