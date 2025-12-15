@@ -246,6 +246,7 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void LookAtPosition(Vector3 lookAt)
     {
+        //figure out how to get angle around y axis needed
         lookAt.Y = GlobalPosition.Y;
         if (!lookAt.Cross(Vector3.Up).IsZeroApprox()
             && !(lookAt - GlobalPosition).IsZeroApprox())
