@@ -7,7 +7,7 @@ using Godot;
 public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 100;
-    [Export] public int Speed { get; protected set; } = 4;
+    [Export] public int Speed { get; protected set; } = 3;
     [Export] public float NavigationPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
@@ -27,7 +27,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
-
+    protected Vector3? LastFrameTargetGlobalPosition { get; set; }
     protected float CharacterRadius { get; set; } = 0.5f;
     protected double TimeSinceNavPoll { get; set; } = 5;
     protected double TimeSinceLineOfSightPoll { get; set; } = 5;
@@ -79,9 +79,10 @@ public abstract partial class Agent : HittableCharacterBody3D
         base._PhysicsProcess(delta);
         CalculateIfTargetInLineOfSight(delta);
         CalculateNavigation(delta);
-        HandleNavigation();
         HandleRotation();
+        HandleNavigation();
         CalculateMovementState();
+        SetLastFrameTargetTransform();
     }
 
     public override void Hit(HitParameters hitParameters)
@@ -91,7 +92,10 @@ public abstract partial class Agent : HittableCharacterBody3D
         if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play("shot");
     }
 
-    protected virtual bool IsMotionFrozen() => FreezeMotionBools.Any(b => b);
+    protected virtual bool IsMotionFrozen()
+    {
+        return FreezeMotion;
+    }
 
     protected virtual void SetGoal(Goal goal)
     {
@@ -174,8 +178,17 @@ public abstract partial class Agent : HittableCharacterBody3D
 
         Vector3 currentAgentPosition = GlobalTransform.Origin;
         Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
+        
+        //don't overshoot, I think
+        //if magnitude of this frame of velocity will overshoot target, just go directly to target
+        var direction = nextPathPosition - currentAgentPosition;
+        var tempVelocity = currentAgentPosition.DirectionTo(nextPathPosition) * Speed;
+        if (direction.LengthSquared() > tempVelocity.LengthSquared())
+        {
+            tempVelocity = direction;
+        }
 
-        Velocity = currentAgentPosition.DirectionTo(nextPathPosition) * Speed;
+        Velocity = Velocity.Lerp(tempVelocity, 0.5f);
         MoveAndSlide();
     }
 
@@ -196,26 +209,27 @@ public abstract partial class Agent : HittableCharacterBody3D
             CurrentFollowDistance ?? 0);
         var target = !distance.HasValue || distance == 0 || !CurrentFollowDistance.HasValue 
             ? Target.GlobalPosition : point;
-        //GD.Print($"distance is {distance} Target at {Target.GlobalPosition} source at {GlobalPosition}, going to {target}");
-        NavAgentMovementTarget = target;
+        
+        if (!NavAgentMovementTarget.Equals(target))
+        {
+            NavAgentMovementTarget = target;
+        }
     }
 
     protected virtual void SetNavigationToCoverSpot()
     {
-        NavAgentMovementTarget = CurrentCoverSpot.GlobalPosition;
+        if (!NavAgentMovementTarget.Equals(CurrentCoverSpot.GlobalPosition))
+        {
+            NavAgentMovementTarget = CurrentCoverSpot.GlobalPosition;
+        }
     }
 
     protected virtual void LookAtMovementDirection()
     {
-
         if (!Velocity.IsZeroApprox())
         {
             var lookAtDirection = GlobalPosition + Velocity.Normalized();
-            lookAtDirection.Y = GlobalPosition.Y;
-            //https://old.reddit.com/r/godot/comments/1k66joq/how_do_i_silence_this_engine_warning/
-            if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
-               && !(lookAtDirection - GlobalPosition).IsZeroApprox()) 
-                LookAt(lookAtDirection, Vector3.Up);
+            LookAtPosition(lookAtDirection);
         }
         else
         {
@@ -227,10 +241,18 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (Target is null) return;
         var lookAtDirection = Target.GlobalPosition;
-        lookAtDirection.Y = GlobalPosition.Y;
-        if(!lookAtDirection.Cross(Vector3.Up).IsZeroApprox()
-           && !(lookAtDirection - GlobalPosition).IsZeroApprox())
-            LookAt(lookAtDirection, Vector3.Up);
+        LookAtPosition(lookAtDirection);
+    }
+
+    protected virtual void LookAtPosition(Vector3 lookAt)
+    {
+        var forwardInGlobal = ToGlobal(Vector3.Forward);
+        lookAt.Y = GlobalPosition.Y;
+        if (!lookAt.Cross(Vector3.Up).IsZeroApprox()
+            && !(lookAt - GlobalPosition).IsZeroApprox())
+        {
+            LookAt(forwardInGlobal.Lerp(lookAt, 0.3f));
+        }
     }
 
     protected virtual void HandleRotation()
@@ -272,6 +294,15 @@ public abstract partial class Agent : HittableCharacterBody3D
         else
         {
             TimeSinceLineOfSightPoll += delta;
+        }
+    }
+
+    protected virtual void SetLastFrameTargetTransform()
+    {
+        if (Target == null) LastFrameTargetGlobalPosition = null;
+        else
+        {
+            LastFrameTargetGlobalPosition = Target.GlobalPosition;
         }
     }
 }

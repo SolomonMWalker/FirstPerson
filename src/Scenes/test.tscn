@@ -48,7 +48,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="MeleeEnemy" parent="Enemies" instance=ExtResource("3_wnc5p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.889256, 0, 14.748489)
-Speed = 10
+Speed = 5
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
