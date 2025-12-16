@@ -310,7 +310,7 @@ public partial class Player : HittableCharacterBody3D
         var collided = ShootRaycast.GetCollider();
         if (collided is HittableCharacterBody3D shootable)
         {
-            shootable.Hit(new HitParameters(1));
+            shootable.Hit(new HitParameters(10, 10));
         }
     }
 
