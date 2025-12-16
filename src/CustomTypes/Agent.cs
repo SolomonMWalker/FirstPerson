@@ -37,7 +37,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected bool QueuedForDeath { get; set; }
     protected bool TargetInLineOfSight { get; set; }
     protected bool FreezeMotion { get; set; }
-    protected readonly List<bool> FreezeMotionBools = [];
     protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
     protected Goal CurrentGoal { get; set; }
     protected List<Goal> AllowedGoals = [];
@@ -47,7 +46,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     public override void _Ready()
     {
         base._Ready();
-        FreezeMotionBools.Add(FreezeMotion);
 
         InitialStaggerHealth = StaggerHealth;
         StaggerPoll = new Poll(StaggerTimeInSeconds);
@@ -101,6 +99,16 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected virtual bool IsMotionFrozen()
     {
         return FreezeMotion || IsStaggered;
+    }
+
+    protected virtual bool IsRotationFrozen()
+    {
+        return IsStaggered;
+    }
+
+    protected virtual bool IsActivityFrozen()
+    {
+        return IsStaggered;
     }
 
     protected virtual void SetGoal(Goal goal)
@@ -286,7 +294,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         //     return;
         // }
         // LookAtMovementDirection();
-        if (IsStaggered) return;
+        if (IsRotationFrozen()) return;
         LookAtTarget();
     }
     
