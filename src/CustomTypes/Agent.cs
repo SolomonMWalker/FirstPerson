@@ -6,7 +6,7 @@ using Godot;
 public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 25;
-    [Export] public int StaggerHealth { get; protected set; } = 10;
+    [Export] public int InitialStaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
     [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
@@ -28,9 +28,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
-    protected Poll StaggerPoll { get; set; }
+    protected StaggerHealth StaggerHealth { get; set; }
     protected bool IsStaggered { get; set; }
-    protected int InitialStaggerHealth { get; set; }
     protected float CharacterRadius { get; set; } = 0.5f;
     protected double TimeSinceNavPoll { get; set; } = 5;
     protected double TimeSinceLineOfSightPoll { get; set; } = 5;
@@ -47,8 +46,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         base._Ready();
 
-        InitialStaggerHealth = StaggerHealth;
-        StaggerPoll = new Poll(StaggerTimeInSeconds);
+        StaggerHealth = new StaggerHealth(InitialStaggerHealth);
         
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
@@ -86,6 +84,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         HandleRotation();
         HandleNavigation(delta);
         CalculateMovementState();
+        StaggerHealth.CheckStaggerRegain(delta);
     }
 
     public override void Hit(HitParameters hitParameters)
@@ -209,24 +208,18 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void DecreaseHealth(int amount)
     {
-        GD.Print($"Health is at {Health}, decreasing by {amount}");
         Health -= amount;
         if (Health > 0) return;
-        GD.Print($"We gonna die");
         QueueFree();
         QueuedForDeath = true;
     }
 
     protected virtual void DecreaseStaggerHealth(int amount)
     {
-        if (StaggerHealth - amount <= 0)
+        //GD.Print($"StaggerHealth is at {StaggerHealth.Amount}, decreasing by {amount}");
+        if (StaggerHealth.IsStaggeredFromDecreaseStaggerHealth(amount))
         {
-            StaggerHealth = InitialStaggerHealth;
             AnimationPlayer.Play("Staggered");
-        }
-        else
-        {
-            StaggerHealth -= amount;
         }
     }
 
@@ -266,7 +259,12 @@ public abstract partial class Agent : HittableCharacterBody3D
     }
 
     protected virtual void BeginStagger() => IsStaggered = true;
-    protected virtual void EndStagger() => IsStaggered = false;
+
+    protected virtual void EndStagger()
+    {
+        IsStaggered = false;
+        StaggerHealth.EndStagger();
+    }
 
     protected virtual void LookAtTarget()
     {
