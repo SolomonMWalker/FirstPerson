@@ -6,7 +6,7 @@ using Godot;
 public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public int Health { get; protected set; } = 25;
-    [Export] public int StaggerHealth { get; protected set; } = 25;
+    [Export] public int StaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
     [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
@@ -88,13 +88,13 @@ public abstract partial class Agent : HittableCharacterBody3D
         HandleRotation();
         HandleNavigation(delta);
         CalculateMovementState();
-        CheckStagger(delta);
     }
 
     public override void Hit(HitParameters hitParameters)
     {
         base.Hit(hitParameters);
         DecreaseHealth(hitParameters.HealthDamage);
+        DecreaseStaggerHealth(hitParameters.StaggerDamage);
         if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play("shot");
     }
 
@@ -213,7 +213,12 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (StaggerHealth - amount <= 0)
         {
-            
+            StaggerHealth = InitialStaggerHealth;
+            AnimationPlayer.Play("Staggered");
+        }
+        else
+        {
+            StaggerHealth -= amount;
         }
     }
 
@@ -252,14 +257,8 @@ public abstract partial class Agent : HittableCharacterBody3D
         }
     }
 
-    protected virtual void CheckStagger(double delta)
-    {
-        if (!IsStaggered) return;
-        if (StaggerPoll.IsPollPinged(delta))
-        {
-            IsStaggered = false;
-        }
-    }
+    protected virtual void BeginStagger() => IsStaggered = true;
+    protected virtual void EndStagger() => IsStaggered = false;
 
     protected virtual void LookAtTarget()
     {
@@ -274,8 +273,8 @@ public abstract partial class Agent : HittableCharacterBody3D
         var targetXZ = new Vector2(lookAt.X, lookAt.Z);
         var direction = sourceXZ - targetXZ;
         Rotation = new Vector3(Rotation.X,
-            //Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.99f),
-            Mathf.Atan2(direction.X, direction.Y),
+            Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.9f),
+            //Mathf.Atan2(direction.X, direction.Y),
             Rotation.Z);
     }
 
