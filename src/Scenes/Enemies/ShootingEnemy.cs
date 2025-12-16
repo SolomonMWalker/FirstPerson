@@ -32,6 +32,11 @@ public partial class ShootingEnemy : Agent
         HandleShooting(delta);
     }
     
+    protected override bool IsMotionFrozen()
+    {
+        return IsShooting || base.IsMotionFrozen();
+    }
+    
     protected override void CalculateNavigation(double delta)
     {
         switch (CurrentGoal)
@@ -45,8 +50,14 @@ public partial class ShootingEnemy : Agent
         }
     }
 
-    public void HandleShooting(double delta)
+    protected virtual void HandleShooting(double delta)
     {
+        if (IsActivityFrozen())
+        {
+            if (IsStaggered) IsShooting = false;
+            return;
+        }
+        
         //time between shots
         if (TimeSinceLastShot > TimeBetweenShots && TargetInLineOfSight)
         {
@@ -75,16 +86,6 @@ public partial class ShootingEnemy : Agent
                 TimeSinceShotForMovement += delta;
             }
         }
-    }
-
-    protected override void HandleNavigation(double delta)
-    {
-        if (IsShooting)
-        {
-            Velocity = Vector3.Zero;
-            return;
-        }
-        base.HandleNavigation(delta);
     }
 
     protected override void HandleRotation()

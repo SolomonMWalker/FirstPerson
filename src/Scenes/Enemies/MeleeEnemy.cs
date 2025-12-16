@@ -16,7 +16,6 @@ public partial class MeleeEnemy : Agent
     {
         base._Ready();
         CurrentFollowDistance = CloseFollowDistance;
-        FreezeMotionBools.Add(IsAttacking);
         
         MeleeRangeShapeCast = GetNode<ShapeCast3D>("MeleeRangeShapeCast");
         MeleeRangeArea = GetNode<Area3D>("MeleeRangeArea");
