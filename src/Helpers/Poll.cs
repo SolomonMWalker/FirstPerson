@@ -1,4 +1,6 @@
-﻿namespace FirstPerson.Helpers;
+﻿using Godot;
+
+namespace FirstPerson.Helpers;
 
 public class Poll
 {
@@ -8,7 +10,7 @@ public class Poll
     public Poll(double pollTime, double initialTimeSincePoll = double.MaxValue)
     {
         PollTime = pollTime;
-        TimeSincePoll = initialTimeSincePoll;
+        TimeSincePoll = initialTimeSincePoll > pollTime ? pollTime : initialTimeSincePoll;
     }
 
     public bool IsPollPinged(double delta)
@@ -19,11 +21,18 @@ public class Poll
             return true;
         }
 
-        TimeSincePoll += delta;
+        IncrementTime(delta);
         return false;
     }
 
     public void ResetPoll() => TimeSincePoll = 0;
 
-    public void AdvanceTimeWithoutPing(double delta) => TimeSincePoll += delta;
+    public void AdvanceTimeWithoutPing(double delta) => IncrementTime(delta);
+
+    private void IncrementTime(double delta)
+    {
+        TimeSincePoll += delta;
+        if (TimeSincePoll > PollTime) TimeSincePoll = PollTime;
+    }
+
 }
