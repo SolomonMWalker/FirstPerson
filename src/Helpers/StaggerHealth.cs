@@ -7,17 +7,19 @@ public class StaggerHealth
 {
     public int InitialAmount { get; private set; }
     public double Amount { get; private set; }
-    public double PauseBeforeRegenInSeconds { get; private set; }
     public double PercentRegenPerSecond { get; private set; }
-    private double TimeSinceStaggerDecrease { get; set; }
-    private bool IsStaggered { get; set; }
+    private Poll TimeBeforeStaggerRegenPoll { get; set; }
+    private Poll TimeBeforeAnotherStagger { get; set; }
+    private bool IsRegainingStagger { get; set; }
+    private bool WasStaggeredRecently { get; set; }
 
     public StaggerHealth(int initialAmount, double pauseBeforeRegenInSeconds = 2.5, 
-        double percentRegenPerSecond = 50)
+        double percentRegenPerSecond = 50, double timeBeforeAnotherStagger = 6)
     {
         InitialAmount = initialAmount;
         Amount = initialAmount;
-        PauseBeforeRegenInSeconds = pauseBeforeRegenInSeconds;
+        TimeBeforeStaggerRegenPoll = new Poll(pauseBeforeRegenInSeconds);
+        TimeBeforeAnotherStagger = new Poll(timeBeforeAnotherStagger);
         PercentRegenPerSecond = percentRegenPerSecond;
     }
 
@@ -28,32 +30,44 @@ public class StaggerHealth
 
     public bool IsStaggeredFromDecreaseStaggerHealth(double amount)
     {
+        if (WasStaggeredRecently) return false;
+        
         Amount -= amount;
-        TimeSinceStaggerDecrease = 0;
+        IsRegainingStagger = false;
+        
         if (Amount > 0)
         {
-            IsStaggered = true;
+            TimeBeforeStaggerRegenPoll.ResetPoll();
             return false;
         }
+        TimeBeforeAnotherStagger.ResetPoll();
+        WasStaggeredRecently = true;
         Amount = InitialAmount;
         return true;
     }
 
     public void CheckStaggerRegain(double delta)
     {
+        if (TimeBeforeAnotherStagger.IsPollPinged(delta))
+        {
+            WasStaggeredRecently = false;
+        }
+        if (WasStaggeredRecently) return;
+        
         //If stagger amount is full, do nothing
         if (Math.Abs(Amount - InitialAmount) < 0.001)
         {
+            IsRegainingStagger = false;
             return;
         }
-        if (TimeSinceStaggerDecrease > PauseBeforeRegenInSeconds)
+
+        if (TimeBeforeStaggerRegenPoll.IsPollPinged(delta))
         {
-            Amount += InitialAmount * (PercentRegenPerSecond / 100) * delta;
-            if (Amount > InitialAmount) Amount = InitialAmount;
+            IsRegainingStagger = true;
         }
-        else
-        {
-            TimeSinceStaggerDecrease += delta;
-        }
+
+        if (!IsRegainingStagger) return;
+        Amount += InitialAmount * (PercentRegenPerSecond / 100) * delta;
+        if (Amount > InitialAmount) Amount = InitialAmount;
     }
 }
