@@ -2,20 +2,14 @@
 
 namespace FirstPerson.Helpers;
 
-public class Poll
+public class Poll(double pollTime, double initialTimeSincePoll = double.MaxValue)
 {
-    public double PollTime { get; set; }
-    public double TimeSincePoll { get; set; }
-    
-    public Poll(double pollTime, double initialTimeSincePoll = double.MaxValue)
-    {
-        PollTime = pollTime;
-        TimeSincePoll = initialTimeSincePoll > pollTime ? pollTime : initialTimeSincePoll;
-    }
+    private double PollTime { get; set; } = pollTime;
+    private double TimeSincePoll { get; set; } = initialTimeSincePoll > pollTime ? pollTime : initialTimeSincePoll;
 
     public bool IsPollPinged(double delta)
     {
-        if (TimeSincePoll > PollTime)
+        if (TimeSincePoll >= PollTime)
         {
             TimeSincePoll = 0;
             return true;
@@ -25,7 +19,7 @@ public class Poll
         return false;
     }
 
-    public void ResetPoll() => TimeSincePoll = 0;
+    public void ResetPoll(double newStartTime = 0) => TimeSincePoll = newStartTime;
 
     public void AdvanceTimeWithoutPing(double delta) => IncrementTime(delta);
 

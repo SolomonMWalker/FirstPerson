@@ -308,7 +308,8 @@ public partial class Player : HittableCharacterBody3D
     {
         if (!FireCameraRaycast) return;
         FireCameraRaycast = false;
-        if (!ShootRaycast.IsColliding()) return;
+        if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") 
+            || !ShootRaycast.IsColliding()) return;
         var collided = ShootRaycast.GetCollider();
         var hitParams = new HitParameters(HealthDamage, StaggerDamage);
         switch (collided)

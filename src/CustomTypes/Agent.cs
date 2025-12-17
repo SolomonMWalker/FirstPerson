@@ -55,9 +55,9 @@ public abstract partial class Agent : HittableCharacterBody3D
         
         LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
         LineOfSightRayCast3D.Enabled = false;
-
-        MovementTargetAcquisitionPoll = new Poll(MovementTargetAcquisitionPollTimeInSeconds);
-        LineOfSightPoll = new Poll(LineOfSightPollTimeInSeconds);
+        
+        MovementTargetAcquisitionPoll = new Poll(MovementTargetAcquisitionPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
+        LineOfSightPoll = new Poll(LineOfSightPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
         NavAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");

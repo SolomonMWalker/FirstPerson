@@ -20,8 +20,8 @@ public partial class ShootingEnemy : Agent
         base._Ready();
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
-        TimeSinceLastShotPoll = new Poll(TimeBetweenShots);
-        TimeSinceLastShotForMovementPoll = new Poll(TimeToShoot);
+        TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
+        TimeSinceLastShotForMovementPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
         CurrentFollowDistance = MediumFollowDistance;
@@ -57,7 +57,11 @@ public partial class ShootingEnemy : Agent
     {
         if (IsActivityFrozen())
         {
-            if (IsStaggered) IsShooting = false;
+            if (IsStaggered)
+            {
+                IsShooting = false;
+                TimeSinceLastShotPoll.ResetPoll();
+            }
             return;
         }
         

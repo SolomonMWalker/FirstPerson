@@ -17,7 +17,7 @@ public partial class MeleeEnemy : Agent
     {
         base._Ready();
         CurrentFollowDistance = CloseFollowDistance;
-        PauseBetweenAttacksPoll = new Poll(PauseTimeBetweenAttacks);
+        PauseBetweenAttacksPoll = new Poll(PauseTimeBetweenAttacks + Fuzzer.Fuzz(0f, 0.3f, false));
         MeleeRangeShapeCast = GetNode<ShapeCast3D>("MeleeRangeShapeCast");
         MeleeRangeArea = GetNode<Area3D>("MeleeRangeArea");
         AllowedGoals.Add(Goal.MoveToTargetClose);
