@@ -11,7 +11,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public float WeakpointHealthDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float WeakpointStaggerDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
-    [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
+    [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float StaggerTimeInSeconds { get; protected set; } = 2.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
     [Export] public float DefaultTargetDistance { get; protected set; } = 0.5f;
@@ -31,18 +31,18 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected RayCast3D LineOfSightRayCast3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
     protected StaggerHealth StaggerHealth { get; set; }
-    protected bool IsStaggered { get; set; }
+    protected Poll MovementTargetAcquisitionPoll { get; set; }
+    protected Poll LineOfSightPoll { get; set; }
     protected float CharacterRadius { get; set; } = 0.5f;
-    protected double TimeSinceNavPoll { get; set; } = 5;
-    protected double TimeSinceLineOfSightPoll { get; set; } = 5;
+    protected float? CurrentFollowDistance;
+    protected bool IsStaggered { get; set; }
     protected bool QueuedForDeath { get; set; }
     protected bool TargetInLineOfSight { get; set; }
     protected bool FreezeMotion { get; set; }
-    protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
-    protected Goal CurrentGoal { get; set; }
     protected List<Goal> AllowedGoals = [];
+    protected Goal CurrentGoal { get; set; }
     protected List<AgentMovementState> MovementStates = [AgentMovementState.Still, AgentMovementState.DefaultMoving];
-    protected float? CurrentFollowDistance;
+    protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
     
     public override void _Ready()
     {
@@ -55,6 +55,9 @@ public abstract partial class Agent : HittableCharacterBody3D
         
         LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
         LineOfSightRayCast3D.Enabled = false;
+
+        MovementTargetAcquisitionPoll = new Poll(MovementTargetAcquisitionPollTimeInSeconds);
+        LineOfSightPoll = new Poll(LineOfSightPollTimeInSeconds);
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
         NavAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
@@ -140,49 +143,36 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void MoveToTarget(double delta)
     {
-        if (TimeSinceNavPoll > MovementTargetAcquisitionPollTimeInSeconds)
-        {
-            SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
-        }
-        else
-        {
-            TimeSinceNavPoll += delta;
-        }
+        if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
+        SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
     }
     
     protected virtual void MoveToCover(double delta)
     {
-        if (TimeSinceNavPoll > MovementTargetAcquisitionPollTimeInSeconds)
+        if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
+        if (IsMotionFrozen() || Target is null) return;
+        if (!TargetInLineOfSight)
         {
-            TimeSinceNavPoll = 0;
-            if (IsMotionFrozen() || Target is null) return;
-            if (!TargetInLineOfSight)
-            {
-                SetNavigationToTarget(CurrentFollowDistance);
-                return;
-            }
-            var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
-            if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
-            {
-                CurrentCoverSpot?.Unoccupy();
-                CurrentCoverSpot = null;
-                SetNavigationToTarget(CurrentFollowDistance); 
-            }
-            else
-            {
-                if (CurrentCoverSpot != bestCoverSpot)
-                {
-                    CurrentCoverSpot?.Unoccupy();
-                    CurrentCoverSpot = bestCoverSpot;
-                    CurrentCoverSpot.Occupy(this);
-                }
-
-                SetNavigationToCoverSpot();
-            }
+            SetNavigationToTarget(CurrentFollowDistance);
+            return;
+        }
+        var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
+        if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
+        {
+            CurrentCoverSpot?.Unoccupy();
+            CurrentCoverSpot = null;
+            SetNavigationToTarget(CurrentFollowDistance); 
         }
         else
         {
-            TimeSinceNavPoll += delta;
+            if (CurrentCoverSpot != bestCoverSpot)
+            {
+                CurrentCoverSpot?.Unoccupy();
+                CurrentCoverSpot = bestCoverSpot;
+                CurrentCoverSpot.Occupy(this);
+            }
+
+            SetNavigationToCoverSpot();
         }
     }
 
@@ -303,33 +293,27 @@ public abstract partial class Agent : HittableCharacterBody3D
     
     protected virtual void CalculateIfTargetInLineOfSight(double delta)
     {
-        if (TimeSinceLineOfSightPoll > LineOfSightPollTimeInSeconds)
+        if (!LineOfSightPoll.IsPollPinged(delta)) return;
+        if (Target is null)
         {
-            if (Target is null)
-            {
-                TargetInLineOfSight = false;
-                return;
-            }
+            TargetInLineOfSight = false;
+            return;
+        }
 
-            var ray = LineOfSightRayCast3D.Position.DirectionTo(ToLocal(Target.GlobalPosition));
-            LineOfSightRayCast3D.TargetPosition = ray * LineOfSightCheckRange;
-            LineOfSightRayCast3D.ForceRaycastUpdate();
-            if (!LineOfSightRayCast3D.IsColliding())
-            {
-                TargetInLineOfSight = true;
-                return;
-            }
-            var collided = LineOfSightRayCast3D.GetCollider();
-            if (collided == null)
-            {
-                TargetInLineOfSight = false;
-                return;
-            }
-            TargetInLineOfSight = collided.GetInstanceId() == Target.GetInstanceId();
-        }
-        else
+        var ray = LineOfSightRayCast3D.Position.DirectionTo(ToLocal(Target.GlobalPosition));
+        LineOfSightRayCast3D.TargetPosition = ray * LineOfSightCheckRange;
+        LineOfSightRayCast3D.ForceRaycastUpdate();
+        if (!LineOfSightRayCast3D.IsColliding())
         {
-            TimeSinceLineOfSightPoll += delta;
+            TargetInLineOfSight = true;
+            return;
         }
+        var collided = LineOfSightRayCast3D.GetCollider();
+        if (collided == null)
+        {
+            TargetInLineOfSight = false;
+            return;
+        }
+        TargetInLineOfSight = collided.GetInstanceId() == Target.GetInstanceId();
     }
 }

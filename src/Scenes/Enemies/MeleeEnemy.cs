@@ -2,21 +2,22 @@ using Godot;
 using System;
 using FirstPerson;
 using FirstPerson.Configuration;
+using FirstPerson.Helpers;
 
 public partial class MeleeEnemy : Agent
 {
     public float CloseFollowDistance { get; protected set; } = 1f;
-    public float PauseTimeBetweenAttacks { get; protected set; } = 2f;
+    public float PauseTimeBetweenAttacks { get; protected set; } = 1f;
     protected ShapeCast3D MeleeRangeShapeCast { get; set; }
     protected Area3D MeleeRangeArea { get; set; }
+    protected Poll PauseBetweenAttacksPoll { get; set; }
     protected bool IsAttacking { get; set; }
-    protected double TimeSinceLastAttackEnded { get; set; } = double.MaxValue;
     
     public override void _Ready()
     {
         base._Ready();
         CurrentFollowDistance = CloseFollowDistance;
-        
+        PauseBetweenAttacksPoll = new Poll(PauseTimeBetweenAttacks);
         MeleeRangeShapeCast = GetNode<ShapeCast3D>("MeleeRangeShapeCast");
         MeleeRangeArea = GetNode<Area3D>("MeleeRangeArea");
         AllowedGoals.Add(Goal.MoveToTargetClose);
@@ -68,21 +69,20 @@ public partial class MeleeEnemy : Agent
 
     protected virtual void HandleAttack(double delta)
     {
-        if (IsAttacking && !AnimationPlayer.IsPlaying())
+        if (IsAttacking && (!AnimationPlayer.IsPlaying() || AnimationPlayer.CurrentAnimation != "MeleeAttack" ))
         {
             IsAttacking = false;
-            //GD.Print("IsAttacking = false");
-            TimeSinceLastAttackEnded = 0;
+            PauseBetweenAttacksPoll.ResetPoll();
         }
         else
         {
-            TimeSinceLastAttackEnded += delta;
+            PauseBetweenAttacksPoll.AdvanceTimeWithoutPing(delta);
         }
         
-        if (!(TimeSinceLastAttackEnded > PauseTimeBetweenAttacks)) return;
-        if (!MeleeRangeArea.HasOverlappingBodies() || AnimationPlayer.IsPlaying()) return;
+        if (!MeleeRangeArea.HasOverlappingBodies() || 
+            (AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "MeleeAttack")) return;
+        if (!PauseBetweenAttacksPoll.IsPollPinged(delta)) return;
         AnimationPlayer.Play("MeleeAttack");
         IsAttacking = true;
-        //GD.Print("IsAttacking = true");
     }
 }

@@ -8,7 +8,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
-    [Export] public int Damage { get; set; } = 10;
+    [Export] public int HealthDamage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
     [Export] public int ShootRaycastLength { get; set; } = 50;
     [Export] public int InteractRaycastLength { get; set; } = 50;
@@ -20,7 +20,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float CrouchMovementMult { get; set; } = 0.6f;
     [Export] public float DefaultFov { get; set; }
     [Export] public float SprintFovMult { get; set; } = 1.05f;
-    [Export] public float SprintAnimationInSeconds { get; set; } = 0.15f;
+    [Export] public float SprintTransitionAnimationInSeconds { get; set; } = 0.15f;
     [Export] public float SprintMovementMult { get; set; } = 1.5f;
     [Export] public float CoyoteTimeInSec { get; set; } = 0.15f;
     [Export] public float ClamberVelocity { get; set; } = 10f;
@@ -310,7 +310,7 @@ public partial class Player : HittableCharacterBody3D
         FireCameraRaycast = false;
         if (!ShootRaycast.IsColliding()) return;
         var collided = ShootRaycast.GetCollider();
-        var hitParams = new HitParameters(Damage, StaggerDamage);
+        var hitParams = new HitParameters(HealthDamage, StaggerDamage);
         switch (collided)
         {
             case Hitbox hitbox:
@@ -356,13 +356,13 @@ public partial class Player : HittableCharacterBody3D
     public void PlayEnterSprintAnim()
     {
         var tween = CreateTween();
-        tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintAnimationInSeconds);
+        tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintTransitionAnimationInSeconds);
     }
 
     public void PlayExitSprintAnim()
     {
         var tween = CreateTween();
-        tween.TweenProperty(Camera, "fov", DefaultFov, SprintAnimationInSeconds);
+        tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);
     }
 
     public override void Hit(HitParameters hitParameters)

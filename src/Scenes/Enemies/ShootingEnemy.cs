@@ -1,5 +1,6 @@
 using FirstPerson;
 using FirstPerson.Configuration;
+using FirstPerson.Helpers;
 using Godot;
 
 public partial class ShootingEnemy : Agent
@@ -8,17 +9,19 @@ public partial class ShootingEnemy : Agent
     public double TimeToShoot { get; protected set; } = 0.3;
     public float MediumFollowDistance { get; protected set; } = 10f;
     
-    protected double TimeSinceLastShot { get; set; } = 0;
-    protected double TimeSinceShotForMovement { get; set; } = 0;
-    protected bool IsShooting { get; set; }
+    protected Poll TimeSinceLastShotPoll { get; set; }
+    protected Poll TimeSinceLastShotForMovementPoll { get; set; }
     protected PackedScene FireballPackedScene { get; set; }
     protected Node3D BulletSpawnPoint { get; set; }
+    protected bool IsShooting { get; set; }
     
     public override void _Ready()
     {
         base._Ready();
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        TimeSinceLastShotPoll = new Poll(TimeBetweenShots);
+        TimeSinceLastShotForMovementPoll = new Poll(TimeToShoot);
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
         CurrentFollowDistance = MediumFollowDistance;
@@ -59,31 +62,23 @@ public partial class ShootingEnemy : Agent
         }
         
         //time between shots
-        if (TimeSinceLastShot > TimeBetweenShots && TargetInLineOfSight)
+        if(TimeSinceLastShotPoll.IsPollPinged(delta))
         {
-            TimeSinceLastShot = 0;
-            TimeSinceShotForMovement = 0;
+            TimeSinceLastShotForMovementPoll.ResetPoll();
             IsShooting = true;
             LookAtTarget();
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
             fireBall.Initialize(Target.GlobalPosition, BulletSpawnPoint.GlobalPosition);
             AddChild(fireBall);
         }
-        else
-        {
-            TimeSinceLastShot += delta;
-        }
 
         //how long to stop moving when shooting
         if (IsShooting)
         {
-            if (TimeSinceShotForMovement > TimeToShoot)
+            //if (TimeSinceShotForMovement > TimeToShoot)
+            if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
             {
                 IsShooting = false;
-            }
-            else
-            {
-                TimeSinceShotForMovement += delta;
             }
         }
     }

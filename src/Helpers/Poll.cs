@@ -5,9 +5,10 @@ public class Poll
     public double PollTime { get; set; }
     public double TimeSincePoll { get; set; }
     
-    public Poll(double pollTime)
+    public Poll(double pollTime, double initialTimeSincePoll = double.MaxValue)
     {
         PollTime = pollTime;
+        TimeSincePoll = initialTimeSincePoll;
     }
 
     public bool IsPollPinged(double delta)
@@ -21,4 +22,8 @@ public class Poll
         TimeSincePoll += delta;
         return false;
     }
+
+    public void ResetPoll() => TimeSincePoll = 0;
+
+    public void AdvanceTimeWithoutPing(double delta) => TimeSincePoll += delta;
 }
