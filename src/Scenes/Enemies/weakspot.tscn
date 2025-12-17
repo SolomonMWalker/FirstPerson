@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2eygjuy7xf7v"]
+
+[ext_resource type="Script" uid="uid://dafhp6tw6rb6o" path="res://src/Scenes/Enemies/Weakspot.cs" id="1_cq13t"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_l2pse"]
+
+[node name="Weakspot" type="Area3D"]
+collision_layer = 34
+collision_mask = 0
+script = ExtResource("1_cq13t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_l2pse")

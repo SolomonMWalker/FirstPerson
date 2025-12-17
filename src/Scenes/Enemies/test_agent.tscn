@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://dgmlppgmwkqhi"]
+[gd_scene load_steps=14 format=3 uid="uid://dgmlppgmwkqhi"]
 
 [ext_resource type="Script" uid="uid://dk2tcntvhrrr1" path="res://src/Scenes/Enemies/TestAgent.cs" id="1_l2pse"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_g81dg"]
+[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Enemies/weakspot.tscn" id="2_w4d1h"]
 [ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="3_w4d1h"]
+[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Enemies/hitbox.tscn" id="4_w4d1h"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8uh7m"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wcbh4"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_8uh7m"]
 
@@ -39,10 +41,27 @@ tracks/0/keys = {
 "values": [Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_w4d1h"]
+resource_name = "shot"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.86668456, 0.10830846, 0.9469846, 1), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ykrsh"]
 _data = {
 &"RESET": SubResource("Animation_ppyta"),
-&"shot": SubResource("Animation_6uqi0")
+&"Shot": SubResource("Animation_6uqi0"),
+&"WeakspotShot": SubResource("Animation_w4d1h")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
@@ -53,13 +72,26 @@ material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
 [node name="TestAgent" type="CharacterBody3D"]
-collision_layer = 3
+collision_layer = 33
 collision_mask = 3
 script = ExtResource("1_l2pse")
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_8uh7m")
+shape = SubResource("CapsuleShape3D_wcbh4")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.4900211, -0.502)
+modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
+texture_filter = 0
+texture = ExtResource("3_w4d1h")
+
+[node name="HitBoxes" type="Node3D" parent="."]
+
+[node name="Weakspot" parent="HitBoxes" instance=ExtResource("2_w4d1h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4900211, 0)
+
+[node name="HitBox" parent="HitBoxes" instance=ExtResource("4_w4d1h")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_8uh7m")
@@ -82,12 +114,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.59
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_4gyqm")
-
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.45539224, -0.5023635)
-modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
-texture_filter = 0
-texture = ExtResource("3_w4d1h")
 
 [node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5458455, 0.096024185, -1.0322562)

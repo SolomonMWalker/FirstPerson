@@ -1,11 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://bkmprk5mnhfsx"]
+[gd_scene load_steps=17 format=3 uid="uid://bkmprk5mnhfsx"]
 
 [ext_resource type="Script" uid="uid://cwyu76lb0mgo1" path="res://src/Scenes/Enemies/MeleeEnemy.cs" id="2_qpf5h"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_w0ji2"]
 [ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="3_fq1wb"]
+[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Enemies/weakspot.tscn" id="3_ruoun"]
+[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Enemies/hitbox.tscn" id="4_2a4x8"]
 [ext_resource type="Shape3D" uid="uid://d0kj6uh42onfs" path="res://src/Scenes/Enemies/melee_enemy_melee_range_shape.tres" id="4_w0ji2"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8uh7m"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3xpap"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_8uh7m"]
 
@@ -100,22 +102,6 @@ tracks/3/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_6uqi0"]
-resource_name = "shot"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_color")
-tracks/0/interp = 0
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1)]
-}
-
 [sub_resource type="Animation" id="Animation_w0ji2"]
 resource_name = "Staggered"
 length = 2.0
@@ -149,12 +135,45 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_6uqi0"]
+resource_name = "shot"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0.20784314, 0.11372549, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fq1wb"]
+resource_name = "shot"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:surface_material_override/0:albedo_color")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.86668456, 0.10830846, 0.9469846, 1), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ykrsh"]
 _data = {
 &"MeleeAttack": SubResource("Animation_qpf5h"),
 &"RESET": SubResource("Animation_ppyta"),
+&"Shot": SubResource("Animation_6uqi0"),
 &"Staggered": SubResource("Animation_w0ji2"),
-&"shot": SubResource("Animation_6uqi0")
+&"WeakspotShot": SubResource("Animation_fq1wb")
 }
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
@@ -165,13 +184,27 @@ material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
 [node name="MeleeEnemy" type="CharacterBody3D"]
-collision_layer = 3
+collision_layer = 33
 collision_mask = 3
 script = ExtResource("2_qpf5h")
+InitialStaggerHealth = 25
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_8uh7m")
+shape = SubResource("CapsuleShape3D_3xpap")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.4900211, -0.502)
+modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
+texture_filter = 0
+texture = ExtResource("3_fq1wb")
+
+[node name="HitBoxes" type="Node3D" parent="."]
+
+[node name="Weakspot" parent="HitBoxes" instance=ExtResource("3_ruoun")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4900211, 0)
+
+[node name="HitBox" parent="HitBoxes" instance=ExtResource("4_2a4x8")]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_8uh7m")
@@ -195,12 +228,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.59
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
 transform = Transform3D(1.301559, 0, 0, 0, -0.33427006, -1.3439952, 0, 1.2053392, -0.37272277, 0.1, 0.27, 0.556)
 mesh = SubResource("BoxMesh_4gyqm")
-
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(4.202, 0, 0, 0, 3.457, 0, 0, 0, 1, 0, 0.45539224, -0.5023635)
-modulate = Color(0.24291638, 0.0023274226, 0.26210555, 1)
-texture_filter = 0
-texture = ExtResource("3_fq1wb")
 
 [node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5458455, 0.096024185, -1.0322562)

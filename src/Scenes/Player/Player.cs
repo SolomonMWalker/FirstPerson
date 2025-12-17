@@ -8,6 +8,8 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
+    [Export] public int Damage { get; set; } = 10;
+    [Export] public int StaggerDamage { get; set; } = 10;
     [Export] public int ShootRaycastLength { get; set; } = 50;
     [Export] public int InteractRaycastLength { get; set; } = 50;
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
@@ -308,9 +310,15 @@ public partial class Player : HittableCharacterBody3D
         FireCameraRaycast = false;
         if (!ShootRaycast.IsColliding()) return;
         var collided = ShootRaycast.GetCollider();
-        if (collided is HittableCharacterBody3D shootable)
+        var hitParams = new HitParameters(Damage, StaggerDamage);
+        switch (collided)
         {
-            shootable.Hit(new HitParameters(10, 10));
+            case Hitbox hitbox:
+                hitbox.Hit(hitParams);
+                break;
+            case Weakspot weakspot:
+                weakspot.Hit(hitParams);
+                break;
         }
     }
 
@@ -355,5 +363,11 @@ public partial class Player : HittableCharacterBody3D
     {
         var tween = CreateTween();
         tween.TweenProperty(Camera, "fov", DefaultFov, SprintAnimationInSeconds);
+    }
+
+    public override void Hit(HitParameters hitParameters)
+    {
+        base.Hit(hitParameters);
+        AnimationPlayer.Play("Shot");   
     }
 }

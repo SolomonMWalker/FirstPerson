@@ -8,6 +8,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public int Health { get; protected set; } = 25;
     [Export] public int InitialStaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
+    [Export] public float WeakpointHealthDamageMultiplier { get; protected set; } = 1.5f;
+    [Export] public float WeakpointStaggerDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 3.0f;
     [Export] public float StaggerTimeInSeconds { get; protected set; } = 2.0f;
@@ -90,9 +92,12 @@ public abstract partial class Agent : HittableCharacterBody3D
     public override void Hit(HitParameters hitParameters)
     {
         base.Hit(hitParameters);
-        DecreaseHealth(hitParameters.HealthDamage);
-        DecreaseStaggerHealth(hitParameters.StaggerDamage);
-        if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play("shot");
+        var healthDamageMult = hitParameters.IsWeakspot ? WeakpointHealthDamageMultiplier : 1;
+        var staggerDamageMult = hitParameters.IsWeakspot ? WeakpointStaggerDamageMultiplier : 1;
+        DecreaseHealth( Mathf.RoundToInt(hitParameters.HealthDamage * healthDamageMult));
+        DecreaseStaggerHealth(Mathf.RoundToInt(hitParameters.StaggerDamage * staggerDamageMult));
+        if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play(
+            hitParameters.IsWeakspot ? "WeakspotShot" : "Shot");
     }
 
     protected virtual bool IsMotionFrozen()

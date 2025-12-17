@@ -47,6 +47,7 @@ shadow_opacity = 0.66
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="ShootingEnemy" parent="Enemies" instance=ExtResource("4_f1ycf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.840225, 0, 6.2905197)
 InitialStaggerHealth = 25
 
 [node name="CoverSpotController" type="Node3D" parent="."]

@@ -20,10 +20,11 @@ ToDo
     X implement line of sight mechanics to target for navigation
         if you can't see the target to shoot them, move to somewhere where you can.
     X move from fields to properties
-    Implement weakspot collider objects
+    X Implement weakspot collider objects
+        included separating geometry bodies from hitboxes
     X Implement stagger system
-        implement stagger health regaining over time
-            waits until a pause after stagger damage applied before it starts regaining
+        X implement stagger health regaining over time
+            X waits until a pause after stagger damage applied before it starts regaining
     Implement aiming "fuzziness" when target is moving
     Implement Target Position "fuzziness" for agents moving to target
         maybe include an overload so that non-fuzzy movements can happen too
