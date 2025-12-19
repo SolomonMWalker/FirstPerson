@@ -7,10 +7,13 @@ public partial class ShootingEnemy : Agent
 {    
     public double TimeBetweenShots { get; protected set; } = 1.5;
     public double TimeToShoot { get; protected set; } = 0.3;
+    public double TimeBetweenAccuracyChecks { get; protected set; } = 0.2;
     public float MediumFollowDistance { get; protected set; } = 10f;
     
     protected Poll TimeSinceLastShotPoll { get; set; }
     protected Poll TimeSinceLastShotForMovementPoll { get; set; }
+    protected Poll TimeSinceAccuracyCheckPoll { get; set; }
+    protected AccuracyController AccuracyController { get; set; }
     protected PackedScene FireballPackedScene { get; set; }
     protected Node3D BulletSpawnPoint { get; set; }
     protected bool IsShooting { get; set; }
@@ -22,6 +25,8 @@ public partial class ShootingEnemy : Agent
         Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeSinceLastShotForMovementPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
+        TimeSinceAccuracyCheckPoll = new Poll(TimeBetweenAccuracyChecks + Fuzzer.Fuzz(0f, 0.05f, false));
+        AccuracyController = new AccuracyController();
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
         CurrentFollowDistance = MediumFollowDistance;
@@ -34,7 +39,16 @@ public partial class ShootingEnemy : Agent
         base._Process(delta);
         HandleShooting(delta);
     }
-    
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        if (TimeSinceAccuracyCheckPoll.IsPollPinged(delta))
+        {
+            AccuracyController.CheckTargetForAccuracy(TimeBetweenAccuracyChecks, Target);
+        }
+    }
+
     protected override bool IsMotionFrozen()
     {
         return IsShooting || base.IsMotionFrozen();
@@ -72,7 +86,8 @@ public partial class ShootingEnemy : Agent
             IsShooting = true;
             LookAtTarget();
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
-            fireBall.Initialize(Target.GlobalPosition, BulletSpawnPoint.GlobalPosition);
+            var accuracyAppliedTargetPosition = AccuracyController.ApplyAccuracyToTargetPosition(Target.GlobalPosition);
+            fireBall.Initialize(accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition);
             AddChild(fireBall);
         }
 

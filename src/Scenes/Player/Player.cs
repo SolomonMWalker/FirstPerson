@@ -311,6 +311,10 @@ public partial class Player : HittableCharacterBody3D
         if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") 
             || !ShootRaycast.IsColliding()) return;
         var collided = ShootRaycast.GetCollider();
+        if (collided is CollisionObject3D colObject)
+        {
+            GD.Print($"layer hit {colObject.CollisionLayer}");
+        }
         var hitParams = new HitParameters(HealthDamage, StaggerDamage);
         switch (collided)
         {
