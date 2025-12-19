@@ -11,7 +11,7 @@ public class AccuracyController
     public bool AccuracyMaxed { get; private set; }
     public double ZeroVelocityThreshold { get; private set; } = 0.001f;
     //max difference in each axis TargetPosition of shot can vary
-    public double MaxAccuracyVariance { get; private set; } = 2f;
+    public double MaxAccuracyVariance { get; private set; } = 3f;
     public double CurrentAccuracyVariance { get; private set; }
 
     public AccuracyController(double? timeToFullAccuracy = null)
@@ -54,10 +54,17 @@ public class AccuracyController
         }
     }
 
-    public Vector3 ApplyAccuracyToTargetPosition(Vector3 targetPosition)
+    public Vector3 ApplyAccuracyToTargetPosition(Vector3 targetPosition, bool includeYAxis = false)
     {
-        return TargetIsStopped ? Fuzzer.Fuzz(targetPosition, (float) CurrentAccuracyVariance) 
-            : Fuzzer.Fuzz(targetPosition, (float) MaxAccuracyVariance);
+        var accuracyVariance = TargetIsStopped ? (float)CurrentAccuracyVariance : (float)MaxAccuracyVariance;
+        if (includeYAxis)
+        {
+            return Fuzzer.Fuzz(targetPosition, accuracyVariance);
+        }
+
+        var x = Fuzzer.Fuzz(targetPosition.X, accuracyVariance);
+        var z = Fuzzer.Fuzz(targetPosition.Z, accuracyVariance);
+        return new Vector3(x, targetPosition.Y, z);
     }
         
 }

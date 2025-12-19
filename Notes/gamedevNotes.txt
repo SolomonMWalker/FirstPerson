@@ -25,15 +25,15 @@ ToDo
     X Implement stagger system
         X implement stagger health regaining over time
             X waits until a pause after stagger damage applied before it starts regaining
-    Implement aiming "fuzziness" when target is moving
-    Implement Target Position "fuzziness" for agents moving to target
-        maybe include an overload so that non-fuzzy movements can happen too
+    X Implement aiming "fuzziness" when target is moving
+    X Implement Target Position "fuzziness" for agents moving to target
+        X maybe include an overload so that non-fuzzy movements can happen too
     
 IDEA
     range enemies don't wanna be in close, always try to run away
         provide some melee enemies each encounter to increase pressure   
-    give each agent a MotionFrozen() method that takes a list of bools, and if any of them are true, freeze motion
-        allows inheritance by just adding to this list 
+    X give each agent a MotionFrozen() method that takes a list of bools, and if any of them are true, freeze motion
+        X overload with new values in each subclass
     
 Enemy type ideas
     fireball with explosion

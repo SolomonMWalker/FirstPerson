@@ -16,6 +16,7 @@ public partial class MeleeEnemy : Agent
     public override void _Ready()
     {
         base._Ready();
+        UseMoveToTargetFuzziness = true;
         CurrentFollowDistance = CloseFollowDistance;
         PauseBetweenAttacksPoll = new Poll(PauseTimeBetweenAttacks + Fuzzer.Fuzz(0f, 0.3f, false));
         MeleeRangeShapeCast = GetNode<ShapeCast3D>("MeleeRangeShapeCast");

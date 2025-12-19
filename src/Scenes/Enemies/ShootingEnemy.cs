@@ -21,6 +21,7 @@ public partial class ShootingEnemy : Agent
     public override void _Ready()
     {
         base._Ready();
+        UseMoveToTargetFuzziness = true;
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         Target = GetNode<FirstPerson.CustomTypes.HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
@@ -37,7 +38,7 @@ public partial class ShootingEnemy : Agent
     public override void _Process(double delta)
     {
         base._Process(delta);
-        HandleShooting(delta);
+        if(!ShouldSkipShooting()) HandleShooting(delta);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -67,16 +68,17 @@ public partial class ShootingEnemy : Agent
         }
     }
 
+    protected virtual bool ShouldSkipShooting()
+    {
+        if (!IsActivityFrozen()) return false;
+        if (!IsStaggered) return true;
+        IsShooting = false;
+        TimeSinceLastShotPoll.ResetPoll();
+        return true;
+    }
+
     protected virtual void HandleShooting(double delta)
     {
-        if (IsActivityFrozen())
-        {
-            if (!IsStaggered) return;
-            IsShooting = false;
-            TimeSinceLastShotPoll.ResetPoll();
-            return;
-        }
-        
         //time between shots
         if(TimeSinceLastShotPoll.IsPollPinged(delta))
         {

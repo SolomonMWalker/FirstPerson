@@ -1,5 +1,6 @@
 using Godot;
 using FirstPerson.CustomTypes;
+using FirstPerson.Helpers;
 
 public partial class Explosion : Node3D
 {
@@ -9,7 +10,7 @@ public partial class Explosion : Node3D
     //private List<CollisionObject3D> ObjectsHit { get; set; } = [];
     private ShapeCast3D ShapeCast3D { get; set; }
     private Vector3 InitialGlobalPosition { get; set; }
-    private double TimeAlive { get; set; }
+    private Poll TimeAlivePoll { get; set; }
     
     public void Initialize(Vector3 globalPosition) => InitialGlobalPosition = globalPosition;
 
@@ -18,18 +19,16 @@ public partial class Explosion : Node3D
         base._Ready();
         GlobalPosition = InitialGlobalPosition;
         ShapeCast3D = GetNode<ShapeCast3D>("ShapeCast3D");
+        TimeAlivePoll = new Poll(LifetimeInSec, 0);
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (TimeAlive > LifetimeInSec)
+        if (TimeAlivePoll.IsPollPinged(delta))
         {
             QueueFree();
-        }
-        else
-        {
-            TimeAlive += delta;
+            return;
         }
 
         if (!ShapeCast3D.IsColliding()) return;

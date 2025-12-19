@@ -9,6 +9,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public int Health { get; protected set; } = 25;
     [Export] public int InitialStaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
+    [Export] public bool UseMoveToTargetFuzziness { get; protected set; }
+    [Export] public float MoveToTargetFuzziness { get; protected set; } = 0.1f;
     [Export] public float TimeBeforeNextStagger { get; protected set; } = 4;
     [Export] public float TimeBeforeStaggerHealthRegen { get; protected set; } = 2.5f;
     [Export] public float StaggerRegenPercentPerSecond { get; protected set; } = 50;
@@ -230,7 +232,7 @@ public abstract partial class Agent : HittableCharacterBody3D
             CurrentFollowDistance ?? 0);
         var target = !distance.HasValue || distance == 0 || !CurrentFollowDistance.HasValue 
             ? Target.GlobalPosition : point;
-        
+        target = UseMoveToTargetFuzziness ? Fuzzer.Fuzz(target, MoveToTargetFuzziness) : target;
         if (!NavAgentMovementTarget.Equals(target))
         {
             NavAgentMovementTarget = target;

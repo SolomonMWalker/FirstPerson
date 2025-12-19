@@ -137,7 +137,7 @@ public partial class Player : HittableCharacterBody3D
     public override void Hit(HitParameters hitParameters)
     {
         base.Hit(hitParameters);
-        AnimationPlayer.Play("Shot");   
+        AnimationPlayer.Play("Shot");
     }
 
     private void HandleMovement(double delta)
