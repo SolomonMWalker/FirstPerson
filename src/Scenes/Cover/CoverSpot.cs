@@ -1,10 +1,10 @@
+using FirstPerson.CustomTypes;
 using Godot;
-using System;
 
 public partial class CoverSpot : Node3D
 {
-    public bool Occupied { get; private set; } = false;
-    public HittableCharacterBody3D Occupier { get; private set; } = null;
+    public bool Occupied { get; private set; }
+    public HittableCharacterBody3D Occupier { get; private set; }
     public bool IsViable => IsTargetInAngleRange;
 
     private Node3D Player { get; set; }

@@ -1,12 +1,12 @@
 using Godot;
-using System.Collections.Generic;
+using FirstPerson.CustomTypes;
 
 public partial class Explosion : Node3D
 {
     public double LifetimeInSec { get; private set; } = 0.25;
-    public int Damage { get; private set; } = 0;
+    public int Damage { get; private set; }
 
-    private List<CollisionObject3D> ObjectsHit { get; set; } = [];
+    //private List<CollisionObject3D> ObjectsHit { get; set; } = [];
     private ShapeCast3D ShapeCast3D { get; set; }
     private Vector3 InitialGlobalPosition { get; set; }
     private double TimeAlive { get; set; }
@@ -36,14 +36,12 @@ public partial class Explosion : Node3D
         for (int index = 0; index < ShapeCast3D.GetCollisionCount(); index++)
         {
             var collided = ShapeCast3D.GetCollider(index);
-            if (collided is CollisionObject3D colObj3D)
+            if (collided is not CollisionObject3D colObj3D) continue;
+            ShapeCast3D.AddException(colObj3D);
+            //ObjectsHit.Add(colObj3D);
+            if (colObj3D is HittableCharacterBody3D shootable)
             {
-                ShapeCast3D.AddException(colObj3D);
-                ObjectsHit.Add(colObj3D);  
-                if (colObj3D is HittableCharacterBody3D shootable)
-                {
-                    shootable.Hit(new HitParameters(Damage));
-                }
+                shootable.Hit(new HitParameters(Damage));
             }
         }
     }

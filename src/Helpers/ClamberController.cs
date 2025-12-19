@@ -1,7 +1,9 @@
 using System;
-using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
+
+namespace FirstPerson.Helpers;
 
 public partial class ClamberController : Node3D
 {
@@ -10,7 +12,7 @@ public partial class ClamberController : Node3D
     //[Export] public float MaxAngleInDeg { get; private set; } = 10f;
     [Export] public float WaitPerCallInSec { get; private set; } = 0.25f;
 
-    private double TimeSinceLastClamberCall { get; set; } = 0;
+    private double TimeSinceLastClamberCall { get; set; }
     private List<List<RayCast3D>> Raycasts { get; set; } = [];
     private Node3D RaycastsParent { get; set; }
     private Vector2 TopLeftCorner { get; set; }
@@ -75,7 +77,7 @@ public partial class ClamberController : Node3D
             .First();
         return (true, new RaycastCollisionResult
         {
-            globalPositionToClamberTo = clamberPoint.globalEndpoint
+            GlobalPositionToClamberTo = clamberPoint.globalEndpoint
         });
         //took out extra "check for angle" code for now
     }
@@ -96,5 +98,5 @@ public partial class ClamberController : Node3D
 
 public class RaycastCollisionResult
 {
-    public Vector3? globalPositionToClamberTo;
+    public Vector3? GlobalPositionToClamberTo { get; init; }
 }

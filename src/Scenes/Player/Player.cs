@@ -1,7 +1,9 @@
 using System;
+using FirstPerson.CustomTypes;
+using FirstPerson.Helpers;
 using Godot;
 
-namespace FirstPerson;
+namespace FirstPerson.Scenes.Player;
 
 public partial class Player : HittableCharacterBody3D
 {
@@ -27,15 +29,15 @@ public partial class Player : HittableCharacterBody3D
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     
-    private float ClamberXZDistanceSquared { get; set; }
+    private float ClamberXzDistanceSquared { get; set; }
     private Vector3 ClamberDestination { get; set; }
-    private Vector2 ClamberDestinationXZ { get; set; }
+    private Vector2 ClamberDestinationXz { get; set; }
     private Vector3 ClamberStartPoint { get; set; }
-    private Vector2 ClamberStartPointXZ { get; set; }
-    private Vector2 ClamberXZDirection { get; set; }
+    private Vector2 ClamberStartPointXz { get; set; }
+    private Vector2 ClamberXzDirection { get; set; }
 
-    private double TimeSinceLastInteractCheck { get; set; }
-    private double TimeInCoyoteTime { get; set; }
+    private Poll InteractCheckPoll { get; set; }
+    private Poll CoyoteTimePoll { get; set; }
     private bool CanJump { get; set; }
     private bool FireCameraRaycast { get; set; }
     private bool RotateCamera { get; set; }
@@ -81,6 +83,8 @@ public partial class Player : HittableCharacterBody3D
     {
         base._Ready();
         Input.MouseMode = Input.MouseModeEnum.Captured;
+        CoyoteTimePoll = new Poll(CoyoteTimeInSec);
+        InteractCheckPoll = new Poll(InteractRaycastWaitInSec);
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CollisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
         ClamberController = GetNode<ClamberController>("CollisionShape3D/ClamberController");
@@ -98,8 +102,8 @@ public partial class Player : HittableCharacterBody3D
         DefaultCollisionShapePositionY = CollisionShape3d.Position.Y;
         DefaultFov = Camera.Fov;
     }
-    
-    public float GetBottomOfCharacter() => GlobalPosition.Y - CollisionBoxShape.Size.Y / 2;
+
+    private float GetBottomOfCharacter() => GlobalPosition.Y - CollisionBoxShape.Size.Y / 2;
 
     public override void _Process(double delta)
     {
@@ -116,6 +120,28 @@ public partial class Player : HittableCharacterBody3D
         base._PhysicsProcess(delta);
         HandleInteractCheck(delta);
         HandleFire();
+        HandleMovement(delta);
+        HandleRotation();
+    }
+    
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        base._UnhandledInput(@event);
+        if (@event is InputEventMouseMotion mouseMotionEvent)
+        {
+            RelativeMousePosition = mouseMotionEvent.Relative;
+            RotateCamera = true;
+        }
+    }
+    
+    public override void Hit(HitParameters hitParameters)
+    {
+        base.Hit(hitParameters);
+        AnimationPlayer.Play("Shot");   
+    }
+
+    private void HandleMovement(double delta)
+    {
         if (CurrentPlayerActionState == PlayerActionState.Clambering)
         {
             Clamber();
@@ -123,8 +149,7 @@ public partial class Player : HittableCharacterBody3D
         }
         if (CurrentPlayerActionState == PlayerActionState.CoyoteTime)
         {
-            TimeInCoyoteTime += delta;
-            if (TimeInCoyoteTime > CoyoteTimeInSec)
+            if (CoyoteTimePoll.IsPollPinged(delta))
             {
                 CanJump = false;
                 CurrentPlayerActionState = PlayerActionState.InAir;
@@ -132,7 +157,7 @@ public partial class Player : HittableCharacterBody3D
         }
         HandleCrouch();
         HandleSprint();
-        var movementInput = GetXZDirectionalMovement();
+        var movementInput = GetXzDirectionalMovement();
         var tempVelocity = Vector3.Zero;
         if (IsOnFloor())
         {
@@ -152,7 +177,7 @@ public partial class Player : HittableCharacterBody3D
             if (CanJump && CurrentPlayerActionState != PlayerActionState.CoyoteTime)
             {
                 CurrentPlayerActionState = PlayerActionState.CoyoteTime;
-                TimeInCoyoteTime = 0;
+                CoyoteTimePoll.ResetPoll();
             }
             else if(CurrentPlayerActionState != PlayerActionState.CoyoteTime &&
                     CurrentPlayerActionState != PlayerActionState.InAir)
@@ -183,25 +208,16 @@ public partial class Player : HittableCharacterBody3D
         tempVelocity.Z = directionV2.Y * Speed * movementMult;
         Velocity = tempVelocity;
         MoveAndSlide();
-
-        if (RotateCamera)
-        {
-            RotateCamera = false;
-            LookAtMouse();
-        }
     }
-    
-    public override void _UnhandledInput(InputEvent @event)
+
+    private void HandleRotation()
     {
-        base._UnhandledInput(@event);
-        if (@event is InputEventMouseMotion mouseMotionEvent)
-        {
-            RelativeMousePosition = mouseMotionEvent.Relative;
-            RotateCamera = true;
-        }
+        if (!RotateCamera) return;
+        RotateCamera = false;
+        LookAtMouse();
     }
 
-    public void LookAtMouse()
+    private void LookAtMouse()
     {
         var lookDir = RelativeMousePosition;
         var rotationY = Camera.Rotation.Y - lookDir.X * CameraSensitivity;
@@ -210,8 +226,8 @@ public partial class Player : HittableCharacterBody3D
         Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
         CollisionShape3d.SetRotation(new Vector3(0, Camera.Rotation.Y, 0));
     }
-    
-    public void Clamber()
+
+    private void Clamber()
     {
         if (GetBottomOfCharacter() < ClamberDestination.Y + ClamberController.ClamberMargin)
         { //move up to clamber Y
@@ -219,9 +235,9 @@ public partial class Player : HittableCharacterBody3D
             MoveAndSlide();
             return;
         }
-        if (ClamberXZDistanceSquared > ClamberStartPointXZ.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
+        if (ClamberXzDistanceSquared > ClamberStartPointXz.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
         { //move forward to clamber Z
-            Velocity = new Vector3(ClamberXZDirection.X, 0, ClamberXZDirection.Y) * ClamberVelocity;
+            Velocity = new Vector3(ClamberXzDirection.X, 0, ClamberXzDirection.Y) * ClamberVelocity;
             MoveAndSlide();
             return;
         }
@@ -229,7 +245,7 @@ public partial class Player : HittableCharacterBody3D
         CurrentPlayerActionState = PlayerActionState.OnFloor;
     }
 
-    public Vector2 GetXZDirectionalMovement()
+    private static Vector2 GetXzDirectionalMovement()
     {
         var movementInput = Vector2.Zero;
         if (Input.IsActionPressed("MoveForward")) //forward
@@ -252,7 +268,7 @@ public partial class Player : HittableCharacterBody3D
         return movementInput;
     }
 
-    public void HandleCrouch()
+    private void HandleCrouch()
     {
         if (!Input.IsActionJustPressed("Crouch") || !IsOnFloor()) return;
         if (CurrentMovementState == PlayerMovementState.Crouching)
@@ -267,7 +283,7 @@ public partial class Player : HittableCharacterBody3D
         }
     }
 
-    public void HandleSprint()
+    private void HandleSprint()
     {
         if (Input.IsActionJustPressed("Sprint") && IsOnFloor())
         {
@@ -289,32 +305,32 @@ public partial class Player : HittableCharacterBody3D
         }
     }
 
-    public bool TryHandleClamber()
+    private bool TryHandleClamber()
     {
         var clamberCheck = ClamberController.AttemptClamber();
         if (!clamberCheck.success) return false;
         CurrentPlayerActionState = PlayerActionState.Clambering;
-        ClamberDestination = clamberCheck.result.globalPositionToClamberTo ?? Vector3.Zero;
-        ClamberDestinationXZ = new Vector2(ClamberDestination.X, ClamberDestination.Z);
+        ClamberDestination = clamberCheck.result.GlobalPositionToClamberTo ?? Vector3.Zero;
+        ClamberDestinationXz = new Vector2(ClamberDestination.X, ClamberDestination.Z);
         ClamberStartPoint = GlobalPosition;
-        ClamberStartPointXZ = new Vector2(GlobalPosition.X, GlobalPosition.Z);
-        ClamberXZDirection = ClamberStartPointXZ
+        ClamberStartPointXz = new Vector2(GlobalPosition.X, GlobalPosition.Z);
+        ClamberXzDirection = ClamberStartPointXz
             .DirectionTo(new Vector2(ClamberDestination.X, ClamberDestination.Z));
-        ClamberXZDistanceSquared = ClamberStartPointXZ.DistanceSquaredTo(ClamberDestinationXZ);
+        ClamberXzDistanceSquared = ClamberStartPointXz.DistanceSquaredTo(ClamberDestinationXz);
         return true;
     }
 
-    public void HandleFire()
+    private void HandleFire()
     {
         if (!FireCameraRaycast) return;
         FireCameraRaycast = false;
         if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") 
             || !ShootRaycast.IsColliding()) return;
         var collided = ShootRaycast.GetCollider();
-        if (collided is CollisionObject3D colObject)
-        {
-            GD.Print($"layer hit {colObject.CollisionLayer}");
-        }
+        // if (collided is CollisionObject3D colObject)
+        // {
+        //     GD.Print($"layer hit {colObject.CollisionLayer}");
+        // }
         var hitParams = new HitParameters(HealthDamage, StaggerDamage);
         switch (collided)
         {
@@ -327,20 +343,16 @@ public partial class Player : HittableCharacterBody3D
         }
     }
 
-    public void HandleInteractCheck(double delta)
+    private void HandleInteractCheck(double delta)
     {
-        if (TimeSinceLastInteractCheck < InteractRaycastWaitInSec)
+        if (InteractCheckPoll.IsPollPinged(delta))
         {
-            TimeSinceLastInteractCheck += delta;
-            return;
-        }
-        TimeSinceLastInteractCheck = 0;
-        
-        if (!InteractRaycast.IsColliding()) return;
-        //if interactable is on screen, turn on interact prompt
+            //if (!InteractRaycast.IsColliding()) return;
+            //if interactable is on screen, turn on interact prompt
+        }        
     }
 
-    public void PlayEnterCrouchAnim()
+    private void PlayEnterCrouchAnim()
     {
         EnterCrouchTween = GetTree().CreateTween();
         EnterCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
@@ -349,7 +361,7 @@ public partial class Player : HittableCharacterBody3D
             DefaultCollisionShapePositionY * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
     }
 
-    public void PlayExitCrouchAnim()
+    private void PlayExitCrouchAnim()
     {
         ExitCrouchTween = GetTree().CreateTween();
         ExitCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
@@ -358,21 +370,15 @@ public partial class Player : HittableCharacterBody3D
             DefaultCollisionShapePositionY, CrouchAnimationInSeconds);
     }
 
-    public void PlayEnterSprintAnim()
+    private void PlayEnterSprintAnim()
     {
         var tween = CreateTween();
         tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintTransitionAnimationInSeconds);
     }
 
-    public void PlayExitSprintAnim()
+    private void PlayExitSprintAnim()
     {
         var tween = CreateTween();
         tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);
-    }
-
-    public override void Hit(HitParameters hitParameters)
-    {
-        base.Hit(hitParameters);
-        AnimationPlayer.Play("Shot");   
     }
 }

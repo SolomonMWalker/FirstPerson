@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using FirstPerson.CustomTypes;
 
 public partial class Hitbox : Area3D
 {

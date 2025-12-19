@@ -1,5 +1,7 @@
 ﻿using Godot;
 
+namespace FirstPerson.CustomTypes;
+
 [GlobalClass]
 public partial class HittableCharacterBody3D : CharacterBody3D
 {

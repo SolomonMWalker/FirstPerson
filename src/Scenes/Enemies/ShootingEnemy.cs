@@ -22,7 +22,7 @@ public partial class ShootingEnemy : Agent
     {
         base._Ready();
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
-        Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        Target = GetNode<FirstPerson.CustomTypes.HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeSinceLastShotForMovementPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeSinceAccuracyCheckPoll = new Poll(TimeBetweenAccuracyChecks + Fuzzer.Fuzz(0f, 0.05f, false));
@@ -71,11 +71,9 @@ public partial class ShootingEnemy : Agent
     {
         if (IsActivityFrozen())
         {
-            if (IsStaggered)
-            {
-                IsShooting = false;
-                TimeSinceLastShotPoll.ResetPoll();
-            }
+            if (!IsStaggered) return;
+            IsShooting = false;
+            TimeSinceLastShotPoll.ResetPoll();
             return;
         }
         
@@ -92,13 +90,11 @@ public partial class ShootingEnemy : Agent
         }
 
         //how long to stop moving when shooting
-        if (IsShooting)
+        if (!IsShooting) return;
+        //if (TimeSinceShotForMovement > TimeToShoot)
+        if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
         {
-            //if (TimeSinceShotForMovement > TimeToShoot)
-            if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
-            {
-                IsShooting = false;
-            }
+            IsShooting = false;
         }
     }
 

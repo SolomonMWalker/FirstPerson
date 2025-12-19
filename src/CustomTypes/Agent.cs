@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using FirstPerson;
+using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 using Godot;
 
@@ -8,6 +9,9 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public int Health { get; protected set; } = 25;
     [Export] public int InitialStaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
+    [Export] public float TimeBeforeNextStagger { get; protected set; } = 4;
+    [Export] public float TimeBeforeStaggerHealthRegen { get; protected set; } = 2.5f;
+    [Export] public float StaggerRegenPercentPerSecond { get; protected set; } = 50;
     [Export] public float WeakpointHealthDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float WeakpointStaggerDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
@@ -48,7 +52,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         base._Ready();
 
-        StaggerHealth = new StaggerHealth(InitialStaggerHealth);
+        StaggerHealth = new StaggerHealth(InitialStaggerHealth, TimeBeforeStaggerHealthRegen, 
+            StaggerRegenPercentPerSecond, TimeBeforeNextStagger);
         
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
@@ -270,9 +275,9 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void LookAtPosition(Vector3 lookAt)
     {
-        var sourceXZ = new Vector2(GlobalPosition.X, GlobalPosition.Z);
-        var targetXZ = new Vector2(lookAt.X, lookAt.Z);
-        var direction = sourceXZ - targetXZ;
+        var sourceXz = new Vector2(GlobalPosition.X, GlobalPosition.Z);
+        var targetXz = new Vector2(lookAt.X, lookAt.Z);
+        var direction = sourceXz - targetXz;
         Rotation = new Vector3(Rotation.X,
             Mathf.LerpAngle(Rotation.Y, Mathf.Atan2(direction.X, direction.Y), 0.9f),
             //Mathf.Atan2(direction.X, direction.Y),

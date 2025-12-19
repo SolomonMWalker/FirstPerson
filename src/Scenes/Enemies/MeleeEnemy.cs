@@ -1,13 +1,13 @@
 using Godot;
-using System;
 using FirstPerson;
 using FirstPerson.Configuration;
+using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 
 public partial class MeleeEnemy : Agent
 {
-    public float CloseFollowDistance { get; protected set; } = 1f;
-    public float PauseTimeBetweenAttacks { get; protected set; } = 1f;
+    [Export] public float CloseFollowDistance { get; protected set; } = 1f;
+    [Export] public float PauseTimeBetweenAttacks { get; protected set; } = 0.5f;
     protected ShapeCast3D MeleeRangeShapeCast { get; set; }
     protected Area3D MeleeRangeArea { get; set; }
     protected Poll PauseBetweenAttacksPoll { get; set; }

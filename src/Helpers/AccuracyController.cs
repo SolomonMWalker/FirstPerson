@@ -5,11 +5,10 @@ namespace FirstPerson.Helpers;
 //fully linear, might need to overcomplicate this
 public class AccuracyController
 {
-    public Poll TimeSinceTargetMovedPoll { get; set; }
-    public double TimeTargetStoppedBeforeFullAccuracy { get; set; } = 1;
+    public Poll TimeSinceTargetMovedPoll { get; private set; }
+    public double TimeTargetStoppedBeforeFullAccuracy { get; private set; } = 1;
     public bool TargetIsStopped { get; private set; }
     public bool AccuracyMaxed { get; private set; }
-
     public double ZeroVelocityThreshold { get; private set; } = 0.001f;
     //max difference in each axis TargetPosition of shot can vary
     public double MaxAccuracyVariance { get; private set; } = 2f;
@@ -21,39 +20,38 @@ public class AccuracyController
         TimeSinceTargetMovedPoll = new Poll(TimeTargetStoppedBeforeFullAccuracy);
     }
 
-    public void CheckTargetForAccuracy(double delta, HittableCharacterBody3D target)
+    public void CheckTargetForAccuracy(double delta, CustomTypes.HittableCharacterBody3D target)
     {
         var targetIsStoppedNow = target is null || target.Velocity.LengthSquared() <= ZeroVelocityThreshold;
         
-        if (TargetIsStopped)
+        switch (TargetIsStopped)
         {
-            if (!targetIsStoppedNow)
-            {
+            case true when !targetIsStoppedNow:
                 //GD.Print("target went from stopped to moving");
                 TargetIsStopped = false;
                 AccuracyMaxed = false;
                 CurrentAccuracyVariance = MaxAccuracyVariance;
                 return;
-            }
-            //GD.Print("hitting poll");
-            if (!AccuracyMaxed && TimeSinceTargetMovedPoll.IsPollPinged(delta))
+            case true:
             {
-                //GD.Print("AccuracyMaxed");
-                AccuracyMaxed = true;
+                //GD.Print("hitting poll");
+                if (!AccuracyMaxed && TimeSinceTargetMovedPoll.IsPollPinged(delta))
+                {
+                    //GD.Print("AccuracyMaxed");
+                    AccuracyMaxed = true;
+                }
+                CurrentAccuracyVariance = AccuracyMaxed ? 0 :
+                    MaxAccuracyVariance - TimeSinceTargetMovedPoll.GetPercentOfTimePassedInDecimal() * MaxAccuracyVariance;
+                return;
             }
-            CurrentAccuracyVariance = AccuracyMaxed ? 0 :
-                MaxAccuracyVariance - TimeSinceTargetMovedPoll.GetPercentOfTimePassedInDecimal() * MaxAccuracyVariance;
-            return;
+            case false when targetIsStoppedNow:
+                //GD.Print("Target went from moving to stopped");
+                TargetIsStopped = true;
+                AccuracyMaxed = false;
+                CurrentAccuracyVariance = MaxAccuracyVariance;
+                TimeSinceTargetMovedPoll.ResetPoll();
+                break;
         }
-        
-        if (!TargetIsStopped && targetIsStoppedNow)
-        {
-            //GD.Print("Target went from moving to stopped");
-            TargetIsStopped = true;
-            AccuracyMaxed = false;
-            CurrentAccuracyVariance = MaxAccuracyVariance;
-            TimeSinceTargetMovedPoll.ResetPoll();
-        }        
     }
 
     public Vector3 ApplyAccuracyToTargetPosition(Vector3 targetPosition)

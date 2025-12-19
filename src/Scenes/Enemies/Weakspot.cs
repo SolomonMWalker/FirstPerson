@@ -1,5 +1,5 @@
 using Godot;
-using System;
+using FirstPerson.CustomTypes;
 
 public partial class Weakspot : Area3D
 {
