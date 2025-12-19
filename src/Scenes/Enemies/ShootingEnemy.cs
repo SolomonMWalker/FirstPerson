@@ -21,7 +21,6 @@ public partial class ShootingEnemy : Agent
     public override void _Ready()
     {
         base._Ready();
-        UseMoveToTargetFuzziness = true;
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         Target = GetNode<FirstPerson.CustomTypes.HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
