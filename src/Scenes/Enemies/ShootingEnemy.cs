@@ -32,7 +32,7 @@ public partial class ShootingEnemy : Agent
         AccuracyController = new AccuracyController();
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
-        Hand = GetNode<Node3D>("Torso/Hand");
+        Hand = GetNode<Node3D>("Hand");
         CurrentFollowDistance = MediumFollowDistance;
         AllowedGoals.Add(Goal.MoveToCover);
         CurrentGoal = Goal.MoveToCover;
