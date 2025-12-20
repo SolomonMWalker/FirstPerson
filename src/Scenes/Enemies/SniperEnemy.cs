@@ -82,7 +82,7 @@ public partial class SniperEnemy : ShootingEnemy
     {
         if (IsCharging || IsShooting)
         {
-            LookAtPositionOnlyY(WhereTargetWillBe);
+            HelperMethods.RotateForwardToTargetOnYAxis(this, WhereTargetWillBe);
         }
         else
         {

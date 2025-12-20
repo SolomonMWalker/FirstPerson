@@ -11,6 +11,7 @@ public partial class ShootingEnemy : Agent
     [Export] public float MediumFollowDistance { get; protected set; } = 10f;
     [Export] public float ProjectileSpeed { get; protected set; } = 10f;
     [Export] public bool UseAccuracyFuzziness { get; protected set; }
+    [Export] public int MaxHandVerticalAngle { get; protected set; } = 60;
     
     protected Poll TimeSinceLastShotPoll { get; set; }
     protected Poll TimeSinceLastShotForMovementPoll { get; set; }
@@ -60,8 +61,10 @@ public partial class ShootingEnemy : Agent
 
     protected override void HandleRotation()
     {
-        base.HandleRotation();
-        HelperMethods.LookAtPositionOnlyX(Hand, Target.GlobalPosition);
+        if (IsRotationFrozen()) return;
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition - Vector3.Up * 1f);
+        Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
+        Hand.Rotation = new Vector3(rotVector.X, Hand.Rotation.Y, Hand.Rotation.Z);
     }
 
     protected override bool IsMotionFrozen()

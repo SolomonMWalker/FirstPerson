@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://5fo45uuf6sbv"]
+[gd_scene load_steps=18 format=3 uid="uid://5fo45uuf6sbv"]
 
 [ext_resource type="Script" uid="uid://dt20hhhowndui" path="res://src/Scenes/Enemies/ShootingEnemy.cs" id="1_s7nxt"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_gwpd2"]
@@ -109,10 +109,18 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qj2bh"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3xsd6"]
+material = SubResource("StandardMaterial3D_qj2bh")
+size = Vector3(0.1, 0.1, 0.1)
+
 [node name="ShootingEnemy" type="CharacterBody3D"]
 collision_layer = 33
 collision_mask = 97
 script = ExtResource("1_s7nxt")
+Speed = 0
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -152,6 +160,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.59
 [node name="Gun" type="MeshInstance3D" parent="Hand"]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_4gyqm")
+
+[node name="tip" type="MeshInstance3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3626846)
+mesh = SubResource("BoxMesh_3xsd6")
 
 [node name="LineOfSightRayCast3D" type="RayCast3D" parent="Hand/Gun"]
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0, 0, -0.435)
