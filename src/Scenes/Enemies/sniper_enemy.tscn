@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b7x52cldn4ik7"]
+[gd_scene load_steps=18 format=3 uid="uid://b7x52cldn4ik7"]
 
 [ext_resource type="Script" uid="uid://hmx1w4t054xn" path="res://src/Scenes/Enemies/SniperEnemy.cs" id="1_7cc2d"]
 [ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="2_p544m"]
@@ -109,10 +109,20 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7cc2d"]
+albedo_color = Color(2.2621452e-06, 0.56136155, 0.5637482, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_7cc2d"]
+material = SubResource("StandardMaterial3D_7cc2d")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 200.0
+
 [node name="SniperEnemy" type="CharacterBody3D"]
 collision_layer = 33
 collision_mask = 97
 script = ExtResource("1_7cc2d")
+ProjectileSpeed = 2000.0
 UseMoveToTargetFuzziness = true
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
@@ -150,9 +160,14 @@ radius = 3.0
 [node name="Hand" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.597726)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
+[node name="Gun" type="MeshInstance3D" parent="Hand"]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_4gyqm")
+
+[node name="ChargeAura" type="MeshInstance3D" parent="Hand"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.545, 0, -100.5)
+visible = false
+mesh = SubResource("CylinderMesh_7cc2d")
 
 [node name="BulletSpawnPoint" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.4508407)

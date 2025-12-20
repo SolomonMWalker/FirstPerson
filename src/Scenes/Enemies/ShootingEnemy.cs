@@ -5,16 +5,19 @@ using Godot;
 
 public partial class ShootingEnemy : Agent
 {    
-    public double TimeBetweenShots { get; protected set; } = 1.5;
-    public double TimeToShoot { get; protected set; } = 0.3;
-    public double TimeBetweenAccuracyChecks { get; protected set; } = 0.2;
-    public float MediumFollowDistance { get; protected set; } = 10f;
+    [Export] public double TimeBetweenShots { get; protected set; } = 1.5;
+    [Export] public double TimeToShoot { get; protected set; } = 0.3;
+    [Export] public double TimeBetweenAccuracyChecks { get; protected set; } = 0.2;
+    [Export] public float MediumFollowDistance { get; protected set; } = 10f;
+    [Export] public float ProjectileSpeed { get; protected set; } = 10f;
+    [Export] public bool UseAccuracyFuzziness { get; protected set; }
     
     protected Poll TimeSinceLastShotPoll { get; set; }
     protected Poll TimeSinceLastShotForMovementPoll { get; set; }
     protected Poll TimeSinceAccuracyCheckPoll { get; set; }
     protected AccuracyController AccuracyController { get; set; }
     protected PackedScene FireballPackedScene { get; set; }
+    protected Node3D Hand { get; set; }
     protected Node3D BulletSpawnPoint { get; set; }
     protected bool IsShooting { get; set; }
     
@@ -29,6 +32,7 @@ public partial class ShootingEnemy : Agent
         AccuracyController = new AccuracyController();
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
+        Hand = GetNode<Node3D>("Hand");
         CurrentFollowDistance = MediumFollowDistance;
         AllowedGoals.Add(Goal.MoveToCover);
         CurrentGoal = Goal.MoveToCover;
@@ -85,8 +89,11 @@ public partial class ShootingEnemy : Agent
             IsShooting = true;
             LookAtTarget();
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
-            var accuracyAppliedTargetPosition = AccuracyController.ApplyAccuracyToTargetPosition(Target.GlobalPosition);
-            fireBall.Initialize(accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition);
+            var targetPosition = UseAccuracyFuzziness
+                ? AccuracyController.ApplyAccuracyToTargetPosition(Target.GlobalPosition)
+                : Target.GlobalPosition;
+            var accuracyAppliedTargetPosition = targetPosition;
+            fireBall.Initialize(accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
             AddChild(fireBall);
         }
 
@@ -96,18 +103,6 @@ public partial class ShootingEnemy : Agent
         if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
         {
             IsShooting = false;
-        }
-    }
-
-    protected override void HandleRotation()
-    {
-        if (IsShooting)
-        {
-            LookAtTarget();
-        }
-        else
-        {
-            base.HandleRotation();
         }
     }
 }

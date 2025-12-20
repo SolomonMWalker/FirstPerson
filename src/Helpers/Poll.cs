@@ -5,7 +5,7 @@ namespace FirstPerson.Helpers;
 
 public class Poll(double pollTime, double initialTimeSincePoll = double.MaxValue)
 {
-    private double PollTime { get; set; } = pollTime;
+    public double PollTime { get; set; } = pollTime;
     private double TimeSincePoll { get; set; } = initialTimeSincePoll > pollTime ? pollTime : initialTimeSincePoll;
 
     public bool IsPollPinged(double delta)

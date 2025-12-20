@@ -17,11 +17,12 @@ public partial class Fireball : CharacterBody3D
     
     private const string ExplosionScenePath = "/explosion.tscn";
 
-    public void Initialize(Vector3 targetGlobalPosition, Vector3 spawnPoint)
+    public void Initialize(Vector3 targetGlobalPosition, Vector3 spawnPoint, float? speed = null)
     {
         Initialized = true;
         TargetGlobalPosition = targetGlobalPosition;
         GlobalPositionSpawnPoint = spawnPoint;
+        Speed = speed ?? Speed;
     }
 
     public override void _Ready()

@@ -28,6 +28,8 @@ ToDo
     X Implement aiming "fuzziness" when target is moving
     X Implement Target Position "fuzziness" for agents moving to target
         X maybe include an overload so that non-fuzzy movements can happen too
+    Implement separation of lower body, torso, hands, and head
+        can rotate each of these with limits
     
 IDEA
     range enemies don't wanna be in close, always try to run away

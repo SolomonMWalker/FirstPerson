@@ -252,7 +252,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         if (!Velocity.IsZeroApprox())
         {
             var lookAtDirection = GlobalPosition + Velocity.Normalized();
-            LookAtPosition(lookAtDirection);
+            LookAtPositionOnlyY(lookAtDirection);
         }
         else
         {
@@ -272,10 +272,10 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (Target is null) return;
         var lookAtDirection = Target.GlobalPosition;
-        LookAtPosition(lookAtDirection);
+        LookAtPositionOnlyY(lookAtDirection);
     }
 
-    protected virtual void LookAtPosition(Vector3 lookAt)
+    protected virtual void LookAtPositionOnlyY(Vector3 lookAt)
     {
         var sourceXz = new Vector2(GlobalPosition.X, GlobalPosition.Z);
         var targetXz = new Vector2(lookAt.X, lookAt.Z);
