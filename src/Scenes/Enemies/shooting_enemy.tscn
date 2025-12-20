@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://5fo45uuf6sbv"]
+[gd_scene load_steps=16 format=3 uid="uid://5fo45uuf6sbv"]
 
 [ext_resource type="Script" uid="uid://dt20hhhowndui" path="res://src/Scenes/Enemies/ShootingEnemy.cs" id="1_s7nxt"]
 [ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Enemies/weakspot.tscn" id="2_qj2bh"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Enemies/hitbox.tscn" id="4_qj2bh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qj2bh"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ljj2u"]
+radius = 0.37
+height = 0.89
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_qj2bh"]
 radius = 0.45
@@ -87,7 +91,7 @@ transform = Transform3D(0.66, 0, 0, 0, 0.66, 0, 0, 0, 0.66, 0, 0.63747346, 0)
 
 [node name="Legs" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55032486, 0)
-mesh = SubResource("CapsuleMesh_qj2bh")
+mesh = SubResource("SphereMesh_ljj2u")
 skeleton = NodePath("")
 
 [node name="Torso" type="MeshInstance3D" parent="."]
