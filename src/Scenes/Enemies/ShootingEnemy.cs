@@ -31,7 +31,7 @@ public partial class ShootingEnemy : Agent
         TimeSinceAccuracyCheckPoll = new Poll(TimeBetweenAccuracyChecks + Fuzzer.Fuzz(0f, 0.05f, false));
         AccuracyController = new AccuracyController();
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
-        BulletSpawnPoint = GetNode<Node3D>("BulletSpawnPoint");
+        BulletSpawnPoint = GetNode<Node3D>("Hand/Gun/BulletSpawnPoint");
         Hand = GetNode<Node3D>("Hand");
         CurrentFollowDistance = MediumFollowDistance;
         AllowedGoals.Add(Goal.MoveToCover);
@@ -51,6 +51,17 @@ public partial class ShootingEnemy : Agent
         {
             AccuracyController.CheckTargetForAccuracy(TimeBetweenAccuracyChecks, Target);
         }
+    }
+
+    protected override void GetLineOfSightRaycast()
+    {
+        LineOfSightRayCast3D = GetNode<RayCast3D>("Hand/Gun/LineOfSightRayCast3D");
+    }
+
+    protected override void HandleRotation()
+    {
+        base.HandleRotation();
+        HelperMethods.LookAtPositionOnlyX(Hand, Target.GlobalPosition);
     }
 
     protected override bool IsMotionFrozen()

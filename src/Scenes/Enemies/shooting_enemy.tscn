@@ -149,15 +149,15 @@ radius = 3.0
 [node name="Hand" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.597726)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Hand"]
+[node name="Gun" type="MeshInstance3D" parent="Hand"]
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_4gyqm")
 
-[node name="BulletSpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.4508407)
-
-[node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5458455, 0.096024185, -1.0322562)
+[node name="LineOfSightRayCast3D" type="RayCast3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0, 0, -0.435)
 target_position = Vector3(0, 0, 0)
 collision_mask = 75
 hit_from_inside = true
+
+[node name="BulletSpawnPoint" type="Node3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0.00026488304, 0.0017821193, -0.8531147)

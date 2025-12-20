@@ -58,9 +58,9 @@ public abstract partial class Agent : HittableCharacterBody3D
             StaggerRegenPercentPerSecond, TimeBeforeNextStagger);
         
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController"); 
-        
-        LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
+        CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController");
+
+        GetLineOfSightRaycast();
         LineOfSightRayCast3D.Enabled = false;
         
         MovementTargetAcquisitionPoll = new Poll(MovementTargetAcquisitionPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
@@ -108,6 +108,11 @@ public abstract partial class Agent : HittableCharacterBody3D
         DecreaseStaggerHealth(Mathf.RoundToInt(hitParameters.StaggerDamage * staggerDamageMult));
         if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play(
             hitParameters.IsWeakspot ? "WeakspotShot" : "Shot");
+    }
+
+    protected virtual void GetLineOfSightRaycast()
+    {
+        LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
     }
 
     protected virtual bool IsMotionFrozen()

@@ -12,4 +12,16 @@ public static class HelperMethods
         xForm = xForm.LookingAt(target.GlobalTransform.Origin, Vector3.Up); 
         source.Transform = source.Transform.InterpolateWith(xForm, weight);
     }
+    
+    public static void LookAtPositionOnlyX(Node3D node, Vector3 target)
+    {
+        var sourceYz = new Vector2(node.GlobalPosition.Y, node.GlobalPosition.Z);
+        var targetYz = new Vector2(target.Y, target.Z);
+        var direction = sourceYz - targetYz;
+        node.Rotation = new Vector3(
+            Mathf.LerpAngle(node.Rotation.X, Mathf.Atan2(direction.X, direction.Y), 0.9f),
+            node.Rotation.Y,
+            //Mathf.Atan2(direction.X, direction.Y),
+            node.Rotation.Z);
+    }
 }
