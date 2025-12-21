@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bkmprk5mnhfsx"]
+[gd_scene load_steps=18 format=3 uid="uid://bkmprk5mnhfsx"]
 
 [ext_resource type="Script" uid="uid://cwyu76lb0mgo1" path="res://src/Scenes/Enemies/MeleeEnemy.cs" id="2_qpf5h"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_w0ji2"]
@@ -183,6 +183,9 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 material = SubResource("StandardMaterial3D_onrkg")
 size = Vector3(0.07, 0.07, 0.7)
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ruoun"]
+points = PackedVector3Array(0, 50, -62.5, 0, 29.992172, -50.00734, -44.19538, 50, -44.19538, 44.183144, 50, -44.19538, 35.34896, 29.992172, -35.3612, 26.514778, 9.994129, -26.527016, 0, -10.003914, -25.009789, -26.527016, 9.994129, -26.527016, -35.3612, 29.992172, -35.3612, -50.00734, 29.992172, 0, -62.5, 50, 0, 62.5, 50, 0, 8.834183, -30.001957, -8.846416, 0, -50, 0, -8.846416, -30.001957, -8.846416, -25.009789, -10.003914, 0, -44.19538, 50, 44.183144, -26.527016, 9.994129, 26.514778, -35.3612, 29.992172, 35.34896, 44.183144, 50, 44.183144, 35.34896, 29.992172, 35.34896, 26.514778, 9.994129, 26.514778, -8.846416, -30.001957, 8.834183, 0, 50, 62.5)
+
 [node name="MeleeEnemy" type="CharacterBody3D"]
 collision_layer = 33
 collision_mask = 3
@@ -235,6 +238,15 @@ enabled = false
 target_position = Vector3(0, 0, 0)
 collision_mask = 75
 hit_from_inside = true
+
+[node name="LineOfSightArea3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48780707, -0.5911988)
+collision_layer = 0
+collision_mask = 200
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LineOfSightArea3D"]
+transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 0, -50)
+shape = SubResource("ConvexPolygonShape3D_ruoun")
 
 [node name="MeleeRangeShapeCast" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0043884516, -0.87865764)

@@ -35,6 +35,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected NavigationAgent3D NavAgent { get; set; }
     protected AnimationPlayer AnimationPlayer { get; set; }
     protected RayCast3D LineOfSightRayCast3D { get; set; }
+    protected Area3D LineOfSightArea3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
     protected StaggerHealth StaggerHealth { get; set; }
     protected Poll MovementTargetAcquisitionPoll { get; set; }
@@ -60,8 +61,9 @@ public abstract partial class Agent : HittableCharacterBody3D
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController");
 
-        GetLineOfSightRaycast();
+        LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
         LineOfSightRayCast3D.Enabled = false;
+        LineOfSightArea3D = GetNode<Area3D>("LineOfSightArea3D");
         
         MovementTargetAcquisitionPoll = new Poll(MovementTargetAcquisitionPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
         LineOfSightPoll = new Poll(LineOfSightPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
@@ -92,7 +94,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         base._PhysicsProcess(delta);
         HandleRotation();
-        //CalculateIfTargetInLineOfSightWithPoll(delta);
+        CalculateIfTargetInLineOfSightWithPoll(delta);
         CalculateNavigation(delta);
         HandleNavigation();
         CalculateMovementState();
@@ -108,11 +110,6 @@ public abstract partial class Agent : HittableCharacterBody3D
         DecreaseStaggerHealth(Mathf.RoundToInt(hitParameters.StaggerDamage * staggerDamageMult));
         if(!QueuedForDeath && !AnimationPlayer.IsPlaying()) AnimationPlayer.Play(
             hitParameters.IsWeakspot ? "WeakspotShot" : "Shot");
-    }
-
-    protected virtual void GetLineOfSightRaycast()
-    {
-        LineOfSightRayCast3D = GetNode<RayCast3D>("LineOfSightRayCast3D");
     }
 
     protected virtual bool IsMotionFrozen()
@@ -162,12 +159,11 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
         if (IsMotionFrozen() || Target is null) return;
-        // CalculateIfTargetInLineOfSightRotate();
-        // if (!TargetInLineOfSight)
-        // {
-        //     SetNavigationToTarget(CurrentFollowDistance);
-        //     return;
-        // }
+        if (!TargetInLineOfSight)
+        {
+            SetNavigationToTarget(CurrentFollowDistance);
+            return;
+        }
         var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
         if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
         {
@@ -283,54 +279,36 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void HandleRotation()
     {
-        if (IsRotationFrozen()) return;
+        if (IsRotationFrozen() || Target is null) return;
         var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
         Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
-    }
-    
-    protected virtual void CalculateIfTargetInLineOfSight()
-    {
-        if (Target is null)
-        {
-            TargetInLineOfSight = false;
-            return;
-        }
-        
-        LineOfSightRayCast3D.TargetPosition = Vector3.Forward * LineOfSightCheckRange;
-        LineOfSightRayCast3D.ForceRaycastUpdate();
-        if (!LineOfSightRayCast3D.IsColliding())
-        {
-            TargetInLineOfSight = false;
-            return;
-        }
-        var collided = LineOfSightRayCast3D.GetCollider();
-        if (collided == null)
-        {
-            TargetInLineOfSight = false;
-            return;
-        }
-
-        if (collided is HittableCharacterBody3D hittable)
-        {
-            TargetInLineOfSight = hittable == Target;
-            return;
-        }
-
-        TargetInLineOfSight = false;
     }
     
     protected virtual void CalculateIfTargetInLineOfSightWithPoll(double delta)
     {
         if (!LineOfSightPoll.IsPollPinged(delta)) return;
-        CalculateIfTargetInLineOfSight();
+        TargetInLineOfSight = CalcaulateIfTargetInLineOfSightWithArea3D() && CalculateIfTargetInLineOfSightWithRaycast();
+    }
+
+    protected virtual bool CalcaulateIfTargetInLineOfSightWithArea3D()
+    {
+        if (!LineOfSightArea3D.HasOverlappingBodies()) return false;
+        var bodies = LineOfSightArea3D.GetOverlappingBodies();
+        foreach (var body in bodies)
+        {
+            if (body is HittableCharacterBody3D hittable && hittable == Target)
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
-    protected virtual void CalculateIfTargetInLineOfSightRotate()
+    protected virtual bool CalculateIfTargetInLineOfSightWithRaycast()
     {
         if (Target is null)
         {
-            TargetInLineOfSight = false;
-            return;
+            return false;
         }
 
         var ray = LineOfSightRayCast3D.Position.DirectionTo(ToLocal(Target.GlobalPosition));
@@ -338,15 +316,19 @@ public abstract partial class Agent : HittableCharacterBody3D
         LineOfSightRayCast3D.ForceRaycastUpdate();
         if (!LineOfSightRayCast3D.IsColliding())
         {
-            TargetInLineOfSight = true;
-            return;
+            return false;
         }
         var collided = LineOfSightRayCast3D.GetCollider();
         if (collided == null)
         {
-            TargetInLineOfSight = false;
-            return;
+            return false;
         }
-        TargetInLineOfSight = collided.GetInstanceId() == Target.GetInstanceId();
+
+        if (collided is HittableCharacterBody3D hittable)
+        {
+            return hittable == Target;
+        }
+
+        return false;
     }
 }

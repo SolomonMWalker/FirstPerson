@@ -1,5 +1,6 @@
 using FirstPerson;
 using FirstPerson.Configuration;
+using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 using Godot;
 
@@ -65,11 +66,6 @@ public partial class ShootingEnemy : Agent
             IsStayingStillForShot = false;
         }
     }
-
-    protected override void GetLineOfSightRaycast()
-    {
-        LineOfSightRayCast3D = GetNode<RayCast3D>("Hand/Gun/LineOfSightRayCast3D");
-    }
     
     protected override void LookAtTarget()
     {
@@ -123,7 +119,6 @@ public partial class ShootingEnemy : Agent
         if(ReadyToShoot)
         {
             ReadyToShoot = false;
-            CalculateIfTargetInLineOfSight();
             if (!TargetInLineOfSight)
             {
                 TimeSinceLastShotPoll.ResetPoll();

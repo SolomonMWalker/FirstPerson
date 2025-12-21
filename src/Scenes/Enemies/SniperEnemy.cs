@@ -73,7 +73,6 @@ public partial class SniperEnemy : ShootingEnemy
         if (ReadyToCharge)
         {
             ReadyToCharge = false;
-            CalculateIfTargetInLineOfSight();
             if (!TargetInLineOfSight)
             {
                 TimeSinceLastShotPoll.ResetPoll();
