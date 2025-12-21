@@ -17,7 +17,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public float WeakpointHealthDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float WeakpointStaggerDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
-    [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 1.0f;
+    [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 0.2f;
     [Export] public float StaggerTimeInSeconds { get; protected set; } = 2.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
     [Export] public float DefaultTargetDistance { get; protected set; } = 0.5f;
@@ -91,9 +91,9 @@ public abstract partial class Agent : HittableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        CalculateIfTargetInLineOfSight(delta);
         CalculateNavigation(delta);
         HandleRotation();
+        CalculateIfTargetInLineOfSight(delta);
         HandleNavigation(delta);
         CalculateMovementState();
         StaggerHealth.CheckStaggerRegain(delta);
@@ -257,7 +257,8 @@ public abstract partial class Agent : HittableCharacterBody3D
         if (!Velocity.IsZeroApprox())
         {
             var lookAtDirection = GlobalPosition + Velocity.Normalized();
-            HelperMethods.RotateForwardToTargetOnYAxis(this, lookAtDirection);
+            var rotVector = HelperMethods.GetAxisRotationsToTarget(this, lookAtDirection);
+            Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
         }
         else
         {
@@ -276,18 +277,49 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected virtual void LookAtTarget()
     {
         if (Target is null) return;
-        var lookAtDirection = Target.GlobalPosition;
-        HelperMethods.RotateForwardToTargetOnYAxis(this, lookAtDirection);
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
+        Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
     }
 
     protected virtual void HandleRotation()
     {
         if (IsRotationFrozen()) return;
-        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition - Vector3.Up * 1f);
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
         Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
     }
     
     protected virtual void CalculateIfTargetInLineOfSight(double delta)
+    {
+        if (!LineOfSightPoll.IsPollPinged(delta)) return;
+        if (Target is null)
+        {
+            TargetInLineOfSight = false;
+            return;
+        }
+        
+        LineOfSightRayCast3D.TargetPosition = Vector3.Forward * LineOfSightCheckRange;
+        LineOfSightRayCast3D.ForceRaycastUpdate();
+        if (!LineOfSightRayCast3D.IsColliding())
+        {
+            TargetInLineOfSight = true;
+            return;
+        }
+        var collided = LineOfSightRayCast3D.GetCollider();
+        if (collided == null)
+        {
+            TargetInLineOfSight = false;
+            return;
+        }
+
+        if (collided is HittableCharacterBody3D hittable)
+        {
+            TargetInLineOfSight = hittable == Target;
+        }
+
+        TargetInLineOfSight = false;
+    }
+    
+    protected virtual void CalculateIfTargetInLineOfSightRotate(double delta)
     {
         if (!LineOfSightPoll.IsPollPinged(delta)) return;
         if (Target is null)

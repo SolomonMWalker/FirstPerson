@@ -11,7 +11,7 @@ public partial class ShootingEnemy : Agent
     [Export] public float MediumFollowDistance { get; protected set; } = 10f;
     [Export] public float ProjectileSpeed { get; protected set; } = 10f;
     [Export] public bool UseAccuracyFuzziness { get; protected set; }
-    [Export] public int MaxHandVerticalAngle { get; protected set; } = 60;
+    [Export] public float MaxHandVerticalAngleInDeg { get; protected set; } = 60;
     
     protected Poll TimeSinceLastShotPoll { get; set; }
     protected Poll TimeSinceLastShotForMovementPoll { get; set; }
@@ -20,11 +20,13 @@ public partial class ShootingEnemy : Agent
     protected PackedScene FireballPackedScene { get; set; }
     protected Node3D Hand { get; set; }
     protected Node3D BulletSpawnPoint { get; set; }
-    protected bool IsShooting { get; set; }
+    protected bool IsStayingStillForShot { get; set; }
+    protected float MaxHandVerticalAngleInRad { get; set; }
     
     public override void _Ready()
     {
         base._Ready();
+        MaxHandVerticalAngleInRad = Mathf.DegToRad(MaxHandVerticalAngleInDeg);
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         Target = GetNode<FirstPerson.CustomTypes.HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
@@ -58,18 +60,25 @@ public partial class ShootingEnemy : Agent
     {
         LineOfSightRayCast3D = GetNode<RayCast3D>("Hand/Gun/LineOfSightRayCast3D");
     }
-
-    protected override void HandleRotation()
+    
+    protected override void LookAtTarget()
     {
-        if (IsRotationFrozen()) return;
-        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition - Vector3.Up * 1f);
-        Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
-        Hand.Rotation = new Vector3(rotVector.X, Hand.Rotation.Y, Hand.Rotation.Z);
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
+        var lerpedAngle = Mathf.LerpAngle(Rotation.Y, rotVector.Y, 0.9f);
+        Rotation = new Vector3(Rotation.X, lerpedAngle, Rotation.Z);
+        Hand.LookAt(Target.GlobalPosition);
+        var clampedXRotation = Mathf.Clamp(Hand.Rotation.X, -MaxHandVerticalAngleInRad, MaxHandVerticalAngleInRad);
+        Hand.Rotation = new Vector3(clampedXRotation, Hand.Rotation.Y, Hand.Rotation.Z);
     }
 
     protected override bool IsMotionFrozen()
     {
-        return IsShooting || base.IsMotionFrozen();
+        return IsStayingStillForShot || base.IsMotionFrozen();
+    }
+    
+    protected override bool IsRotationFrozen()
+    {
+        return IsStayingStillForShot || base.IsRotationFrozen();
     }
     
     protected override void CalculateNavigation(double delta)
@@ -87,9 +96,9 @@ public partial class ShootingEnemy : Agent
 
     protected virtual bool ShouldSkipShooting()
     {
-        if (!IsActivityFrozen()) return false;
-        if (!IsStaggered) return true;
-        IsShooting = false;
+        if (IsActivityFrozen() || !TargetInLineOfSight) return true;
+        if (!IsStaggered) return false;
+        IsStayingStillForShot = false;
         TimeSinceLastShotPoll.ResetPoll();
         return true;
     }
@@ -100,7 +109,7 @@ public partial class ShootingEnemy : Agent
         if(TimeSinceLastShotPoll.IsPollPinged(delta))
         {
             TimeSinceLastShotForMovementPoll.ResetPoll();
-            IsShooting = true;
+            IsStayingStillForShot = true;
             LookAtTarget();
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
             var targetPosition = UseAccuracyFuzziness
@@ -112,11 +121,11 @@ public partial class ShootingEnemy : Agent
         }
 
         //how long to stop moving when shooting
-        if (!IsShooting) return;
+        if (!IsStayingStillForShot) return;
         //if (TimeSinceShotForMovement > TimeToShoot)
         if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
         {
-            IsShooting = false;
+            IsStayingStillForShot = false;
         }
     }
 }

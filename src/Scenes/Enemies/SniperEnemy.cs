@@ -8,19 +8,20 @@ public partial class SniperEnemy : ShootingEnemy
     public MeshInstance3D ChargeAura { get; private set; }
     public bool IsCharging { get; private set; }
     public bool ReadyToShoot { get; private set; }
+    public bool ReadyToCharge { get; private set; }
     public Vector3 WhereTargetWillBe { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
         TimeToChargePoll = new Poll(TimeToCharge, 0);
-        ChargeAura = GetNode<MeshInstance3D>("Hand/ChargeAura");
+        ChargeAura = GetNode<MeshInstance3D>("Hand/Gun/ChargeAura");
     }
-    
+
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if(!ShouldSkipShooting()) HandleShooting(delta);
+        if (!ShouldSkipShooting()) HandleShooting(delta);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -29,19 +30,59 @@ public partial class SniperEnemy : ShootingEnemy
         HandleCharging(delta);
     }
 
+    protected virtual bool ShouldSkipCharging()
+    {
+        if (IsActivityFrozen()) return true;
+        if (!IsStaggered) return false;
+        ChargeAura.Visible = false;
+        IsCharging = false;
+        IsStayingStillForShot = false;
+        TimeSinceLastShotPoll.ResetPoll();
+        return true;
+    }
+    
+    protected override bool ShouldSkipShooting()
+    {
+        if (IsActivityFrozen()) return true;
+        if (!IsStaggered) return false;
+        IsStayingStillForShot = false;
+        TimeSinceLastShotPoll.ResetPoll();
+        return true;
+    }
+
+    protected override bool IsMotionFrozen()
+    {
+        return IsCharging || base.IsMotionFrozen();
+    }
+
+    protected override bool IsRotationFrozen()
+    {
+        return IsCharging || base.IsRotationFrozen();
+    }
+
     public void HandleCharging(double delta)
     {
-        if (!IsShooting && !IsCharging && TargetInLineOfSight && TimeSinceLastShotPoll.IsPollPinged(delta))
+        if (IsCharging)
         {
-            IsCharging = true;
-            CalculateWhereTargetWillBe();
-            LookAtTarget();
-            ChargeAura.Visible = true;
+            if (TimeToChargePoll.IsPollPinged(delta))
+            {
+                ReadyToShoot = true;
+            }
+            return;
         }
-
-        if (IsCharging && TimeToChargePoll.IsPollPinged(delta))
+        if (ReadyToCharge)
         {
-            ReadyToShoot = true;
+            ReadyToCharge = false;
+            IsCharging = true;
+            TimeToChargePoll.ResetPoll();
+            CalculateWhereTargetWillBe();
+            LookAtTargetForCharge();
+            ChargeAura.Visible = true;
+            return;
+        }
+        if (TimeSinceLastShotPoll.IsPollPinged(delta))
+        {
+            ReadyToCharge = true;
         }
     }
 
@@ -55,50 +96,31 @@ public partial class SniperEnemy : ShootingEnemy
 
     protected override void HandleShooting(double delta)
     {
+        if (IsStayingStillForShot && TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
+        {
+            IsStayingStillForShot = false;
+        }
         //time between shots
-        if(ReadyToShoot)
+        if (ReadyToShoot)
         {
             TimeSinceLastShotForMovementPoll.ResetPoll();
             TimeSinceLastShotPoll.ResetPoll();
             ChargeAura.Visible = false;
-            IsShooting = true;
+            IsStayingStillForShot = true;
             ReadyToShoot = false;
             IsCharging = false;
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
             fireBall.Initialize(WhereTargetWillBe, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
             AddChild(fireBall);
         }
-
-        //how long to stop moving when shooting
-        if (!IsShooting) return;
-        //if (TimeSinceShotForMovement > TimeToShoot)
-        if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
-        {
-            IsShooting = false;
-        }
     }
 
-    protected override void LookAtTarget()
+    protected virtual void LookAtTargetForCharge()
     {
-        if (IsCharging || IsShooting)
-        {
-            HelperMethods.RotateForwardToTargetOnYAxis(this, WhereTargetWillBe);
-        }
-        else
-        {
-            base.LookAtTarget();
-        }
-    }
-
-    protected override void HandleRotation()
-    {
-        if (IsCharging)
-        {
-            LookAtTarget();
-        }
-        else
-        {
-            base.HandleRotation();
-        }
+        var target = WhereTargetWillBe;
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, target);
+        var lerpedAngle = Mathf.LerpAngle(Rotation.Y, rotVector.Y, 0.9f);
+        Rotation = new Vector3(Rotation.X, lerpedAngle, Rotation.Z);
+        Hand.LookAt(target);
     }
 }

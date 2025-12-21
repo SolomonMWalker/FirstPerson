@@ -30,6 +30,9 @@ ToDo
         X maybe include an overload so that non-fuzzy movements can happen too
     Implement separation of lower body, torso, hands, and head
         can rotate each of these with limits
+            hand and head looks at player with clamps
+            all body rotates on y
+            upper torso rotates on X with clamped value
     
 IDEA
     range enemies don't wanna be in close, always try to run away

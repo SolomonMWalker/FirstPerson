@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://b7x52cldn4ik7"]
+[gd_scene load_steps=20 format=3 uid="uid://b7x52cldn4ik7"]
 
 [ext_resource type="Script" uid="uid://hmx1w4t054xn" path="res://src/Scenes/Enemies/SniperEnemy.cs" id="1_7cc2d"]
 [ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="2_p544m"]
@@ -8,11 +8,11 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qj2bh"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ljj2u"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7cc2d"]
 albedo_color = Color(1, 1, 1, 0.14509805)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_8uh7m"]
-material = SubResource("StandardMaterial3D_ljj2u")
+material = SubResource("StandardMaterial3D_7cc2d")
 
 [sub_resource type="Animation" id="Animation_ppyta"]
 length = 0.001
@@ -102,18 +102,25 @@ _data = {
 &"WeakspotShot": SubResource("Animation_qj2bh")
 }
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p544m"]
 albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_4gyqm"]
-material = SubResource("StandardMaterial3D_onrkg")
+material = SubResource("StandardMaterial3D_p544m")
 size = Vector3(0.07, 0.07, 0.7)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7cc2d"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qj2bh"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7cc2d"]
+material = SubResource("StandardMaterial3D_qj2bh")
+size = Vector3(0.1, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gjp6a"]
 albedo_color = Color(2.2621452e-06, 0.56136155, 0.5637482, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_7cc2d"]
-material = SubResource("StandardMaterial3D_7cc2d")
+material = SubResource("StandardMaterial3D_gjp6a")
 top_radius = 0.05
 bottom_radius = 0.05
 height = 200.0
@@ -164,16 +171,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.59
 transform = Transform3D(1, 0, 0, 0, 1.0000001, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_4gyqm")
 
-[node name="ChargeAura" type="MeshInstance3D" parent="Hand"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.545, 0, -100.5)
-visible = false
-mesh = SubResource("CylinderMesh_7cc2d")
+[node name="tip" type="MeshInstance3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3626846)
+mesh = SubResource("BoxMesh_7cc2d")
 
-[node name="BulletSpawnPoint" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545846, 0.09924477, -1.4508407)
+[node name="BulletSpawnPoint" type="Node3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0.00026488304, 0.0017821193, -0.8531147)
 
-[node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5458455, 0.096024185, -1.0322562)
+[node name="LineOfSightRayCast3D" type="RayCast3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0.0002644062, -0.0014384687, -0.43453026)
 target_position = Vector3(0, 0, 0)
 collision_mask = 75
 hit_from_inside = true
+
+[node name="ChargeAura" type="MeshInstance3D" parent="Hand/Gun"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -0.9999999, 0, 1, -4.3711385e-08, 0, 0, -100.5)
+visible = false
+mesh = SubResource("CylinderMesh_7cc2d")
+skeleton = NodePath("../..")

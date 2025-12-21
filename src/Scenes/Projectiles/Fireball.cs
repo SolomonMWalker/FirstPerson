@@ -8,7 +8,7 @@ public partial class Fireball : CharacterBody3D
     private bool VelocitySet { get; set; }
     private bool QueuedForFree { get; set; }
     private float Speed { get; set; } = 35;
-    private double TimeToLive { get; set; } = 10;
+    private double TimeToLive { get; set; } = 5;
     private Vector3 TargetGlobalPosition { get; set; }
     private Vector3 GlobalPositionSpawnPoint { get; set; }
     private Poll TimeToLivePoll { get; set; }
