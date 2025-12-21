@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://b8hkoeuua7otf"]
+[gd_scene load_steps=14 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player.tscn" id="2_8uh7m"]
+[ext_resource type="PackedScene" uid="uid://bkmprk5mnhfsx" path="res://src/Scenes/Enemies/melee_enemy.tscn" id="3_04df3"]
 [ext_resource type="PackedScene" uid="uid://b7x52cldn4ik7" path="res://src/Scenes/Enemies/sniper_enemy.tscn" id="4_f1ycf"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://src/Scenes/Cover/CoverSpotController.cs" id="4_ykrsh"]
 [ext_resource type="PackedScene" uid="uid://5fo45uuf6sbv" path="res://src/Scenes/Enemies/shooting_enemy.tscn" id="5_04df3"]
@@ -47,12 +48,19 @@ shadow_opacity = 0.66
 [node name="Enemies" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
+[node name="MeleeEnemy" parent="Enemies" instance=ExtResource("3_04df3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.1944275, 0, 37.009663)
+UseMoveToTargetFuzziness = true
+
 [node name="ShootingEnemy" parent="Enemies" instance=ExtResource("5_04df3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.530975, 0, 52.306984)
+UseAccuracyFuzziness = true
 Speed = 15
+UseMoveToTargetFuzziness = true
 
 [node name="SniperEnemy" parent="Enemies" instance=ExtResource("4_f1ycf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.4133, 0, 46.385437)
+TimeBetweenShots = 1.8
 Speed = 15
 
 [node name="CoverSpotController" type="Node3D" parent="."]

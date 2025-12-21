@@ -1,3 +1,4 @@
+using FirstPerson;
 using FirstPerson.Helpers;
 using Godot;
 
@@ -17,17 +18,12 @@ public partial class SniperEnemy : ShootingEnemy
         ChargeAura = GetNode<MeshInstance3D>("Hand/Gun/ChargeAura");
     }
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-        if (!ShouldSkipShooting()) HandleShooting(delta);
-        CalculateStayStillForShooting(delta);
-    }
-
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        HandleCharging(delta);
+        if(!ShouldSkipCharging()) HandleCharging(delta);
+        if (!ShouldSkipShooting()) HandleShooting(delta);
+        CalculateStayStillForShooting(delta);
     }
 
     protected virtual bool ShouldSkipCharging()
