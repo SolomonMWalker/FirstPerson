@@ -33,6 +33,8 @@ ToDo
             hand and head looks at player with clamps
             all body rotates on y
             upper torso rotates on X with clamped value
+    Implement a IsPlayerInMyHitCone area to move to player if not in hit cone
+        line of sight shit is getting hard
     
 IDEA
     range enemies don't wanna be in close, always try to run away

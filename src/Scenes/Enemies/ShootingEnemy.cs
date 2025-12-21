@@ -14,13 +14,14 @@ public partial class ShootingEnemy : Agent
     [Export] public float MaxHandVerticalAngleInDeg { get; protected set; } = 60;
     
     protected Poll TimeSinceLastShotPoll { get; set; }
-    protected Poll TimeSinceLastShotForMovementPoll { get; set; }
+    protected Poll TimeToStayStillForShotPoll { get; set; }
     protected Poll TimeSinceAccuracyCheckPoll { get; set; }
     protected AccuracyController AccuracyController { get; set; }
     protected PackedScene FireballPackedScene { get; set; }
     protected Node3D Hand { get; set; }
     protected Node3D BulletSpawnPoint { get; set; }
     protected bool IsStayingStillForShot { get; set; }
+    protected bool ReadyToShoot { get; set; }
     protected float MaxHandVerticalAngleInRad { get; set; }
     
     public override void _Ready()
@@ -30,7 +31,7 @@ public partial class ShootingEnemy : Agent
         //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         Target = GetNode<FirstPerson.CustomTypes.HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
-        TimeSinceLastShotForMovementPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
+        TimeToStayStillForShotPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeSinceAccuracyCheckPoll = new Poll(TimeBetweenAccuracyChecks + Fuzzer.Fuzz(0f, 0.05f, false));
         AccuracyController = new AccuracyController();
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
@@ -45,6 +46,7 @@ public partial class ShootingEnemy : Agent
     {
         base._Process(delta);
         if(!ShouldSkipShooting()) HandleShooting(delta);
+        CalculateStayStillForShooting(delta);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -56,6 +58,14 @@ public partial class ShootingEnemy : Agent
         }
     }
 
+    protected virtual void CalculateStayStillForShooting(double delta)
+    {
+        if (IsStayingStillForShot && TimeToStayStillForShotPoll.IsPollPinged(delta))
+        {
+            IsStayingStillForShot = false;
+        }
+    }
+
     protected override void GetLineOfSightRaycast()
     {
         LineOfSightRayCast3D = GetNode<RayCast3D>("Hand/Gun/LineOfSightRayCast3D");
@@ -64,8 +74,7 @@ public partial class ShootingEnemy : Agent
     protected override void LookAtTarget()
     {
         var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
-        var lerpedAngle = Mathf.LerpAngle(Rotation.Y, rotVector.Y, 0.9f);
-        Rotation = new Vector3(Rotation.X, lerpedAngle, Rotation.Z);
+        Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
         Hand.LookAt(Target.GlobalPosition);
         var clampedXRotation = Mathf.Clamp(Hand.Rotation.X, -MaxHandVerticalAngleInRad, MaxHandVerticalAngleInRad);
         Hand.Rotation = new Vector3(clampedXRotation, Hand.Rotation.Y, Hand.Rotation.Z);
@@ -96,8 +105,9 @@ public partial class ShootingEnemy : Agent
 
     protected virtual bool ShouldSkipShooting()
     {
-        if (IsActivityFrozen() || !TargetInLineOfSight) return true;
+        if (IsActivityFrozen()) return true;
         if (!IsStaggered) return false;
+        ReadyToShoot = false;
         IsStayingStillForShot = false;
         TimeSinceLastShotPoll.ResetPoll();
         return true;
@@ -105,12 +115,22 @@ public partial class ShootingEnemy : Agent
 
     protected virtual void HandleShooting(double delta)
     {
-        //time between shots
-        if(TimeSinceLastShotPoll.IsPollPinged(delta))
+        if (TimeSinceLastShotPoll.IsPollPinged(delta))
         {
-            TimeSinceLastShotForMovementPoll.ResetPoll();
+            ReadyToShoot = true;
+        }
+        //time between shots
+        if(ReadyToShoot)
+        {
+            ReadyToShoot = false;
+            CalculateIfTargetInLineOfSight();
+            if (!TargetInLineOfSight)
+            {
+                TimeSinceLastShotPoll.ResetPoll();
+                return;
+            }
+            TimeToStayStillForShotPoll.ResetPoll();
             IsStayingStillForShot = true;
-            LookAtTarget();
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
             var targetPosition = UseAccuracyFuzziness
                 ? AccuracyController.ApplyAccuracyToTargetPosition(Target.GlobalPosition)
@@ -118,14 +138,6 @@ public partial class ShootingEnemy : Agent
             var accuracyAppliedTargetPosition = targetPosition;
             fireBall.Initialize(accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
             AddChild(fireBall);
-        }
-
-        //how long to stop moving when shooting
-        if (!IsStayingStillForShot) return;
-        //if (TimeSinceShotForMovement > TimeToShoot)
-        if(TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
-        {
-            IsStayingStillForShot = false;
         }
     }
 }

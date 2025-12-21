@@ -180,8 +180,9 @@ transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0.00026488304, 0.0017
 
 [node name="LineOfSightRayCast3D" type="RayCast3D" parent="Hand/Gun"]
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 1, 0.0002644062, -0.0014384687, -0.43453026)
+enabled = false
 target_position = Vector3(0, 0, 0)
-collision_mask = 75
+collision_mask = 456
 hit_from_inside = true
 
 [node name="ChargeAura" type="MeshInstance3D" parent="Hand/Gun"]

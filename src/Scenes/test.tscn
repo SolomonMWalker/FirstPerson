@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player.tscn" id="2_8uh7m"]
 [ext_resource type="PackedScene" uid="uid://b7x52cldn4ik7" path="res://src/Scenes/Enemies/sniper_enemy.tscn" id="3_wnc5p"]
-[ext_resource type="PackedScene" uid="uid://bkmprk5mnhfsx" path="res://src/Scenes/Enemies/melee_enemy.tscn" id="4_f1ycf"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://src/Scenes/Cover/CoverSpotController.cs" id="4_ykrsh"]
+[ext_resource type="PackedScene" uid="uid://5fo45uuf6sbv" path="res://src/Scenes/Enemies/shooting_enemy.tscn" id="5_04df3"]
 [ext_resource type="PackedScene" uid="uid://jbcwqhyno5o3" path="res://src/Scenes/Cover/cover_spot.tscn" id="5_ykrsh"]
 [ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/HittableCharacterBody3D.cs" id="6_g14j6"]
 
@@ -47,13 +47,23 @@ shadow_opacity = 0.66
 [node name="Enemies" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="SniperEnemy" parent="Enemies" instance=ExtResource("3_wnc5p")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.209623, 0, 9.4382305)
-TimeToCharge = 0.85
+[node name="ShootingEnemy" parent="Enemies" instance=ExtResource("5_04df3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.55468, 0, 18.74939)
+MediumFollowDistance = 30.0
+ProjectileSpeed = 30.0
+UseAccuracyFuzziness = true
+Speed = 15
+UseMoveToTargetFuzziness = true
+MoveToTargetFuzziness = 0.05
+CoverSpotMaxTargetDistance = 80
+LineOfSightCheckRange = 1000
 
-[node name="MeleeEnemy" parent="Enemies" instance=ExtResource("4_f1ycf")]
-Health = 100
-Speed = 6
+[node name="SniperEnemy" parent="Enemies" instance=ExtResource("3_wnc5p")]
+TimeToShoot = 0.1
+Speed = 15
+MoveToTargetFuzziness = 0.05
+CoverSpotMaxTargetDistance = 150
+LineOfSightCheckRange = 1000
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")

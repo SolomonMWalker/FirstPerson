@@ -91,10 +91,10 @@ public abstract partial class Agent : HittableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        CalculateNavigation(delta);
         HandleRotation();
-        CalculateIfTargetInLineOfSight(delta);
-        HandleNavigation(delta);
+        //CalculateIfTargetInLineOfSightWithPoll(delta);
+        CalculateNavigation(delta);
+        HandleNavigation();
         CalculateMovementState();
         StaggerHealth.CheckStaggerRegain(delta);
     }
@@ -149,7 +149,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         CurrentAgentMovementState = Velocity.IsZeroApprox() ? AgentMovementState.Still : AgentMovementState.DefaultMoving;
     }
-        
 
     protected abstract void CalculateNavigation(double delta);
 
@@ -163,11 +162,12 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
         if (IsMotionFrozen() || Target is null) return;
-        if (!TargetInLineOfSight)
-        {
-            SetNavigationToTarget(CurrentFollowDistance);
-            return;
-        }
+        // CalculateIfTargetInLineOfSightRotate();
+        // if (!TargetInLineOfSight)
+        // {
+        //     SetNavigationToTarget(CurrentFollowDistance);
+        //     return;
+        // }
         var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
         if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
         {
@@ -188,7 +188,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         }
     }
 
-    protected virtual void HandleNavigation(double delta)
+    protected virtual void HandleNavigation()
     {
         if (NavAgent.IsNavigationFinished() || IsMotionFrozen())
         {
@@ -288,9 +288,8 @@ public abstract partial class Agent : HittableCharacterBody3D
         Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
     }
     
-    protected virtual void CalculateIfTargetInLineOfSight(double delta)
+    protected virtual void CalculateIfTargetInLineOfSight()
     {
-        if (!LineOfSightPoll.IsPollPinged(delta)) return;
         if (Target is null)
         {
             TargetInLineOfSight = false;
@@ -301,7 +300,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         LineOfSightRayCast3D.ForceRaycastUpdate();
         if (!LineOfSightRayCast3D.IsColliding())
         {
-            TargetInLineOfSight = true;
+            TargetInLineOfSight = false;
             return;
         }
         var collided = LineOfSightRayCast3D.GetCollider();
@@ -314,14 +313,20 @@ public abstract partial class Agent : HittableCharacterBody3D
         if (collided is HittableCharacterBody3D hittable)
         {
             TargetInLineOfSight = hittable == Target;
+            return;
         }
 
         TargetInLineOfSight = false;
     }
     
-    protected virtual void CalculateIfTargetInLineOfSightRotate(double delta)
+    protected virtual void CalculateIfTargetInLineOfSightWithPoll(double delta)
     {
         if (!LineOfSightPoll.IsPollPinged(delta)) return;
+        CalculateIfTargetInLineOfSight();
+    }
+    
+    protected virtual void CalculateIfTargetInLineOfSightRotate()
+    {
         if (Target is null)
         {
             TargetInLineOfSight = false;

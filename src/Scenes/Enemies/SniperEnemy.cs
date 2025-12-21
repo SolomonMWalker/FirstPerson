@@ -7,7 +7,6 @@ public partial class SniperEnemy : ShootingEnemy
     public Poll TimeToChargePoll { get; private set; }
     public MeshInstance3D ChargeAura { get; private set; }
     public bool IsCharging { get; private set; }
-    public bool ReadyToShoot { get; private set; }
     public bool ReadyToCharge { get; private set; }
     public Vector3 WhereTargetWillBe { get; private set; }
 
@@ -22,6 +21,7 @@ public partial class SniperEnemy : ShootingEnemy
     {
         base._Process(delta);
         if (!ShouldSkipShooting()) HandleShooting(delta);
+        CalculateStayStillForShooting(delta);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -73,6 +73,12 @@ public partial class SniperEnemy : ShootingEnemy
         if (ReadyToCharge)
         {
             ReadyToCharge = false;
+            CalculateIfTargetInLineOfSight();
+            if (!TargetInLineOfSight)
+            {
+                TimeSinceLastShotPoll.ResetPoll();
+                return;
+            }
             IsCharging = true;
             TimeToChargePoll.ResetPoll();
             CalculateWhereTargetWillBe();
@@ -96,14 +102,10 @@ public partial class SniperEnemy : ShootingEnemy
 
     protected override void HandleShooting(double delta)
     {
-        if (IsStayingStillForShot && TimeSinceLastShotForMovementPoll.IsPollPinged(delta))
-        {
-            IsStayingStillForShot = false;
-        }
         //time between shots
         if (ReadyToShoot)
         {
-            TimeSinceLastShotForMovementPoll.ResetPoll();
+            TimeToStayStillForShotPoll.ResetPoll();
             TimeSinceLastShotPoll.ResetPoll();
             ChargeAura.Visible = false;
             IsStayingStillForShot = true;
@@ -119,8 +121,7 @@ public partial class SniperEnemy : ShootingEnemy
     {
         var target = WhereTargetWillBe;
         var rotVector = HelperMethods.GetAxisRotationsToTarget(this, target);
-        var lerpedAngle = Mathf.LerpAngle(Rotation.Y, rotVector.Y, 0.9f);
-        Rotation = new Vector3(Rotation.X, lerpedAngle, Rotation.Z);
+        Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
         Hand.LookAt(target);
     }
 }
