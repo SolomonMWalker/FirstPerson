@@ -36,6 +36,10 @@ ToDo
     X Implement a IsPlayerInMyHitCone area to move to player if not in hit cone
         XXXXXXX line of sight shit is getting hard
     cover is complicated, maybe just change up approach strategies
+    Make goals assignable in the editor
+        move to player
+        move to position
+        stay still
     
 IDEA
     range enemies don't wanna be in close, always try to run away
