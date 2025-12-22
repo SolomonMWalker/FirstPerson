@@ -42,14 +42,14 @@ shadow_opacity = 0.66
 [node name="funcGodotTest" parent="map" instance=ExtResource("1_6uqi0")]
 
 [node name="Player" parent="." instance=ExtResource("2_8uh7m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.051567, 0, 5.5042477)
 
 [node name="Enemies" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="MeleeEnemy" parent="Enemies" instance=ExtResource("3_04df3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.18649, 0, -21.733494)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4534454, 0, 28.047684)
 Speed = 15
-UseMoveToTargetFuzziness = true
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")

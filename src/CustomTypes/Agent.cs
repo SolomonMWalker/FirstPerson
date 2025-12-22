@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FirstPerson;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
@@ -16,7 +17,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public float StaggerRegenPercentPerSecond { get; protected set; } = 50;
     [Export] public float WeakpointHealthDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float WeakpointStaggerDamageMultiplier { get; protected set; } = 1.5f;
-    [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 1.0f;
+    [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 0.15f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 0.2f;
     [Export] public float StaggerTimeInSeconds { get; protected set; } = 2.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
@@ -192,8 +193,8 @@ public abstract partial class Agent : HittableCharacterBody3D
             return;
         }
 
-        Vector3 currentAgentPosition = GlobalTransform.Origin;
-        Vector3 nextPathPosition = NavAgent.GetNextPathPosition();
+        var currentAgentPosition = GlobalTransform.Origin;
+        var nextPathPosition = NavAgent.GetNextPathPosition();
         
         //don't overshoot, I think
         //if magnitude of this frame of velocity will overshoot target, just go directly to target
@@ -204,8 +205,8 @@ public abstract partial class Agent : HittableCharacterBody3D
             tempVelocity = direction;
         }
 
-        //Velocity = Velocity.Lerp(tempVelocity, 0.99f);
-        Velocity = tempVelocity;
+        Velocity = Velocity.Lerp(tempVelocity, 0.95f);
+        //Velocity = tempVelocity;
         MoveAndSlide();
     }
 
@@ -294,14 +295,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (!LineOfSightArea3D.HasOverlappingBodies()) return false;
         var bodies = LineOfSightArea3D.GetOverlappingBodies();
-        foreach (var body in bodies)
-        {
-            if (body is HittableCharacterBody3D hittable && hittable == Target)
-            {
-                return true;
-            }
-        }
-        return false;
+        return bodies.Any(b => b is HittableCharacterBody3D hittable && hittable == Target);
     }
     
     protected virtual bool CalculateIfTargetInLineOfSightWithRaycast()
@@ -319,16 +313,10 @@ public abstract partial class Agent : HittableCharacterBody3D
             return false;
         }
         var collided = LineOfSightRayCast3D.GetCollider();
-        if (collided == null)
-        {
-            return false;
-        }
-
         if (collided is HittableCharacterBody3D hittable)
         {
             return hittable == Target;
         }
-
         return false;
     }
 }

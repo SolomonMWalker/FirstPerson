@@ -110,7 +110,6 @@ public partial class Player : HittableCharacterBody3D
         base._Process(delta);
         if (Input.IsActionJustPressed("Fire"))
         {
-            AnimationPlayer.Play("FireGun");
             FireCameraRaycast = true;
         }
     }
@@ -323,6 +322,7 @@ public partial class Player : HittableCharacterBody3D
     private void HandleFire()
     {
         if (!FireCameraRaycast) return;
+        AnimationPlayer.Play("FireGun");
         FireCameraRaycast = false;
         if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") 
             || !ShootRaycast.IsColliding()) return;
