@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://b8hkoeuua7otf"]
+[gd_scene load_steps=12 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player.tscn" id="2_8uh7m"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://src/Scenes/Cover/CoverSpotController.cs" id="4_ykrsh"]
 [ext_resource type="PackedScene" uid="uid://5fo45uuf6sbv" path="res://src/Scenes/Enemies/shooting_enemy.tscn" id="5_l07km"]
-[ext_resource type="PackedScene" uid="uid://jbcwqhyno5o3" path="res://src/Scenes/Cover/cover_spot.tscn" id="5_ykrsh"]
 [ext_resource type="PackedScene" uid="uid://b7x52cldn4ik7" path="res://src/Scenes/Enemies/sniper_enemy.tscn" id="6_04df3"]
 [ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/HittableCharacterBody3D.cs" id="6_g14j6"]
 
@@ -65,39 +64,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 195.4844, 8, -16.946861)
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
-
-[node name="CoverSpot" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.178612, 0, 33.03199)
-
-[node name="CoverSpot2" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.610588, 0, 42.600006)
-
-[node name="CoverSpot3" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.412956, 0, 29.531494)
-
-[node name="CoverSpot4" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 185.32227, 8.1, 43.01078)
-
-[node name="CoverSpot5" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 186.1518, 8.1, 13.843626)
-
-[node name="CoverSpot6" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 185.64726, 8.1, -3.4727516)
-
-[node name="CoverSpot7" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 156.95349, 4.003242, -10.181639)
-
-[node name="CoverSpot11" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 156.95349, 4.003242, 9.577534)
-
-[node name="CoverSpot8" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 156.8338, 4.003242, -37.269974)
-
-[node name="CoverSpot9" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 156.94841, 3.9770374, 36.68264)
-
-[node name="CoverSpot10" parent="CoverSpotController" instance=ExtResource("5_ykrsh")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 156.59119, 4.003242, -1.7482319)
 
 [node name="EnemyTarget" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110.91075, 1, 5.0813894)
