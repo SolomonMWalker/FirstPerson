@@ -7,6 +7,8 @@ using Godot;
 
 public abstract partial class Agent : HittableCharacterBody3D
 {
+    [Export] public Goal CurrentGoal { get; set; } = Goal.MoveToTarget;
+    [Export] public Node3D TargetPosition { get; set; }
     [Export] public int Health { get; protected set; } = 25;
     [Export] public int InitialStaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
@@ -48,7 +50,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected bool TargetInLineOfSight { get; set; }
     protected bool FreezeMotion { get; set; }
     protected List<Goal> AllowedGoals = [];
-    protected Goal CurrentGoal { get; set; }
     protected List<AgentMovementState> MovementStates = [AgentMovementState.Still, AgentMovementState.DefaultMoving];
     protected AgentMovementState CurrentAgentMovementState { get; set; } = AgentMovementState.Still;
     
@@ -150,7 +151,13 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected abstract void CalculateNavigation(double delta);
 
-    protected virtual void MoveToTarget(double delta)
+    protected virtual void MoveToCombatTarget(double delta)
+    {
+        if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
+        SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
+    }
+
+    protected virtual void MoveToMovementTarget(double delta)
     {
         if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
         SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
@@ -238,6 +245,14 @@ public abstract partial class Agent : HittableCharacterBody3D
         if (!NavAgentMovementTarget.Equals(target))
         {
             NavAgentMovementTarget = target;
+        }
+    }
+
+    protected virtual void SetNavigationToMovementTarget()
+    {
+        if (!NavAgentMovementTarget.Equals(TargetPosition.GlobalPosition))
+        {
+            NavAgentMovementTarget = TargetPosition.GlobalPosition;
         }
     }
 

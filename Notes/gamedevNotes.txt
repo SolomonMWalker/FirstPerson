@@ -39,6 +39,11 @@ ToDo
     Make goals assignable in the editor
         move to player
         move to position
+        move to position 
+            crouch when not shooting
+            include in cover position (crouch when not shooting)
+            abandon this position when the player gets too close
+                some enemies won't abandon, just stay there
         stay still
     
 IDEA

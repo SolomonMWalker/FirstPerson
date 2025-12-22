@@ -93,8 +93,8 @@ public partial class ShootingEnemy : Agent
             case Goal.MoveToCover:
                 MoveToCover(delta);
                 break;
-            case Goal.MoveToTargetMedium:
-                MoveToTarget(delta);
+            case Goal.MoveToTarget:
+                MoveToCombatTarget(delta);
                 break;
         }
     }

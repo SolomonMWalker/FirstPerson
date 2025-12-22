@@ -3,9 +3,7 @@
 public enum Goal
 {
     MoveToCover,
-    MoveToTargetClose,
-    MoveToTargetMedium,
-    MoveToTargetFar,
+    MoveToTarget,
     Patrol,
     Standby
 }

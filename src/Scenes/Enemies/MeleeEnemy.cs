@@ -21,8 +21,8 @@ public partial class MeleeEnemy : Agent
         PauseBetweenAttacksPoll = new Poll(PauseTimeBetweenAttacks + Fuzzer.Fuzz(0f, 0.3f, false));
         MeleeRangeShapeCast = GetNode<ShapeCast3D>("MeleeRangeShapeCast");
         MeleeRangeArea = GetNode<Area3D>("MeleeRangeArea");
-        AllowedGoals.Add(Goal.MoveToTargetClose);
-        CurrentGoal = Goal.MoveToTargetClose;
+        AllowedGoals.Add(Goal.MoveToTarget);
+        CurrentGoal = Goal.MoveToTarget;
         
         Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         //Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
@@ -49,8 +49,8 @@ public partial class MeleeEnemy : Agent
     {
         switch (CurrentGoal)
         {
-            case Goal.MoveToTargetClose:
-                MoveToTarget(delta);
+            case Goal.MoveToTarget:
+                MoveToCombatTarget(delta);
                 break;
         }
     }
