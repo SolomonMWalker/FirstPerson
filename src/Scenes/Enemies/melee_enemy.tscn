@@ -194,6 +194,7 @@ script = ExtResource("2_qpf5h")
 InitialStaggerHealth = 25
 Speed = 5
 UseMoveToTargetFuzziness = true
+MovementTargetAcquisitionPollTimeInSeconds = 1.0
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

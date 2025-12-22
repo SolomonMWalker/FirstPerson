@@ -124,8 +124,8 @@ collision_layer = 33
 collision_mask = 97
 script = ExtResource("1_s7nxt")
 TimeBetweenShots = 2.0
+ProjectileSpeed = 35.0
 UseAccuracyFuzziness = true
-Speed = 5
 UseMoveToTargetFuzziness = true
 CoverSpotMaxTargetDistance = 500
 LineOfSightCheckRange = 50
@@ -164,7 +164,7 @@ max_speed = 100.0
 keep_y_velocity = false
 
 [node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49, -0.56)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.39263034, 0)
 enabled = false
 target_position = Vector3(0, 0, 0)
 collision_mask = 456
