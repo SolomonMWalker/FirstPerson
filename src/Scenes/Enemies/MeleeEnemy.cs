@@ -24,8 +24,8 @@ public partial class MeleeEnemy : Agent
         AllowedGoals.Add(Goal.MoveToTargetClose);
         CurrentGoal = Goal.MoveToTargetClose;
         
-        //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
-        Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
+        //Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
     }
 
     public override void _Process(double delta)
@@ -61,7 +61,7 @@ public partial class MeleeEnemy : Agent
         for (int i = 0; i < MeleeRangeShapeCast.GetCollisionCount(); i++)
         {
             var collidedObject = MeleeRangeShapeCast.GetCollider(i);
-            if (collidedObject is HittableCharacterBody3D hittableChar && hittableChar == Target)
+            if (collidedObject is HittableCharacterBody3D hittableChar)
             {
                 hittableChar.Hit(new HitParameters(8));
             }

@@ -29,8 +29,8 @@ public partial class ShootingEnemy : Agent
     {
         base._Ready();
         MaxHandVerticalAngleInRad = Mathf.DegToRad(MaxHandVerticalAngleInDeg);
-        //Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
-        Target = GetNode<FirstPerson.CustomTypes.HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
+        //Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeToStayStillForShotPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeSinceAccuracyCheckPoll = new Poll(TimeBetweenAccuracyChecks + Fuzzer.Fuzz(0f, 0.05f, false));
