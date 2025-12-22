@@ -155,9 +155,10 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-avoidance_enabled = true
 height = 2.0
 radius = 3.0
+max_speed = 100.0
+keep_y_velocity = false
 
 [node name="LineOfSightRayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.49, -0.56)

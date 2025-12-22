@@ -61,7 +61,7 @@ public partial class MeleeEnemy : Agent
         for (int i = 0; i < MeleeRangeShapeCast.GetCollisionCount(); i++)
         {
             var collidedObject = MeleeRangeShapeCast.GetCollider(i);
-            if (collidedObject is HittableCharacterBody3D hittableChar)
+            if (collidedObject is HittableCharacterBody3D hittableChar && hittableChar == Target)
             {
                 hittableChar.Hit(new HitParameters(8));
             }

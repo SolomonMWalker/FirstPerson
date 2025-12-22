@@ -188,9 +188,12 @@ points = PackedVector3Array(0, 50, -62.5, 0, 29.992172, -50.00734, -44.19538, 50
 
 [node name="MeleeEnemy" type="CharacterBody3D"]
 collision_layer = 33
-collision_mask = 3
+collision_mask = 0
+wall_min_slide_angle = 1.0471976
 script = ExtResource("2_qpf5h")
 InitialStaggerHealth = 25
+Speed = 5
+UseMoveToTargetFuzziness = true
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -220,7 +223,6 @@ libraries = {
 }
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-simplify_path = true
 avoidance_enabled = true
 height = 2.0
 radius = 3.0
@@ -249,7 +251,7 @@ transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 0
 shape = SubResource("ConvexPolygonShape3D_ruoun")
 
 [node name="MeleeRangeShapeCast" type="ShapeCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0043884516, -0.87865764)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.92)
 enabled = false
 shape = ExtResource("4_w0ji2")
 target_position = Vector3(0, 0, 0)
