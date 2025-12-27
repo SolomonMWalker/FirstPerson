@@ -3,6 +3,7 @@
 public enum Goal
 {
     MoveToCover,
+    MoveToSpot,
     MoveToTarget,
     Patrol,
     Standby

@@ -9,7 +9,6 @@ public partial class ShootingEnemy : Agent
     [Export] public double TimeBetweenShots { get; protected set; } = 1.5;
     [Export] public double TimeToShoot { get; protected set; } = 0.3;
     [Export] public double TimeBetweenAccuracyChecks { get; protected set; } = 0.2;
-    [Export] public float MediumFollowDistance { get; protected set; } = 10f;
     [Export] public float ProjectileSpeed { get; protected set; } = 10f;
     [Export] public bool UseAccuracyFuzziness { get; protected set; }
     [Export] public float MaxHandVerticalAngleInDeg { get; protected set; } = 60;
@@ -38,9 +37,7 @@ public partial class ShootingEnemy : Agent
         FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("Hand/Gun/BulletSpawnPoint");
         Hand = GetNode<Node3D>("Hand");
-        CurrentFollowDistance = MediumFollowDistance;
-        AllowedGoals.Add(Goal.MoveToCover);
-        CurrentGoal = Goal.MoveToCover;
+        AllowedGoals.AddRange([Goal.MoveToCover, Goal.MoveToSpot, Goal.MoveToTarget]);
     }
 
     public override void _Process(double delta)
@@ -95,6 +92,9 @@ public partial class ShootingEnemy : Agent
                 break;
             case Goal.MoveToTarget:
                 MoveToCombatTarget(delta);
+                break;
+            case Goal.MoveToSpot:
+                MoveToMovementTarget(delta);
                 break;
         }
     }

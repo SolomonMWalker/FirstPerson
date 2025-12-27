@@ -8,10 +8,11 @@ using Godot;
 public abstract partial class Agent : HittableCharacterBody3D
 {
     [Export] public Goal CurrentGoal { get; set; } = Goal.MoveToTarget;
-    [Export] public Node3D TargetPosition { get; set; }
+    [Export] public Node3D InitialMovementTargetPosition { get; set; }
     [Export] public int Health { get; protected set; } = 25;
     [Export] public int InitialStaggerHealth { get; protected set; } = 10;
     [Export] public int Speed { get; protected set; } = 3;
+    [Export] public float CharacterRadius { get; set; } = 0.5f;
     [Export] public bool UseMoveToTargetFuzziness { get; protected set; }
     [Export] public float MoveToTargetFuzziness { get; protected set; } = 0.1f;
     [Export] public float TimeBeforeNextStagger { get; protected set; } = 4;
@@ -26,6 +27,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public float DefaultTargetDistance { get; protected set; } = 0.5f;
     [Export] public int LineOfSightCheckRange { get; protected set; } = 250;
     [Export] public int PathStrayMaxDistance { get; protected set; } = 30;
+
+    public bool log;
     
     public Vector3 NavAgentMovementTarget
     {
@@ -43,7 +46,6 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected StaggerHealth StaggerHealth { get; set; }
     protected Poll MovementTargetAcquisitionPoll { get; set; }
     protected Poll LineOfSightPoll { get; set; }
-    protected float CharacterRadius { get; set; } = 0.5f;
     protected float? CurrentFollowDistance;
     protected bool IsStaggered { get; set; }
     protected bool QueuedForDeath { get; set; }
@@ -154,13 +156,13 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected virtual void MoveToCombatTarget(double delta)
     {
         if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
-        SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
+        SetNavigationToTarget(Target.GlobalPosition, CurrentFollowDistance ?? 0 + CharacterRadius);
     }
 
     protected virtual void MoveToMovementTarget(double delta)
     {
         if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
-        SetNavigationToTarget(CurrentFollowDistance ?? 0 + CharacterRadius);
+        SetNavigationToTarget(InitialMovementTargetPosition.GlobalPosition, CurrentFollowDistance ?? 0 + CharacterRadius);
     }
     
     protected virtual void MoveToCover(double delta)
@@ -169,7 +171,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         if (IsMotionFrozen() || Target is null) return;
         if (!TargetInLineOfSight)
         {
-            SetNavigationToTarget(CurrentFollowDistance);
+            SetNavigationToTarget(Target.GlobalPosition, CurrentFollowDistance);
             return;
         }
         var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
@@ -177,7 +179,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         {
             CurrentCoverSpot?.Unoccupy();
             CurrentCoverSpot = null;
-            SetNavigationToTarget(CurrentFollowDistance); 
+            SetNavigationToTarget(Target.GlobalPosition, CurrentFollowDistance); 
         }
         else
         {
@@ -234,13 +236,12 @@ public abstract partial class Agent : HittableCharacterBody3D
         }
     }
 
-    protected virtual void SetNavigationToTarget(float? distance = null)
+    protected virtual void SetNavigationToTarget(Vector3 targetPosition, float? distance = null)
     {
-        if (Target is null) return;
-        var point = HelperMethods.GetPointMetersFromTarget(Target.GlobalPosition, GlobalPosition,
+        var point = HelperMethods.GetPointMetersFromTarget(targetPosition, GlobalPosition,
             CurrentFollowDistance ?? 0);
         var target = !distance.HasValue || distance == 0 || !CurrentFollowDistance.HasValue 
-            ? Target.GlobalPosition : point;
+            ? targetPosition : point;
         target = UseMoveToTargetFuzziness ? Fuzzer.Fuzz(target, MoveToTargetFuzziness) : target;
         if (!NavAgentMovementTarget.Equals(target))
         {
@@ -250,9 +251,9 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void SetNavigationToMovementTarget()
     {
-        if (!NavAgentMovementTarget.Equals(TargetPosition.GlobalPosition))
+        if (!NavAgentMovementTarget.Equals(InitialMovementTargetPosition.GlobalPosition))
         {
-            NavAgentMovementTarget = TargetPosition.GlobalPosition;
+            NavAgentMovementTarget = InitialMovementTargetPosition.GlobalPosition;
         }
     }
 

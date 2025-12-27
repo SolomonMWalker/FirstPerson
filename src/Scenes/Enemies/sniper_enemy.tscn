@@ -139,6 +139,7 @@ Speed = 5
 UseMoveToTargetFuzziness = true
 MovementTargetAcquisitionPollTimeInSeconds = 1.0
 CoverSpotMaxTargetDistance = 500
+LineOfSightCheckRange = 500
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -185,7 +186,7 @@ collision_layer = 0
 collision_mask = 200
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LineOfSightArea3D"]
-transform = Transform3D(1, 0, 0, 0, 1.1924881e-08, 1, 0, -1, 1.1924881e-08, 0, 0, -50)
+transform = Transform3D(5, 0, 0, 0, -2.1855695e-07, 5, 0, -5, -2.1855695e-07, 0, 0, -250)
 shape = SubResource("ConvexPolygonShape3D_7cc2d")
 
 [node name="Hand" type="Node3D" parent="."]

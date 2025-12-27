@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8hkoeuua7otf"]
+[gd_scene load_steps=11 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player.tscn" id="2_8uh7m"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://src/Scenes/Cover/CoverSpotController.cs" id="4_ykrsh"]
-[ext_resource type="PackedScene" uid="uid://5fo45uuf6sbv" path="res://src/Scenes/Enemies/shooting_enemy.tscn" id="5_l07km"]
 [ext_resource type="PackedScene" uid="uid://b7x52cldn4ik7" path="res://src/Scenes/Enemies/sniper_enemy.tscn" id="6_04df3"]
 [ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/HittableCharacterBody3D.cs" id="6_g14j6"]
 
@@ -47,20 +46,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105.47904, 0, 1.0475473)
 [node name="Enemies" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="ShootingEnemy" parent="Enemies" instance=ExtResource("5_l07km")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 161.19661, 3.9997559, 37.146927)
-
-[node name="ShootingEnemy2" parent="Enemies" instance=ExtResource("5_l07km")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 161.19661, 2.8723583, 2.0995674)
-
-[node name="ShootingEnemy3" parent="Enemies" instance=ExtResource("5_l07km")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 161.19661, 3.1861477, -17.85735)
-
-[node name="SniperEnemy" parent="Enemies" instance=ExtResource("6_04df3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 193.67334, 7.999998, 17.319574)
-
-[node name="SniperEnemy2" parent="Enemies" instance=ExtResource("6_04df3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 195.4844, 8, -16.946861)
+[node name="SniperEnemy" parent="Enemies" node_paths=PackedStringArray("InitialMovementTargetPosition") instance=ExtResource("6_04df3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 208.90718, 15.439848, -40.351387)
+CurrentGoal = 1
+InitialMovementTargetPosition = NodePath("../../MovementTargets/Node3D")
+UseMoveToTargetFuzziness = false
+DefaultTargetDistance = 0.25
 
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
@@ -78,3 +69,8 @@ shape = SubResource("CapsuleShape3D_vbegm")
 mesh = SubResource("CapsuleMesh_ehkex")
 
 [node name="ProjectilesParent" type="Node3D" parent="."]
+
+[node name="MovementTargets" type="Node3D" parent="."]
+
+[node name="Node3D" type="Node3D" parent="MovementTargets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 206.22661, 15.547487, -45.369873)
