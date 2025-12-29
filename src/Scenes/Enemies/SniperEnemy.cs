@@ -90,9 +90,9 @@ public partial class SniperEnemy : ShootingEnemy
     public void CalculateWhereTargetWillBe()
     {
         WhereTargetWillBe = new Vector3(
-            Target.GlobalPosition.X + Target.Velocity.X * TimeToCharge,
-            Target.GlobalPosition.Y,
-            Target.GlobalPosition.Z + Target.Velocity.Z * TimeToCharge);
+            CombatTarget.GlobalPosition.X + CombatTarget.Velocity.X * TimeToCharge,
+            CombatTarget.GlobalPosition.Y,
+            CombatTarget.GlobalPosition.Z + CombatTarget.Velocity.Z * TimeToCharge);
     }
 
     protected override void HandleShooting(double delta)

@@ -24,7 +24,7 @@ public partial class MeleeEnemy : Agent
         AllowedGoals.Add(Goal.MoveToTarget);
         CurrentGoal = Goal.MoveToTarget;
         
-        Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
+        CombatTarget = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         //Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
     }
 

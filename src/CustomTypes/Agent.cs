@@ -15,12 +15,12 @@ public abstract partial class Agent : HittableCharacterBody3D
     [Export] public float CharacterRadius { get; set; } = 0.5f;
     [Export] public bool UseMoveToTargetFuzziness { get; protected set; }
     [Export] public float MoveToTargetFuzziness { get; protected set; } = 0.1f;
-    [Export] public float TimeBeforeNextStagger { get; protected set; } = 4;
-    [Export] public float TimeBeforeStaggerHealthRegen { get; protected set; } = 2.5f;
+    [Export] public float TimeBeforeNextStaggerInSeconds { get; protected set; } = 4;
+    [Export] public float TimeBeforeStaggerHealthRegenInSeconds { get; protected set; } = 2.5f;
     [Export] public float StaggerRegenPercentPerSecond { get; protected set; } = 50;
     [Export] public float WeakpointHealthDamageMultiplier { get; protected set; } = 1.5f;
     [Export] public float WeakpointStaggerDamageMultiplier { get; protected set; } = 1.5f;
-    [Export] public float MovementTargetAcquisitionPollTimeInSeconds { get; protected set; } = 0.15f;
+    [Export] public float NavigationTargetAcquisitionPollTimeInSeconds { get; protected set; } = 0.15f;
     [Export] public float LineOfSightPollTimeInSeconds { get; protected set; } = 0.2f;
     [Export] public float StaggerTimeInSeconds { get; protected set; } = 2.0f;
     [Export] public int CoverSpotMaxTargetDistance { get; protected set; } = 40;
@@ -36,7 +36,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         protected set => NavAgent.TargetPosition = value;
     }
 
-    protected HittableCharacterBody3D Target { get; set; }
+    protected HittableCharacterBody3D CombatTarget { get; set; }
     protected CoverSpotController CoverSpotController { get; set; }
     protected NavigationAgent3D NavAgent { get; set; }
     protected AnimationPlayer AnimationPlayer { get; set; }
@@ -44,7 +44,7 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected Area3D LineOfSightArea3D { get; set; }
     protected CoverSpot CurrentCoverSpot { get; set; }
     protected StaggerHealth StaggerHealth { get; set; }
-    protected Poll MovementTargetAcquisitionPoll { get; set; }
+    protected Poll NavigationTargetAcquisitionPoll { get; set; }
     protected Poll LineOfSightPoll { get; set; }
     protected float? CurrentFollowDistance;
     protected bool IsStaggered { get; set; }
@@ -59,8 +59,8 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         base._Ready();
 
-        StaggerHealth = new StaggerHealth(InitialStaggerHealth, TimeBeforeStaggerHealthRegen, 
-            StaggerRegenPercentPerSecond, TimeBeforeNextStagger);
+        StaggerHealth = new StaggerHealth(InitialStaggerHealth, TimeBeforeStaggerHealthRegenInSeconds, 
+            StaggerRegenPercentPerSecond, TimeBeforeNextStaggerInSeconds);
         
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CoverSpotController = GetNode<CoverSpotController>("../../CoverSpotController");
@@ -69,7 +69,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         LineOfSightRayCast3D.Enabled = false;
         LineOfSightArea3D = GetNode<Area3D>("LineOfSightArea3D");
         
-        MovementTargetAcquisitionPoll = new Poll(MovementTargetAcquisitionPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
+        NavigationTargetAcquisitionPoll = new Poll(NavigationTargetAcquisitionPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
         LineOfSightPoll = new Poll(LineOfSightPollTimeInSeconds, Fuzzer.Fuzz(0f, 0.3f, false));
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
@@ -155,31 +155,33 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void MoveToCombatTarget(double delta)
     {
-        if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
-        SetNavigationToTarget(Target.GlobalPosition, CurrentFollowDistance ?? 0 + CharacterRadius);
+        if (!NavigationTargetAcquisitionPoll.IsPollPinged(delta) 
+            && !CombatTarget.GlobalPosition.IsEqualApprox(NavAgentMovementTarget)) return;
+        SetNavigationToTarget(CombatTarget.GlobalPosition, CurrentFollowDistance ?? 0 + CharacterRadius);
     }
 
     protected virtual void MoveToMovementTarget(double delta)
     {
-        if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
-        SetNavigationToTarget(InitialMovementTargetPosition.GlobalPosition, CurrentFollowDistance ?? 0 + CharacterRadius);
+        if (!NavigationTargetAcquisitionPoll.IsPollPinged(delta)
+            && !InitialMovementTargetPosition.GlobalPosition.IsEqualApprox(NavAgentMovementTarget)) return;
+        SetNavigationToTarget(InitialMovementTargetPosition.GlobalPosition);
     }
     
     protected virtual void MoveToCover(double delta)
     {
-        if (!MovementTargetAcquisitionPoll.IsPollPinged(delta)) return;
-        if (IsMotionFrozen() || Target is null) return;
+        if (!NavigationTargetAcquisitionPoll.IsPollPinged(delta)) return;
+        if (CombatTarget is null) return;
         if (!TargetInLineOfSight)
         {
-            SetNavigationToTarget(Target.GlobalPosition, CurrentFollowDistance);
+            SetNavigationToTarget(CombatTarget.GlobalPosition, CurrentFollowDistance);
             return;
         }
-        var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, Target, CurrentCoverSpot);
-        if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(Target.GlobalPosition) > CoverSpotMaxTargetDistance)
+        var bestCoverSpot = CoverSpotController.GetViableCoverSpot(this, CombatTarget, CurrentCoverSpot);
+        if (bestCoverSpot == null || bestCoverSpot.GlobalPosition.DistanceTo(CombatTarget.GlobalPosition) > CoverSpotMaxTargetDistance)
         {
             CurrentCoverSpot?.Unoccupy();
             CurrentCoverSpot = null;
-            SetNavigationToTarget(Target.GlobalPosition, CurrentFollowDistance); 
+            SetNavigationToTarget(CombatTarget.GlobalPosition, CurrentFollowDistance); 
         }
         else
         {
@@ -229,7 +231,6 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void DecreaseStaggerHealth(int amount)
     {
-        //GD.Print($"StaggerHealth is at {StaggerHealth.Amount}, decreasing by {amount}");
         if (StaggerHealth.IsStaggeredFromDecreaseStaggerHealth(amount))
         {
             AnimationPlayer.Play("Staggered");
@@ -289,15 +290,15 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual void LookAtTarget()
     {
-        if (Target is null) return;
-        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
+        if (CombatTarget is null) return;
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, CombatTarget.GlobalPosition);
         Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
     }
 
     protected virtual void HandleRotation()
     {
-        if (IsRotationFrozen() || Target is null) return;
-        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
+        if (IsRotationFrozen() || CombatTarget is null) return;
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, CombatTarget.GlobalPosition);
         Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
     }
     
@@ -311,17 +312,17 @@ public abstract partial class Agent : HittableCharacterBody3D
     {
         if (!LineOfSightArea3D.HasOverlappingBodies()) return false;
         var bodies = LineOfSightArea3D.GetOverlappingBodies();
-        return bodies.Any(b => b is HittableCharacterBody3D hittable && hittable == Target);
+        return bodies.Any(b => b is HittableCharacterBody3D hittable && hittable == CombatTarget);
     }
     
     protected virtual bool CalculateIfTargetInLineOfSightWithRaycast()
     {
-        if (Target is null)
+        if (CombatTarget is null)
         {
             return false;
         }
 
-        var ray = LineOfSightRayCast3D.Position.DirectionTo(ToLocal(Target.GlobalPosition));
+        var ray = LineOfSightRayCast3D.Position.DirectionTo(ToLocal(CombatTarget.GlobalPosition));
         LineOfSightRayCast3D.TargetPosition = ray * LineOfSightCheckRange;
         LineOfSightRayCast3D.ForceRaycastUpdate();
         if (!LineOfSightRayCast3D.IsColliding())
@@ -331,7 +332,7 @@ public abstract partial class Agent : HittableCharacterBody3D
         var collided = LineOfSightRayCast3D.GetCollider();
         if (collided is HittableCharacterBody3D hittable)
         {
-            return hittable == Target;
+            return hittable == CombatTarget;
         }
         return false;
     }

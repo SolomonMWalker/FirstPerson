@@ -28,7 +28,7 @@ public partial class ShootingEnemy : Agent
     {
         base._Ready();
         MaxHandVerticalAngleInRad = Mathf.DegToRad(MaxHandVerticalAngleInDeg);
-        Target = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
+        CombatTarget = GetNode<HittableCharacterBody3D>("/root/Test/EnemyTarget");
         //Target = GetNode<HittableCharacterBody3D>(Configuration.GetConfigValues().PlayerSceneTreePath);
         TimeSinceLastShotPoll = new Poll(TimeBetweenShots + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeToStayStillForShotPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
@@ -52,7 +52,7 @@ public partial class ShootingEnemy : Agent
         base._PhysicsProcess(delta);
         if (TimeSinceAccuracyCheckPoll.IsPollPinged(delta))
         {
-            AccuracyController.CheckTargetForAccuracy(TimeBetweenAccuracyChecks, Target);
+            AccuracyController.CheckTargetForAccuracy(TimeBetweenAccuracyChecks, CombatTarget);
         }
     }
 
@@ -66,9 +66,9 @@ public partial class ShootingEnemy : Agent
     
     protected override void LookAtTarget()
     {
-        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, Target.GlobalPosition);
+        var rotVector = HelperMethods.GetAxisRotationsToTarget(this, CombatTarget.GlobalPosition);
         Rotation = new Vector3(Rotation.X, rotVector.Y, Rotation.Z);
-        Hand.LookAt(Target.GlobalPosition);
+        Hand.LookAt(CombatTarget.GlobalPosition);
         var clampedXRotation = Mathf.Clamp(Hand.Rotation.X, -MaxHandVerticalAngleInRad, MaxHandVerticalAngleInRad);
         Hand.Rotation = new Vector3(clampedXRotation, Hand.Rotation.Y, Hand.Rotation.Z);
     }
@@ -128,8 +128,8 @@ public partial class ShootingEnemy : Agent
             IsStayingStillForShot = true;
             var fireBall = FireballPackedScene.Instantiate<Fireball>();
             var targetPosition = UseAccuracyFuzziness
-                ? AccuracyController.ApplyAccuracyToTargetPosition(Target.GlobalPosition)
-                : Target.GlobalPosition;
+                ? AccuracyController.ApplyAccuracyToTargetPosition(CombatTarget.GlobalPosition)
+                : CombatTarget.GlobalPosition;
             var accuracyAppliedTargetPosition = targetPosition;
             fireBall.Initialize(accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
             AddChild(fireBall);

@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8hkoeuua7otf"]
+[gd_scene load_steps=12 format=3 uid="uid://b8hkoeuua7otf"]
 
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_6uqi0"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player.tscn" id="2_8uh7m"]
+[ext_resource type="PackedScene" uid="uid://5fo45uuf6sbv" path="res://src/Scenes/Enemies/shooting_enemy.tscn" id="4_wnc5p"]
 [ext_resource type="Script" uid="uid://hfgekt0bd4at" path="res://src/Scenes/Cover/CoverSpotController.cs" id="4_ykrsh"]
 [ext_resource type="PackedScene" uid="uid://b7x52cldn4ik7" path="res://src/Scenes/Enemies/sniper_enemy.tscn" id="6_04df3"]
 [ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/HittableCharacterBody3D.cs" id="6_g14j6"]
@@ -53,6 +54,19 @@ InitialMovementTargetPosition = NodePath("../../MovementTargets/Node3D")
 UseMoveToTargetFuzziness = false
 DefaultTargetDistance = 0.25
 
+[node name="SniperEnemy2" parent="Enemies" node_paths=PackedStringArray("InitialMovementTargetPosition") instance=ExtResource("6_04df3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 208.90718, 15.439848, 44.043037)
+CurrentGoal = 1
+InitialMovementTargetPosition = NodePath("../../MovementTargets/Node3D")
+UseMoveToTargetFuzziness = false
+DefaultTargetDistance = 0.25
+
+[node name="ShootingEnemy" parent="Enemies" instance=ExtResource("4_wnc5p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160.59879, 4, 28.833244)
+
+[node name="ShootingEnemy2" parent="Enemies" instance=ExtResource("4_wnc5p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 160.59879, 4, -47.29348)
+
 [node name="CoverSpotController" type="Node3D" parent="."]
 script = ExtResource("4_ykrsh")
 
@@ -74,3 +88,6 @@ mesh = SubResource("CapsuleMesh_ehkex")
 
 [node name="Node3D" type="Node3D" parent="MovementTargets"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 206.22661, 15.547487, -45.369873)
+
+[node name="Node3D2" type="Node3D" parent="MovementTargets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 205.46921, 15.547487, 39.421707)
