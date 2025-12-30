@@ -21,7 +21,7 @@ project/assembly_name="FirstPerson"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/convex_cone_shape3d_plugin/plugin.cfg", "res://addons/func_godot/plugin.cfg")
+enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
 
 [input]
 

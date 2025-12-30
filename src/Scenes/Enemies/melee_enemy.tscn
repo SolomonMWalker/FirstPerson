@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://cwyu76lb0mgo1" path="res://src/Scenes/Enemies/MeleeEnemy.cs" id="2_qpf5h"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_w0ji2"]
 [ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="3_fq1wb"]
-[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Enemies/weakspot.tscn" id="3_ruoun"]
-[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Enemies/hitbox.tscn" id="4_2a4x8"]
-[ext_resource type="Shape3D" uid="uid://d0kj6uh42onfs" path="res://src/Scenes/Enemies/melee_enemy_melee_range_shape.tres" id="4_w0ji2"]
-[ext_resource type="PackedScene" uid="uid://c2drao3m5csny" path="res://src/Scenes/Enemies/line_of_sight_area_3d.tscn" id="6_2a4x8"]
+[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Utilities/weakspot.tscn" id="3_ruoun"]
+[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Utilities/hitbox.tscn" id="4_2a4x8"]
+[ext_resource type="Shape3D" uid="uid://d0kj6uh42onfs" path="res://src/Resources/Shapes/melee_enemy_melee_range_shape.tres" id="4_w0ji2"]
+[ext_resource type="PackedScene" uid="uid://c2drao3m5csny" path="res://src/Scenes/Utilities/line_of_sight_area_3d.tscn" id="6_2a4x8"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3xpap"]
 
@@ -240,7 +240,7 @@ collision_mask = 75
 hit_from_inside = true
 
 [node name="LineOfSightArea3D" parent="." instance=ExtResource("6_2a4x8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48780707, -0.5911988)
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0.5, -0.6)
 
 [node name="MeleeRangeShapeCast" type="ShapeCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.92)

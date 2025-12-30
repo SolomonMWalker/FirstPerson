@@ -310,7 +310,10 @@ public abstract partial class Agent : HittableCharacterBody3D
 
     protected virtual bool CalcaulateIfTargetInLineOfSightWithArea3D()
     {
-        if (!LineOfSightArea3D.HasOverlappingBodies()) return false;
+        if (!LineOfSightArea3D.HasOverlappingBodies())
+        {
+            return false;
+        }
         var bodies = LineOfSightArea3D.GetOverlappingBodies();
         return bodies.Any(b => b is HittableCharacterBody3D hittable && hittable == CombatTarget);
     }

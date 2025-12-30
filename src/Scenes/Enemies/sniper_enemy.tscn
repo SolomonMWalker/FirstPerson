@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" uid="uid://hmx1w4t054xn" path="res://src/Scenes/Enemies/SniperEnemy.cs" id="1_7cc2d"]
 [ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="2_p544m"]
-[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Enemies/weakspot.tscn" id="3_gjp6a"]
-[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Enemies/hitbox.tscn" id="4_f32ny"]
+[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Utilities/weakspot.tscn" id="3_gjp6a"]
+[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Utilities/hitbox.tscn" id="4_f32ny"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="5_6jw4m"]
-[ext_resource type="PackedScene" uid="uid://c2drao3m5csny" path="res://src/Scenes/Enemies/line_of_sight_area_3d.tscn" id="6_p544m"]
+[ext_resource type="PackedScene" uid="uid://c2drao3m5csny" path="res://src/Scenes/Utilities/line_of_sight_area_3d.tscn" id="6_p544m"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qj2bh"]
 
@@ -134,7 +134,6 @@ TimeBetweenShots = 3.0
 ProjectileSpeed = 2000.0
 Speed = 5
 UseMoveToTargetFuzziness = true
-MovementTargetAcquisitionPollTimeInSeconds = 1.0
 CoverSpotMaxTargetDistance = 500
 LineOfSightCheckRange = 500
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
@@ -178,7 +177,7 @@ collision_mask = 456
 hit_from_inside = true
 
 [node name="LineOfSightArea3D" parent="." instance=ExtResource("6_p544m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.48780707, -0.5911988)
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0.5, -0.6)
 
 [node name="Hand" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5455811, 0.097462654, -0.597726)
