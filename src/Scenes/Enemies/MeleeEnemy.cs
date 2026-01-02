@@ -6,7 +6,6 @@ using FirstPerson.Helpers;
 
 public partial class MeleeEnemy : Agent
 {
-    [Export] public float CloseFollowDistance { get; protected set; } = 1f;
     [Export] public float PauseTimeBetweenAttacks { get; protected set; } = 0.5f;
     protected ShapeCast3D MeleeRangeShapeCast { get; set; }
     protected Area3D MeleeRangeArea { get; set; }
@@ -17,7 +16,6 @@ public partial class MeleeEnemy : Agent
     {
         base._Ready();
         UseMoveToTargetFuzziness = true;
-        CurrentFollowDistance = CloseFollowDistance;
         PauseBetweenAttacksPoll = new Poll(PauseTimeBetweenAttacks + Fuzzer.Fuzz(0f, 0.3f, false));
         MeleeRangeShapeCast = GetNode<ShapeCast3D>("MeleeRangeShapeCast");
         MeleeRangeArea = GetNode<Area3D>("MeleeRangeArea");

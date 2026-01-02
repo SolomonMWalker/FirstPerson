@@ -191,6 +191,7 @@ wall_min_slide_angle = 1.0471976
 script = ExtResource("2_qpf5h")
 InitialStaggerHealth = 25
 Speed = 5
+CombatTargretFollowDistance = 0.0
 UseMoveToTargetFuzziness = true
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 

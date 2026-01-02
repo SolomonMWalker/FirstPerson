@@ -1,9 +1,13 @@
+using FirstPerson.Configuration;
 using Godot;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 
 public partial class Explosion : Node3D
 {
+    private static string PathToExplosionScene = $"{Configuration.GetConfigValues().ProjectileDirectoryPath}/explosion.tscn";
+    private static PackedScene ExplosionPackedScene;
+    
     public double LifetimeInSec { get; private set; } = 0.25;
     public int Damage { get; private set; }
 
@@ -11,8 +15,16 @@ public partial class Explosion : Node3D
     private ShapeCast3D ShapeCast3D { get; set; }
     private Vector3 InitialGlobalPosition { get; set; }
     private Poll TimeAlivePoll { get; set; }
+
+    public static void Initialize(Node3D parent, Vector3 globalPosition)
+    {
+        ExplosionPackedScene ??= GD.Load<PackedScene>(PathToExplosionScene);
+        var explosion = ExplosionPackedScene.Instantiate<Explosion>();
+        explosion.InitializeValues(globalPosition);
+        parent.AddChild(explosion);
+    }
     
-    public void Initialize(Vector3 globalPosition) => InitialGlobalPosition = globalPosition;
+    public void InitializeValues(Vector3 globalPosition) => InitialGlobalPosition = globalPosition;
 
     public override void _Ready()
     {

@@ -133,6 +133,7 @@ script = ExtResource("1_7cc2d")
 TimeBetweenShots = 3.0
 ProjectileSpeed = 2000.0
 Speed = 5
+CombatTargetFollowDistance = 50.0
 UseMoveToTargetFuzziness = true
 CoverSpotMaxTargetDistance = 500
 LineOfSightCheckRange = 500
