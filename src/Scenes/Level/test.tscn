@@ -48,10 +48,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105.47904, 0, 1.0475473)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="ShootingEnemy2" parent="Enemies" instance=ExtResource("3_uvqlt")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 130.89482, 0.2344408, 1.676857)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 136.08275, 0.11145282, -35.70645)
 
 [node name="MeleeEnemy" parent="Enemies" instance=ExtResource("4_wjuve")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 121.04899, 0, -11.878788)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 121.04899, 0.0732615, -11.878788)
 CombatTargetFollowDistance = 1.0
 
 [node name="CoverSpotController" type="Node3D" parent="."]

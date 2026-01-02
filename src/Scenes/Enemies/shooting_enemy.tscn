@@ -119,11 +119,12 @@ size = Vector3(0.1, 0.1, 0.1)
 
 [node name="ShootingEnemy" type="CharacterBody3D"]
 collision_layer = 33
-collision_mask = 97
+collision_mask = 0
 script = ExtResource("1_s7nxt")
 TimeBetweenShots = 2.0
 ProjectileSpeed = 35.0
 UseAccuracyFuzziness = true
+CombatTargetFollowDistance = 3.0
 UseMoveToTargetFuzziness = true
 CoverSpotMaxTargetDistance = 500
 LineOfSightCheckRange = 50

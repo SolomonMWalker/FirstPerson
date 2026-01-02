@@ -128,7 +128,7 @@ height = 200.0
 
 [node name="SniperEnemy" type="CharacterBody3D"]
 collision_layer = 33
-collision_mask = 97
+collision_mask = 0
 script = ExtResource("1_7cc2d")
 TimeBetweenShots = 3.0
 ProjectileSpeed = 2000.0

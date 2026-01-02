@@ -74,7 +74,6 @@ public abstract partial class Agent : HittableCharacterBody3D
         
         //Nav agent https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_3d.html#setup-for-3d-scene
         NavAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
-        NavAgent.PathHeightOffset = -1;
         // These values need to be adjusted for the actor's speed
         // and the navigation layout.
         NavAgent.PathMaxDistance = PathStrayMaxDistance;
