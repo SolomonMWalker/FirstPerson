@@ -106,9 +106,7 @@ public partial class SniperEnemy : ShootingEnemy
             IsStayingStillForShot = true;
             ReadyToShoot = false;
             IsCharging = false;
-            var fireBall = FireballPackedScene.Instantiate<Fireball>();
-            fireBall.Initialize(WhereTargetWillBe, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
-            AddChild(fireBall);
+            Fireball.Initialize(this, WhereTargetWillBe, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
         }
     }
 

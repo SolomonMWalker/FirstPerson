@@ -4,7 +4,9 @@ using Godot;
 
 public partial class Fireball : CharacterBody3D
 {
-    private bool Initialized { get; set; }
+    private static string PathToFireballScene = $"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn";
+    private static PackedScene FireballPackedScene;
+    
     private bool VelocitySet { get; set; }
     private bool QueuedForFree { get; set; }
     private float Speed { get; set; } = 35;
@@ -15,11 +17,16 @@ public partial class Fireball : CharacterBody3D
     private Node3D ProjectilesParent { get; set; }
     private PackedScene ExplosionPackedScene { get; set; }
     
-    private const string ExplosionScenePath = "/explosion.tscn";
-
-    public void Initialize(Vector3 targetGlobalPosition, Vector3 spawnPoint, float? speed = null)
+    public static void Initialize(Node3D parent, Vector3 targetGlobalPosition, Vector3 spawnPoint, float? speed = null)
     {
-        Initialized = true;
+        FireballPackedScene ??= GD.Load<PackedScene>(PathToFireballScene);
+        var fireball = FireballPackedScene.Instantiate<Fireball>();
+        fireball.InitializeValues(targetGlobalPosition, spawnPoint, speed);
+        parent.AddChild(fireball);
+    }
+
+    private void InitializeValues(Vector3 targetGlobalPosition, Vector3 spawnPoint, float? speed = null)
+    {
         TargetGlobalPosition = targetGlobalPosition;
         GlobalPositionSpawnPoint = spawnPoint;
         Speed = speed ?? Speed;
@@ -31,8 +38,6 @@ public partial class Fireball : CharacterBody3D
         TimeToLivePoll = new Poll(TimeToLive, 0);
         GlobalPosition = GlobalPositionSpawnPoint;
         ProjectilesParent = GetNode<Node3D>("/root/Test/ProjectilesParent");
-        var explosionFullPath = Configuration.GetConfigValues().ProjectileDirectoryPath + ExplosionScenePath;
-        ExplosionPackedScene = GD.Load<PackedScene>(explosionFullPath);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -52,9 +57,7 @@ public partial class Fireball : CharacterBody3D
         var collision = MoveAndCollide(Velocity * (float)delta);
         var collider = collision?.GetCollider();
         if (collider is null) return;
-        var explosion = ExplosionPackedScene.Instantiate<Explosion>();
-        explosion.Initialize(GlobalPosition);
-        ProjectilesParent.AddChild(explosion);
+        Explosion.Initialize(ProjectilesParent, GlobalPosition);
         QueuedForFree = true;
         QueueFree();
     }

@@ -17,7 +17,6 @@ public partial class ShootingEnemy : Agent
     protected Poll TimeToStayStillForShotPoll { get; set; }
     protected Poll TimeSinceAccuracyCheckPoll { get; set; }
     protected AccuracyController AccuracyController { get; set; }
-    protected PackedScene FireballPackedScene { get; set; }
     protected Node3D Hand { get; set; }
     protected Node3D BulletSpawnPoint { get; set; }
     protected bool IsStayingStillForShot { get; set; }
@@ -34,7 +33,6 @@ public partial class ShootingEnemy : Agent
         TimeToStayStillForShotPoll = new Poll(TimeToShoot + Fuzzer.Fuzz(0f, 0.3f, false));
         TimeSinceAccuracyCheckPoll = new Poll(TimeBetweenAccuracyChecks + Fuzzer.Fuzz(0f, 0.05f, false));
         AccuracyController = new AccuracyController();
-        FireballPackedScene = GD.Load<PackedScene>($"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn");
         BulletSpawnPoint = GetNode<Node3D>("Hand/Gun/BulletSpawnPoint");
         Hand = GetNode<Node3D>("Hand");
         AllowedGoals.AddRange([Goal.MoveToCover, Goal.MoveToSpot, Goal.MoveToTarget]);
@@ -126,13 +124,11 @@ public partial class ShootingEnemy : Agent
             }
             TimeToStayStillForShotPoll.ResetPoll();
             IsStayingStillForShot = true;
-            var fireBall = FireballPackedScene.Instantiate<Fireball>();
             var targetPosition = UseAccuracyFuzziness
                 ? AccuracyController.ApplyAccuracyToTargetPosition(CombatTarget.GlobalPosition)
                 : CombatTarget.GlobalPosition;
             var accuracyAppliedTargetPosition = targetPosition;
-            fireBall.Initialize(accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
-            AddChild(fireBall);
+            Fireball.Initialize(this, accuracyAppliedTargetPosition, BulletSpawnPoint.GlobalPosition, ProjectileSpeed);
         }
     }
 }
