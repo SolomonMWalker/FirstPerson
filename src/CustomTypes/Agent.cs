@@ -304,10 +304,10 @@ public abstract partial class Agent : HittableCharacterBody3D
     protected virtual void CalculateIfTargetInLineOfSightWithPoll(double delta)
     {
         if (!LineOfSightPoll.IsPollPinged(delta)) return;
-        TargetInLineOfSight = CalcaulateIfTargetInLineOfSightWithArea3D() && CalculateIfTargetInLineOfSightWithRaycast();
+        TargetInLineOfSight = CalculateIfTargetInLineOfSightWithArea3D() && CalculateIfTargetInLineOfSightWithRaycast();
     }
 
-    protected virtual bool CalcaulateIfTargetInLineOfSightWithArea3D()
+    protected virtual bool CalculateIfTargetInLineOfSightWithArea3D()
     {
         if (!LineOfSightArea3D.HasOverlappingBodies())
         {
