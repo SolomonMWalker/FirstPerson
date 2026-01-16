@@ -1,0 +1,151 @@
+[gd_scene load_steps=2 format=3 uid="uid://0wcam4m3xssr"]
+
+[ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://src/Helpers/ClamberController.cs" id="1_o6tp5"]
+
+[node name="ClamberController" type="Node3D"]
+script = ExtResource("1_o6tp5")
+
+[node name="Raycasts" type="Node3D" parent="."]
+
+[node name="RaycastLineCenter" type="Node3D" parent="Raycasts"]
+
+[node name="Raycast1" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast9" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast2" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast3" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast4" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast5" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast6" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast7" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast8" type="RayCast3D" parent="Raycasts/RaycastLineCenter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="RaycastLineLeft" type="Node3D" parent="Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
+
+[node name="Raycast1" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast9" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast2" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast3" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast4" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast5" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast6" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast7" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast8" type="RayCast3D" parent="Raycasts/RaycastLineLeft"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="RaycastLineRight" type="Node3D" parent="Raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
+
+[node name="Raycast1" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast9" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast2" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast3" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast4" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast5" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast6" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast7" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4
+
+[node name="Raycast8" type="RayCast3D" parent="Raycasts/RaycastLineRight"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
+target_position = Vector3(0, 0, -0.25)
+collision_mask = 4

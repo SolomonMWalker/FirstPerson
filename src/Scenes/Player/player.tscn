@@ -1,15 +1,20 @@
-[gd_scene load_steps=11 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=22 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/Scenes/Player/Player.cs" id="1_onrkg"]
 [ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://src/Resources/Shapes/testPlayerShape.tres" id="2_i3pqv"]
-[ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://src/Helpers/ClamberController.cs" id="3_i3pqv"]
+[ext_resource type="PackedScene" uid="uid://0wcam4m3xssr" path="res://src/Scenes/Player/clamber_controller.tscn" id="3_avm2n"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/Scenes/UI/Reticle.cs" id="4_hqtel"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
-albedo_color = Color(1, 0.20784314, 0.11372549, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_6uqi0"]
-material = SubResource("StandardMaterial3D_onrkg")
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="5_jra7y"]
+[ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/Scenes/Player/MouseCaptureComponent.cs" id="5_o5oy3"]
+[ext_resource type="Script" uid="uid://cn286n37w5ri7" path="res://src/Scenes/Player/CameraController.cs" id="6_44jin"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="7_av2li"]
+[ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="8_i4edx"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="9_wneec"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="10_3c66y"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="11_hdos3"]
+[ext_resource type="Script" uid="uid://chl0qh2jo1qun" path="res://src/Scenes/Player/PlayerStateMachine.cs" id="12_jra7y"]
+[ext_resource type="Script" uid="uid://cos05m14txdq0" path="res://src/Scenes/Player/PlayerState.cs" id="13_jra7y"]
+[ext_resource type="Script" uid="uid://8wlu7fu62u4n" path="res://src/Scenes/Player/Idle.cs" id="14_adpgg"]
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 resource_name = "FireGun"
@@ -17,7 +22,7 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/Hand:position")
+tracks/0/path = NodePath("CameraController/Camera3D/Hand:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -29,7 +34,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/Hand:rotation")
+tracks/1/path = NodePath("CameraController/Camera3D/Hand:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -56,7 +61,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/Hand:position")
+tracks/1/path = NodePath("CameraController/Camera3D/Hand:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -68,7 +73,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Camera3D/Hand:rotation")
+tracks/2/path = NodePath("CameraController/Camera3D/Hand:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -113,194 +118,66 @@ _data = {
 &"Shot": SubResource("Animation_avm2n")
 }
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
+albedo_color = Color(1, 0.20784314, 0.11372549, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6uqi0"]
+material = SubResource("StandardMaterial3D_onrkg")
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController")]
 collision_layer = 10
 collision_mask = 97
 script = ExtResource("1_onrkg")
+CameraController = NodePath("CameraController")
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = ExtResource("2_i3pqv")
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
-[node name="ClamberController" type="Node3D" parent="CollisionShape3D"]
-script = ExtResource("3_i3pqv")
-
-[node name="Timer" type="Timer" parent="CollisionShape3D/ClamberController"]
-process_callback = 0
-wait_time = 0.15
-one_shot = true
-autostart = true
-ignore_time_scale = true
-
-[node name="Raycasts" type="Node3D" parent="CollisionShape3D/ClamberController"]
-
-[node name="RaycastLineCenter" type="Node3D" parent="CollisionShape3D/ClamberController/Raycasts"]
-
-[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineCenter"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="RaycastLineLeft" type="Node3D" parent="CollisionShape3D/ClamberController/Raycasts"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0)
-
-[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="RaycastLineRight" type="Node3D" parent="CollisionShape3D/ClamberController/Raycasts"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0)
-
-[node name="Raycast1" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast9" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45000002, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast2" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast3" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast4" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast5" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast6" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45000002, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast7" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Raycast8" type="RayCast3D" parent="CollisionShape3D/ClamberController/Raycasts/RaycastLineRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.75, -0.49999997)
-target_position = Vector3(0, 0, -0.25)
-collision_mask = 4
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-current = true
-fov = 90.0
-
-[node name="ShootRayCast" type="RayCast3D" parent="Camera3D"]
-target_position = Vector3(0, 0, 0)
-collision_mask = 258
-collide_with_areas = true
-
-[node name="InteractRayCast" type="RayCast3D" parent="Camera3D"]
-collision_mask = 16
-
-[node name="Hand" type="Node3D" parent="Camera3D"]
-transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.293, -0.292, -0.397)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D/Hand"]
-mesh = SubResource("BoxMesh_6uqi0")
+[node name="ClamberController" parent="CollisionShape3D" instance=ExtResource("3_avm2n")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_ykrsh")
 }
+
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("Camera", "InteractRaycast", "ShootRaycast", "Player", "MouseCaptureComponent")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+script = ExtResource("6_44jin")
+Camera = NodePath("Camera3D")
+InteractRaycast = NodePath("Camera3D/InteractRayCast")
+ShootRaycast = NodePath("Camera3D/ShootRayCast")
+Player = NodePath("..")
+MouseCaptureComponent = NodePath("../Components/MouseCaptureComponent")
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+current = true
+fov = 90.0
+
+[node name="ShootRayCast" type="RayCast3D" parent="CameraController/Camera3D"]
+target_position = Vector3(0, 0, 0)
+collision_mask = 258
+collide_with_areas = true
+
+[node name="InteractRayCast" type="RayCast3D" parent="CameraController/Camera3D"]
+collision_mask = 16
+
+[node name="Hand" type="Node3D" parent="CameraController/Camera3D"]
+transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.293, -0.292, -0.397)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraController/Camera3D/Hand"]
+mesh = SubResource("BoxMesh_6uqi0")
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("5_jra7y")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 314.0
+offset_bottom = 371.0
+grow_horizontal = 1
+grow_vertical = 1
+initial_node_to_watch = NodePath("../StateChart")
 
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3
@@ -333,3 +210,102 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 23.0
 grow_horizontal = 2
+
+[node name="Components" type="Node" parent="."]
+
+[node name="MouseCaptureComponent" type="Node" parent="Components"]
+script = ExtResource("5_o5oy3")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("7_av2li")
+metadata/_custom_type_script = "uid://couw105c3bde4"
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("8_i4edx")
+metadata/_custom_type_script = "uid://c1vp0ojjvaby1"
+
+[node name="Movement" type="Node" parent="StateChart/Root"]
+script = ExtResource("9_wneec")
+initial_state = NodePath("Grounded")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Grounded" type="Node" parent="StateChart/Root/Movement"]
+script = ExtResource("9_wneec")
+initial_state = NodePath("Idle")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Idle" type="Node" parent="StateChart/Root/Movement/Grounded"]
+script = ExtResource("10_3c66y")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="OnMoving" type="Node" parent="StateChart/Root/Movement/Grounded/Idle"]
+script = ExtResource("11_hdos3")
+to = NodePath("../../Moving")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="Moving" type="Node" parent="StateChart/Root/Movement/Grounded"]
+script = ExtResource("9_wneec")
+initial_state = NodePath("Walking")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Walking" type="Node" parent="StateChart/Root/Movement/Grounded/Moving"]
+script = ExtResource("10_3c66y")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Sprinting" type="Node" parent="StateChart/Root/Movement/Grounded/Moving"]
+script = ExtResource("10_3c66y")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="OnIdle" type="Node" parent="StateChart/Root/Movement/Grounded/Moving"]
+script = ExtResource("11_hdos3")
+to = NodePath("../../Idle")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="OnWalking" type="Node" parent="StateChart/Root/Movement/Grounded/Moving"]
+script = ExtResource("11_hdos3")
+to = NodePath("../Walking")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="OnSprinting" type="Node" parent="StateChart/Root/Movement/Grounded/Moving"]
+script = ExtResource("11_hdos3")
+to = NodePath("../Sprinting")
+delay_in_seconds = "0.0"
+metadata/_custom_type_script = "uid://cf1nsco3w0mf6"
+
+[node name="Airborne" type="Node" parent="StateChart/Root/Movement"]
+script = ExtResource("9_wneec")
+initial_state = NodePath("Grounded")
+metadata/_custom_type_script = "uid://jk2jm1g6q853"
+
+[node name="Grounded" type="Node" parent="StateChart/Root/Movement/Airborne"]
+script = ExtResource("10_3c66y")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="Airborne" type="Node" parent="StateChart/Root/Movement/Airborne"]
+script = ExtResource("10_3c66y")
+metadata/_custom_type_script = "uid://cytafq8i1y8qm"
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("12_jra7y")
+
+[node name="Root" type="Node" parent="StateMachine"]
+script = ExtResource("13_jra7y")
+
+[node name="Movement" type="Node" parent="StateMachine/Root"]
+script = ExtResource("13_jra7y")
+
+[node name="Idle" type="Node" parent="StateMachine/Root/Movement"]
+script = ExtResource("14_adpgg")
+
+[node name="Moving" type="Node" parent="StateMachine/Root/Movement"]
+
+[node name="Walking" type="Node" parent="StateMachine/Root/Movement/Moving"]
+
+[node name="Sprinting" type="Node" parent="StateMachine/Root/Movement/Moving"]
+
+[node name="Airborne" type="Node" parent="StateMachine/Root"]
+
+[connection signal="state_physics_processing" from="StateChart/Root/Movement/Grounded/Idle" to="StateMachine/Root/Movement/Idle" method="_on_idle_state_physics_processing"]

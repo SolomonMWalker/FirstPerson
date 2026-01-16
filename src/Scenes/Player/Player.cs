@@ -2,11 +2,13 @@ using System;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 using Godot;
+using GodotStateCharts;
 
 namespace FirstPerson.Scenes.Player;
 
 public partial class Player : HittableCharacterBody3D
 {
+    [Export] public CameraController CameraController { get; set; }
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
@@ -16,8 +18,8 @@ public partial class Player : HittableCharacterBody3D
     [Export] public int InteractRaycastLength { get; set; } = 50;
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
     [Export] public float DefaultCollisionShapePositionY { get; set; }
-    [Export] public float CrouchCameraHeightMult { get; set; } = 0.4f;
-    [Export] public float CrouchCollisionShapeHeightMult { get; set; } = 0.5f;
+    //[Export] public float CrouchCameraHeightMult { get; set; } = 0.4f;
+    //[Export] public float CrouchCollisionShapeHeightMult { get; set; } = 0.5f;
     [Export] public float CrouchAnimationInSeconds { get; set; } = 0.25f;
     [Export] public float CrouchMovementMult { get; set; } = 0.6f;
     [Export] public float DefaultFov { get; set; }
@@ -26,6 +28,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float SprintMovementMult { get; set; } = 1.5f;
     [Export] public float CoyoteTimeInSec { get; set; } = 0.15f;
     [Export] public float ClamberVelocity { get; set; } = 10f;
+    public Vector2 InputDirections = Vector2.Zero;
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     
@@ -42,11 +45,12 @@ public partial class Player : HittableCharacterBody3D
     private bool FireCameraRaycast { get; set; }
     private bool RotateCamera { get; set; }
     private Vector2 RelativeMousePosition { get; set; }
-    private float DefaultCameraHeight { get; set; }
-    private float DefaultColliderShapeHeight { get; set; }
+    //private float DefaultCameraHeight { get; set; }
+    //private float DefaultColliderShapeHeight { get; set; }
     
+    public StateChart StateChart { get; set; }
     private Camera3D Camera { get; set; }
-    private Node3D Hand { get; set; }
+    //private Node3D Hand { get; set; }
     private RayCast3D ShootRaycast { get; set; }
     private RayCast3D InteractRaycast { get; set; }
     private CollisionShape3D CollisionShape3d { get; set; }
@@ -82,25 +86,13 @@ public partial class Player : HittableCharacterBody3D
     public override void _Ready()
     {
         base._Ready();
-        Input.MouseMode = Input.MouseModeEnum.Captured;
         CoyoteTimePoll = new Poll(CoyoteTimeInSec);
         InteractCheckPoll = new Poll(InteractRaycastWaitInSec);
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
         CollisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
         ClamberController = GetNode<ClamberController>("CollisionShape3D/ClamberController");
-        Camera = GetNode<Camera3D>("Camera3D");
-        ShootRaycast = Camera.GetNode<RayCast3D>("ShootRayCast");
-        ShootRaycast.AddException(this);
-        ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
-        InteractRaycast = Camera.GetNode<RayCast3D>("InteractRayCast");
-        InteractRaycast.AddException(this);
-        InteractRaycast.SetTargetPosition(Vector3.Forward * InteractRaycastLength);
-        Hand = Camera.GetNode<Node3D>("Hand");
-        DefaultCameraHeight = Camera.Position.Y;
         CollisionBoxShape = (BoxShape3D)CollisionShape3d.Shape;
-        DefaultColliderShapeHeight = CollisionBoxShape.Size.Y;
         DefaultCollisionShapePositionY = CollisionShape3d.Position.Y;
-        DefaultFov = Camera.Fov;
     }
 
     private float GetBottomOfCharacter() => GlobalPosition.Y - CollisionBoxShape.Size.Y / 2;
@@ -120,17 +112,6 @@ public partial class Player : HittableCharacterBody3D
         HandleInteractCheck(delta);
         HandleFire();
         HandleMovement(delta);
-        HandleRotation();
-    }
-    
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        base._UnhandledInput(@event);
-        if (@event is InputEventMouseMotion mouseMotionEvent)
-        {
-            RelativeMousePosition = mouseMotionEvent.Relative;
-            RotateCamera = true;
-        }
     }
     
     public override void Hit(HitParameters hitParameters)
@@ -154,9 +135,10 @@ public partial class Player : HittableCharacterBody3D
                 CurrentPlayerActionState = PlayerActionState.InAir;
             }
         }
-        HandleCrouch();
+        //HandleCrouch();
         HandleSprint();
-        var movementInput = GetXzDirectionalMovement();
+        var movementInput = Input.GetVector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
+        InputDirections = movementInput;
         var tempVelocity = Vector3.Zero;
         if (IsOnFloor())
         {
@@ -201,29 +183,23 @@ public partial class Player : HittableCharacterBody3D
             PlayerMovementState.Sprinting => SprintMovementMult,
             _ => 1f
         };
-        //awesome reference https://git.colormatic.org/ColormaticStudios/quality-godot-first-person/src/branch/main/addons/fpc/character.gd
-        var directionV2 = movementInput.Rotated(-Camera.Rotation.Y);
-        tempVelocity.X = directionV2.X * Speed * movementMult;
-        tempVelocity.Z = directionV2.Y * Speed * movementMult;
-        Velocity = tempVelocity;
+
+        var direction = (Transform.Basis * new Vector3(movementInput.X, 0, movementInput.Y)).Normalized();
+        if (direction.IsZeroApprox())
+        {
+            Velocity = new Vector3(0f, tempVelocity.Y, 0f);
+        }
+        else
+        {
+            var xzVelocity = new Vector2(direction.X, direction.Z) * Speed * movementMult;
+            Velocity = new Vector3(xzVelocity.X, tempVelocity.Y, xzVelocity.Y);
+        }
         MoveAndSlide();
     }
 
-    private void HandleRotation()
+    public void UpdateRotation(Vector3 newRotation)
     {
-        if (!RotateCamera) return;
-        RotateCamera = false;
-        LookAtMouse();
-    }
-
-    private void LookAtMouse()
-    {
-        var lookDir = RelativeMousePosition;
-        var rotationY = Camera.Rotation.Y - lookDir.X * CameraSensitivity;
-        var rotationX = Math.Clamp(Camera.Rotation.X - lookDir.Y * CameraSensitivity, 
-            Mathf.DegToRad(-90), Mathf.DegToRad(90));
-        Camera.SetRotation(new Vector3(rotationX, rotationY, 0));
-        CollisionShape3d.SetRotation(new Vector3(0, Camera.Rotation.Y, 0));
+        GlobalTransform = GlobalTransform with { Basis = Basis.FromEuler(newRotation) };
     }
 
     private void Clamber()
@@ -247,13 +223,13 @@ public partial class Player : HittableCharacterBody3D
     private static Vector2 GetXzDirectionalMovement()
     {
         var movementInput = Vector2.Zero;
-        if (Input.IsActionPressed("MoveForward")) //forward
-        {
-            movementInput += Vector2.Up;
-        }
-        if (Input.IsActionPressed("MoveBackward")) //backward
+        if (Input.IsActionPressed("MoveForward")) //forward is negative z
         {
             movementInput += Vector2.Down;
+        }
+        if (Input.IsActionPressed("MoveBackward")) //backward is positive z
+        {
+            movementInput += Vector2.Up;
         }
         if (Input.IsActionPressed("MoveRight")) //right
         {
@@ -267,20 +243,20 @@ public partial class Player : HittableCharacterBody3D
         return movementInput;
     }
 
-    private void HandleCrouch()
-    {
-        if (!Input.IsActionJustPressed("Crouch") || !IsOnFloor()) return;
-        if (CurrentMovementState == PlayerMovementState.Crouching)
-        {
-            PlayExitCrouchAnim();
-            CurrentMovementState = PlayerMovementState.Default;
-        }
-        else
-        {
-            PlayEnterCrouchAnim();
-            CurrentMovementState = PlayerMovementState.Crouching;
-        }
-    }
+    // private void HandleCrouch()
+    // {
+    //     if (!Input.IsActionJustPressed("Crouch") || !IsOnFloor()) return;
+    //     if (CurrentMovementState == PlayerMovementState.Crouching)
+    //     {
+    //         PlayExitCrouchAnim();
+    //         CurrentMovementState = PlayerMovementState.Default;
+    //     }
+    //     else
+    //     {
+    //         PlayEnterCrouchAnim();
+    //         CurrentMovementState = PlayerMovementState.Crouching;
+    //     }
+    // }
 
     private void HandleSprint()
     {
@@ -324,13 +300,9 @@ public partial class Player : HittableCharacterBody3D
         if (!FireCameraRaycast) return;
         AnimationPlayer.Play("FireGun");
         FireCameraRaycast = false;
-        if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") 
-            || !ShootRaycast.IsColliding()) return;
-        var collided = ShootRaycast.GetCollider();
-        // if (collided is CollisionObject3D colObject)
-        // {
-        //     GD.Print($"layer hit {colObject.CollisionLayer}");
-        // }
+        if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun")) return;
+        var collided = CameraController.GetWhatShootRaycastIsHitting();
+        if (collided is null) return;
         var hitParams = new HitParameters(HealthDamage, StaggerDamage);
         switch (collided)
         {
@@ -345,40 +317,40 @@ public partial class Player : HittableCharacterBody3D
 
     private void HandleInteractCheck(double delta)
     {
-        if (InteractCheckPoll.IsPollPinged(delta))
-        {
-            //if (!InteractRaycast.IsColliding()) return;
-            //if interactable is on screen, turn on interact prompt
-        }        
+        // if (InteractCheckPoll.IsPollPinged(delta))
+        // {
+        //     if (!InteractRaycast.IsColliding()) return;
+        //     if interactable is on screen, turn on interact prompt
+        // }        
     }
 
-    private void PlayEnterCrouchAnim()
-    {
-        EnterCrouchTween = GetTree().CreateTween();
-        EnterCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
-            DefaultColliderShapeHeight * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
-        EnterCrouchTween.TweenProperty(CollisionShape3d, "position:y",
-            DefaultCollisionShapePositionY * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
-    }
-
-    private void PlayExitCrouchAnim()
-    {
-        ExitCrouchTween = GetTree().CreateTween();
-        ExitCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
-            DefaultColliderShapeHeight, CrouchAnimationInSeconds);
-        ExitCrouchTween.TweenProperty(CollisionShape3d, "position:y",
-            DefaultCollisionShapePositionY, CrouchAnimationInSeconds);
-    }
+    // private void PlayEnterCrouchAnim()
+    // {
+    //     EnterCrouchTween = GetTree().CreateTween();
+    //     EnterCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
+    //         DefaultColliderShapeHeight * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
+    //     EnterCrouchTween.TweenProperty(CollisionShape3d, "position:y",
+    //         DefaultCollisionShapePositionY * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
+    // }
+    //
+    // private void PlayExitCrouchAnim()
+    // {
+    //     ExitCrouchTween = GetTree().CreateTween();
+    //     ExitCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
+    //         DefaultColliderShapeHeight, CrouchAnimationInSeconds);
+    //     ExitCrouchTween.TweenProperty(CollisionShape3d, "position:y",
+    //         DefaultCollisionShapePositionY, CrouchAnimationInSeconds);
+    // }
 
     private void PlayEnterSprintAnim()
     {
-        var tween = CreateTween();
-        tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintTransitionAnimationInSeconds);
+        //var tween = CreateTween();
+        //tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintTransitionAnimationInSeconds);
     }
 
     private void PlayExitSprintAnim()
     {
-        var tween = CreateTween();
-        tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);
+        //var tween = CreateTween();
+        //tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);
     }
 }
