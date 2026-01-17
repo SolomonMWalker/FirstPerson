@@ -21,7 +21,11 @@ project/assembly_name="FirstPerson"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/func_godot/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 

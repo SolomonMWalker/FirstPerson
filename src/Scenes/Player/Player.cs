@@ -2,13 +2,13 @@ using System;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 using Godot;
-using GodotStateCharts;
 
 namespace FirstPerson.Scenes.Player;
 
 public partial class Player : HittableCharacterBody3D
 {
     [Export] public CameraController CameraController { get; set; }
+    [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
@@ -48,7 +48,6 @@ public partial class Player : HittableCharacterBody3D
     //private float DefaultCameraHeight { get; set; }
     //private float DefaultColliderShapeHeight { get; set; }
     
-    public StateChart StateChart { get; set; }
     private Camera3D Camera { get; set; }
     //private Node3D Hand { get; set; }
     private RayCast3D ShootRaycast { get; set; }
@@ -59,9 +58,9 @@ public partial class Player : HittableCharacterBody3D
     private ClamberController ClamberController { get; set; }
     private Tween EnterCrouchTween { get; set; }
     private Tween ExitCrouchTween { get; set; }
-
-    private PlayerMovementState CurrentMovementState { get; set; } = PlayerMovementState.Default;
-    private PlayerActionState CurrentPlayerActionState { get; set; } = PlayerActionState.OnFloor;
+    
+    public bool Jumped { get; set; }
+    public bool Clambering { get; set; }
 
     
     /*
@@ -102,15 +101,9 @@ public partial class Player : HittableCharacterBody3D
         base._Process(delta);
         if (Input.IsActionJustPressed("Fire"))
         {
-            FireCameraRaycast = true;
+            HandleFire();
         }
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        base._PhysicsProcess(delta);
         HandleInteractCheck(delta);
-        HandleFire();
         HandleMovement(delta);
     }
     
@@ -122,65 +115,60 @@ public partial class Player : HittableCharacterBody3D
 
     private void HandleMovement(double delta)
     {
-        if (CurrentPlayerActionState == PlayerActionState.Clambering)
+        var movementState = PlayerStateMachine.GetMovementState();
+        var airborneState = PlayerStateMachine.GetAirborneState();
+        if (Clambering)
         {
             Clamber();
             return;
         }
-        if (CurrentPlayerActionState == PlayerActionState.CoyoteTime)
-        {
-            if (CoyoteTimePoll.IsPollPinged(delta))
-            {
-                CanJump = false;
-                CurrentPlayerActionState = PlayerActionState.InAir;
-            }
-        }
+
         //HandleCrouch();
         HandleSprint();
         var movementInput = Input.GetVector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
         InputDirections = movementInput;
         var tempVelocity = Vector3.Zero;
-        if (IsOnFloor())
+        bool jumpJustPressed = Input.IsActionJustPressed("Jump");
+        bool jumpPressedAWhile = false;
+        if (!jumpJustPressed)
         {
-            if (!CanJump) CanJump = true;
-            if (CurrentPlayerActionState == PlayerActionState.InAir)
-            {
-                CurrentPlayerActionState = PlayerActionState.OnFloor;
-            }
-            if (Input.IsActionJustPressed("Jump") && CanJump)
+            jumpPressedAWhile = Input.IsActionPressed("Jump");
+        }
+        if (airborneState is "GroundedState")
+        {
+            if (jumpJustPressed)
             {
                 tempVelocity.Y = JumpVelocity;
-                CanJump = false;
+                Jumped = true;
+            }
+        }
+        else if (airborneState is "CoyoteTimeState")
+        {
+            if (jumpJustPressed)
+            {
+                tempVelocity.Y = JumpVelocity;
+                Jumped = true;
+            }
+            else
+            {
+                tempVelocity.Y = (float) (Velocity.Y - Gravity * delta);
             }
         }
         else
         {
-            if (CanJump && CurrentPlayerActionState != PlayerActionState.CoyoteTime)
+            if(jumpJustPressed || jumpPressedAWhile)
             {
-                CurrentPlayerActionState = PlayerActionState.CoyoteTime;
-                CoyoteTimePoll.ResetPoll();
-            }
-            else if(CurrentPlayerActionState != PlayerActionState.CoyoteTime &&
-                    CurrentPlayerActionState != PlayerActionState.InAir)
-            {
-                CurrentPlayerActionState = PlayerActionState.InAir;
-            }
-            tempVelocity.Y = (float) (Velocity.Y - Gravity * delta);
-            if(Input.IsActionPressed("Jump")) //Clamber
-            {
-                if (TryHandleClamber()) return;
-                if (Input.IsActionJustPressed("Jump") && CurrentPlayerActionState is PlayerActionState.CoyoteTime)
+                if (TryHandleClamber())
                 {
-                    tempVelocity.Y = JumpVelocity;
-                    CanJump = false;
-                    CurrentPlayerActionState = PlayerActionState.InAir;
+                    return;
                 }
             }
+            tempVelocity.Y = (float) (Velocity.Y - Gravity * delta);
         }
-        var movementMult = CurrentMovementState switch
+        var movementMult = movementState switch
         {
-            PlayerMovementState.Crouching => CrouchMovementMult,
-            PlayerMovementState.Sprinting => SprintMovementMult,
+            "CrouchingState" => CrouchMovementMult,
+            "SprintingState" => SprintMovementMult,
             _ => 1f
         };
 
@@ -217,7 +205,7 @@ public partial class Player : HittableCharacterBody3D
             return;
         }
         ApplyFloorSnap(); //when done, switch movement type to onfloor
-        CurrentPlayerActionState = PlayerActionState.OnFloor;
+        Clambering = false;
     }
 
     private static Vector2 GetXzDirectionalMovement()
@@ -260,31 +248,31 @@ public partial class Player : HittableCharacterBody3D
 
     private void HandleSprint()
     {
-        if (Input.IsActionJustPressed("Sprint") && IsOnFloor())
-        {
-            if (CurrentMovementState == PlayerMovementState.Sprinting)
-            {
-                PlayExitSprintAnim();
-                CurrentMovementState = PlayerMovementState.Default;
-            }
-            else
-            {
-                PlayEnterSprintAnim();
-                CurrentMovementState = PlayerMovementState.Sprinting;
-            }
-        }
-        else if (CurrentMovementState == PlayerMovementState.Sprinting && Velocity == Vector3.Zero)
-        {
-            PlayExitSprintAnim();
-            CurrentMovementState = PlayerMovementState.Default;
-        }
+        // if (Input.IsActionJustPressed("Sprint") && IsOnFloor())
+        // {
+        //     if (CurrentMovementState == PlayerMovementState.Sprinting)
+        //     {
+        //         PlayExitSprintAnim();
+        //         CurrentMovementState = PlayerMovementState.Default;
+        //     }
+        //     else
+        //     {
+        //         PlayEnterSprintAnim();
+        //         CurrentMovementState = PlayerMovementState.Sprinting;
+        //     }
+        // }
+        // else if (CurrentMovementState == PlayerMovementState.Sprinting && Velocity == Vector3.Zero)
+        // {
+        //     PlayExitSprintAnim();
+        //     CurrentMovementState = PlayerMovementState.Default;
+        // }
     }
 
     private bool TryHandleClamber()
     {
         var clamberCheck = ClamberController.AttemptClamber();
         if (!clamberCheck.success) return false;
-        CurrentPlayerActionState = PlayerActionState.Clambering;
+        Clambering = true;
         ClamberDestination = clamberCheck.result.GlobalPositionToClamberTo ?? Vector3.Zero;
         ClamberDestinationXz = new Vector2(ClamberDestination.X, ClamberDestination.Z);
         ClamberStartPoint = GlobalPosition;
@@ -297,10 +285,8 @@ public partial class Player : HittableCharacterBody3D
 
     private void HandleFire()
     {
-        if (!FireCameraRaycast) return;
+        if (AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") return;
         AnimationPlayer.Play("FireGun");
-        FireCameraRaycast = false;
-        if (!(AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun")) return;
         var collided = CameraController.GetWhatShootRaycastIsHitting();
         if (collided is null) return;
         var hitParams = new HitParameters(HealthDamage, StaggerDamage);

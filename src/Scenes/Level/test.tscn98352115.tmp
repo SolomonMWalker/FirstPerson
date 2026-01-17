@@ -39,7 +39,7 @@ shadow_opacity = 0.66
 [node name="funcGodotTest" parent="map" instance=ExtResource("1_pw3f7")]
 
 [node name="Player" parent="." instance=ExtResource("2_wjuve")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.811966, 0, 36.987743)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105.47904, 0, 1.0475473)
 
 [node name="Enemies" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
