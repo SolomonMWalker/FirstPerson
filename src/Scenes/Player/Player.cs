@@ -61,6 +61,8 @@ public partial class Player : HittableCharacterBody3D
     
     public bool Jumped { get; set; }
     public bool Clambering { get; set; }
+    public bool Sprinting { get; set; }
+    public bool Crouching { get; set; }
 
     
     /*
@@ -123,10 +125,10 @@ public partial class Player : HittableCharacterBody3D
             return;
         }
 
-        //HandleCrouch();
-        HandleSprint();
         var movementInput = Input.GetVector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
         InputDirections = movementInput;
+        //HandleCrouch();
+        HandleSprint(movementState, airborneState);
         var tempVelocity = Vector3.Zero;
         bool jumpJustPressed = Input.IsActionJustPressed("Jump");
         bool jumpPressedAWhile = false;
@@ -246,26 +248,16 @@ public partial class Player : HittableCharacterBody3D
     //     }
     // }
 
-    private void HandleSprint()
+    private void HandleSprint(string movementState, string airborneState)
     {
-        // if (Input.IsActionJustPressed("Sprint") && IsOnFloor())
-        // {
-        //     if (CurrentMovementState == PlayerMovementState.Sprinting)
-        //     {
-        //         PlayExitSprintAnim();
-        //         CurrentMovementState = PlayerMovementState.Default;
-        //     }
-        //     else
-        //     {
-        //         PlayEnterSprintAnim();
-        //         CurrentMovementState = PlayerMovementState.Sprinting;
-        //     }
-        // }
-        // else if (CurrentMovementState == PlayerMovementState.Sprinting && Velocity == Vector3.Zero)
-        // {
-        //     PlayExitSprintAnim();
-        //     CurrentMovementState = PlayerMovementState.Default;
-        // }
+        if (!Sprinting
+            && movementState is not "SprintingState" 
+            && airborneState is "GroundedState"
+            && InputDirections.LengthSquared() > 0
+            && Input.IsActionPressed("Sprint"))
+        {
+            Sprinting = true;
+        }
     }
 
     private bool TryHandleClamber()
@@ -328,13 +320,13 @@ public partial class Player : HittableCharacterBody3D
     //         DefaultCollisionShapePositionY, CrouchAnimationInSeconds);
     // }
 
-    private void PlayEnterSprintAnim()
+    public void PlayEnterSprintAnim()
     {
         //var tween = CreateTween();
         //tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintTransitionAnimationInSeconds);
     }
 
-    private void PlayExitSprintAnim()
+    public void PlayExitSprintAnim()
     {
         //var tween = CreateTween();
         //tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);

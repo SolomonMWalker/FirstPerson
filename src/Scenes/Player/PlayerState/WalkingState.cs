@@ -3,15 +3,14 @@ using System;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player.PlayerState;
 
-public partial class ClamberingState : BasePlayerAtomicState
+public partial class WalkingState : BasePlayerAtomicState
 {
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (!Player.Clambering)
+        if (Player.Sprinting)
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
-            OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("SprintingState"));
         }
     }
 }

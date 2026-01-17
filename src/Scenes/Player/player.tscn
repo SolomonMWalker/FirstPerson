@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=25 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/Scenes/Player/Player.cs" id="1_onrkg"]
 [ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://src/Resources/Shapes/testPlayerShape.tres" id="2_i3pqv"]
@@ -9,14 +9,15 @@
 [ext_resource type="Script" uid="uid://cn286n37w5ri7" path="res://src/Scenes/Player/CameraController.cs" id="6_44jin"]
 [ext_resource type="Script" uid="uid://faoc4f20di8r" path="res://src/Scenes/Player/PlayerState/BaseTypes/BasePlayerParallelState.cs" id="6_wneec"]
 [ext_resource type="Script" uid="uid://b0e2lb2l24y4y" path="res://src/Scenes/Player/PlayerState/BaseTypes/BasePlayerCompoundState.cs" id="7_3c66y"]
+[ext_resource type="Script" uid="uid://c52lfan2ucoh2" path="res://src/Scenes/Player/PlayerState/WalkingState.cs" id="8_52n81"]
 [ext_resource type="Script" uid="uid://b61ipgwav80bw" path="res://src/Scenes/Player/PlayerState/BaseTypes/BasePlayerAtomicState.cs" id="8_hdos3"]
 [ext_resource type="Script" uid="uid://d2vq3cc0yhi4a" path="res://src/Scenes/Player/PlayerState/IdleState.cs" id="9_3c66y"]
+[ext_resource type="Script" uid="uid://d0vhwptgsd73q" path="res://src/Scenes/Player/PlayerState/SprintingState.cs" id="9_lnhjy"]
 [ext_resource type="Script" uid="uid://bfh6uf2vjox6l" path="res://src/Scenes/Player/PlayerState/MovingState.cs" id="10_hdos3"]
 [ext_resource type="Script" uid="uid://bc4i4a1nth0v7" path="res://src/Scenes/Player/PlayerState/ClamberingState.cs" id="11_cre3m"]
 [ext_resource type="Script" uid="uid://cwc4cic1iy0eo" path="res://src/Scenes/Player/PlayerState/DefaultInAirState.cs" id="11_jra7y"]
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/Scenes/Player/PlayerState/GroundedState.cs" id="12_adpgg"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/Scenes/Player/PlayerState/CoyoteTimeState.cs" id="12_cre3m"]
-[ext_resource type="Script" uid="uid://dl4da65w3bvv" path="res://src/Scenes/Player/PlayerState/PostClamberingGroundedState.cs" id="15_20rcv"]
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 resource_name = "FireGun"
@@ -132,6 +133,7 @@ collision_mask = 97
 script = ExtResource("1_onrkg")
 CameraController = NodePath("CameraController")
 PlayerStateMachine = NodePath("PlayerStateMachine")
+ClamberVelocity = 7.0
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -191,12 +193,12 @@ DefaultStateName = "WalkingState"
 metadata/_custom_type_script = "uid://b0e2lb2l24y4y"
 
 [node name="WalkingState" type="Node" parent="PlayerStateMachine/RootState/MovementState" node_paths=PackedStringArray("Player")]
-script = ExtResource("8_hdos3")
+script = ExtResource("8_52n81")
 Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
 [node name="SprintingState" type="Node" parent="PlayerStateMachine/RootState/MovementState" node_paths=PackedStringArray("Player")]
-script = ExtResource("8_hdos3")
+script = ExtResource("9_lnhjy")
 Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
@@ -256,16 +258,6 @@ one_shot = true
 script = ExtResource("12_adpgg")
 Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
-
-[node name="PostClamberingGroundedState" type="Node" parent="PlayerStateMachine/RootState/AirborneState" node_paths=PackedStringArray("Timer", "Player")]
-script = ExtResource("15_20rcv")
-Timer = NodePath("Timer")
-Player = NodePath("../../../..")
-metadata/_custom_type_script = "uid://b61ipgwav80bw"
-
-[node name="Timer" type="Timer" parent="PlayerStateMachine/RootState/AirborneState/PostClamberingGroundedState"]
-wait_time = 0.4
-one_shot = true
 
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3
