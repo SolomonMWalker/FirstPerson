@@ -106,9 +106,14 @@ public partial class Player : HittableCharacterBody3D
             HandleFire();
         }
         HandleInteractCheck(delta);
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
         HandleMovement(delta);
     }
-    
+
     public override void Hit(HitParameters hitParameters)
     {
         base.Hit(hitParameters);

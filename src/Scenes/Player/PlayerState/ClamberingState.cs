@@ -11,7 +11,7 @@ public partial class ClamberingState : BasePlayerAtomicState
         if (!Player.Clambering)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
-            OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("DefaultInAirState"));
         }
     }
 }

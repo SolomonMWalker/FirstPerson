@@ -83,6 +83,11 @@ Sprint={
 3d_physics/layer_9="StaticGeometry"
 3d_physics/layer_10="KillPlane"
 
+[physics]
+
+common/physics_jitter_fix=0.0
+common/physics_interpolation=true
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
