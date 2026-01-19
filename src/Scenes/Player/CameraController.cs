@@ -11,10 +11,11 @@ public partial class CameraController : Node3D
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public Player Player { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
+    [Export] public Node3D StandingLocation { get; set; }
+    [Export] public Node3D CrouchingLocation { get; set; }
 
     [ExportCategory("Camera Settings")]
     [Export] public int Fov { get; set; } = 90;
-
     [Export] public float SprintFovMult { get; set; } = 1.05f;
     [ExportGroup("Camera Tilt")]
     [Export] public float TiltLowerLimit
@@ -29,14 +30,17 @@ public partial class CameraController : Node3D
         set => _tiltUpperLimit = Mathf.Clamp(value, 60, 90);
     }
     private float _tiltUpperLimit = 90;
+    [Export] public float CrouchAnimationLengthInSec { get; set; } = 0.175f;
     
     [ExportCategory("Raycast Settings")]
     [Export] public int InteractRaycastLength { get; set; } = 50;
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
     [Export] public int ShootRaycastLength { get; set; } = 50;
-
+    
+    private Tween EnterCrouchTween { get; set; }
+    private Tween ExitCrouchTween { get; set; }
     private Vector3 _rotation = Vector3.Zero;
-
+    
     public override void _Ready()
     {
         base._Ready();
@@ -81,5 +85,32 @@ public partial class CameraController : Node3D
     {
         ShootRaycast.ForceRaycastUpdate();
         return !ShootRaycast.IsColliding() ? null : ShootRaycast.GetCollider();
+    }
+
+    public bool IsEnterCrouchTweenRunning()
+    {
+        return EnterCrouchTween is not null && EnterCrouchTween.IsRunning();
+    }
+    public bool IsExitCrouchTweenRunning()
+    {
+        return ExitCrouchTween is not null && ExitCrouchTween.IsRunning();
+    }
+
+    public void EnterCrouchTweenActivate()
+    {
+        EnterCrouchTween = GetTree().CreateTween();
+        EnterCrouchTween.TweenProperty(this, "position:x", CrouchingLocation.Position.X, CrouchAnimationLengthInSec);
+        EnterCrouchTween.Parallel().TweenProperty(this, "position:y", CrouchingLocation.Position.Y, CrouchAnimationLengthInSec);
+        EnterCrouchTween.Parallel().TweenProperty(this, "position:z", CrouchingLocation.Position.Z, CrouchAnimationLengthInSec);
+        EnterCrouchTween.Play();
+    }
+
+    public void ExitCrouchTweenActivate()
+    {
+        ExitCrouchTween = GetTree().CreateTween();
+        ExitCrouchTween.TweenProperty(this, "position:x", StandingLocation.Position.X, CrouchAnimationLengthInSec);
+        ExitCrouchTween.Parallel().TweenProperty(this, "position:y", StandingLocation.Position.Y, CrouchAnimationLengthInSec);
+        ExitCrouchTween.Parallel().TweenProperty(this, "position:z", StandingLocation.Position.Z, CrouchAnimationLengthInSec);
+        ExitCrouchTween.Play();
     }
 }

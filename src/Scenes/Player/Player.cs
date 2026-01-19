@@ -9,6 +9,10 @@ public partial class Player : HittableCharacterBody3D
 {
     [Export] public CameraController CameraController { get; set; }
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
+    [Export] public ClamberController ClamberController { get; set; }
+    [Export] public CollisionShape3D StandingCollisionShape { get; set; }
+    [Export] public CollisionShape3D CrouchingCollisionShape { get; set; }
+    [Export] public Node3D BottomOfPlayer { get; set; }
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
@@ -55,7 +59,6 @@ public partial class Player : HittableCharacterBody3D
     private CollisionShape3D CollisionShape3d { get; set; }
     private BoxShape3D CollisionBoxShape { get; set; }
     private AnimationPlayer AnimationPlayer { get; set; }
-    private ClamberController ClamberController { get; set; }
     private Tween EnterCrouchTween { get; set; }
     private Tween ExitCrouchTween { get; set; }
     
@@ -90,13 +93,7 @@ public partial class Player : HittableCharacterBody3D
         CoyoteTimePoll = new Poll(CoyoteTimeInSec);
         InteractCheckPoll = new Poll(InteractRaycastWaitInSec);
         AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-        CollisionShape3d = GetNode<CollisionShape3D>("CollisionShape3D");
-        ClamberController = GetNode<ClamberController>("CollisionShape3D/ClamberController");
-        CollisionBoxShape = (BoxShape3D)CollisionShape3d.Shape;
-        DefaultCollisionShapePositionY = CollisionShape3d.Position.Y;
     }
-
-    private float GetBottomOfCharacter() => GlobalPosition.Y - CollisionBoxShape.Size.Y / 2;
 
     public override void _Process(double delta)
     {
@@ -132,7 +129,7 @@ public partial class Player : HittableCharacterBody3D
 
         var movementInput = Input.GetVector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
         InputDirections = movementInput;
-        //HandleCrouch();
+        HandleCrouch(movementState, airborneState);
         HandleSprint(movementState, airborneState);
         var tempVelocity = Vector3.Zero;
         bool jumpJustPressed = Input.IsActionJustPressed("Jump");
@@ -199,7 +196,7 @@ public partial class Player : HittableCharacterBody3D
 
     private void Clamber()
     {
-        if (GetBottomOfCharacter() < ClamberDestination.Y + ClamberController.ClamberMargin)
+        if (BottomOfPlayer.GlobalPosition.Y < ClamberDestination.Y + ClamberController.ClamberMargin)
         { //move up to clamber Y
             Velocity = Vector3.Up * ClamberVelocity;
             MoveAndSlide();
@@ -238,20 +235,22 @@ public partial class Player : HittableCharacterBody3D
         return movementInput;
     }
 
-    // private void HandleCrouch()
-    // {
-    //     if (!Input.IsActionJustPressed("Crouch") || !IsOnFloor()) return;
-    //     if (CurrentMovementState == PlayerMovementState.Crouching)
-    //     {
-    //         PlayExitCrouchAnim();
-    //         CurrentMovementState = PlayerMovementState.Default;
-    //     }
-    //     else
-    //     {
-    //         PlayEnterCrouchAnim();
-    //         CurrentMovementState = PlayerMovementState.Crouching;
-    //     }
-    // }
+    private void HandleCrouch(string movementState, string airborneState)
+    {
+        if (!Input.IsActionJustPressed("Crouch") 
+            || CameraController.IsEnterCrouchTweenRunning()
+            || CameraController.IsExitCrouchTweenRunning()) return;
+        if (!Crouching
+            && movementState is not "CrouchingState" 
+            && airborneState is "GroundedState")
+        {
+            Crouching = true;
+        }
+        else
+        {
+            Crouching = false;
+        }
+    }
 
     private void HandleSprint(string movementState, string airborneState)
     {
@@ -306,24 +305,6 @@ public partial class Player : HittableCharacterBody3D
         //     if interactable is on screen, turn on interact prompt
         // }        
     }
-
-    // private void PlayEnterCrouchAnim()
-    // {
-    //     EnterCrouchTween = GetTree().CreateTween();
-    //     EnterCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
-    //         DefaultColliderShapeHeight * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
-    //     EnterCrouchTween.TweenProperty(CollisionShape3d, "position:y",
-    //         DefaultCollisionShapePositionY * CrouchCollisionShapeHeightMult, CrouchAnimationInSeconds);
-    // }
-    //
-    // private void PlayExitCrouchAnim()
-    // {
-    //     ExitCrouchTween = GetTree().CreateTween();
-    //     ExitCrouchTween.TweenProperty(CollisionBoxShape, "size:y",
-    //         DefaultColliderShapeHeight, CrouchAnimationInSeconds);
-    //     ExitCrouchTween.TweenProperty(CollisionShape3d, "position:y",
-    //         DefaultCollisionShapePositionY, CrouchAnimationInSeconds);
-    // }
 
     public void PlayEnterSprintAnim()
     {

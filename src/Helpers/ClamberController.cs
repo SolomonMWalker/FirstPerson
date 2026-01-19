@@ -7,6 +7,8 @@ namespace FirstPerson.Helpers;
 
 public partial class ClamberController : Node3D
 {
+    [Export] public Node3D StandingLocation { get; set; }
+    [Export] public Node3D CrouchingLocation { get; set; }
     [Export] public float RaycastLength { get; private set; } = 0.25f;
     [Export] public float ClamberMargin { get; private set; } = 0.26f;
     //[Export] public float MaxAngleInDeg { get; private set; } = 10f;

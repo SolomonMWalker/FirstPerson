@@ -1,7 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=26 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/Scenes/Player/Player.cs" id="1_onrkg"]
 [ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://src/Resources/Shapes/testPlayerShape.tres" id="2_i3pqv"]
+[ext_resource type="Shape3D" uid="uid://b5dt8js5hm4aq" path="res://src/Resources/Shapes/testPlayerCrouchingShape.tres" id="3_52n81"]
 [ext_resource type="PackedScene" uid="uid://0wcam4m3xssr" path="res://src/Scenes/Player/clamber_controller.tscn" id="3_avm2n"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/Scenes/UI/Reticle.cs" id="4_hqtel"]
 [ext_resource type="Script" uid="uid://piyhj5dlveb4" path="res://src/Scenes/Player/PlayerState/PlayerStateMachine.cs" id="5_3c66y"]
@@ -10,12 +11,12 @@
 [ext_resource type="Script" uid="uid://faoc4f20di8r" path="res://src/Scenes/Player/PlayerState/BaseTypes/BasePlayerParallelState.cs" id="6_wneec"]
 [ext_resource type="Script" uid="uid://b0e2lb2l24y4y" path="res://src/Scenes/Player/PlayerState/BaseTypes/BasePlayerCompoundState.cs" id="7_3c66y"]
 [ext_resource type="Script" uid="uid://c52lfan2ucoh2" path="res://src/Scenes/Player/PlayerState/WalkingState.cs" id="8_52n81"]
-[ext_resource type="Script" uid="uid://b61ipgwav80bw" path="res://src/Scenes/Player/PlayerState/BaseTypes/BasePlayerAtomicState.cs" id="8_hdos3"]
 [ext_resource type="Script" uid="uid://d2vq3cc0yhi4a" path="res://src/Scenes/Player/PlayerState/IdleState.cs" id="9_3c66y"]
 [ext_resource type="Script" uid="uid://d0vhwptgsd73q" path="res://src/Scenes/Player/PlayerState/SprintingState.cs" id="9_lnhjy"]
 [ext_resource type="Script" uid="uid://bfh6uf2vjox6l" path="res://src/Scenes/Player/PlayerState/MovingState.cs" id="10_hdos3"]
 [ext_resource type="Script" uid="uid://bc4i4a1nth0v7" path="res://src/Scenes/Player/PlayerState/ClamberingState.cs" id="11_cre3m"]
 [ext_resource type="Script" uid="uid://cwc4cic1iy0eo" path="res://src/Scenes/Player/PlayerState/DefaultInAirState.cs" id="11_jra7y"]
+[ext_resource type="Script" uid="uid://bdvlpik8o1osh" path="res://src/Scenes/Player/PlayerState/CrouchingState.cs" id="11_qtxsg"]
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/Scenes/Player/PlayerState/GroundedState.cs" id="12_adpgg"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/Scenes/Player/PlayerState/CoyoteTimeState.cs" id="12_cre3m"]
 
@@ -127,27 +128,41 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_6uqi0"]
 material = SubResource("StandardMaterial3D_onrkg")
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "PlayerStateMachine")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "PlayerStateMachine", "ClamberController", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
 collision_layer = 10
 collision_mask = 97
 script = ExtResource("1_onrkg")
 CameraController = NodePath("CameraController")
 PlayerStateMachine = NodePath("PlayerStateMachine")
+ClamberController = NodePath("ClamberController")
+StandingCollisionShape = NodePath("StandingCollisionShape3D")
+CrouchingCollisionShape = NodePath("CrouchingCollisionShape3D")
+BottomOfPlayer = NodePath("Locations/BottomOfPlayer")
 ClamberVelocity = 7.0
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="StandingCollisionShape3D" type="CollisionShape3D" parent="."]
 shape = ExtResource("2_i3pqv")
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
+debug_fill = false
 
-[node name="ClamberController" parent="CollisionShape3D" instance=ExtResource("3_avm2n")]
+[node name="CrouchingCollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = ExtResource("3_52n81")
+disabled = true
+debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
+debug_fill = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_ykrsh")
 }
 
-[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("Camera", "InteractRaycast", "ShootRaycast", "Player", "MouseCaptureComponent")]
+[node name="ClamberController" parent="." node_paths=PackedStringArray("StandingLocation", "CrouchingLocation") instance=ExtResource("3_avm2n")]
+StandingLocation = NodePath("../Locations/Standing/ClamberLocation")
+CrouchingLocation = NodePath("../Locations/Crouching/ClamberLocation")
+
+[node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("Camera", "InteractRaycast", "ShootRaycast", "Player", "MouseCaptureComponent", "StandingLocation", "CrouchingLocation")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("6_44jin")
 Camera = NodePath("Camera3D")
@@ -155,6 +170,8 @@ InteractRaycast = NodePath("Camera3D/InteractRayCast")
 ShootRaycast = NodePath("Camera3D/ShootRayCast")
 Player = NodePath("..")
 MouseCaptureComponent = NodePath("../Components/MouseCaptureComponent")
+StandingLocation = NodePath("../Locations/Standing/CameraLocation")
+CrouchingLocation = NodePath("../Locations/Crouching/CameraLocation")
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
 current = true
@@ -173,6 +190,25 @@ transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.00404587
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CameraController/Camera3D/Hand"]
 mesh = SubResource("BoxMesh_6uqi0")
+
+[node name="Locations" type="Node3D" parent="."]
+
+[node name="Crouching" type="Node3D" parent="Locations"]
+
+[node name="CameraLocation" type="Node3D" parent="Locations/Crouching"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="ClamberLocation" type="Node3D" parent="Locations/Crouching"]
+
+[node name="Standing" type="Node3D" parent="Locations"]
+
+[node name="CameraLocation" type="Node3D" parent="Locations/Standing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="ClamberLocation" type="Node3D" parent="Locations/Standing"]
+
+[node name="BottomOfPlayer" type="Node3D" parent="Locations"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("StateLabel", "Player", "RootState")]
 script = ExtResource("5_3c66y")
@@ -203,7 +239,7 @@ Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
 [node name="CrouchingState" type="Node" parent="PlayerStateMachine/RootState/MovementState" node_paths=PackedStringArray("Player")]
-script = ExtResource("8_hdos3")
+script = ExtResource("11_qtxsg")
 Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 

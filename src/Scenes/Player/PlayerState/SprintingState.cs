@@ -8,6 +8,7 @@ public partial class SprintingState : BasePlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        Player.ClamberController.Position = Player.ClamberController.StandingLocation.Position;
         Player.Crouching = false;
         Player.PlayEnterSprintAnim();
     }
