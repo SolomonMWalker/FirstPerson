@@ -8,6 +8,7 @@ namespace FirstPerson.Scenes.Player;
 public partial class Player : HittableCharacterBody3D
 {
     [Export] public CameraController CameraController { get; set; }
+    [Export] public CameraEffects CameraEffects { get; set; }
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public ClamberController ClamberController { get; set; }
     [Export] public CollisionShape3D StandingCollisionShape { get; set; }
@@ -16,6 +17,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
+    [Export] public float FallVelocityThreshold { get; set; } = -5.0f;
     [Export] public int HealthDamage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
     [Export] public int ShootRaycastLength { get; set; } = 50;
@@ -66,6 +68,7 @@ public partial class Player : HittableCharacterBody3D
     public bool Clambering { get; set; }
     public bool Sprinting { get; set; }
     public bool Crouching { get; set; }
+    public float CurrentFallVelocity { get; set; }
 
     
     /*
@@ -183,7 +186,9 @@ public partial class Player : HittableCharacterBody3D
         }
         else
         {
+            //var currentXzVelocity = new Vector2(Velocity.X, Velocity.Z);
             var xzVelocity = new Vector2(direction.X, direction.Z) * Speed * movementMult;
+            //xzVelocity = currentXzVelocity.Lerp(xzVelocity, 0.75f);
             Velocity = new Vector3(xzVelocity.X, tempVelocity.Y, xzVelocity.Y);
         }
         MoveAndSlide();
@@ -316,5 +321,17 @@ public partial class Player : HittableCharacterBody3D
     {
         //var tween = CreateTween();
         //tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);
+    }
+
+    public bool CheckFallSpeed()
+    {
+        if (CurrentFallVelocity < FallVelocityThreshold)
+        {
+            CurrentFallVelocity = 0;
+            return true;
+        }
+
+        CurrentFallVelocity = 0;
+        return false;
     }
 }

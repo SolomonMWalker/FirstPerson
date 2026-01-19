@@ -38,7 +38,13 @@ public partial class DefaultInAirState : BasePlayerAtomicState
         }
         else if(Player.IsOnFloor())
         {
+            if (Player.CheckFallSpeed())
+            {
+                Player.CameraEffects.AddFallKick(2.0f);
+            }
             OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
         }
+
+        Player.CurrentFallVelocity = Player.Velocity.Y;
     }
 }
