@@ -17,7 +17,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float CameraSensitivity { get; set; } = 0.01f;
     [Export] public float Speed { get; set; } = 8;
     [Export] public float JumpVelocity { get; set; } = 5f;
-    [Export] public float FallVelocityThreshold { get; set; } = -5.0f;
+    [Export] public float FallVelocityThreshold { get; set; } = -7.0f;
     [Export] public int HealthDamage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
     [Export] public int ShootRaycastLength { get; set; } = 50;
