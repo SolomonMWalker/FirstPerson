@@ -198,6 +198,8 @@ script = ExtResource("6_qtxsg")
 Player = NodePath("..")
 EnableTilt = true
 EnableFallKick = true
+EnableDamageKick = true
+EnableWeaponKick = true
 
 [node name="Locations" type="Node3D" parent="."]
 
