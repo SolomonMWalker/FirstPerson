@@ -14,6 +14,8 @@ public partial class CameraEffects : Node3D
     [Export] public bool EnableFallKick { get; set; }
     [Export] public bool EnableDamageKick { get; set; }
     [Export] public bool EnableWeaponKick { get; set; }
+    [Export] public bool EnableScreenShake { get; set; }
+    [Export] public bool EnableHeadbob { get; set; }
     
     [ExportCategory("Kick & Recoil Settings")]
     [ExportGroup("Run Tilt")]  
@@ -25,17 +27,50 @@ public partial class CameraEffects : Node3D
     [ExportGroup("Fall Kick")] 
     [Export] public float FallTimeInSec { get; set; } = 0.3f;
 
-    [ExportSubgroup("Damage Kick")]
+    [ExportGroup("Damage Kick")]
     [Export] public float DamageTime { get; set; } = 0.3f;
 
-    [ExportSubgroup("Weapon Kick")]
+    [ExportGroup("Weapon Kick")]
     [Export] public float WeaponDecay { get; set; } = 0.5f;
+
+    [ExportGroup("Screen Shake")]
+    [Export] public float MinimumScreenShake { get; set; } = 0.05f;
+    [Export] public float MaximumScreenShake { get; set; } = 0.5f;
+
+    [ExportGroup("Headbob")] 
+    [Export] public float BobPitch
+    {
+        get => _bobPitch;
+        set => _bobPitch = Mathf.Clamp(value, 0.0f, 0.1f);
+    }
+    private float _bobPitch = 0.05f;
+    [Export] public float BobRoll
+    {
+        get => _bobRoll;
+        set => _bobRoll = Mathf.Clamp(value, 0.0f, 0.1f);
+    }
+    private float _bobRoll = 0.025f;
+    [Export] public float BobUp
+    {
+        get => _bobUp;
+        set => _bobUp = Mathf.Clamp(value, 0.0f, 0.04f);
+    }
+    private float _bobUp = 0.005f;
+    [Export] public float BobFrequency
+    {
+        get => _bobFrequency;
+        set => _bobFrequency = Mathf.Clamp(value, 3.0f, 8.0f);
+    }
+    private float _bobFrequency = 6.0f;
 
     private Random Random { get; set; } = new ();
     private float _tiltForwardDot, _tiltRightDot;
     private float _fallValue, _fallTimer;
     private float _damagePitch, _damageRoll, _damageTimer;
-    public Vector3 _weaponKickAngles = Vector3.Zero;
+    private Vector3 _weaponKickAngles = Vector3.Zero;
+    private Tween _screenShakeTween;
+    private float _screenShakeAmount;
+    private float _stepTimer;
 
     public override void _Process(double delta)
     {
@@ -44,7 +79,7 @@ public partial class CameraEffects : Node3D
 
         if (Input.IsActionJustPressed("Test"))
         {
-            AddWeaponKick(5f, 5f, 5f);
+            AddScreenShake(1.0f, 5.0f);
         }
     }
     
@@ -55,6 +90,21 @@ public partial class CameraEffects : Node3D
         if (Player is null) return;
         var fDelta = (float)delta;
         var velocity = Player.Velocity;
+        
+        //Headbob step timer and Sine value
+        var speed = new Vector2(velocity.X, velocity.Z).Length();
+        if (speed > 0.1 && Player.IsOnFloor())
+        {
+            _stepTimer += (float) delta * (speed / BobFrequency);
+            _stepTimer %= 1.0f;
+        }
+        else
+        {
+            _stepTimer = 0.0f;
+        }
+
+        var bobSin = Mathf.Sin(_stepTimer * 2.0 * Mathf.Pi) * 0.5; //0.5 reduces magnitude of bob
+        
         var angles = Vector3.Zero;
         var offset = Vector3.Zero;
 
@@ -101,6 +151,18 @@ public partial class CameraEffects : Node3D
             angles += _weaponKickAngles;
         }
 
+        if (EnableHeadbob)
+        {
+            var pitchDelta = bobSin * Mathf.DegToRad(_bobPitch) * speed;
+            angles.X -= (float) pitchDelta;
+
+            var rollDelta = bobSin * Mathf.DegToRad(_bobRoll) * speed;
+            angles.Z -= (float) rollDelta;
+
+            var bobHeight = bobSin * speed * _bobUp;
+            offset.Y += (float) bobHeight;
+        }
+
         Player.CameraController.Camera.Position = offset;
         Player.CameraController.Camera.Rotation = angles;
     }
@@ -130,5 +192,28 @@ public partial class CameraEffects : Node3D
         _weaponKickAngles.X += Mathf.DegToRad(pitch);
         _weaponKickAngles.Y += Mathf.DegToRad((float) randYaw * yaw);
         _weaponKickAngles.Z += Mathf.DegToRad((float) randRoll * roll);
+    }
+
+    public void AddScreenShake(float amount, float seconds)
+    {
+        if (!EnableScreenShake) return;
+        _screenShakeTween?.Kill();
+        _screenShakeAmount = amount;
+        _screenShakeTween = CreateTween();
+        var callable = Callable.From((float boundAlpha) => UpdateScreenShake(boundAlpha));
+        _screenShakeTween.TweenMethod(callable, 0.0f, 1.0f, seconds).SetEase(Tween.EaseType.Out);
+    }
+
+    private void UpdateScreenShake(float alpha)
+    {
+        _screenShakeAmount = Mathf.Remap(_screenShakeAmount, 0.0f, 1.0f, MinimumScreenShake, MaximumScreenShake);
+        var currentShakeAmount = _screenShakeAmount * (1.0 - alpha);
+        var hRand = (float) Random.NextDouble() > 0.5 ? Random.NextDouble() : -Random.NextDouble();
+        var vRand = (float) Random.NextDouble() > 0.5 ? Random.NextDouble() : -Random.NextDouble();
+        var hOffset = hRand * currentShakeAmount;
+        var vOffset = vRand * currentShakeAmount;
+        Player.CameraController.Camera.HOffset = (float) hOffset;
+        Player.CameraController.Camera.VOffset = (float) vOffset;
+        
     }
 }
