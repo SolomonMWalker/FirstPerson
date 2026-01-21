@@ -30,7 +30,19 @@ public partial class CameraController : Node3D
         set => _tiltUpperLimit = Mathf.Clamp(value, 60, 90);
     }
     private float _tiltUpperLimit = 90;
+    [ExportGroup("Crouch Movement")]
     [Export] public float CrouchAnimationLengthInSec { get; set; } = 0.175f;
+    [Export] public float CrouchOffset { get; set; } = 0;
+    [Export] public float CrouchSpeed { get; set; } = 3.0f;
+
+    [ExportGroup("Step Smoothing")]
+    [Export] public float StepSpeed { get; set; } = 8;
+    public float OffsetHeight { get; set; }
+    private const float DefaultHeight = 0.5f;
+    private float _targetHeight;
+    private bool _stepSmoothing;
+    
+    
     
     [ExportCategory("Raycast Settings")]
     [Export] public int InteractRaycastLength { get; set; } = 50;
@@ -50,11 +62,25 @@ public partial class CameraController : Node3D
         InteractRaycast.SetTargetPosition(Vector3.Forward * InteractRaycastLength);
         InteractRaycast.AddException(Player);
         InteractRaycast.Enabled = false;
+        _rotation = Player.Rotation;
+        OffsetHeight = DefaultHeight;
     }
 
     public override void _Process(double delta)
     {
         UpdateCameraRotation(MouseCaptureComponent.MouseInput);
+
+        if (_stepSmoothing)
+        {
+            _targetHeight = Mathf.Lerp(_targetHeight, 0.0f, StepSpeed * (float)delta);
+            if (Mathf.Abs(_targetHeight) < 0.01)
+            {
+                _targetHeight = 0;
+                _stepSmoothing = false;
+            }
+
+            Position = Position with { Y = OffsetHeight + _targetHeight };
+        }
     }
 
     public void UpdateCameraRotation(Vector2 input)
@@ -73,6 +99,21 @@ public partial class CameraController : Node3D
         _rotation = _rotation with { Z = 0 };
         
         Player.UpdateRotation(playerRotation);
+    }
+
+    public void UpdateCameraHeight(double delta, int direction)
+    {
+        if (Position.Y >= CrouchOffset && Position.Y <= DefaultHeight)
+        {
+            var y = (float) Mathf.Clamp(Position.Y + (CrouchSpeed * direction) * delta, CrouchOffset, DefaultHeight);
+            Position = Position with { Y = y };
+        }
+    }
+
+    public void SmoothStep(float heightChange)
+    {
+        _targetHeight -= heightChange;
+        _stepSmoothing = true;
     }
     
     public GodotObject GetWhatInteractRaycastIsHitting()

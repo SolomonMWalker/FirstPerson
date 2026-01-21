@@ -70,6 +70,7 @@ public partial class Player : HittableCharacterBody3D
     public bool Sprinting { get; set; }
     public bool Crouching { get; set; }
     public float CurrentFallVelocity { get; set; }
+    public Vector3 PreviousFrameVelocity { get; set; }
 
     
     /*
@@ -112,6 +113,7 @@ public partial class Player : HittableCharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
+        PreviousFrameVelocity = Velocity;
         HandleMovement(delta);
     }
 
@@ -193,7 +195,10 @@ public partial class Player : HittableCharacterBody3D
             Velocity = new Vector3(xzVelocity.X, tempVelocity.Y, xzVelocity.Y);
         }
         MoveAndSlide();
-        //StepHandlerComponent.HandleStepClimbing();
+        if (IsOnFloor())
+        {
+            StepHandlerComponent.HandleStepClimbing();
+        }
     }
 
     public void UpdateRotation(Vector3 newRotation)

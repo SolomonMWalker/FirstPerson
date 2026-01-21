@@ -130,7 +130,7 @@ albedo_color = Color(1, 0.20784314, 0.11372549, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_6uqi0"]
 material = SubResource("StandardMaterial3D_onrkg")
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
 collision_layer = 10
 collision_mask = 97
 script = ExtResource("1_onrkg")
@@ -138,6 +138,7 @@ CameraController = NodePath("CameraController")
 CameraEffects = NodePath("CameraEffects")
 PlayerStateMachine = NodePath("PlayerStateMachine")
 ClamberController = NodePath("ClamberController")
+StepHandlerComponent = NodePath("Components/StepHandlerComponent")
 StandingCollisionShape = NodePath("StandingCollisionShape3D")
 CrouchingCollisionShape = NodePath("CrouchingCollisionShape3D")
 BottomOfPlayer = NodePath("Locations/BottomOfPlayer")
@@ -219,7 +220,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [node name="ClamberLocation" type="Node3D" parent="Locations/Standing"]
 
 [node name="BottomOfPlayer" type="Node3D" parent="Locations"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("StateLabel", "Player", "RootState")]
 script = ExtResource("5_3c66y")
@@ -349,5 +350,6 @@ autowrap_mode = 3
 [node name="MouseCaptureComponent" type="Node" parent="Components"]
 script = ExtResource("5_o5oy3")
 
-[node name="StepHandlerComponent" type="Node" parent="Components"]
+[node name="StepHandlerComponent" type="Node" parent="Components" node_paths=PackedStringArray("Player")]
 script = ExtResource("21_yfy43")
+Player = NodePath("../..")

@@ -32,4 +32,10 @@ public partial class SprintingState : BasePlayerAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("CrouchingState"));
         }
     }
+    
+    public override void StatePhysicsProcessing(double delta)
+    {
+        base.StatePhysicsProcessing(delta);
+        Player.CameraController.UpdateCameraHeight(delta, 1);
+    }
 }
