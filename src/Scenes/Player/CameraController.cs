@@ -37,11 +37,10 @@ public partial class CameraController : Node3D
 
     [ExportGroup("Step Smoothing")]
     [Export] public float StepSpeed { get; set; } = 8;
-    public float OffsetHeight { get; set; }
-    private const float DefaultHeight = 0.5f;
     private float _targetHeight;
     private bool _stepSmoothing;
-    
+    //no offsets used, I tween the position itself to move from crouch to standing and vice versa,
+        //so just hit target height
     
     
     [ExportCategory("Raycast Settings")]
@@ -63,7 +62,6 @@ public partial class CameraController : Node3D
         InteractRaycast.AddException(Player);
         InteractRaycast.Enabled = false;
         _rotation = Player.Rotation;
-        OffsetHeight = DefaultHeight;
     }
 
     public override void _Process(double delta)
@@ -79,7 +77,7 @@ public partial class CameraController : Node3D
                 _stepSmoothing = false;
             }
 
-            Position = Position with { Y = OffsetHeight + _targetHeight };
+            Position = Position with { Y = _targetHeight };
         }
     }
 
@@ -99,15 +97,6 @@ public partial class CameraController : Node3D
         _rotation = _rotation with { Z = 0 };
         
         Player.UpdateRotation(playerRotation);
-    }
-
-    public void UpdateCameraHeight(double delta, int direction)
-    {
-        if (Position.Y >= CrouchOffset && Position.Y <= DefaultHeight)
-        {
-            var y = (float) Mathf.Clamp(Position.Y + (CrouchSpeed * direction) * delta, CrouchOffset, DefaultHeight);
-            Position = Position with { Y = y };
-        }
     }
 
     public void SmoothStep(float heightChange)

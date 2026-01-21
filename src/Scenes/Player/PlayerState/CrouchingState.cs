@@ -37,10 +37,4 @@ public partial class CrouchingState : BasePlayerAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("WalkingState"));
         }
     }
-
-    public override void StatePhysicsProcessing(double delta)
-    {
-        base.StatePhysicsProcessing(delta);
-        Player.CameraController.UpdateCameraHeight(delta, -1);
-    }
 }

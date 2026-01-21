@@ -220,7 +220,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 [node name="ClamberLocation" type="Node3D" parent="Locations/Standing"]
 
 [node name="BottomOfPlayer" type="Node3D" parent="Locations"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("StateLabel", "Player", "RootState")]
 script = ExtResource("5_3c66y")

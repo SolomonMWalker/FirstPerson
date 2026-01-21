@@ -11,6 +11,7 @@ public partial class StepHandlerComponent : Node
     [Export] public float SurfaceThreshold { get; set; } = 0.3f;
     [Export] public float StepHeight { get; set; } = 0.5f;
 
+    private const float HeightBuffer = 0.05f;
     private const float MinStepHeight = 0.1f;
     private const float MinMovementLength = 0.1f;
     private const float MinDotValue = 0.5f;
@@ -26,9 +27,10 @@ public partial class StepHandlerComponent : Node
             if (IsVerticalSurface(collision))
             {
                 var measuredHeight = MeasureStepHeight(collision);
-                if (measuredHeight >= MinStepHeight && measuredHeight <= StepHeight && IsValidStepDirection(collision))
+                if (measuredHeight > MinStepHeight && measuredHeight <= StepHeight && IsValidStepDirection(collision))
                 {
-                    Player.GlobalPosition = Player.GlobalPosition with { Y = Player.GlobalPosition.Y + measuredHeight };
+                    Player.GlobalPosition = Player.GlobalPosition 
+                        with { Y = Player.GlobalPosition.Y + measuredHeight};
                     Player.Velocity = Player.PreviousFrameVelocity;
                     Player.CameraController.SmoothStep(measuredHeight);
                     _stepStatus = $"Step found! Height: {measuredHeight}";
@@ -65,6 +67,7 @@ public partial class StepHandlerComponent : Node
         var collisionPoint = collision.GetPosition();
 
         var playerFeet = Player.BottomOfPlayer.GlobalPosition;
+        playerFeet.Y += HeightBuffer;
         collisionPoint.Y = playerFeet.Y;
 
         var query = PhysicsRayQueryParameters3D.Create(playerFeet, collisionPoint);
@@ -90,7 +93,11 @@ public partial class StepHandlerComponent : Node
         var collisionPoint = collision.GetPosition();
 
         var playerFeet = Player.BottomOfPlayer.GlobalPosition;
-        var playerHeadY = Player.GlobalPosition.Y + ((CapsuleShape3D)Player.StandingCollisionShape.Shape).Height / 2;
+        playerFeet.Y += HeightBuffer;
+        var shape = (CapsuleShape3D)Player.StandingCollisionShape.Shape;
+        var playerCollisionShapeHeightOffset = shape.Height / 2;
+
+        var playerHeadY = Player.GlobalPosition.Y + playerCollisionShapeHeightOffset;
 
         var rayStart = new Vector3(collisionPoint.X, playerHeadY, collisionPoint.Z);
         var rayEnd = new Vector3(collisionPoint.X, playerFeet.Y, collisionPoint.Z);
@@ -100,10 +107,10 @@ public partial class StepHandlerComponent : Node
         query.Exclude = [Player.GetRid()];
 
         var result = spaceState.IntersectRay(query);
-        if (result.Count > 0 && result.TryGetValue("position", out var positionVariant))
+        if (result.Count > 0 && result.TryGetValue("position", out var resultPositionVariant))
         {
-            var position = (Vector3)positionVariant;
-            return position.Y - playerFeet.Y;
+            var resultPosition = (Vector3) resultPositionVariant;
+            return resultPosition.Y - playerFeet.Y;
         }
         return 0;
     }
