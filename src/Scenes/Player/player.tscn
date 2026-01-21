@@ -1,8 +1,8 @@
-[gd_scene load_steps=27 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=28 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/Scenes/Player/Player.cs" id="1_onrkg"]
-[ext_resource type="Shape3D" uid="uid://kvq138byqkew" path="res://src/Resources/Shapes/testPlayerShape.tres" id="2_i3pqv"]
-[ext_resource type="Shape3D" uid="uid://b5dt8js5hm4aq" path="res://src/Resources/Shapes/testPlayerCrouchingShape.tres" id="3_52n81"]
+[ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/Resources/Shapes/testPlayerCapsuleShape.tres" id="2_yfy43"]
+[ext_resource type="Shape3D" uid="uid://cl8vw2xtridr3" path="res://src/Resources/Shapes/testPlayerSphereCrouchingShape.tres" id="3_564vg"]
 [ext_resource type="PackedScene" uid="uid://0wcam4m3xssr" path="res://src/Scenes/Player/clamber_controller.tscn" id="3_avm2n"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/Scenes/UI/Reticle.cs" id="4_hqtel"]
 [ext_resource type="Script" uid="uid://piyhj5dlveb4" path="res://src/Scenes/Player/PlayerState/PlayerStateMachine.cs" id="5_3c66y"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://bdvlpik8o1osh" path="res://src/Scenes/Player/PlayerState/CrouchingState.cs" id="11_qtxsg"]
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/Scenes/Player/PlayerState/GroundedState.cs" id="12_adpgg"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/Scenes/Player/PlayerState/CoyoteTimeState.cs" id="12_cre3m"]
+[ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/Scenes/Player/StepHandlerComponent.cs" id="21_yfy43"]
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 resource_name = "FireGun"
@@ -144,16 +145,14 @@ ClamberVelocity = 7.0
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="StandingCollisionShape3D" type="CollisionShape3D" parent="."]
-shape = ExtResource("2_i3pqv")
+shape = ExtResource("2_yfy43")
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
-debug_fill = false
 
 [node name="CrouchingCollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-shape = ExtResource("3_52n81")
+shape = ExtResource("3_564vg")
 disabled = true
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
-debug_fill = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -349,3 +348,6 @@ autowrap_mode = 3
 
 [node name="MouseCaptureComponent" type="Node" parent="Components"]
 script = ExtResource("5_o5oy3")
+
+[node name="StepHandlerComponent" type="Node" parent="Components"]
+script = ExtResource("21_yfy43")

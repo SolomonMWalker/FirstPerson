@@ -83,8 +83,6 @@ public partial class CameraEffects : Node3D
         }
     }
     
-    //continuing at https://www.youtube.com/watch?v=C5Je3eu5a2k
-
     public void CalculateViewOffset(double delta)
     {
         if (Player is null) return;

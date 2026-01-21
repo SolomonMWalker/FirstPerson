@@ -11,6 +11,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public CameraEffects CameraEffects { get; set; }
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public ClamberController ClamberController { get; set; }
+    [Export] public StepHandlerComponent StepHandlerComponent { get; set; }
     [Export] public CollisionShape3D StandingCollisionShape { get; set; }
     [Export] public CollisionShape3D CrouchingCollisionShape { get; set; }
     [Export] public Node3D BottomOfPlayer { get; set; }
@@ -192,6 +193,7 @@ public partial class Player : HittableCharacterBody3D
             Velocity = new Vector3(xzVelocity.X, tempVelocity.Y, xzVelocity.Y);
         }
         MoveAndSlide();
+        //StepHandlerComponent.HandleStepClimbing();
     }
 
     public void UpdateRotation(Vector3 newRotation)
