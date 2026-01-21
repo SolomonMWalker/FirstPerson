@@ -353,3 +353,4 @@ script = ExtResource("5_o5oy3")
 [node name="StepHandlerComponent" type="Node" parent="Components" node_paths=PackedStringArray("Player")]
 script = ExtResource("21_yfy43")
 Player = NodePath("../..")
+StepHeight = 0.55
