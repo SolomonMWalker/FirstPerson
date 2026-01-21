@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://nlsbvbe8wik6"
-path="res://.godot/imported/lineOfSightCone1.glb-a1752c200f9bdf408cb3a3f56c0dd8dd.scn"
+path="res://.godot/imported/lineOfSightCone1.glb-10a40b001f0106626e67055d9120da62.scn"
 
 [deps]
 
-source_file="res://src/Resources/Blender/lineOfSightCone1.glb"
-dest_files=["res://.godot/imported/lineOfSightCone1.glb-a1752c200f9bdf408cb3a3f56c0dd8dd.scn"]
+source_file="res://src/resources/blender/lineOfSightCone1.glb"
+dest_files=["res://.godot/imported/lineOfSightCone1.glb-10a40b001f0106626e67055d9120da62.scn"]
 
 [params]
 
