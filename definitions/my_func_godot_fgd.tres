@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="FuncGodotFGDFile" load_steps=11 format=3 uid="uid://che385mo8ia31"]
+[gd_resource type="Resource" script_class="FuncGodotFGDFile" load_steps=12 format=3 uid="uid://che385mo8ia31"]
 
 [ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="1_watpy"]
 [ext_resource type="Resource" uid="uid://nayxb8n7see2" path="res://addons/func_godot/fgd/phong_base.tres" id="2_s1c8t"]
@@ -9,10 +9,11 @@
 [ext_resource type="Resource" uid="uid://ch3e0dix85uhb" path="res://addons/func_godot/fgd/func_detail_illusionary.tres" id="7_v5w4l"]
 [ext_resource type="Resource" uid="uid://dg5x44cc7flew" path="res://addons/func_godot/fgd/func_illusionary.tres" id="8_y4c8p"]
 [ext_resource type="Script" uid="uid://drlmgulwbjwqu" path="res://addons/func_godot/src/fgd/func_godot_fgd_file.gd" id="9_c0uyg"]
-[ext_resource type="Resource" uid="uid://bnqu2c6ee5mtg" path="res://definitions/omni_light_point_small.tres" id="9_s1c8t"]
+[ext_resource type="Resource" uid="uid://b4gwruefp141d" path="res://trenchbroom/fgd/solid/func_MovingPlarform.tres" id="9_s1c8t"]
+[ext_resource type="Resource" uid="uid://bt1eov0583fkk" path="res://trenchbroom/fgd/point/func_light.tres" id="10_c2bqa"]
 
 [resource]
 script = ExtResource("9_c0uyg")
 fgd_name = "GodotFirstPerson"
 base_fgd_files = Array[Resource]([ExtResource("1_watpy")])
-entity_definitions = Array[Resource]([ExtResource("2_s1c8t"), ExtResource("3_c2bqa"), ExtResource("4_uqb27"), ExtResource("5_k3xpb"), ExtResource("6_hro4y"), ExtResource("7_v5w4l"), ExtResource("8_y4c8p"), ExtResource("9_s1c8t")])
+entity_definitions = Array[Resource]([ExtResource("2_s1c8t"), ExtResource("3_c2bqa"), ExtResource("4_uqb27"), ExtResource("5_k3xpb"), ExtResource("6_hro4y"), ExtResource("7_v5w4l"), ExtResource("8_y4c8p"), ExtResource("9_s1c8t"), ExtResource("10_c2bqa")])

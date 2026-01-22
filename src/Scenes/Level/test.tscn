@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://b8hkoeuua7otf"]
 
-[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_pw3f7"]
-[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player.tscn" id="2_wjuve"]
-[ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/CustomTypes/HittableCharacterBody3D.cs" id="5_k8yio"]
+[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/scenes/map/func_godot_test.tscn" id="1_pw3f7"]
+[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/scenes/player/player.tscn" id="2_wjuve"]
+[ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/customTypes/HittableCharacterBody3D.cs" id="5_k8yio"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)

@@ -27,6 +27,10 @@ enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
 
 import/blender/enabled=false
 
+[func_godot]
+
+model_point_class_save_path="res://trenchbroom/models"
+
 [input]
 
 Crouch={
