@@ -65,10 +65,8 @@ public partial class Player : HittableCharacterBody3D
     private Tween EnterCrouchTween { get; set; }
     private Tween ExitCrouchTween { get; set; }
     
-    public bool Jumped { get; set; }
+    public bool InAir { get; set; }
     public bool Clambering { get; set; }
-    public bool Sprinting { get; set; }
-    public bool Crouching { get; set; }
     public float CurrentFallVelocity { get; set; }
     public Vector3 PreviousFrameVelocity { get; set; }
 
@@ -135,46 +133,13 @@ public partial class Player : HittableCharacterBody3D
 
         var movementInput = Input.GetVector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
         InputDirections = movementInput;
-        HandleCrouch(movementState, airborneState);
-        HandleSprint(movementState, airborneState);
-        var tempVelocity = Vector3.Zero;
-        bool jumpJustPressed = Input.IsActionJustPressed("Jump");
-        bool jumpPressedAWhile = false;
-        if (!jumpJustPressed)
+        
+        var yVelocity = Velocity.Y;
+        if (InAir)
         {
-            jumpPressedAWhile = Input.IsActionPressed("Jump");
+            yVelocity -= Gravity * (float) delta;
         }
-        if (airborneState is "GroundedState")
-        {
-            if (jumpJustPressed)
-            {
-                tempVelocity.Y = JumpVelocity;
-                Jumped = true;
-            }
-        }
-        else if (airborneState is "CoyoteTimeState")
-        {
-            if (jumpJustPressed)
-            {
-                tempVelocity.Y = JumpVelocity;
-                Jumped = true;
-            }
-            else
-            {
-                tempVelocity.Y = (float) (Velocity.Y - Gravity * delta);
-            }
-        }
-        else
-        {
-            if(jumpJustPressed || jumpPressedAWhile)
-            {
-                if (TryHandleClamber())
-                {
-                    return;
-                }
-            }
-            tempVelocity.Y = (float) (Velocity.Y - Gravity * delta);
-        }
+        
         var movementMult = movementState switch
         {
             "CrouchingState" => CrouchMovementMult,
@@ -185,14 +150,14 @@ public partial class Player : HittableCharacterBody3D
         var direction = (Transform.Basis * new Vector3(movementInput.X, 0, movementInput.Y)).Normalized();
         if (direction.IsZeroApprox())
         {
-            Velocity = new Vector3(0f, tempVelocity.Y, 0f);
+            Velocity = new Vector3(0f, yVelocity, 0f);
         }
         else
         {
             //var currentXzVelocity = new Vector2(Velocity.X, Velocity.Z);
             var xzVelocity = new Vector2(direction.X, direction.Z) * Speed * movementMult;
             //xzVelocity = currentXzVelocity.Lerp(xzVelocity, 0.75f);
-            Velocity = new Vector3(xzVelocity.X, tempVelocity.Y, xzVelocity.Y);
+            Velocity = new Vector3(xzVelocity.X, yVelocity, xzVelocity.Y);
         }
         MoveAndSlide();
         if (IsOnFloor())
@@ -204,6 +169,11 @@ public partial class Player : HittableCharacterBody3D
     public void UpdateRotation(Vector3 newRotation)
     {
         GlobalTransform = GlobalTransform with { Basis = Basis.FromEuler(newRotation) };
+    }
+
+    public void Jump()
+    {
+        Velocity = Velocity with { Y = JumpVelocity };
     }
 
     private void Clamber()
@@ -247,35 +217,6 @@ public partial class Player : HittableCharacterBody3D
         return movementInput;
     }
 
-    private void HandleCrouch(string movementState, string airborneState)
-    {
-        if (!Input.IsActionJustPressed("Crouch") 
-            || CameraController.IsEnterCrouchTweenRunning()
-            || CameraController.IsExitCrouchTweenRunning()) return;
-        if (!Crouching
-            && movementState is not "CrouchingState" 
-            && airborneState is "GroundedState")
-        {
-            Crouching = true;
-        }
-        else
-        {
-            Crouching = false;
-        }
-    }
-
-    private void HandleSprint(string movementState, string airborneState)
-    {
-        if (!Sprinting
-            && movementState is not "SprintingState" 
-            && airborneState is "GroundedState"
-            && InputDirections.LengthSquared() > 0
-            && Input.IsActionPressed("Sprint"))
-        {
-            Sprinting = true;
-        }
-    }
-
     private bool TryHandleClamber()
     {
         var clamberCheck = ClamberController.AttemptClamber();
@@ -316,18 +257,6 @@ public partial class Player : HittableCharacterBody3D
         //     if (!InteractRaycast.IsColliding()) return;
         //     if interactable is on screen, turn on interact prompt
         // }        
-    }
-
-    public void PlayEnterSprintAnim()
-    {
-        //var tween = CreateTween();
-        //tween.TweenProperty(Camera, "fov", DefaultFov * SprintFovMult, SprintTransitionAnimationInSeconds);
-    }
-
-    public void PlayExitSprintAnim()
-    {
-        //var tween = CreateTween();
-        //tween.TweenProperty(Camera, "fov", DefaultFov, SprintTransitionAnimationInSeconds);
     }
 
     public bool CheckFallSpeed()

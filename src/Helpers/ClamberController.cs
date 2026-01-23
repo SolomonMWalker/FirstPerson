@@ -7,8 +7,7 @@ namespace FirstPerson.Helpers;
 
 public partial class ClamberController : Node3D
 {
-    [Export] public Node3D StandingLocation { get; set; }
-    [Export] public Node3D CrouchingLocation { get; set; }
+    [Export] public Timer PauseBetweenClamberAttemptsTimer { get; set; }
     [Export] public float RaycastLength { get; private set; } = 0.25f;
     [Export] public float ClamberMargin { get; private set; } = 0.26f;
     //[Export] public float MaxAngleInDeg { get; private set; } = 10f;
@@ -86,14 +85,13 @@ public partial class ClamberController : Node3D
 
     public (bool success, RaycastCollisionResult result) AttemptClamber()
     {
-        if (TimeSinceLastClamberCall < WaitPerCallInSec) return (false, null);
-        TimeSinceLastClamberCall = 0;
+        if (!PauseBetweenClamberAttemptsTimer.IsStopped()) return (false, null);
+        PauseBetweenClamberAttemptsTimer.Start();
         foreach (var rcList in Raycasts)
         {
             var clamberAttemptRow = AttemptClamberCheckRow(rcList);
             if (clamberAttemptRow.success) return clamberAttemptRow;
         }
-
         return (false, null);
     }
 }

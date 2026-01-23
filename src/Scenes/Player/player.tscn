@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=35 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/scripts/player/Player.cs" id="1_onrkg"]
 [ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/assets/shapes/testPlayerCapsuleShape.tres" id="2_yfy43"]
@@ -21,6 +21,7 @@
 [ext_resource type="Script" uid="uid://bdvlpik8o1osh" path="res://src/scripts/player/playerState/CrouchingState.cs" id="11_qtxsg"]
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/scripts/player/playerState/GroundedState.cs" id="12_adpgg"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/scripts/player/playerState/CoyoteTimeState.cs" id="12_cre3m"]
+[ext_resource type="Script" uid="uid://dtpetyql5mlab" path="res://src/scripts/player/playerState/PlayerJumpingState.cs" id="18_5eyvc"]
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/scripts/player/StepHandlerComponent.cs" id="21_yfy43"]
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/scripts/player/WeaponController.cs" id="22_y327d"]
 [ext_resource type="Resource" uid="uid://ckdb26phy4kp4" path="res://src/assets/weapons/resources/pistol.tres" id="23_6ofwp"]
@@ -162,9 +163,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_ykrsh")
 }
 
-[node name="ClamberController" parent="." node_paths=PackedStringArray("StandingLocation", "CrouchingLocation") instance=ExtResource("3_avm2n")]
-StandingLocation = NodePath("../Locations/Standing/ClamberLocation")
-CrouchingLocation = NodePath("../Locations/Crouching/ClamberLocation")
+[node name="ClamberController" parent="." instance=ExtResource("3_avm2n")]
 
 [node name="CameraController" type="Node3D" parent="." node_paths=PackedStringArray("Camera", "InteractRaycast", "ShootRaycast", "Player", "MouseCaptureComponent", "StandingLocation", "CrouchingLocation")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -232,82 +231,73 @@ Player = NodePath("..")
 RootState = NodePath("RootState")
 metadata/_custom_type_script = "uid://cal65dlnr7o2c"
 
-[node name="RootState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("Player")]
+[node name="RootState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("6_wneec")
-Player = NodePath("../..")
 metadata/_custom_type_script = "uid://faoc4f20di8r"
 
-[node name="MovementState" type="Node" parent="PlayerStateMachine/RootState" node_paths=PackedStringArray("Player")]
+[node name="MovementState" type="Node" parent="PlayerStateMachine/RootState"]
 script = ExtResource("7_3c66y")
-Player = NodePath("../../..")
 DefaultStateName = "WalkingState"
 metadata/_custom_type_script = "uid://b0e2lb2l24y4y"
 
-[node name="WalkingState" type="Node" parent="PlayerStateMachine/RootState/MovementState" node_paths=PackedStringArray("Player")]
+[node name="WalkingState" type="Node" parent="PlayerStateMachine/RootState/MovementState"]
 script = ExtResource("8_52n81")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="SprintingState" type="Node" parent="PlayerStateMachine/RootState/MovementState" node_paths=PackedStringArray("Player")]
+[node name="SprintingState" type="Node" parent="PlayerStateMachine/RootState/MovementState"]
 script = ExtResource("9_lnhjy")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="CrouchingState" type="Node" parent="PlayerStateMachine/RootState/MovementState" node_paths=PackedStringArray("Player")]
+[node name="CrouchingState" type="Node" parent="PlayerStateMachine/RootState/MovementState"]
 script = ExtResource("11_qtxsg")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="MovementActionState" type="Node" parent="PlayerStateMachine/RootState" node_paths=PackedStringArray("Player")]
+[node name="MovementActionState" type="Node" parent="PlayerStateMachine/RootState"]
 script = ExtResource("7_3c66y")
-Player = NodePath("../../..")
 DefaultStateName = "IdleState"
 metadata/_custom_type_script = "uid://b0e2lb2l24y4y"
 
-[node name="IdleState" type="Node" parent="PlayerStateMachine/RootState/MovementActionState" node_paths=PackedStringArray("Player")]
+[node name="IdleState" type="Node" parent="PlayerStateMachine/RootState/MovementActionState"]
 script = ExtResource("9_3c66y")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="MovingState" type="Node" parent="PlayerStateMachine/RootState/MovementActionState" node_paths=PackedStringArray("Player")]
+[node name="MovingState" type="Node" parent="PlayerStateMachine/RootState/MovementActionState"]
 script = ExtResource("10_hdos3")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="ClamberingState" type="Node" parent="PlayerStateMachine/RootState/MovementActionState" node_paths=PackedStringArray("Player")]
+[node name="ClamberingState" type="Node" parent="PlayerStateMachine/RootState/MovementActionState"]
 script = ExtResource("11_cre3m")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="AirborneState" type="Node" parent="PlayerStateMachine/RootState" node_paths=PackedStringArray("Player")]
+[node name="AirborneState" type="Node" parent="PlayerStateMachine/RootState"]
 script = ExtResource("7_3c66y")
-Player = NodePath("../../..")
 DefaultStateName = "DefaultInAirState"
 metadata/_custom_type_script = "uid://b0e2lb2l24y4y"
 
-[node name="DefaultInAirState" type="Node" parent="PlayerStateMachine/RootState/AirborneState" node_paths=PackedStringArray("Timer", "Player")]
+[node name="DefaultInAirState" type="Node" parent="PlayerStateMachine/RootState/AirborneState"]
 script = ExtResource("11_jra7y")
-Timer = NodePath("Timer")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
-[node name="Timer" type="Timer" parent="PlayerStateMachine/RootState/AirborneState/DefaultInAirState"]
+[node name="PlayerJumpingState" type="Node" parent="PlayerStateMachine/RootState/AirborneState" node_paths=PackedStringArray("DontSwitchToGroundedEarlyTimer")]
+script = ExtResource("18_5eyvc")
+DontSwitchToGroundedEarlyTimer = NodePath("DontSwitchToGroundedEarlyTimer")
+metadata/_custom_type_script = "uid://b61ipgwav80bw"
+
+[node name="DontSwitchToGroundedEarlyTimer" type="Timer" parent="PlayerStateMachine/RootState/AirborneState/PlayerJumpingState"]
 wait_time = 0.25
 one_shot = true
 
-[node name="CoyoteTimeState" type="Node" parent="PlayerStateMachine/RootState/AirborneState" node_paths=PackedStringArray("Timer", "Player")]
+[node name="CoyoteTimeState" type="Node" parent="PlayerStateMachine/RootState/AirborneState" node_paths=PackedStringArray("Timer")]
 script = ExtResource("12_cre3m")
 Timer = NodePath("Timer")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
 [node name="Timer" type="Timer" parent="PlayerStateMachine/RootState/AirborneState/CoyoteTimeState"]
 wait_time = 0.25
 one_shot = true
 
-[node name="GroundedState" type="Node" parent="PlayerStateMachine/RootState/AirborneState" node_paths=PackedStringArray("Player")]
+[node name="GroundedState" type="Node" parent="PlayerStateMachine/RootState/AirborneState"]
 script = ExtResource("12_adpgg")
-Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
 [node name="WeaponStateMachine" type="Node" parent="." node_paths=PackedStringArray("WeaponController", "RootState")]

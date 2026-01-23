@@ -16,7 +16,7 @@ public partial class CameraController : Node3D
 
     [ExportCategory("Camera Settings")]
     [Export] public int Fov { get; set; } = 90;
-    [Export] public float SprintFovMult { get; set; } = 1.05f;
+    
     [ExportGroup("Camera Tilt")]
     [Export] public float TiltLowerLimit
     {
@@ -34,6 +34,10 @@ public partial class CameraController : Node3D
     [Export] public float CrouchAnimationLengthInSec { get; set; } = 0.175f;
     [Export] public float CrouchOffset { get; set; } = 0;
     [Export] public float CrouchSpeed { get; set; } = 3.0f;
+    
+    [ExportGroup("Sprint Movement")]
+    [Export] public float SprintAnimationLengthInSec { get; set; } = 0.175f;
+    [Export] public float SprintFovShiftMult { get; set; } = 1.05f;
 
     [ExportGroup("Step Smoothing")]
     [Export] public float StepSpeed { get; set; } = 8;
@@ -47,14 +51,20 @@ public partial class CameraController : Node3D
     [Export] public int InteractRaycastLength { get; set; } = 50;
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
     [Export] public int ShootRaycastLength { get; set; } = 50;
-    
+
+    public Vector3 InitialPosition { get; private set; }
+    public Vector3 CameraOffset { get; private set; } = Vector3.Zero;
+
     private Tween EnterCrouchTween { get; set; }
     private Tween ExitCrouchTween { get; set; }
+    private Tween EnterSprintTween { get; set; }
+    private Tween ExitSprintTween { get; set; }
     private Vector3 _rotation = Vector3.Zero;
     
     public override void _Ready()
     {
         base._Ready();
+        InitialPosition = Position;
         ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
         ShootRaycast.AddException(Player);
         ShootRaycast.Enabled = false;
@@ -66,6 +76,7 @@ public partial class CameraController : Node3D
 
     public override void _Process(double delta)
     {
+        Position = InitialPosition + CameraOffset;
         UpdateCameraRotation(MouseCaptureComponent.MouseInput);
 
         if (_stepSmoothing)
@@ -117,6 +128,8 @@ public partial class CameraController : Node3D
         return !ShootRaycast.IsColliding() ? null : ShootRaycast.GetCollider();
     }
 
+    public bool AreCrouchTweensRunning() => IsEnterCrouchTweenRunning() || IsExitCrouchTweenRunning();
+
     public bool IsEnterCrouchTweenRunning()
     {
         return EnterCrouchTween is not null && EnterCrouchTween.IsRunning();
@@ -129,18 +142,30 @@ public partial class CameraController : Node3D
     public void EnterCrouchTweenActivate()
     {
         EnterCrouchTween = GetTree().CreateTween();
-        EnterCrouchTween.TweenProperty(this, "position:x", CrouchingLocation.Position.X, CrouchAnimationLengthInSec);
-        EnterCrouchTween.Parallel().TweenProperty(this, "position:y", CrouchingLocation.Position.Y, CrouchAnimationLengthInSec);
-        EnterCrouchTween.Parallel().TweenProperty(this, "position:z", CrouchingLocation.Position.Z, CrouchAnimationLengthInSec);
+        EnterCrouchTween.TweenProperty(this, "CameraOffset:x", CrouchingLocation.Position.X, CrouchAnimationLengthInSec);
+        EnterCrouchTween.Parallel().TweenProperty(this, "CameraOffset:y", CrouchingLocation.Position.Y, CrouchAnimationLengthInSec);
+        EnterCrouchTween.Parallel().TweenProperty(this, "CameraOffset:z", CrouchingLocation.Position.Z, CrouchAnimationLengthInSec);
         EnterCrouchTween.Play();
     }
 
     public void ExitCrouchTweenActivate()
     {
         ExitCrouchTween = GetTree().CreateTween();
-        ExitCrouchTween.TweenProperty(this, "position:x", StandingLocation.Position.X, CrouchAnimationLengthInSec);
-        ExitCrouchTween.Parallel().TweenProperty(this, "position:y", StandingLocation.Position.Y, CrouchAnimationLengthInSec);
-        ExitCrouchTween.Parallel().TweenProperty(this, "position:z", StandingLocation.Position.Z, CrouchAnimationLengthInSec);
+        ExitCrouchTween.TweenProperty(this, "CameraOffset:x", StandingLocation.Position.X, CrouchAnimationLengthInSec);
+        ExitCrouchTween.Parallel().TweenProperty(this, "CameraOffset:y", StandingLocation.Position.Y, CrouchAnimationLengthInSec);
+        ExitCrouchTween.Parallel().TweenProperty(this, "CameraOffset:z", StandingLocation.Position.Z, CrouchAnimationLengthInSec);
         ExitCrouchTween.Play();
+    }
+    
+    public void EnterSprintTweenActivate()
+    {
+        EnterSprintTween = CreateTween();
+        EnterSprintTween.TweenProperty(Camera, "fov", Fov * SprintFovShiftMult, SprintAnimationLengthInSec);
+    }
+
+    public void ExitSprintTweenActivate()
+    {
+        ExitSprintTween = CreateTween();
+        ExitSprintTween.TweenProperty(Camera, "fov", Fov, SprintAnimationLengthInSec);
     }
 }

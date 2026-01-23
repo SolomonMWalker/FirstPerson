@@ -5,38 +5,16 @@ using FirstPerson.Scenes.Player.PlayerState;
 
 public partial class DefaultInAirState : BasePlayerAtomicState
 {
-    [Export] public Timer Timer { get; set; }
-
-    private bool EnteredFromJump;
-    
     public override void StateEntered()
     {
         base.StateEntered();
-        if (Player.Jumped)
-        {
-            Player.Jumped = false;
-            EnteredFromJump = true;
-            Timer.Start();
-        }
+        Player.InAir = true;
     }
 
-    public override void StateExited()
-    {
-        base.StateExited();
-        EnteredFromJump = false;
-    }
-
-    public override void StateProcessing(double delta)
+    public override void StatePhysicsProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (EnteredFromJump)
-        {
-            if (Timer.IsStopped() && Player.IsOnFloor())
-            {
-                OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
-            }
-        }
-        else if(Player.IsOnFloor())
+        if(Player.IsOnFloor())
         {
             if (Player.CheckFallSpeed())
             {

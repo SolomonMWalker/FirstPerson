@@ -8,9 +8,9 @@ public partial class CrouchingState : BasePlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        Player.InAir = true;
         Player.CrouchingCollisionShape.SetDisabled(false);
         Player.StandingCollisionShape.SetDisabled(true);
-        Player.ClamberController.Position = Player.ClamberController.CrouchingLocation.Position;
         Player.CameraController.EnterCrouchTweenActivate();
     }
 
@@ -19,22 +19,29 @@ public partial class CrouchingState : BasePlayerAtomicState
         base.StateExited();
         Player.StandingCollisionShape.SetDisabled(false);
         Player.CrouchingCollisionShape.SetDisabled(true);
-        Player.Crouching = false;
-        Player.ClamberController.Position = Player.ClamberController.StandingLocation.Position;
         Player.CameraController.ExitCrouchTweenActivate();
-        
     }
     
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Player.Sprinting)
+        
+        var airborneState = PlayerStateMachine.GetAirborneState();
+        
+        if (Input.IsActionPressed("Sprint")
+            && Player.InputDirections.LengthSquared() > 0
+            && airborneState is "GroundedState")
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("CrouchingState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("SprintingState"));
+            return;
         }
-        else if (!Player.Crouching)
+        
+        if (Input.IsActionJustPressed("Crouch")
+                 && !Player.CameraController.AreCrouchTweensRunning()
+                 && airborneState is "GroundedState")
         {
             OnStateChangeRequired(new ChangeStateEventArgs("WalkingState"));
+            return;
         }
     }
 }

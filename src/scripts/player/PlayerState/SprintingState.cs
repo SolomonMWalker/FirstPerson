@@ -8,16 +8,13 @@ public partial class SprintingState : BasePlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.ClamberController.Position = Player.ClamberController.StandingLocation.Position;
-        Player.Crouching = false;
-        Player.PlayEnterSprintAnim();
+        Player.CameraController.EnterSprintTweenActivate();
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        Player.Sprinting = false;
-        Player.PlayExitSprintAnim();
+        Player.CameraController.ExitSprintTweenActivate();
     }
 
     public override void StateProcessing(double delta)
@@ -26,10 +23,17 @@ public partial class SprintingState : BasePlayerAtomicState
         if (Player.InputDirections.LengthSquared() == 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("WalkingState"));
+            return;
         }
-        else if (Player.Crouching)
+        
+        var airborneState = PlayerStateMachine.GetAirborneState();
+        
+        if (Input.IsActionJustPressed("Crouch")
+            && airborneState is "GroundedState"
+            && !Player.CameraController.AreCrouchTweensRunning())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("CrouchingState"));
+            return;
         }
     }
 }

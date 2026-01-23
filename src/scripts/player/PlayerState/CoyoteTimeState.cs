@@ -10,19 +10,36 @@ public partial class CoyoteTimeState : BasePlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        Player.InAir = true;
         Timer.Start();
+    }
+
+    public override void StateExited()
+    {
+        base.StateExited();
+        Timer.Stop();
     }
 
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
+
+        if (Input.IsActionJustPressed("Jump"))
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerJumpingState"));
+            return;
+        }
+        
         if (Player.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
+            return;
         }
-        else if (Timer.IsStopped())
+        
+        if (Timer.IsStopped())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("DefaultInAirState"));
+            return;
         }
     }
 }
