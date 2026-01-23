@@ -9,6 +9,7 @@ public partial class CrouchingState : BasePlayerAtomicState
     {
         base.StateEntered();
         Player.InAir = true;
+        Player.CurrentMovementMult = Player.CrouchMovementMult;
         Player.CrouchingCollisionShape.SetDisabled(false);
         Player.StandingCollisionShape.SetDisabled(true);
         Player.CameraController.EnterCrouchTweenActivate();

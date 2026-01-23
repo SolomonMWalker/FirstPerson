@@ -12,6 +12,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public ClamberController ClamberController { get; set; }
     [Export] public StepHandlerComponent StepHandlerComponent { get; set; }
+    [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public CollisionShape3D StandingCollisionShape { get; set; }
     [Export] public CollisionShape3D CrouchingCollisionShape { get; set; }
     [Export] public Node3D BottomOfPlayer { get; set; }
@@ -25,8 +26,7 @@ public partial class Player : HittableCharacterBody3D
     [Export] public int InteractRaycastLength { get; set; } = 50;
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
     [Export] public float DefaultCollisionShapePositionY { get; set; }
-    //[Export] public float CrouchCameraHeightMult { get; set; } = 0.4f;
-    //[Export] public float CrouchCollisionShapeHeightMult { get; set; } = 0.5f;
+    [Export] public float AccelerationFactor { get; set; } = 0.9f;
     [Export] public float CrouchAnimationInSeconds { get; set; } = 0.25f;
     [Export] public float CrouchMovementMult { get; set; } = 0.6f;
     [Export] public float DefaultFov { get; set; }
@@ -35,68 +35,22 @@ public partial class Player : HittableCharacterBody3D
     [Export] public float SprintMovementMult { get; set; } = 1.5f;
     [Export] public float CoyoteTimeInSec { get; set; } = 0.15f;
     [Export] public float ClamberVelocity { get; set; } = 10f;
+    
     public Vector2 InputDirections = Vector2.Zero;
+    public float DefaultMovementMult { get; private set; } = 1f;
+    public float CurrentMovementMult { get; set; }
+    public bool InAir { get; set; }
+    public bool Clambering { get; set; }
+    public float CurrentFallVelocity { get; set; }
+    public Vector3 PreviousFrameVelocity { get; set; }
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
-    
     private float ClamberXzDistanceSquared { get; set; }
     private Vector3 ClamberDestination { get; set; }
     private Vector2 ClamberDestinationXz { get; set; }
     private Vector3 ClamberStartPoint { get; set; }
     private Vector2 ClamberStartPointXz { get; set; }
     private Vector2 ClamberXzDirection { get; set; }
-
-    private Poll InteractCheckPoll { get; set; }
-    private Poll CoyoteTimePoll { get; set; }
-    private bool CanJump { get; set; }
-    private bool FireCameraRaycast { get; set; }
-    private bool RotateCamera { get; set; }
-    private Vector2 RelativeMousePosition { get; set; }
-    //private float DefaultCameraHeight { get; set; }
-    //private float DefaultColliderShapeHeight { get; set; }
-    
-    private Camera3D Camera { get; set; }
-    //private Node3D Hand { get; set; }
-    private RayCast3D ShootRaycast { get; set; }
-    private RayCast3D InteractRaycast { get; set; }
-    private CollisionShape3D CollisionShape3d { get; set; }
-    private BoxShape3D CollisionBoxShape { get; set; }
-    private AnimationPlayer AnimationPlayer { get; set; }
-    private Tween EnterCrouchTween { get; set; }
-    private Tween ExitCrouchTween { get; set; }
-    
-    public bool InAir { get; set; }
-    public bool Clambering { get; set; }
-    public float CurrentFallVelocity { get; set; }
-    public Vector3 PreviousFrameVelocity { get; set; }
-
-    
-    /*
-     * Need to create headbob animations
-     * different ones for each movement state
-     * when the player leaves each state, need to blend animation to new state
-     * Could make a number correspond to where you are in the animation to help transition to new state
-     * 1 - start left from middle, 2 - going left, 3 - left maximum, start right
-     * 4 - going right from right, 5 - in middle going right, 6 - going right
-     * 7 - right maximum, start left, 8 - going left, 1 - start left from middle
-     * might still have to use animation tree
-     * https://docs.godotengine.org/en/stable/tutorials/animation/animation_tree.html#
-     *
-     * In trenchbroom, create a map, then put skip texture on all faces except
-     * faces used in navigation
-     * layer maps together and use the navigation mesh to make the nav map
-     *
-     * look into how crouching affects clamber raycast layout
-     * probably need to use scale as oppposed to something else
-     */
-
-    public override void _Ready()
-    {
-        base._Ready();
-        CoyoteTimePoll = new Poll(CoyoteTimeInSec);
-        InteractCheckPoll = new Poll(InteractRaycastWaitInSec);
-        AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-    }
 
     public override void _Process(double delta)
     {
@@ -123,15 +77,14 @@ public partial class Player : HittableCharacterBody3D
 
     private void HandleMovement(double delta)
     {
-        var movementState = PlayerStateMachine.GetMovementState();
-        var airborneState = PlayerStateMachine.GetAirborneState();
         if (Clambering)
         {
             Clamber();
             return;
         }
 
-        var movementInput = Input.GetVector("MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
+        var movementInput = Input.GetVector(
+            "MoveLeft", "MoveRight", "MoveForward", "MoveBackward");
         InputDirections = movementInput;
         
         var yVelocity = Velocity.Y;
@@ -139,13 +92,6 @@ public partial class Player : HittableCharacterBody3D
         {
             yVelocity -= Gravity * (float) delta;
         }
-        
-        var movementMult = movementState switch
-        {
-            "CrouchingState" => CrouchMovementMult,
-            "SprintingState" => SprintMovementMult,
-            _ => 1f
-        };
 
         var direction = (Transform.Basis * new Vector3(movementInput.X, 0, movementInput.Y)).Normalized();
         if (direction.IsZeroApprox())
@@ -154,12 +100,12 @@ public partial class Player : HittableCharacterBody3D
         }
         else
         {
-            //var currentXzVelocity = new Vector2(Velocity.X, Velocity.Z);
-            var xzVelocity = new Vector2(direction.X, direction.Z) * Speed * movementMult;
-            //xzVelocity = currentXzVelocity.Lerp(xzVelocity, 0.75f);
+            var xzVelocity = new Vector2(direction.X, direction.Z) * Speed * CurrentMovementMult;
+            xzVelocity = new Vector2(Velocity.X, Velocity.Z).Lerp(xzVelocity, AccelerationFactor);
             Velocity = new Vector3(xzVelocity.X, yVelocity, xzVelocity.Y);
         }
         MoveAndSlide();
+        
         if (IsOnFloor())
         {
             StepHandlerComponent.HandleStepClimbing();
@@ -190,38 +136,13 @@ public partial class Player : HittableCharacterBody3D
             MoveAndSlide();
             return;
         }
-        ApplyFloorSnap(); //when done, switch movement type to onfloor
         Clambering = false;
     }
 
-    private static Vector2 GetXzDirectionalMovement()
-    {
-        var movementInput = Vector2.Zero;
-        if (Input.IsActionPressed("MoveForward")) //forward is negative z
-        {
-            movementInput += Vector2.Down;
-        }
-        if (Input.IsActionPressed("MoveBackward")) //backward is positive z
-        {
-            movementInput += Vector2.Up;
-        }
-        if (Input.IsActionPressed("MoveRight")) //right
-        {
-            movementInput += Vector2.Right;
-        }
-        if (Input.IsActionPressed("MoveLeft")) //left
-        {
-            movementInput += Vector2.Left;
-        }
-
-        return movementInput;
-    }
-
-    private bool TryHandleClamber()
+    public bool TryHandleClamber()
     {
         var clamberCheck = ClamberController.AttemptClamber();
         if (!clamberCheck.success) return false;
-        Clambering = true;
         ClamberDestination = clamberCheck.result.GlobalPositionToClamberTo ?? Vector3.Zero;
         ClamberDestinationXz = new Vector2(ClamberDestination.X, ClamberDestination.Z);
         ClamberStartPoint = GlobalPosition;

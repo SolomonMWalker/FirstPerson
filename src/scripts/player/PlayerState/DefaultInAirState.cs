@@ -14,6 +14,13 @@ public partial class DefaultInAirState : BasePlayerAtomicState
     public override void StatePhysicsProcessing(double delta)
     {
         base.StateProcessing(delta);
+        
+        if (Input.IsActionPressed("Jump") && Player.TryHandleClamber())
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("ClamberingState"));
+            return;
+        }
+        
         if(Player.IsOnFloor())
         {
             if (Player.CheckFallSpeed())

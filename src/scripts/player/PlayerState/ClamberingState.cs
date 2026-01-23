@@ -5,6 +5,12 @@ using FirstPerson.Scenes.Player.PlayerState;
 
 public partial class ClamberingState : BasePlayerAtomicState
 {
+    public override void StateEntered()
+    {
+        base.StateEntered();
+        Player.Clambering = true;
+    }
+
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);

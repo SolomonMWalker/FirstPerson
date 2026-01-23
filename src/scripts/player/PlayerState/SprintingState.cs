@@ -8,6 +8,7 @@ public partial class SprintingState : BasePlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        Player.CurrentMovementMult = Player.SprintMovementMult;
         Player.CameraController.EnterSprintTweenActivate();
     }
 

@@ -18,6 +18,13 @@ public partial class PlayerJumpingState : BasePlayerAtomicState
     public override void StatePhysicsProcessing(double delta)
     {
         base.StateProcessing(delta);
+
+        if (Input.IsActionPressed("Jump") && Player.TryHandleClamber())
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("ClamberingState"));
+            return;
+        }
+        
         if (DontSwitchToGroundedEarlyTimer.IsStopped())
         {
             if(Player.IsOnFloor())
