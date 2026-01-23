@@ -21,7 +21,7 @@ public partial class StateMachine: Node
     {
         base._Ready();
         States = GetAllStates(RootState);
-        RootState = States.FirstOrDefault(s => s.Name == "RootState");
+        RootState = States.FirstOrDefault(s => s.Name.ToString().Contains("RootState"));
         if (RootState is null)
         {
             throw new Exception("No Root state present as a child of state machine");
