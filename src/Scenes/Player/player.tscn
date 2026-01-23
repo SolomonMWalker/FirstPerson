@@ -133,7 +133,7 @@ _data = {
 &"Shot": SubResource("Animation_avm2n")
 }
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
 collision_layer = 10
 collision_mask = 97
 script = ExtResource("1_onrkg")
@@ -142,6 +142,7 @@ CameraEffects = NodePath("CameraEffects")
 PlayerStateMachine = NodePath("PlayerStateMachine")
 ClamberController = NodePath("ClamberController")
 StepHandlerComponent = NodePath("Components/StepHandlerComponent")
+AnimationPlayer = NodePath("AnimationPlayer")
 StandingCollisionShape = NodePath("StandingCollisionShape3D")
 CrouchingCollisionShape = NodePath("CrouchingCollisionShape3D")
 BottomOfPlayer = NodePath("Locations/BottomOfPlayer")

@@ -39,7 +39,7 @@ public partial class Player : HittableCharacterBody3D
     
     public Vector2 InputDirections = Vector2.Zero;
     public float DefaultMovementMult { get; private set; } = 1f;
-    public float CurrentMovementMult { get; set; }
+    public float CurrentMovementMult { get; set; } = 1f;
     public bool InAir { get; set; }
     public bool Clambering { get; set; }
     public float CurrentFallVelocity { get; set; }
