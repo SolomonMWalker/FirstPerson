@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://nlsbvbe8wik6"
-path="res://.godot/imported/lineOfSightCone1.glb-10a40b001f0106626e67055d9120da62.scn"
+path="res://.godot/imported/lineOfSightCone1.glb-6ab5b67136f91b6392cf45bc8adbbe84.scn"
 
 [deps]
 
-source_file="res://src/resources/blender/lineOfSightCone1.glb"
-dest_files=["res://.godot/imported/lineOfSightCone1.glb-10a40b001f0106626e67055d9120da62.scn"]
+source_file="res://src/assets/blender/lineOfSightCone1.glb"
+dest_files=["res://.godot/imported/lineOfSightCone1.glb-6ab5b67136f91b6392cf45bc8adbbe84.scn"]
 
 [params]
 
@@ -45,7 +45,7 @@ _subresources={
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/Resources/Meshes/line_of_sight_cone.res",
+"save_to_file/fallback_path": "res://src/assets/meshes/line_of_sight_cone.res",
 "save_to_file/path": "uid://c8bqi5wacho3x"
 }
 }

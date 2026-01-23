@@ -1,11 +1,11 @@
 [gd_scene load_steps=19 format=3 uid="uid://5fo45uuf6sbv"]
 
-[ext_resource type="Script" uid="uid://dt20hhhowndui" path="res://src/Scenes/Enemies/ShootingEnemy.cs" id="1_s7nxt"]
-[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/Resources/Materials/testEnemyMat.tres" id="2_gwpd2"]
-[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/Scenes/Utilities/weakspot.tscn" id="2_qj2bh"]
-[ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/Resources/Textures/circle.png" id="3_v4x0c"]
-[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/Scenes/Utilities/hitbox.tscn" id="4_qj2bh"]
-[ext_resource type="PackedScene" uid="uid://c2drao3m5csny" path="res://src/Scenes/Utilities/line_of_sight_area_3d.tscn" id="6_3xsd6"]
+[ext_resource type="Script" uid="uid://dt20hhhowndui" path="res://src/scripts/enemies/ShootingEnemy.cs" id="1_s7nxt"]
+[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="2_gwpd2"]
+[ext_resource type="PackedScene" uid="uid://c2eygjuy7xf7v" path="res://src/scenes/utilities/weakspot.tscn" id="2_qj2bh"]
+[ext_resource type="Texture2D" uid="uid://bo4x1droive8" path="res://src/assets/textures/circle.png" id="3_v4x0c"]
+[ext_resource type="PackedScene" uid="uid://dhcobmdmyytc8" path="res://src/scenes/utilities/hitbox.tscn" id="4_qj2bh"]
+[ext_resource type="PackedScene" uid="uid://c2drao3m5csny" path="res://src/scenes/utilities/line_of_sight_area_3d.tscn" id="6_3xsd6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qj2bh"]
 

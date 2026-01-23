@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dhcobmdmyytc8"]
 
-[ext_resource type="Script" uid="uid://dabt6x5upswsy" path="res://src/Scenes/Utilities/Hitbox.cs" id="1_bj5s8"]
-[ext_resource type="Shape3D" uid="uid://d0xcvt348ft1g" path="res://src/Resources/Shapes/test_enemy_body_collision_shape.tres" id="1_vkqe8"]
+[ext_resource type="Script" uid="uid://dabt6x5upswsy" path="res://src/scripts/utilities/Hitbox.cs" id="1_bj5s8"]
+[ext_resource type="Shape3D" uid="uid://d0xcvt348ft1g" path="res://src/assets/shapes/test_enemy_body_collision_shape.tres" id="1_vkqe8"]
 
 [node name="HitBox" type="Area3D"]
 collision_layer = 34

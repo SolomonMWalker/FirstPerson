@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cn3fqld7l3c3b"]
+
+[ext_resource type="BoxMesh" uid="uid://bpldlwocw8xgx" path="res://src/assets/weapons/resources/test_pistol_mesh.tres" id="1_bdmq4"]
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+mesh = ExtResource("1_bdmq4")

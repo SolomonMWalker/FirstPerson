@@ -1,12 +1,13 @@
-[gd_scene load_steps=28 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=34 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/scripts/player/Player.cs" id="1_onrkg"]
-[ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/resources/shapes/testPlayerCapsuleShape.tres" id="2_yfy43"]
-[ext_resource type="Shape3D" uid="uid://cl8vw2xtridr3" path="res://src/resources/shapes/testPlayerSphereCrouchingShape.tres" id="3_564vg"]
+[ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/assets/shapes/testPlayerCapsuleShape.tres" id="2_yfy43"]
+[ext_resource type="Shape3D" uid="uid://cl8vw2xtridr3" path="res://src/assets/shapes/testPlayerSphereCrouchingShape.tres" id="3_564vg"]
 [ext_resource type="PackedScene" uid="uid://0wcam4m3xssr" path="res://src/scenes/player/clamber_controller.tscn" id="3_avm2n"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/scripts/ui/Reticle.cs" id="4_hqtel"]
 [ext_resource type="Script" uid="uid://piyhj5dlveb4" path="res://src/scripts/player/playerState/PlayerStateMachine.cs" id="5_3c66y"]
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/scripts/player/MouseCaptureComponent.cs" id="5_o5oy3"]
+[ext_resource type="PackedScene" uid="uid://cn3fqld7l3c3b" path="res://src/assets/weapons/resources/test_pistol.tscn" id="6_6ofwp"]
 [ext_resource type="Script" uid="uid://cn286n37w5ri7" path="res://src/scripts/player/CameraController.cs" id="6_44jin"]
 [ext_resource type="Script" uid="uid://bt3s7rcxgsl2w" path="res://src/scripts/player/CameraEffects.cs" id="6_qtxsg"]
 [ext_resource type="Script" uid="uid://faoc4f20di8r" path="res://src/scripts/player/playerState/baseTypes/BasePlayerParallelState.cs" id="6_wneec"]
@@ -21,6 +22,13 @@
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/scripts/player/playerState/GroundedState.cs" id="12_adpgg"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/scripts/player/playerState/CoyoteTimeState.cs" id="12_cre3m"]
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/scripts/player/StepHandlerComponent.cs" id="21_yfy43"]
+[ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/scripts/player/WeaponController.cs" id="22_y327d"]
+[ext_resource type="Resource" uid="uid://ckdb26phy4kp4" path="res://src/assets/weapons/resources/pistol.tres" id="23_6ofwp"]
+[ext_resource type="Script" uid="uid://s6h5quabullu" path="res://src/assets/weapons/scripts/states/baseStates/WeaponStateMachine.cs" id="25_xuyuq"]
+[ext_resource type="Script" uid="uid://cike71hun3kf3" path="res://src/assets/weapons/scripts/states/baseStates/WeaponCompoundState.cs" id="26_87sxd"]
+[ext_resource type="Script" uid="uid://dshk8rlecr1qf" path="res://src/assets/weapons/scripts/states/WeaponIdleState.cs" id="27_87sxd"]
+[ext_resource type="Script" uid="uid://bhqvrut657b4o" path="res://src/assets/weapons/scripts/states/WeaponFiringState.cs" id="28_5eyvc"]
+[ext_resource type="Script" uid="uid://dg12kasv4n6tr" path="res://src/assets/weapons/scripts/states/WeaponEmptyState.cs" id="29_auaqc"]
 
 [sub_resource type="Animation" id="Animation_onrkg"]
 resource_name = "FireGun"
@@ -124,12 +132,6 @@ _data = {
 &"Shot": SubResource("Animation_avm2n")
 }
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
-albedo_color = Color(1, 0.20784314, 0.11372549, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_6uqi0"]
-material = SubResource("StandardMaterial3D_onrkg")
-
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
 collision_layer = 10
 collision_mask = 97
@@ -188,10 +190,10 @@ collide_with_areas = true
 collision_mask = 16
 
 [node name="Hand" type="Node3D" parent="CameraController/Camera3D"]
-transform = Transform3D(0.038, 0, 0, 0, 0.057858713, -0.034738723, 0, 0.0040458753, 0.4967869, 0.293, -0.292, -0.397)
+transform = Transform3D(1, 0, 0, 0, 0.9975641, -0.06975647, 0, 0.06975647, 0.9975641, 0.293, -0.292, -0.397)
+visible = false
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraController/Camera3D/Hand"]
-mesh = SubResource("BoxMesh_6uqi0")
+[node name="MeshInstance3D" parent="CameraController/Camera3D/Hand" instance=ExtResource("6_6ofwp")]
 
 [node name="CameraEffects" type="Node3D" parent="." node_paths=PackedStringArray("Player")]
 script = ExtResource("6_qtxsg")
@@ -223,6 +225,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("StateLabel", "Player", "RootState")]
+unique_name_in_owner = true
 script = ExtResource("5_3c66y")
 StateLabel = NodePath("../UserInterface/StateLabel")
 Player = NodePath("..")
@@ -307,6 +310,30 @@ script = ExtResource("12_adpgg")
 Player = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b61ipgwav80bw"
 
+[node name="WeaponStateMachine" type="Node" parent="." node_paths=PackedStringArray("WeaponController", "RootState")]
+unique_name_in_owner = true
+script = ExtResource("25_xuyuq")
+WeaponController = NodePath("../Components/WeaponController")
+RootState = NodePath("WeaponRootState")
+metadata/_custom_type_script = "uid://s6h5quabullu"
+
+[node name="WeaponRootState" type="Node" parent="WeaponStateMachine"]
+script = ExtResource("26_87sxd")
+DefaultStateName = "WeaponIdleState"
+metadata/_custom_type_script = "uid://cike71hun3kf3"
+
+[node name="WeaponIdleState" type="Node" parent="WeaponStateMachine/WeaponRootState"]
+script = ExtResource("27_87sxd")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="WeaponFiringState" type="Node" parent="WeaponStateMachine/WeaponRootState"]
+script = ExtResource("28_5eyvc")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="WeaponEmptyState" type="Node" parent="WeaponStateMachine/WeaponRootState"]
+script = ExtResource("29_auaqc")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
 [node name="UserInterface" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
@@ -354,3 +381,9 @@ script = ExtResource("5_o5oy3")
 script = ExtResource("21_yfy43")
 Player = NodePath("../..")
 StepHeight = 0.55
+
+[node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("WeaponModelParent", "WeaponStateMachine")]
+script = ExtResource("22_y327d")
+CurrentWeapon = ExtResource("23_6ofwp")
+WeaponModelParent = NodePath("../../CameraController/Camera3D")
+WeaponStateMachine = NodePath("../../WeaponStateMachine")

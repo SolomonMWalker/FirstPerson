@@ -1,7 +1,7 @@
 [gd_resource type="BoxMesh" load_steps=4 format=3 uid="uid://dmxg5o80lt2ci"]
 
-[ext_resource type="Texture2D" uid="uid://dcfyynx8yiu15" path="res://Resources/Textures/testText.tres" id="1_hr0ed"]
-[ext_resource type="Material" uid="uid://3gqc1v06pcf7" path="res://Resources/Materials/testMat.tres" id="2_ofhgo"]
+[ext_resource type="Texture2D" uid="uid://dcfyynx8yiu15" path="res://src/assets/textures/testText.tres" id="1_hr0ed"]
+[ext_resource type="Material" uid="uid://3gqc1v06pcf7" path="res://src/assets/materials/testMat.tres" id="2_ofhgo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h7yuw"]
 next_pass = ExtResource("2_ofhgo")

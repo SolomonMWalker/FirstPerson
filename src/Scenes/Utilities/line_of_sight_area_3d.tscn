@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c2drao3m5csny"]
 
-[ext_resource type="Shape3D" uid="uid://dtvgvpfdoune3" path="res://src/Resources/Shapes/cone_shape.tres" id="1_f4tap"]
+[ext_resource type="Shape3D" uid="uid://dtvgvpfdoune3" path="res://src/assets/shapes/cone_shape.tres" id="1_f4tap"]
 
 [node name="LineOfSightArea3D" type="Area3D"]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
