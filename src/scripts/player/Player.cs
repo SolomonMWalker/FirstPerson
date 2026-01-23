@@ -118,10 +118,7 @@ public partial class Player : HittableCharacterBody3D
         GlobalTransform = GlobalTransform with { Basis = Basis.FromEuler(newRotation) };
     }
 
-    public void Jump()
-    {
-        Velocity = Velocity with { Y = JumpVelocity };
-    }
+    public void Jump() => Velocity = Velocity with { Y = JumpVelocity };
 
     private void Clamber()
     {
