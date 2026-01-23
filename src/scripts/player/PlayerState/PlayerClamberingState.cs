@@ -3,7 +3,7 @@ using System;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player.PlayerState;
 
-public partial class ClamberingState : BasePlayerAtomicState
+public partial class PlayerClamberingState : PlayerAtomicState
 {
     public override void StateEntered()
     {
@@ -16,8 +16,8 @@ public partial class ClamberingState : BasePlayerAtomicState
         base.StateProcessing(delta);
         if (!Player.Clambering)
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
-            OnStateChangeRequired(new ChangeStateEventArgs("DefaultInAirState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerIdleState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerDefaultInAirState"));
         }
     }
 }

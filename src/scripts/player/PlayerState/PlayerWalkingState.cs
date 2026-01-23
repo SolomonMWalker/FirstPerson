@@ -3,7 +3,7 @@ using System;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player.PlayerState;
 
-public partial class WalkingState : BasePlayerAtomicState
+public partial class PlayerWalkingState : PlayerAtomicState
 {
     public override void StateEntered()
     {
@@ -18,18 +18,18 @@ public partial class WalkingState : BasePlayerAtomicState
         var airborneState = PlayerStateMachine.GetAirborneState();
 
         if (Input.IsActionJustPressed("Crouch")
-            && airborneState is "GroundedState"
+            && airborneState is "PlayerGroundedState"
             && !Player.CameraController.AreCrouchTweensRunning())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("CrouchingState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerCrouchingState"));
             return;
         }
 
         if (Input.IsActionPressed("Sprint")
             && Player.InputDirections.LengthSquared() > 0
-            && airborneState is "GroundedState")
+            && airborneState is "PlayerGroundedState")
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("SprintingState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerSprintingState"));
             return;
         }
     }

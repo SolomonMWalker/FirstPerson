@@ -4,7 +4,7 @@ using Godot;
 
 namespace FirstPerson.Scenes.Player.playerState;
 
-public partial class PlayerJumpingState : BasePlayerAtomicState
+public partial class PlayerJumpingState : PlayerAtomicState
 {
     [Export] public Timer DontSwitchToGroundedEarlyTimer { get; set; }
     public override void StateEntered()
@@ -21,7 +21,7 @@ public partial class PlayerJumpingState : BasePlayerAtomicState
 
         if (Input.IsActionPressed("Jump") && Player.TryHandleClamber())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("ClamberingState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerClamberingState"));
             return;
         }
         
@@ -33,7 +33,7 @@ public partial class PlayerJumpingState : BasePlayerAtomicState
                 {
                     Player.CameraEffects.AddFallKick(2.0f);
                 }
-                OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
+                OnStateChangeRequired(new ChangeStateEventArgs("PlayerGroundedState"));
                 return;
             }
         }

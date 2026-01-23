@@ -3,7 +3,7 @@ using System;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player.PlayerState;
 
-public partial class CoyoteTimeState : BasePlayerAtomicState
+public partial class PlayerCoyoteTimeState : PlayerAtomicState
 {
     [Export] public Timer Timer { get; set; }
     
@@ -32,13 +32,13 @@ public partial class CoyoteTimeState : BasePlayerAtomicState
         
         if (Player.IsOnFloor())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerGroundedState"));
             return;
         }
         
         if (Timer.IsStopped())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("DefaultInAirState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerDefaultInAirState"));
             return;
         }
     }

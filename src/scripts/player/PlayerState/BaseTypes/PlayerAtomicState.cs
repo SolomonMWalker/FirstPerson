@@ -4,7 +4,7 @@ using Godot;
 namespace FirstPerson.Scenes.Player.PlayerState;
 
 [GlobalClass]
-public partial class BasePlayerAtomicState: AtomicState
+public partial class PlayerAtomicState: AtomicState
 {
     public PlayerStateMachine PlayerStateMachine { get; set; }
     public Player Player { get; set; }

@@ -3,7 +3,7 @@ using System;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player.PlayerState;
 
-public partial class DefaultInAirState : BasePlayerAtomicState
+public partial class PlayerDefaultInAirState : PlayerAtomicState
 {
     public override void StateEntered()
     {
@@ -17,7 +17,7 @@ public partial class DefaultInAirState : BasePlayerAtomicState
         
         if (Input.IsActionPressed("Jump") && Player.TryHandleClamber())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("ClamberingState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerClamberingState"));
             return;
         }
         
@@ -27,7 +27,7 @@ public partial class DefaultInAirState : BasePlayerAtomicState
             {
                 Player.CameraEffects.AddFallKick(2.0f);
             }
-            OnStateChangeRequired(new ChangeStateEventArgs("GroundedState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerGroundedState"));
         }
 
         Player.CurrentFallVelocity = Player.Velocity.Y;

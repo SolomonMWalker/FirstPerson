@@ -1,12 +1,13 @@
-using Godot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using FirstPerson.CustomTypes.StateMachine;
-using FirstPerson.Scenes.Player.PlayerState;
+using Godot;
 
-public partial class PlayerStateMachine : BasePlayerStateMachine
+namespace FirstPerson.Scenes.Player.PlayerState;
+
+[GlobalClass]
+public partial class PlayerStateMachine: StateMachine
 {
+    [Export] public Player Player { get; set; }
     [Export] public Label StateLabel { get; set; }
 
     public override void _PhysicsProcess(double delta)
@@ -20,13 +21,13 @@ public partial class PlayerStateMachine : BasePlayerStateMachine
 
     public string GetMovementState()
     {
-        return States.OfType<CompoundState>().FirstOrDefault(s => s.Name == "MovementState")
+        return States.OfType<CompoundState>().FirstOrDefault(s => s.Name == "PlayerMovementState")
             ?.ActiveState.Name;
     }
 
     public string GetAirborneState()
     {
-        return States.OfType<CompoundState>().FirstOrDefault(s => s.Name == "AirborneState")
+        return States.OfType<CompoundState>().FirstOrDefault(s => s.Name == "PlayerAirborneState")
             ?.ActiveState.Name;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
+using FirstPerson.Scenes.Player.PlayerState;
 using Godot;
 
 namespace FirstPerson.Scenes.Player;

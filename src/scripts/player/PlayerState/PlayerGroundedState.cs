@@ -3,7 +3,7 @@ using System;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player.PlayerState;
 
-public partial class GroundedState : BasePlayerAtomicState
+public partial class PlayerGroundedState : PlayerAtomicState
 {
     public override void StateEntered()
     {
@@ -22,7 +22,7 @@ public partial class GroundedState : BasePlayerAtomicState
         }
         if (!Player.IsOnFloor())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("CoyoteTimeState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("PlayerCoyoteTimeState"));
             return;
         }
     }
