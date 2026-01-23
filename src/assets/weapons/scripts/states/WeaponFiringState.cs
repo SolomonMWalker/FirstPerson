@@ -13,7 +13,7 @@ public partial class WeaponFiringState : WeaponAtomicState
     public override void StatePhysicsProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (WeaponController.currentAmmo <= 0)
+        if (WeaponController.CurrentAmmo <= 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("WeaponEmptyState"));
             return;

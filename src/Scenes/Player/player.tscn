@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=33 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/scripts/player/Player.cs" id="1_onrkg"]
 [ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/assets/shapes/testPlayerCapsuleShape.tres" id="2_yfy43"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://0wcam4m3xssr" path="res://src/scenes/player/clamber_controller.tscn" id="3_avm2n"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/scripts/ui/Reticle.cs" id="4_hqtel"]
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/scripts/player/MouseCaptureComponent.cs" id="5_o5oy3"]
-[ext_resource type="PackedScene" uid="uid://cn3fqld7l3c3b" path="res://src/assets/weapons/resources/test_pistol.tscn" id="6_6ofwp"]
 [ext_resource type="Script" uid="uid://cn286n37w5ri7" path="res://src/scripts/player/CameraController.cs" id="6_44jin"]
 [ext_resource type="Script" uid="uid://bt3s7rcxgsl2w" path="res://src/scripts/player/CameraEffects.cs" id="6_qtxsg"]
 [ext_resource type="Script" uid="uid://cal65dlnr7o2c" path="res://src/scripts/player/playerState/baseTypes/PlayerStateMachine.cs" id="8_5eyvc"]
@@ -31,34 +30,6 @@
 [ext_resource type="Script" uid="uid://bhqvrut657b4o" path="res://src/assets/weapons/scripts/states/WeaponFiringState.cs" id="28_5eyvc"]
 [ext_resource type="Script" uid="uid://dg12kasv4n6tr" path="res://src/assets/weapons/scripts/states/WeaponEmptyState.cs" id="29_auaqc"]
 
-[sub_resource type="Animation" id="Animation_onrkg"]
-resource_name = "FireGun"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CameraController/Camera3D/Hand:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.25),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0.293, -0.292, -0.397), Vector3(0.293, -0.292, -0.29), Vector3(0.293, -0.292, -0.397)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CameraController/Camera3D/Hand:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.25),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0.06981317, 0, 0), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_ppyta"]
 length = 0.001
 tracks/0/type = "value"
@@ -76,34 +47,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("CameraController/Camera3D/Hand:position")
+tracks/1/path = NodePath("UserInterface/Label:text")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.293, -0.292, -0.397)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CameraController/Camera3D/Hand:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0.06981317, 0, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("UserInterface/Label:text")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -128,14 +75,13 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ykrsh"]
 _data = {
-&"FireGun": SubResource("Animation_onrkg"),
 &"RESET": SubResource("Animation_ppyta"),
 &"Shot": SubResource("Animation_avm2n")
 }
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
 collision_layer = 10
-collision_mask = 97
+collision_mask = 353
 script = ExtResource("1_onrkg")
 CameraController = NodePath("CameraController")
 CameraEffects = NodePath("CameraEffects")
@@ -188,12 +134,6 @@ collide_with_areas = true
 
 [node name="InteractRayCast" type="RayCast3D" parent="CameraController/Camera3D"]
 collision_mask = 16
-
-[node name="Hand" type="Node3D" parent="CameraController/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 0.9975641, -0.06975647, 0, 0.06975647, 0.9975641, 0.293, -0.292, -0.397)
-visible = false
-
-[node name="MeshInstance3D" parent="CameraController/Camera3D/Hand" instance=ExtResource("6_6ofwp")]
 
 [node name="CameraEffects" type="Node3D" parent="." node_paths=PackedStringArray("Player")]
 script = ExtResource("6_qtxsg")
@@ -373,8 +313,9 @@ script = ExtResource("21_yfy43")
 Player = NodePath("../..")
 StepHeight = 0.55
 
-[node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("WeaponModelParent", "WeaponStateMachine")]
+[node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("CameraController", "WeaponModelParent", "WeaponStateMachine")]
 script = ExtResource("22_y327d")
+CameraController = NodePath("../../CameraController")
 CurrentWeapon = ExtResource("23_6ofwp")
 WeaponModelParent = NodePath("../../CameraController/Camera3D")
 WeaponStateMachine = NodePath("../../WeaponStateMachine")

@@ -45,12 +45,31 @@ public partial class CameraController : Node3D
     private bool _stepSmoothing;
     //no offsets used, I tween the position itself to move from crouch to standing and vice versa,
         //so just hit target height
-    
-    
+
+
     [ExportCategory("Raycast Settings")]
-    [Export] public int InteractRaycastLength { get; set; } = 50;
+    
+    private int _interactRaycastLength  = 50;
+    [Export] public int InteractRaycastLength
+    {
+        get => _interactRaycastLength;
+        set
+        {
+            _interactRaycastLength = value;
+            InteractRaycast.TargetPosition = Vector3.Forward * _interactRaycastLength;
+        }
+    }
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
-    [Export] public int ShootRaycastLength { get; set; } = 50;
+    
+    private int _shootRaycastLength = 50;
+    [Export] public int ShootRaycastLength {
+        get => _shootRaycastLength;
+        set
+        {
+            _shootRaycastLength = value;
+            ShootRaycast.TargetPosition = Vector3.Forward * _shootRaycastLength;
+        }
+    }
 
     public Vector3 InitialPosition { get; private set; }
     public Vector3 CameraOffset { get; private set; } = Vector3.Zero;
@@ -116,16 +135,18 @@ public partial class CameraController : Node3D
         _stepSmoothing = true;
     }
     
-    public GodotObject GetWhatInteractRaycastIsHitting()
+    public (GodotObject gdObj, Vector3 point) GetWhatAndWhereInteractRaycastIsHitting()
     {
         InteractRaycast.ForceRaycastUpdate();
-        return !InteractRaycast.IsColliding() ? null : InteractRaycast.GetCollider();
+        return !InteractRaycast.IsColliding() ? (null, Vector3.Zero) : 
+            (InteractRaycast.GetCollider(), InteractRaycast.GetCollisionPoint());
     }
     
-    public GodotObject GetWhatShootRaycastIsHitting()
+    public (GodotObject gdObj, Vector3 point) GetWhatAndWhereShootRaycastIsHitting()
     {
         ShootRaycast.ForceRaycastUpdate();
-        return !ShootRaycast.IsColliding() ? null : ShootRaycast.GetCollider();
+        return !ShootRaycast.IsColliding() ? (null, Vector3.Zero) : 
+            (ShootRaycast.GetCollider(), ShootRaycast.GetCollisionPoint());
     }
 
     public bool AreCrouchTweensRunning() => IsEnterCrouchTweenRunning() || IsExitCrouchTweenRunning();

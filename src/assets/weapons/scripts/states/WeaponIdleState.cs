@@ -13,7 +13,7 @@ public partial class WeaponIdleState : WeaponAtomicState
             return;
         }
         
-        if (WeaponController.currentAmmo <= 0)
+        if (WeaponController.CurrentAmmo <= 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("WeaponEmptyState"));
         }
