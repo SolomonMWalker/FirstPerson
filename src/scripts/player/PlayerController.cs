@@ -44,10 +44,6 @@ public partial class PlayerController : HittableCharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (Input.IsActionJustPressed("Fire"))
-        {
-            //HandleFire();
-        }
         HandleInteractCheck(delta);
     }
 
@@ -107,24 +103,6 @@ public partial class PlayerController : HittableCharacterBody3D
     }
 
     public void Jump() => Velocity = Velocity with { Y = JumpVelocity };
-
-    // private void HandleFire()
-    // {
-    //     if (AnimationPlayer.IsPlaying() && AnimationPlayer.CurrentAnimation == "FireGun") return;
-    //     AnimationPlayer.Play("FireGun");
-    //     var collided = CameraController.GetWhatShootRaycastIsHitting();
-    //     if (collided is null) return;
-    //     var hitParams = new HitParameters(HealthDamage, StaggerDamage);
-    //     switch (collided)
-    //     {
-    //         case Hitbox hitbox:
-    //             hitbox.Hit(hitParams);
-    //             break;
-    //         case Weakspot weakspot:
-    //             weakspot.Hit(hitParams);
-    //             break;
-    //     }
-    // }
 
     private void HandleInteractCheck(double delta)
     {
