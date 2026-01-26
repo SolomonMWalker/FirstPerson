@@ -32,8 +32,8 @@ public partial class MovingPlatform : AnimatableBody3D
     {
         platformTween = CreateTween();
         platformTween.SetLoops(20);
-        GD.Print($"Start position is {startPosition}");
-        GD.Print($"End position is {endPosition}");
+        //GD.Print($"Start position is {startPosition}");
+        //GD.Print($"End position is {endPosition}");
         platformTween.TweenProperty(this, "global_position", endPosition, MoveTime);
         platformTween.TweenProperty(this, "global_position", startPosition, MoveTime);
     }
