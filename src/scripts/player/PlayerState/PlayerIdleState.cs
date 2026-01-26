@@ -8,7 +8,7 @@ public partial class PlayerIdleState : PlayerAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Player.InputDirections.LengthSquared() > 0)
+        if (PlayerController.InputDirections.LengthSquared() > 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerMovingState"));
         }

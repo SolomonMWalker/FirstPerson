@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="FirstPerson"
-run/main_scene="uid://b8hkoeuua7otf"
+run/main_scene="uid://1beqxuwtx1mb"
 config/features=PackedStringArray("4.5", "C#", "Forward Plus")
 config/icon="res://src/assets/Textures/icon.svg"
+
+[autoload]
+
+Managers="*res://src/scripts/system/Managers.cs"
 
 [dotnet]
 
@@ -30,6 +34,10 @@ import/blender/enabled=false
 [func_godot]
 
 model_point_class_save_path="res://trenchbroom/models"
+
+[global_group]
+
+player=""
 
 [input]
 
@@ -76,6 +84,16 @@ Sprint={
 Test={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":85,"key_label":0,"unicode":117,"location":0,"echo":false,"script":null)
+]
+}
+DevExit={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
+DevReload={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":96,"key_label":0,"unicode":96,"location":0,"echo":false,"script":null)
 ]
 }
 

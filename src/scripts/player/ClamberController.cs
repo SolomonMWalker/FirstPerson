@@ -8,7 +8,7 @@ namespace FirstPerson.Helpers;
 
 public partial class ClamberController : Node3D
 {
-    [Export] public Player Player;
+    [Export] public PlayerController PlayerController;
     [Export] public Timer PauseBetweenClamberAttemptsTimer { get; set; }
     [Export] public float RaycastLength { get; private set; } = 0.25f;
     [Export] public float ClamberMargin { get; private set; } = 0.26f;
@@ -112,19 +112,19 @@ public partial class ClamberController : Node3D
     
     public void Clamber()
     {
-        if (Player.BottomOfPlayer.GlobalPosition.Y < ClamberDestination.Y + ClamberMargin)
+        if (PlayerController.BottomOfPlayer.GlobalPosition.Y < ClamberDestination.Y + ClamberMargin)
         { //move up to clamber Y
-            Player.Velocity = Vector3.Up * Player.ClamberVelocity;
-            Player.MoveAndSlide();
+            PlayerController.Velocity = Vector3.Up * PlayerController.ClamberVelocity;
+            PlayerController.MoveAndSlide();
             return;
         }
         if (ClamberXzDistanceSquared > ClamberStartPointXz.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
         { //move forward to clamber Z
-            Player.Velocity = new Vector3(ClamberXzDirection.X, 0, ClamberXzDirection.Y) * Player.ClamberVelocity;
-            Player.MoveAndSlide();
+            PlayerController.Velocity = new Vector3(ClamberXzDirection.X, 0, ClamberXzDirection.Y) * PlayerController.ClamberVelocity;
+            PlayerController.MoveAndSlide();
             return;
         }
-        Player.Clambering = false;
+        PlayerController.Clambering = false;
     }
 }
 

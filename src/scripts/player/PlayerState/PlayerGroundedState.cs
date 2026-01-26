@@ -8,8 +8,8 @@ public partial class PlayerGroundedState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.InAir = false;
-        Player.Velocity = Player.Velocity with { Y = 0 };
+        PlayerController.InAir = false;
+        PlayerController.Velocity = PlayerController.Velocity with { Y = 0 };
     }
 
     public override void StatePhysicsProcessing(double delta)
@@ -20,7 +20,7 @@ public partial class PlayerGroundedState : PlayerAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerJumpingState"));
             return;
         }
-        if (!Player.IsOnFloor())
+        if (!PlayerController.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerCoyoteTimeState"));
             return;

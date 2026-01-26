@@ -8,19 +8,19 @@ public partial class PlayerCrouchingState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.InAir = true;
-        Player.CurrentMovementMult = Player.CrouchMovementMult;
-        Player.CrouchingCollisionShape.SetDisabled(false);
-        Player.StandingCollisionShape.SetDisabled(true);
-        Player.CameraController.EnterCrouchTweenActivate();
+        PlayerController.InAir = true;
+        PlayerController.CurrentMovementMult = PlayerController.CrouchMovementMult;
+        PlayerController.CrouchingCollisionShape.SetDisabled(false);
+        PlayerController.StandingCollisionShape.SetDisabled(true);
+        PlayerController.CameraController.EnterCrouchTweenActivate();
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        Player.StandingCollisionShape.SetDisabled(false);
-        Player.CrouchingCollisionShape.SetDisabled(true);
-        Player.CameraController.ExitCrouchTweenActivate();
+        PlayerController.StandingCollisionShape.SetDisabled(false);
+        PlayerController.CrouchingCollisionShape.SetDisabled(true);
+        PlayerController.CameraController.ExitCrouchTweenActivate();
     }
     
     public override void StateProcessing(double delta)
@@ -30,7 +30,7 @@ public partial class PlayerCrouchingState : PlayerAtomicState
         var airborneState = PlayerStateMachine.GetAirborneState();
         
         if (Input.IsActionPressed("Sprint")
-            && Player.InputDirections.LengthSquared() > 0
+            && PlayerController.InputDirections.LengthSquared() > 0
             && airborneState is "PlayerGroundedState")
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerSprintingState"));
@@ -38,7 +38,7 @@ public partial class PlayerCrouchingState : PlayerAtomicState
         }
         
         if (Input.IsActionJustPressed("Crouch")
-                 && !Player.CameraController.AreCrouchTweensRunning()
+                 && !PlayerController.CameraController.AreCrouchTweensRunning()
                  && airborneState is "PlayerGroundedState")
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerWalkingState"));

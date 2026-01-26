@@ -2,7 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 using FirstPerson.Configuration;
-using Player = FirstPerson.Scenes.Player.Player;
+using FirstPerson.Scenes.Player;
 
 public partial class CoverSpotController : Node
 {
@@ -17,15 +17,15 @@ public partial class CoverSpotController : Node
 
     private Dictionary <FirstPerson.CustomTypes.HittableCharacterBody3D, TargetToDistanceOrderedCoverSpots> 
         TargetToCoverSpots { get; set; } = [];
-    private Player _player;
+    private PlayerController _playerController;
 
     public override void _Ready()
     {
         base._Ready();
         CoverSpots.AddRange(GetChildren().OfType<CoverSpot>());
-        _player = GetNode<Player>(Configuration.GetConfigValues().PlayerSceneTreePath);
-        TargetToCoverSpots.Add(_player, 
-            new TargetToDistanceOrderedCoverSpots(GetReorderedCoverSpots(_player), GD.Randf() * PollTimeInSeconds));
+        _playerController = GetNode<PlayerController>(Configuration.GetConfigValues().PlayerSceneTreePath);
+        TargetToCoverSpots.Add(_playerController, 
+            new TargetToDistanceOrderedCoverSpots(GetReorderedCoverSpots(_playerController), GD.Randf() * PollTimeInSeconds));
     }
 
     public override void _Process(double delta)

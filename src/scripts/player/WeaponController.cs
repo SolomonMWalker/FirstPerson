@@ -1,24 +1,28 @@
 using Godot;
 using System;
 using FirstPerson.assets.weapons.scripts;
+using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Scenes.Player;
 
 public partial class WeaponController : Node
 {
     [Export] public CameraController CameraController;
-    [Export] public Weapon CurrentWeapon { get; set; }
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public WeaponStateMachine WeaponStateMachine { get; set; }
     
+    public Weapon CurrentWeapon { get; set; }
+    public WeaponManager WeaponManager { get; set; }
     public Node ProjectileParent { get; set; }
     public Node3D CurrentWeaponModel { get; set; }
-    public int CurrentAmmo { get; set; }
     public double FireRateTimer { get; private set; }
-    public bool CanFireNext { get; private set; } = true;
+    public bool CanFireNextRound { get; private set; } = true;
 
     public override void _Ready()
     {
         base._Ready();
+        WeaponManager = (WeaponManager) GetTree().GetFirstNodeInGroup("WeaponManager");
+        CurrentWeapon = GetCurrentWeaponData().Weapon;
+        
         if (CurrentWeapon is null)
         {
             GD.PrintErr("Current weapon is null!");
@@ -28,8 +32,6 @@ public partial class WeaponController : Node
         ProjectileParent = GetTree().CurrentScene;
 
         SpawnWeaponModel();
-        CurrentAmmo = CurrentWeapon.MaxAmmo;
-        CameraController.ShootRaycastLength = (int) CurrentWeapon.Range;
     }
 
     public override void _Process(double delta)
@@ -40,10 +42,13 @@ public partial class WeaponController : Node
             FireRateTimer -= delta;
             if (FireRateTimer <= 0)
             {
-                CanFireNext = true;
+                CanFireNextRound = true;
             }
         }
     }
+
+    public WeaponData GetCurrentWeaponData() => WeaponManager.Weapons[WeaponManager.CurrentSlot];
+    public int GetCurrentWeaponAmmo() => GetCurrentWeaponData().Ammo;
 
     public void SpawnWeaponModel()
     {
@@ -56,16 +61,19 @@ public partial class WeaponController : Node
         }
     }
 
-    public bool CanFire() => CurrentAmmo > 0 && CanFireNext;
+    public bool CanFire()
+    {
+        return GetCurrentWeaponData().Ammo > 0 && CanFireNextRound;
+    }
 
     public void FireWeapon()
     {
         if (CanFire())
         {
-            CurrentAmmo -= 1;
-            GD.Print($"Fired! ammo at {CurrentAmmo}");
+            WeaponManager.UseAmmo(WeaponManager.CurrentSlot);
+            GD.Print($"Fired! ammo at {GetCurrentWeaponData().Ammo}");
 
-            CanFireNext = false;
+            CanFireNextRound = false;
             FireRateTimer = 1.0 / CurrentWeapon.FireRatePerSecond;
             
             if (CurrentWeapon.IsHitscan)
@@ -106,7 +114,7 @@ public partial class WeaponController : Node
                 .GetWhatAndWhereShootRaycastIsHitting(to);
             if (hit.gdObj is not null)
             {
-                GD.Print($"Hit {hit.gdObj} at {hit.point}");
+                //GD.Print($"Hit {hit.gdObj} at {hit.point}");
                 SpawnImpactMarker(hit.point);
             }
         }
@@ -158,5 +166,13 @@ public partial class WeaponController : Node
         marker.GlobalPosition = position;
 
         GetTree().CreateTimer(2.0).Timeout += marker.QueueFree;
+    }
+
+    public void SwitchWeapon(WeaponData weaponData)
+    {
+        CurrentWeapon = weaponData.Weapon;
+        CurrentWeaponModel?.QueueFree();
+        SpawnWeaponModel();
+        WeaponStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("WeaponIdleState"));
     }
 }

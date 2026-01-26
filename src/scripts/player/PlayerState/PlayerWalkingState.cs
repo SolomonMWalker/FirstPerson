@@ -8,7 +8,7 @@ public partial class PlayerWalkingState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.CurrentMovementMult = Player.DefaultMovementMult;
+        PlayerController.CurrentMovementMult = PlayerController.DefaultMovementMult;
     }
 
     public override void StateProcessing(double delta)
@@ -19,14 +19,14 @@ public partial class PlayerWalkingState : PlayerAtomicState
 
         if (Input.IsActionJustPressed("Crouch")
             && airborneState is "PlayerGroundedState"
-            && !Player.CameraController.AreCrouchTweensRunning())
+            && !PlayerController.CameraController.AreCrouchTweensRunning())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerCrouchingState"));
             return;
         }
 
         if (Input.IsActionPressed("Sprint")
-            && Player.InputDirections.LengthSquared() > 0
+            && PlayerController.InputDirections.LengthSquared() > 0
             && airborneState is "PlayerGroundedState")
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerSprintingState"));

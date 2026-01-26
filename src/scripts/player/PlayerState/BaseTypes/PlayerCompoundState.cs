@@ -7,12 +7,12 @@ namespace FirstPerson.Scenes.Player.PlayerState;
 public partial class PlayerCompoundState: CompoundState
 {
     public PlayerStateMachine PlayerStateMachine { get; set; }
-    public Player Player { get; set; }
+    public PlayerController PlayerController { get; set; }
 
     public override void _Ready()
     {
         base._Ready();
         PlayerStateMachine = GetNode<PlayerStateMachine>("%PlayerStateMachine");
-        Player = PlayerStateMachine.Player;
+        PlayerController = PlayerStateMachine.PlayerController;
     }
 }

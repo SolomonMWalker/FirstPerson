@@ -11,15 +11,15 @@ public partial class PlayerJumpingState : PlayerAtomicState
     {
         base.StateEntered();
         DontSwitchToGroundedEarlyTimer.Start();
-        Player.Jump();
-        Player.InAir = true;
+        PlayerController.Jump();
+        PlayerController.InAir = true;
     }
     
     public override void StatePhysicsProcessing(double delta)
     {
         base.StateProcessing(delta);
 
-        if (Input.IsActionPressed("Jump") && Player.ClamberController.TryHandleClamber())
+        if (Input.IsActionPressed("Jump") && PlayerController.ClamberController.TryHandleClamber())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerClamberingState"));
             return;
@@ -27,17 +27,17 @@ public partial class PlayerJumpingState : PlayerAtomicState
         
         if (DontSwitchToGroundedEarlyTimer.IsStopped())
         {
-            if(Player.IsOnFloor())
+            if(PlayerController.IsOnFloor())
             {
-                if (Player.CheckFallSpeed())
+                if (PlayerController.CheckFallSpeed())
                 {
-                    Player.CameraEffects.AddFallKick(2.0f);
+                    PlayerController.CameraEffects.AddFallKick(2.0f);
                 }
                 OnStateChangeRequired(new ChangeStateEventArgs("PlayerGroundedState"));
                 return;
             }
         }
         
-        Player.CurrentFallVelocity = Player.Velocity.Y;
+        PlayerController.CurrentFallVelocity = PlayerController.Velocity.Y;
     }
 }

@@ -8,13 +8,13 @@ public partial class PlayerClamberingState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.Clambering = true;
+        PlayerController.Clambering = true;
     }
 
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (!Player.Clambering)
+        if (!PlayerController.Clambering)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerIdleState"));
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerDefaultInAirState"));

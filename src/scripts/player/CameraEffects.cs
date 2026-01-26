@@ -5,7 +5,7 @@ using FirstPerson.Scenes.Player;
 public partial class CameraEffects : Node3D
 {
     [ExportCategory("References")]
-    [Export] public Player Player;
+    [Export] public PlayerController PlayerController;
 
     [Export] public Node3D DamageSource;
 
@@ -85,13 +85,13 @@ public partial class CameraEffects : Node3D
     
     public void CalculateViewOffset(double delta)
     {
-        if (Player is null) return;
+        if (PlayerController is null) return;
         var fDelta = (float)delta;
-        var velocity = Player.Velocity;
+        var velocity = PlayerController.Velocity;
         
         //Headbob step timer and Sine value
         var speed = new Vector2(velocity.X, velocity.Z).Length();
-        if (speed > 0.1 && Player.IsOnFloor())
+        if (speed > 0.1 && PlayerController.IsOnFloor())
         {
             _stepTimer += (float) delta * (speed / BobFrequency);
             _stepTimer %= 1.0f;
@@ -112,8 +112,8 @@ public partial class CameraEffects : Node3D
         //Run Tilt
         if (EnableTilt)
         {
-            var forward = Player.CameraController.GlobalTransform.Basis.Z;
-            var right = Player.CameraController.GlobalTransform.Basis.X;
+            var forward = PlayerController.CameraController.GlobalTransform.Basis.Z;
+            var right = PlayerController.CameraController.GlobalTransform.Basis.X;
 
             _tiltForwardDot = Mathf.Lerp(_tiltForwardDot, velocity.Dot(forward), 0.5f);
             var forwardTilt = Mathf.Clamp(_tiltForwardDot * Mathf.DegToRad(RunPitch), Mathf.DegToRad(-MaxPitch),
@@ -161,8 +161,8 @@ public partial class CameraEffects : Node3D
             offset.Y += (float) bobHeight;
         }
 
-        Player.CameraController.Camera.Position = offset;
-        Player.CameraController.Camera.Rotation = angles;
+        PlayerController.CameraController.Camera.Position = offset;
+        PlayerController.CameraController.Camera.Rotation = angles;
     }
 
     public void AddFallKick(float fallStrength)
@@ -210,8 +210,8 @@ public partial class CameraEffects : Node3D
         var vRand = (float) Random.NextDouble() > 0.5 ? Random.NextDouble() : -Random.NextDouble();
         var hOffset = hRand * currentShakeAmount;
         var vOffset = vRand * currentShakeAmount;
-        Player.CameraController.Camera.HOffset = (float) hOffset;
-        Player.CameraController.Camera.VOffset = (float) vOffset;
+        PlayerController.CameraController.Camera.HOffset = (float) hOffset;
+        PlayerController.CameraController.Camera.VOffset = (float) vOffset;
         
     }
 }

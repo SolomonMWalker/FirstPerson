@@ -1,0 +1,80 @@
+[gd_scene load_steps=14 format=3 uid="uid://1beqxuwtx1mb"]
+
+[ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/scripts/system/WeaponManager.cs" id="1_37k7r"]
+[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/scenes/map/func_godot_test.tscn" id="1_t02g3"]
+[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/scenes/player/player_controller.tscn" id="2_c2a6q"]
+[ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="2_fbnti"]
+[ext_resource type="Script" uid="uid://bspdm2cmm76n3" path="res://src/customTypes/HittableCharacterBody3D.cs" id="3_68pq2"]
+[ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_b2mws"]
+[ext_resource type="Resource" uid="uid://cd3kmudgojmjo" path="res://src/assets/weapons/resources/shotgun_data.tres" id="4_fbnti"]
+[ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/scripts/system/GameManager.cs" id="5_b2mws"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vbegm"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ehkex"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_ppyta"]
+sky_material = SubResource("ProceduralSkyMaterial_6uqi0")
+
+[sub_resource type="Environment" id="Environment_ykrsh"]
+background_mode = 1
+background_color = Color(0.1573502, 0.114532284, 0.17875917, 1)
+sky = SubResource("Sky_ppyta")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="TestScene" type="Node"]
+
+[node name="Managers" type="Node" parent="."]
+
+[node name="WeaponManager" type="Node" parent="Managers" node_paths=PackedStringArray("PlayerController")]
+script = ExtResource("1_37k7r")
+Weapons = Dictionary[int, ExtResource("2_fbnti")]({
+1: ExtResource("3_b2mws"),
+2: ExtResource("4_fbnti")
+})
+PlayerController = NodePath("../../Level/Player")
+
+[node name="GameManager" type="Node" parent="Managers"]
+script = ExtResource("5_b2mws")
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="ProjectileParent" type="Node3D" parent="Level"]
+unique_name_in_owner = true
+
+[node name="Map" type="Node3D" parent="Level"]
+
+[node name="funcGodotTest" parent="Level/Map" instance=ExtResource("1_t02g3")]
+
+[node name="Player" parent="Level" groups=["player"] instance=ExtResource("2_c2a6q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.811966, 0, 36.987743)
+
+[node name="Enemies" type="Node3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="EnemyTarget" type="CharacterBody3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110.91075, 1, 5.0813894)
+collision_layer = 73
+script = ExtResource("3_68pq2")
+metadata/_custom_type_script = "uid://bspdm2cmm76n3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/EnemyTarget"]
+shape = SubResource("CapsuleShape3D_vbegm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Level/EnemyTarget"]
+mesh = SubResource("CapsuleMesh_ehkex")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Level"]
+environment = SubResource("Environment_ykrsh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Level/WorldEnvironment"]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_bake_mode = 1
+shadow_enabled = true
+shadow_transmittance_bias = 9.138
+shadow_opacity = 0.66

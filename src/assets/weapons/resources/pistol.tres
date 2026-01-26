@@ -6,13 +6,9 @@
 
 [resource]
 script = ExtResource("2_ffwsm")
-MaxAmmo = 40
-FireRatePerSecond = 4.0
-IsAutomatic = true
+MaxAmmo = 20
 Range = 75.0
 Accuracy = 25
 WeaponModel = ExtResource("1_kmvif")
 ProjectileScene = ExtResource("1_ffwsm")
-PelletCount = 5
-SpreadAngle = 0.1
 metadata/_custom_type_script = "uid://yxetfin4alyg"

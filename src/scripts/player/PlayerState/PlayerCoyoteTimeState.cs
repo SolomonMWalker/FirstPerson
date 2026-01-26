@@ -10,7 +10,7 @@ public partial class PlayerCoyoteTimeState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.InAir = true;
+        PlayerController.InAir = true;
         Timer.Start();
     }
 
@@ -30,7 +30,7 @@ public partial class PlayerCoyoteTimeState : PlayerAtomicState
             return;
         }
         
-        if (Player.IsOnFloor())
+        if (PlayerController.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerGroundedState"));
             return;

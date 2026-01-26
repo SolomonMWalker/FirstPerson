@@ -7,7 +7,7 @@ namespace FirstPerson.Scenes.Player.PlayerState;
 [GlobalClass]
 public partial class PlayerStateMachine: StateMachine
 {
-    [Export] public Player Player { get; set; }
+    [Export] public PlayerController PlayerController { get; set; }
     [Export] public Label StateLabel { get; set; }
 
     public override void _PhysicsProcess(double delta)

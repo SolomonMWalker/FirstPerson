@@ -8,28 +8,28 @@ public partial class PlayerDefaultInAirState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Player.InAir = true;
+        PlayerController.InAir = true;
     }
 
     public override void StatePhysicsProcessing(double delta)
     {
         base.StateProcessing(delta);
         
-        if (Input.IsActionPressed("Jump") && Player.ClamberController.TryHandleClamber())
+        if (Input.IsActionPressed("Jump") && PlayerController.ClamberController.TryHandleClamber())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerClamberingState"));
             return;
         }
         
-        if(Player.IsOnFloor())
+        if(PlayerController.IsOnFloor())
         {
-            if (Player.CheckFallSpeed())
+            if (PlayerController.CheckFallSpeed())
             {
-                Player.CameraEffects.AddFallKick(2.0f);
+                PlayerController.CameraEffects.AddFallKick(2.0f);
             }
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerGroundedState"));
         }
 
-        Player.CurrentFallVelocity = Player.Velocity.Y;
+        PlayerController.CurrentFallVelocity = PlayerController.Velocity.Y;
     }
 }

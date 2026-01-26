@@ -9,7 +9,7 @@ public partial class CameraController : Node3D
     [Export] public Camera3D Camera { get; set; }
     [Export] public RayCast3D InteractRaycast { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
-    [Export] public Player Player { get; set; }
+    [Export] public PlayerController PlayerController { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     [Export] public Node3D StandingLocation { get; set; }
     [Export] public Node3D CrouchingLocation { get; set; }
@@ -85,12 +85,12 @@ public partial class CameraController : Node3D
         base._Ready();
         InitialPosition = Position;
         //ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
-        ShootRaycast.AddException(Player);
+        ShootRaycast.AddException(PlayerController);
         ShootRaycast.Enabled = false;
         InteractRaycast.SetTargetPosition(Vector3.Forward * InteractRaycastLength);
-        InteractRaycast.AddException(Player);
+        InteractRaycast.AddException(PlayerController);
         InteractRaycast.Enabled = false;
-        _rotation = Player.Rotation;
+        _rotation = PlayerController.Rotation;
     }
 
     public override void _Process(double delta)
@@ -126,7 +126,7 @@ public partial class CameraController : Node3D
         Transform = Transform with {Basis = Basis.FromEuler(cameraRotation)};
         _rotation = _rotation with { Z = 0 };
         
-        Player.UpdateRotation(playerRotation);
+        PlayerController.UpdateRotation(playerRotation);
     }
 
     public void SmoothStep(float heightChange)
