@@ -70,7 +70,7 @@ public partial class WeaponManager : Node
 
     public int GetCurrentAmmo() => Weapons[CurrentSlot].Ammo;
 
-    public void InitializeStartingWeapon()
+    private void InitializeStartingWeapon()
     {
         for (int i = 1; i < 10; i++)
         {

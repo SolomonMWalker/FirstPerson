@@ -48,7 +48,7 @@ public partial class WeaponController : Node
     }
 
     public WeaponData GetCurrentWeaponData() => WeaponManager.Weapons[WeaponManager.CurrentSlot];
-    public int GetCurrentWeaponAmmo() => GetCurrentWeaponData().Ammo;
+    public int GetCurrentWeaponAmmo() => WeaponManager.GetCurrentAmmo();
 
     public void SpawnWeaponModel()
     {
