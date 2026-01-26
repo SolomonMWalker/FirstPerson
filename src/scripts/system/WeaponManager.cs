@@ -20,7 +20,6 @@ public partial class WeaponManager : Node
         for (int i = 1; i < 10; i++)
         {
             var actionName = $"weapon_{i}";
-            GD.Print($"Adding acion {actionName}");
             if (!InputMap.HasAction(actionName))
             {
                 InputMap.AddAction(actionName);
