@@ -2,7 +2,7 @@ using Godot;
 using System;
 using FirstPerson.CustomTypes.StateMachine;
 
-public partial class WeaponFiringState : WeaponAtomicState
+public partial class    WeaponFiringState : WeaponAtomicState
 {
     public override void StateEntered()
     {
@@ -19,6 +19,25 @@ public partial class WeaponFiringState : WeaponAtomicState
             return;
         }
         
-        OnStateChangeRequired(new ChangeStateEventArgs("WeaponIdleState"));
+        if (WeaponController.CurrentWeapon.IsAutomatic)
+        {
+            if (Input.IsActionPressed("Fire"))
+            {
+                if (WeaponController.CanFire())
+                {
+                    WeaponController.FireWeapon();
+                }
+            }
+            else
+            {
+                OnStateChangeRequired(new ChangeStateEventArgs("WeaponIdleState"));
+                return;
+            }
+        }
+        else
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("WeaponIdleState"));
+            return;
+        }
     }
 }

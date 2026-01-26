@@ -34,12 +34,6 @@ public partial class Player : HittableCharacterBody3D
     public Vector3 PreviousFrameVelocity { get; set; }
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
-    private float ClamberXzDistanceSquared { get; set; }
-    private Vector3 ClamberDestination { get; set; }
-    private Vector2 ClamberDestinationXz { get; set; }
-    private Vector3 ClamberStartPoint { get; set; }
-    private Vector2 ClamberStartPointXz { get; set; }
-    private Vector2 ClamberXzDirection { get; set; }
 
     public override void _Process(double delta)
     {
@@ -68,7 +62,7 @@ public partial class Player : HittableCharacterBody3D
     {
         if (Clambering)
         {
-            Clamber();
+            ClamberController.Clamber();
             return;
         }
 
@@ -107,37 +101,6 @@ public partial class Player : HittableCharacterBody3D
     }
 
     public void Jump() => Velocity = Velocity with { Y = JumpVelocity };
-
-    private void Clamber()
-    {
-        if (BottomOfPlayer.GlobalPosition.Y < ClamberDestination.Y + ClamberController.ClamberMargin)
-        { //move up to clamber Y
-            Velocity = Vector3.Up * ClamberVelocity;
-            MoveAndSlide();
-            return;
-        }
-        if (ClamberXzDistanceSquared > ClamberStartPointXz.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
-        { //move forward to clamber Z
-            Velocity = new Vector3(ClamberXzDirection.X, 0, ClamberXzDirection.Y) * ClamberVelocity;
-            MoveAndSlide();
-            return;
-        }
-        Clambering = false;
-    }
-
-    public bool TryHandleClamber()
-    {
-        var clamberCheck = ClamberController.AttemptClamber();
-        if (!clamberCheck.success) return false;
-        ClamberDestination = clamberCheck.result.GlobalPositionToClamberTo ?? Vector3.Zero;
-        ClamberDestinationXz = new Vector2(ClamberDestination.X, ClamberDestination.Z);
-        ClamberStartPoint = GlobalPosition;
-        ClamberStartPointXz = new Vector2(GlobalPosition.X, GlobalPosition.Z);
-        ClamberXzDirection = ClamberStartPointXz
-            .DirectionTo(new Vector2(ClamberDestination.X, ClamberDestination.Z));
-        ClamberXzDistanceSquared = ClamberStartPointXz.DistanceSquaredTo(ClamberDestinationXz);
-        return true;
-    }
 
     // private void HandleFire()
     // {

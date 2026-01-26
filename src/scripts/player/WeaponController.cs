@@ -13,6 +13,8 @@ public partial class WeaponController : Node
     public Node ProjectileParent { get; set; }
     public Node3D CurrentWeaponModel { get; set; }
     public int CurrentAmmo { get; set; }
+    public double FireRateTimer { get; private set; }
+    public bool CanFireNext { get; private set; } = true;
 
     public override void _Ready()
     {
@@ -30,6 +32,19 @@ public partial class WeaponController : Node
         CameraController.ShootRaycastLength = (int) CurrentWeapon.Range;
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (FireRateTimer > 0)
+        {
+            FireRateTimer -= delta;
+            if (FireRateTimer <= 0)
+            {
+                CanFireNext = true;
+            }
+        }
+    }
+
     public void SpawnWeaponModel()
     {
         CurrentWeaponModel?.QueueFree();
@@ -41,7 +56,7 @@ public partial class WeaponController : Node
         }
     }
 
-    public bool CanFire() => CurrentAmmo > 0;
+    public bool CanFire() => CurrentAmmo > 0 && CanFireNext;
 
     public void FireWeapon()
     {
@@ -49,6 +64,10 @@ public partial class WeaponController : Node
         {
             CurrentAmmo -= 1;
             GD.Print($"Fired! ammo at {CurrentAmmo}");
+
+            CanFireNext = false;
+            FireRateTimer = 1.0 / CurrentWeapon.FireRatePerSecond;
+            
             if (CurrentWeapon.IsHitscan)
             {
                 PerformHitscan();
@@ -68,11 +87,28 @@ public partial class WeaponController : Node
             return;
         }
 
-        var hit = CameraController.GetWhatAndWhereShootRaycastIsHitting();
-        if (hit.gdObj is not null)
+        var forward = -CameraController.Camera.GlobalTransform.Basis.Z;
+        var accuracySpread = (100 - CurrentWeapon.Accuracy) / 1000.0f;
+
+        for (int i = 0; i < CurrentWeapon.PelletCount; i++)
         {
-            GD.Print($"Hit {hit.gdObj} at {hit.point}");
-            SpawnImpactMarker(hit.point);
+            (float x, float y) accuracyXY = ((float) GD.RandRange(-accuracySpread, accuracySpread),
+                (float) GD.RandRange(-accuracySpread, accuracySpread));
+            var direction = forward + new Vector3(accuracyXY.x, accuracyXY.y, 0) * CameraController.Camera.GlobalTransform.Basis;
+            if (CurrentWeapon.PelletCount > 1)
+            {
+                (float x, float y) spreadXY = ((float) GD.RandRange(-CurrentWeapon.SpreadAngle, CurrentWeapon.SpreadAngle),
+                    (float) GD.RandRange(-CurrentWeapon.SpreadAngle, CurrentWeapon.SpreadAngle));
+                direction += new Vector3(spreadXY.x, spreadXY.y, 0) * CameraController.Camera.GlobalTransform.Basis;
+            }
+            var to = CameraController.Camera.GlobalPosition + direction * CurrentWeapon.Range;
+            var hit = CameraController
+                .GetWhatAndWhereShootRaycastIsHitting(to);
+            if (hit.gdObj is not null)
+            {
+                GD.Print($"Hit {hit.gdObj} at {hit.point}");
+                SpawnImpactMarker(hit.point);
+            }
         }
     }
 
@@ -94,9 +130,15 @@ public partial class WeaponController : Node
         ProjectileParent.AddChild(projectile);
         
         projectile.GlobalPosition = CameraController.Camera.GlobalPosition;
+        
+        var accuracySpread = (100 - CurrentWeapon.Accuracy) / 1000.0f;
+        (float x, float y) accuracyXY = ((float) GD.RandRange(-accuracySpread, accuracySpread),
+            (float) GD.RandRange(-accuracySpread, accuracySpread));
         var forward = -CameraController.Camera.GlobalTransform.Basis.Z;
-        var velocity = forward * CurrentWeapon.ProjectileSpeed;
-        projectile.LookAt(projectile.GlobalPosition + forward, Vector3.Up);
+        var direction = forward + new Vector3(accuracyXY.x, accuracyXY.y, 0) 
+            * CameraController.Camera.GlobalTransform.Basis;
+        var velocity = direction * CurrentWeapon.ProjectileSpeed;
+        projectile.LookAt(projectile.GlobalPosition + direction, Vector3.Up);
         
         projectile.Setup(velocity, CurrentWeapon.Damage);
     }

@@ -84,7 +84,7 @@ public partial class CameraController : Node3D
     {
         base._Ready();
         InitialPosition = Position;
-        ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
+        //ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
         ShootRaycast.AddException(Player);
         ShootRaycast.Enabled = false;
         InteractRaycast.SetTargetPosition(Vector3.Forward * InteractRaycastLength);
@@ -142,8 +142,9 @@ public partial class CameraController : Node3D
             (InteractRaycast.GetCollider(), InteractRaycast.GetCollisionPoint());
     }
     
-    public (GodotObject gdObj, Vector3 point) GetWhatAndWhereShootRaycastIsHitting()
+    public (GodotObject gdObj, Vector3 point) GetWhatAndWhereShootRaycastIsHitting(Vector3 targetGlobalPosition)
     {
+        ShootRaycast.TargetPosition = ShootRaycast.ToLocal(targetGlobalPosition);
         ShootRaycast.ForceRaycastUpdate();
         return !ShootRaycast.IsColliding() ? (null, Vector3.Zero) : 
             (ShootRaycast.GetCollider(), ShootRaycast.GetCollisionPoint());

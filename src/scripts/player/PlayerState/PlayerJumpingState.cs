@@ -19,7 +19,7 @@ public partial class PlayerJumpingState : PlayerAtomicState
     {
         base.StateProcessing(delta);
 
-        if (Input.IsActionPressed("Jump") && Player.TryHandleClamber())
+        if (Input.IsActionPressed("Jump") && Player.ClamberController.TryHandleClamber())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("PlayerClamberingState"));
             return;

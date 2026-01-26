@@ -1,22 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FirstPerson.Scenes.Player;
 using Godot;
 
 namespace FirstPerson.Helpers;
 
 public partial class ClamberController : Node3D
 {
+    [Export] public Player Player;
     [Export] public Timer PauseBetweenClamberAttemptsTimer { get; set; }
     [Export] public float RaycastLength { get; private set; } = 0.25f;
     [Export] public float ClamberMargin { get; private set; } = 0.26f;
     //[Export] public float MaxAngleInDeg { get; private set; } = 10f;
     [Export] public float WaitPerCallInSec { get; private set; } = 0.25f;
 
-    private double TimeSinceLastClamberCall { get; set; }
     private List<List<RayCast3D>> Raycasts { get; set; } = [];
     private Node3D RaycastsParent { get; set; }
     private Vector2 TopLeftCorner { get; set; }
+    
+    private float ClamberXzDistanceSquared { get; set; }
+    private Vector3 ClamberDestination { get; set; }
+    private Vector2 ClamberDestinationXz { get; set; }
+    private Vector3 ClamberStartPoint { get; set; }
+    private Vector2 ClamberStartPointXz { get; set; }
+    private Vector2 ClamberXzDirection { get; set; }
 
     public override void _Ready()
     {
@@ -28,13 +36,6 @@ public partial class ClamberController : Node3D
             rcList.AddRange(child.GetChildren().Cast<RayCast3D>());
             Raycasts.Add(rcList);
         }
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        base._PhysicsProcess(delta);
-        TimeSinceLastClamberCall += delta;
-        TimeSinceLastClamberCall = Mathf.Clamp(TimeSinceLastClamberCall, 0, WaitPerCallInSec);
     }
 
     private List<(Vector2 localSlice, Vector3 globalEndpoint, bool collided)> GetRaycastEndPoints(List<RayCast3D> raycasts)
@@ -83,7 +84,7 @@ public partial class ClamberController : Node3D
         //took out extra "check for angle" code for now
     }
 
-    public (bool success, RaycastCollisionResult result) AttemptClamber()
+    private (bool success, RaycastCollisionResult result) AttemptClamber()
     {
         if (!PauseBetweenClamberAttemptsTimer.IsStopped()) return (false, null);
         PauseBetweenClamberAttemptsTimer.Start();
@@ -93,6 +94,37 @@ public partial class ClamberController : Node3D
             if (clamberAttemptRow.success) return clamberAttemptRow;
         }
         return (false, null);
+    }
+    
+    public bool TryHandleClamber()
+    {
+        var clamberCheck = AttemptClamber();
+        if (!clamberCheck.success) return false;
+        ClamberDestination = clamberCheck.result.GlobalPositionToClamberTo ?? Vector3.Zero;
+        ClamberDestinationXz = new Vector2(ClamberDestination.X, ClamberDestination.Z);
+        ClamberStartPoint = GlobalPosition;
+        ClamberStartPointXz = new Vector2(GlobalPosition.X, GlobalPosition.Z);
+        ClamberXzDirection = ClamberStartPointXz
+            .DirectionTo(new Vector2(ClamberDestination.X, ClamberDestination.Z));
+        ClamberXzDistanceSquared = ClamberStartPointXz.DistanceSquaredTo(ClamberDestinationXz);
+        return true;
+    }
+    
+    public void Clamber()
+    {
+        if (Player.BottomOfPlayer.GlobalPosition.Y < ClamberDestination.Y + ClamberMargin)
+        { //move up to clamber Y
+            Player.Velocity = Vector3.Up * Player.ClamberVelocity;
+            Player.MoveAndSlide();
+            return;
+        }
+        if (ClamberXzDistanceSquared > ClamberStartPointXz.DistanceSquaredTo(new Vector2(GlobalPosition.X, GlobalPosition.Z)))
+        { //move forward to clamber Z
+            Player.Velocity = new Vector3(ClamberXzDirection.X, 0, ClamberXzDirection.Y) * Player.ClamberVelocity;
+            Player.MoveAndSlide();
+            return;
+        }
+        Player.Clambering = false;
     }
 }
 
