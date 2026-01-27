@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://drh54gr5j0mhi"]
+[gd_scene load_steps=32 format=3 uid="uid://drh54gr5j0mhi"]
 
 [ext_resource type="Script" uid="uid://chgk6yo2xx82y" path="res://src/scripts/player/PlayerController.cs" id="1_r8ls8"]
 [ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/assets/shapes/testPlayerCapsuleShape.tres" id="2_mwsb4"]
@@ -28,7 +28,6 @@
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/scripts/player/MouseCaptureComponent.cs" id="26_4556c"]
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/scripts/player/StepHandlerComponent.cs" id="27_a3051"]
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/scripts/player/WeaponController.cs" id="28_v0tgu"]
-[ext_resource type="Resource" uid="uid://ckdb26phy4kp4" path="res://src/assets/weapons/resources/pistol.tres" id="29_mwsb4"]
 
 [sub_resource type="Animation" id="Animation_ppyta"]
 length = 0.001
@@ -81,7 +80,7 @@ _data = {
 
 [node name="PlayerController" type="CharacterBody3D" node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "WeaponController", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer")]
 collision_layer = 10
-collision_mask = 353
+collision_mask = 865
 script = ExtResource("1_r8ls8")
 CameraController = NodePath("CameraController")
 CameraEffects = NodePath("CameraEffects")
@@ -316,6 +315,5 @@ StepHeight = 0.55
 [node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("CameraController", "WeaponModelParent", "WeaponStateMachine")]
 script = ExtResource("28_v0tgu")
 CameraController = NodePath("../../CameraController")
-CurrentWeapon = ExtResource("29_mwsb4")
 WeaponModelParent = NodePath("../../CameraController/Camera3D")
 WeaponStateMachine = NodePath("../../WeaponStateMachine")

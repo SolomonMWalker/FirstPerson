@@ -108,7 +108,7 @@ DevReload={
 3d_physics/layer_7="PlayerAllies"
 3d_physics/layer_8="HittableNonCharacters"
 3d_physics/layer_9="StaticGeometry"
-3d_physics/layer_10="KillPlane"
+3d_physics/layer_10="DynamicPhysics"
 
 [physics]
 

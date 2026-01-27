@@ -1,12 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://px1hfx13fevl"]
+[gd_scene load_steps=3 format=3 uid="uid://px1hfx13fevl"]
 
 [ext_resource type="Script" uid="uid://n12nx0o2qpbs" path="res://src/scripts/environment/DynamicChain.cs" id="1_5cq8o"]
+[ext_resource type="PackedScene" uid="uid://dwo4w36xqp7ic" path="res://src/scenes/environment/test_light_attachment.tscn" id="2_3ydqs"]
 
 [node name="DynamicChain" type="Node3D" node_paths=PackedStringArray("Anchor", "LinkContainer")]
 script = ExtResource("1_5cq8o")
 Anchor = NodePath("Anchor")
 LinkContainer = NodePath("LinkContainer")
-LinkLength = 0.5
+LinkMass = 0.5
+GravityScale = 1.0
+LinkCollisionLayer = 0
+LinkCollisionMask = 489
+AttachedScene = ExtResource("2_3ydqs")
 
 [node name="Anchor" type="StaticBody3D" parent="."]
 

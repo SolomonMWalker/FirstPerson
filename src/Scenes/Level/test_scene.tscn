@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://1beqxuwtx1mb"]
+[gd_scene load_steps=16 format=3 uid="uid://1beqxuwtx1mb"]
 
 [ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/scripts/system/WeaponManager.cs" id="1_37k7r"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/scenes/map/func_godot_test.tscn" id="1_t02g3"]
@@ -8,6 +8,8 @@
 [ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_b2mws"]
 [ext_resource type="Resource" uid="uid://cd3kmudgojmjo" path="res://src/assets/weapons/resources/shotgun_data.tres" id="4_fbnti"]
 [ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/scripts/system/GameManager.cs" id="5_b2mws"]
+[ext_resource type="PackedScene" uid="uid://px1hfx13fevl" path="res://src/scenes/environment/dynamic_chain.tscn" id="9_vj8yq"]
+[ext_resource type="ArrayMesh" uid="uid://d2u41e7ga71dr" path="res://src/assets/meshes/environment/chain_link2.obj" id="10_emxl5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vbegm"]
 
@@ -78,3 +80,8 @@ light_bake_mode = 1
 shadow_enabled = true
 shadow_transmittance_bias = 9.138
 shadow_opacity = 0.66
+
+[node name="DynamicChain" parent="Level" instance=ExtResource("9_vj8yq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66.759995, 5.4496503, 37.793877)
+ChainType = 0
+LinkMesh = ExtResource("10_emxl5")

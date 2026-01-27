@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwo4w36xqp7ic"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bircq"]
+size = Vector3(0.25, 0.25, 0.25)
+
+[node name="TestLightAttachment" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 0
+mass = 3.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_bircq")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]

@@ -18,6 +18,35 @@ public partial class DynamicChain : Node3D
     }
     [Export] public float LinkLength { get; set; } = 0.3f;
     [Export] public float LinkRadius { get; set; } = 0.05f;
+    
+    [ExportCategory("Physics Properties")]
+    [Export] public float LinkMass { get; set; } = 0.3f;
+    [Export] public float GravityScale { get; set; } = 0.05f;
+    [Export] public float LinkDamping { get; set; } = 0.3f;
+    
+    [ExportCategory("Joint Settings")]
+    [Export] public float AngularLimitDegrees { get; set; } = 0.3f;
+    [Export] public float TwistLimitDegrees { get; set; } = 0.05f;
+
+    [ExportCategory("Collision Settings")]
+    [Export(PropertyHint.Layers3DPhysics)]
+    public uint LinkCollisionLayer { get; set; } = 1;
+    [Export(PropertyHint.Layers3DPhysics)]
+    public uint LinkCollisionMask { get; set; } = 1;
+
+    [ExportGroup("Mesh Settings")]
+    [Export] public ChainTypeEnum ChainType { get; set; } = ChainTypeEnum.Rope;
+    [Export] public Mesh LinkMesh { get; set; } = null;
+    [Export] public float MeshScale { get; set; } = 1f;
+    
+    [ExportGroup("Attachment")]
+    [Export] public PackedScene AttachedScene { get; set; }
+
+    public enum ChainTypeEnum
+    {
+        Chain,
+        Rope,
+    } 
 
     private int _linkCount = 10;
     private List<RigidBody3D> Links { get; set; } = [];
@@ -72,9 +101,23 @@ public partial class DynamicChain : Node3D
             body2.AddChild(joint);
             Joints.Add(joint);
         }
+        
+        if (AttachedScene is not null && Links.Count > 0)
+        {
+            var attachment = (Node3D) AttachedScene.Instantiate();
+            LinkContainer.AddChild(attachment);
+
+            var bottomLink = Links[^1];
+            attachment.GlobalPosition = bottomLink.GlobalPosition + new Vector3(0, -LinkLength, 0);
+
+            if (attachment is RigidBody3D rBody)
+            {
+                var attachmentJoint = CreateJoint(bottomLink, rBody);
+                attachment.AddChild(attachmentJoint);
+            }
+        }
 
         GetTree().ProcessFrame -= CreateJoints;
-        //tutorial at https://youtu.be/2RyDTkGrRdY?si=gIa2MZdmorfMTgjI&t=625
     }
 
     public RigidBody3D CreateLink(int index)
@@ -83,18 +126,32 @@ public partial class DynamicChain : Node3D
         link.Name = $"Link_{index}";
         
         //physics properties
-        link.Mass = 0.5f;
-        link.GravityScale = 1.0f;
-        link.LinearDamp = 0.5f;
-        link.AngularDamp = 0.5f;
+        link.Mass = LinkMass;
+        link.GravityScale = GravityScale;
+        link.LinearDamp = LinkDamping;
+        link.AngularDamp = LinkDamping;
+        link.CollisionMask = LinkCollisionMask;
+        link.CollisionLayer = LinkCollisionLayer;
         
-        //visual mesh
+        //visual mesh        
         var meshInstance = new MeshInstance3D();
-        var cylinder = new CylinderMesh();
-        cylinder.Height = LinkLength;
-        cylinder.TopRadius = LinkRadius;
-        cylinder.BottomRadius = LinkRadius;
-        meshInstance.Mesh = cylinder;
+
+        if (ChainType is ChainTypeEnum.Chain && LinkMesh is not null)
+        {
+            //use custom mesh
+            meshInstance.Mesh = LinkMesh;
+        }
+        else
+        {
+            //procedural
+            var cylinder = new CylinderMesh();
+            cylinder.Height = LinkLength;
+            cylinder.TopRadius = LinkRadius;
+            cylinder.BottomRadius = LinkRadius;
+            meshInstance.Mesh = cylinder;
+        }
+
+        meshInstance.Scale = Vector3.One * MeshScale;
         link.AddChild(meshInstance);
         
         //collision shape
@@ -130,8 +187,8 @@ public partial class DynamicChain : Node3D
         joint.SetParamZ(Generic6DofJoint3D.Param.LinearUpperLimit, 0);
         
         //angular limits (swing range)
-        var angularLimitRad = Mathf.DegToRad(30.0f);
-        var twistLimitRad = Mathf.DegToRad(15.0f);
+        var angularLimitRad = Mathf.DegToRad(AngularLimitDegrees);
+        var twistLimitRad = Mathf.DegToRad(TwistLimitDegrees);
         
         //x axis swing (pitch)
         joint.SetFlagX(Generic6DofJoint3D.Flag.EnableAngularLimit, true);
