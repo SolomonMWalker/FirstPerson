@@ -6,6 +6,7 @@ public partial class Reticle : CenterContainer
 {
     [Export] public PlayerController Player { get; set; }
     [Export] public Godot.Collections.Array<Line2D> ReticleLines { get; set; }
+    [Export] public float ReticleMaxDistance { get; set; } = 3f;
     [Export] public float ReticleSpeed { get; set; } = 0.25f;
     [Export] public float ReticleDistance { get; set; } = 2f;
     [Export] public float DotRadius { get; private set; } = 1.0f;
@@ -31,37 +32,36 @@ public partial class Reticle : CenterContainer
 
     public void AdjustReticleLines()
     {
-        var realVelocity = Player.GetRealVelocity();
-        var origin = Vector3.Zero;
         var pos = Vector2.Zero;
-        var speed = origin.DistanceTo(realVelocity);
+        var currentAccuracyPenalty = Player.WeaponController.CurrentAccuracyPenalty;
+        var retPenaltyDist = currentAccuracyPenalty * ReticleMaxDistance;
         
         //top
         var topLine = ReticleLines.FirstOrDefault(line => line.Name == "Top");
         if (topLine is not null)
         {
-            topLine.Position = topLine.Position.Lerp(pos + new Vector2(0, -speed - ReticleDistance), ReticleSpeed);
+            topLine.Position = topLine.Position.Lerp(pos + new Vector2(0, -retPenaltyDist - ReticleDistance), ReticleSpeed);
         }
 
         //right
         var rightLine = ReticleLines.FirstOrDefault(line => line.Name == "Right");
         if (rightLine is not null)
         {
-            rightLine.Position = rightLine.Position.Lerp(pos + new Vector2(speed + ReticleDistance, 0), ReticleSpeed);
+            rightLine.Position = rightLine.Position.Lerp(pos + new Vector2(retPenaltyDist + ReticleDistance, 0), ReticleSpeed);
         }
 
         //bottom
         var bottomLine = ReticleLines.FirstOrDefault(line => line.Name == "Bottom");
         if (bottomLine is not null)
         {
-            bottomLine.Position = bottomLine.Position.Lerp(pos + new Vector2(0, speed + ReticleDistance), ReticleSpeed);
+            bottomLine.Position = bottomLine.Position.Lerp(pos + new Vector2(0, retPenaltyDist + ReticleDistance), ReticleSpeed);
         }
 
         //left
         var leftLine = ReticleLines.FirstOrDefault(line => line.Name == "Left");
         if (leftLine is not null)
         {
-            leftLine.Position = leftLine.Position.Lerp(pos + new Vector2(-speed - ReticleDistance, 0), ReticleSpeed);
+            leftLine.Position = leftLine.Position.Lerp(pos + new Vector2(-retPenaltyDist - ReticleDistance, 0), ReticleSpeed);
         }
     }
 }

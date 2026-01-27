@@ -7,15 +7,24 @@ using FirstPerson.Scenes.Player;
 
 public partial class WeaponController : Node
 {
+    [ExportCategory("References")] 
+    [Export] public PlayerController Player;
     [Export] public CameraController CameraController;
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public WeaponStateMachine WeaponStateMachine { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
+    [Export] public Reticle Reticle { get; set; }
+
+    [ExportCategory("Weapon Settings")]
+    [Export] public int MaxPercentAccuracyPenalty { get; set; } = 75;
+    
     
     public Weapon CurrentWeapon { get; set; }
     public WeaponManager WeaponManager { get; set; }
     public Node ProjectileParent { get; set; }
     public Node3D CurrentWeaponModel { get; set; }
+    public float CurrentAccuracyPenalty { get; private set; }
+    public float CurrentAccuracy() => 1f - CurrentAccuracyPenalty;
     public double FireRateTimer { get; private set; }
     public bool CanFireNextRound { get; private set; } = true;
 
@@ -53,6 +62,7 @@ public partial class WeaponController : Node
     {
         base._PhysicsProcess(delta);
         SwayWeaponRig(delta);
+        CurrentAccuracyPenalty = GetCurrentAccuracyPenalty();
     }
 
     public WeaponData GetCurrentWeaponData() => WeaponManager.Weapons[WeaponManager.CurrentSlot];
@@ -123,6 +133,15 @@ public partial class WeaponController : Node
         }
     }
 
+    public float GetCurrentAccuracyPenalty()
+    {
+        //retrieves gun accuracy and player real velocity to calculate accuracy
+        var speedPercent = Player.Velocity.Length() / (Player.Speed * Player.SprintMovementMult);
+        var weaponAccuracyPenalty = (100 - CurrentWeapon.AccuracyPercent) / 100f;
+        var accuracySpeedPenalty = speedPercent * CurrentWeapon.AccuracyPenaltyAtMaxMovementSpeed;
+        return Mathf.Clamp(weaponAccuracyPenalty + accuracySpeedPenalty, 0, MaxPercentAccuracyPenalty);
+    }
+
     public void PerformHitscan()
     {
         if (CameraController is null)
@@ -132,12 +151,11 @@ public partial class WeaponController : Node
         }
 
         var forward = -CameraController.Camera.GlobalTransform.Basis.Z;
-        var accuracySpread = (100 - CurrentWeapon.Accuracy) / 1000.0f;
-
+        var targetMovementRange = CurrentAccuracyPenalty / 10f;
         for (int i = 0; i < CurrentWeapon.PelletCount; i++)
         {
-            (float x, float y) accuracyXY = ((float) GD.RandRange(-accuracySpread, accuracySpread),
-                (float) GD.RandRange(-accuracySpread, accuracySpread));
+            (float x, float y) accuracyXY = ((float) GD.RandRange(-targetMovementRange, targetMovementRange),
+                (float) GD.RandRange(-targetMovementRange, targetMovementRange));
             var direction = forward + new Vector3(accuracyXY.x, accuracyXY.y, 0) * CameraController.Camera.GlobalTransform.Basis;
             if (CurrentWeapon.PelletCount > 1)
             {
@@ -174,10 +192,9 @@ public partial class WeaponController : Node
         ProjectileParent.AddChild(projectile);
         
         projectile.GlobalPosition = CameraController.Camera.GlobalPosition;
-        
-        var accuracySpread = (100 - CurrentWeapon.Accuracy) / 1000.0f;
-        (float x, float y) accuracyXY = ((float) GD.RandRange(-accuracySpread, accuracySpread),
-            (float) GD.RandRange(-accuracySpread, accuracySpread));
+        var targetMovementRange = CurrentAccuracyPenalty / 10f;
+        (float x, float y) accuracyXY = ((float) GD.RandRange(-targetMovementRange, targetMovementRange),
+            (float) GD.RandRange(-targetMovementRange, targetMovementRange));
         var forward = -CameraController.Camera.GlobalTransform.Basis.Z;
         var direction = forward + new Vector3(accuracyXY.x, accuracyXY.y, 0) 
             * CameraController.Camera.GlobalTransform.Basis;

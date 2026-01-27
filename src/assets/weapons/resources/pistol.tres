@@ -8,7 +8,8 @@
 script = ExtResource("2_ffwsm")
 MaxAmmo = 20
 Range = 75.0
-Accuracy = 25
+AccuracyPenaltyAtMaxMovementSpeed = 5
 WeaponModel = ExtResource("1_kmvif")
 ProjectileScene = ExtResource("1_ffwsm")
+SwaySpeedPosition = 0.05
 metadata/_custom_type_script = "uid://yxetfin4alyg"

@@ -289,6 +289,8 @@ grow_vertical = 2
 script = ExtResource("25_dxex4")
 Player = NodePath("../..")
 ReticleLines = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
+ReticleMaxDistance = 5.0
+ReticleSpeed = 0.05
 
 [node name="Top" type="Line2D" parent="UserInterface/Reticle"]
 points = PackedVector2Array(0, -5, 0, -15)
@@ -332,9 +334,11 @@ script = ExtResource("27_a3051")
 PlayerController = NodePath("../..")
 StepHeight = 0.55
 
-[node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("CameraController", "WeaponModelParent", "WeaponStateMachine", "MouseCaptureComponent")]
+[node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("Player", "CameraController", "WeaponModelParent", "WeaponStateMachine", "MouseCaptureComponent", "Reticle")]
 script = ExtResource("28_v0tgu")
+Player = NodePath("../..")
 CameraController = NodePath("../../CameraController")
 WeaponModelParent = NodePath("../../CameraController/WeaponRig")
 WeaponStateMachine = NodePath("../../WeaponStateMachine")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
+Reticle = NodePath("../../UserInterface/Reticle")

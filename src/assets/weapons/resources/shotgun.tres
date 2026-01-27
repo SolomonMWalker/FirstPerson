@@ -7,6 +7,8 @@
 script = ExtResource("1_pakh2")
 MaxAmmo = 6
 FireRatePerSecond = 1.5
+AccuracyPercent = 75
+AccuracyPenaltyAtMaxMovementSpeed = 10
 WeaponModel = ExtResource("1_btu08")
 PelletCount = 6
 SpreadAngle = 0.1
