@@ -96,7 +96,7 @@ public partial class CameraController : Node3D
     public override void _Process(double delta)
     {
         Position = InitialPosition + CameraOffset;
-        UpdateCameraRotation(MouseCaptureComponent.MouseInput);
+        UpdateCameraRotation(MouseCaptureComponent.RelativeMouseInputWithSens);
 
         if (_stepSmoothing)
         {

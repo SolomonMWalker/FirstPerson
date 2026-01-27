@@ -49,12 +49,12 @@ script = ExtResource("5_b2mws")
 [node name="ProjectileParent" type="Node3D" parent="Level"]
 unique_name_in_owner = true
 
+[node name="Player" parent="Level" groups=["player"] instance=ExtResource("2_c2a6q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.811966, 0, 36.987743)
+
 [node name="Map" type="Node3D" parent="Level"]
 
 [node name="funcGodotTest" parent="Level/Map" instance=ExtResource("1_t02g3")]
-
-[node name="Player" parent="Level" groups=["player"] instance=ExtResource("2_c2a6q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.811966, 0, 36.987743)
 
 [node name="Enemies" type="Node3D" parent="Level"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

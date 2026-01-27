@@ -9,6 +9,7 @@ public partial class WeaponController : Node
     [Export] public CameraController CameraController;
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public WeaponStateMachine WeaponStateMachine { get; set; }
+    [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     
     public Weapon CurrentWeapon { get; set; }
     public WeaponManager WeaponManager { get; set; }
@@ -47,6 +48,12 @@ public partial class WeaponController : Node
         }
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        SwayWeapon(delta);
+    }
+
     public WeaponData GetCurrentWeaponData() => WeaponManager.Weapons[WeaponManager.CurrentSlot];
     public int GetCurrentWeaponAmmo() => WeaponManager.GetCurrentAmmo();
 
@@ -58,7 +65,35 @@ public partial class WeaponController : Node
             CurrentWeaponModel = CurrentWeapon.WeaponModel.Instantiate<Node3D>();
             WeaponModelParent.AddChild(CurrentWeaponModel);
             CurrentWeaponModel.Position = CurrentWeapon.WeaponPosition;
+            CurrentWeaponModel.Rotation = CurrentWeapon.WeaponRotationInDeg;
         }
+    }
+
+    public void SwayWeapon(double delta)
+    {
+        float fDelta = (float)delta;
+        var mouseMovement =
+            MouseCaptureComponent.RawRelativeMouseInput.Clamp(CurrentWeapon.SwayMin, CurrentWeapon.SwayMax);
+        var pos = CurrentWeaponModel.Position;
+        var rot = CurrentWeaponModel.Rotation;
+        CurrentWeaponModel.Position = pos with
+        {
+            X = Mathf.Lerp(pos.X, 
+                CurrentWeapon.WeaponPosition.X - mouseMovement.X * CurrentWeapon.SwayAmountPosition * fDelta,
+                CurrentWeapon.SwaySpeedPosition),
+            Y = Mathf.Lerp(pos.Y, 
+                CurrentWeapon.WeaponPosition.Y + mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta,
+                CurrentWeapon.SwaySpeedPosition),
+        };
+        CurrentWeaponModel.Rotation = rot with
+        {
+            Y = Mathf.DegToRad(Mathf.Lerp(rot.Y, 
+                CurrentWeapon.WeaponRotationInDeg.Y + mouseMovement.X * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
+                CurrentWeapon.SwaySpeedRotation)),
+            X = Mathf.DegToRad(Mathf.Lerp(rot.X, 
+                CurrentWeapon.WeaponRotationInDeg.X - mouseMovement.Y * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
+                CurrentWeapon.SwaySpeedRotation)),
+        };
     }
 
     public bool CanFire()

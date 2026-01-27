@@ -219,6 +219,7 @@ collision_layer = 261
 collision_mask = 0
 
 [node name="entity_0_mesh_instance" type="MeshInstance3D" parent="FuncGodotMap/entity_0_worldspawn"]
+cast_shadow = 0
 mesh = SubResource("ArrayMesh_qswbv")
 
 [node name="entity_0_brush_0_collision_shape" type="CollisionShape3D" parent="FuncGodotMap/entity_0_worldspawn"]

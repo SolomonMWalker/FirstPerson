@@ -2,5 +2,15 @@
 
 [ext_resource type="BoxMesh" uid="uid://bpldlwocw8xgx" path="res://src/assets/weapons/resources/test_pistol_mesh.tres" id="1_bdmq4"]
 
-[node name="MeshInstance3D" type="MeshInstance3D"]
+[node name="test_pistol" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 3
+cast_shadow = 0
 mesh = ExtResource("1_bdmq4")
+
+[node name="ShadowMeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 3
+cast_shadow = 3
+mesh = ExtResource("1_bdmq4")
+skeleton = NodePath("../MeshInstance3D")

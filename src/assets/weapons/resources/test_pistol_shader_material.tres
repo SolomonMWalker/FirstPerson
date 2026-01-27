@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://vcjtuep0nwei"]
+
+[ext_resource type="Shader" uid="uid://b8mwg716ue0og" path="res://src/assets/weapons/resources/test_pistol_shader.gdshader" id="1_xfbf1"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xfbf1")
+shader_parameter/albedo = Color(1, 0.20784314, 0.11372549, 1)
+shader_parameter/albedo_texture_size = Vector2i(0, 0)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/fov = 90.0
