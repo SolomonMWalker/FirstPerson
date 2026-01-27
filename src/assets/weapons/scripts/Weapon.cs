@@ -22,7 +22,6 @@ public partial class Weapon : Resource
     [Export] public int PelletCount = 1;
     [Export] public float SpreadAngle = 0;
     [Export] public Vector3 WeaponPosition { get; set; } = new (0.2f, -0.2f, -0.3f);
-    [Export] public Vector3 WeaponRotationInDeg { get; set; } = Vector3.Zero;
     [Export] public Vector2 SwayMin { get; set; } = new (-20f, -20f);
     [Export] public Vector2 SwayMax { get; set; } = new (20f, 20f);
     [Export] public float SwaySpeedPosition

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using FirstPerson.assets.weapons.scripts;
 using FirstPerson.CustomTypes.StateMachine;
+using FirstPerson.Helpers;
 using FirstPerson.Scenes.Player;
 
 public partial class WeaponController : Node
@@ -51,7 +52,7 @@ public partial class WeaponController : Node
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        SwayWeapon(delta);
+        SwayWeaponRig(delta);
     }
 
     public WeaponData GetCurrentWeaponData() => WeaponManager.Weapons[WeaponManager.CurrentSlot];
@@ -65,33 +66,33 @@ public partial class WeaponController : Node
             CurrentWeaponModel = CurrentWeapon.WeaponModel.Instantiate<Node3D>();
             WeaponModelParent.AddChild(CurrentWeaponModel);
             CurrentWeaponModel.Position = CurrentWeapon.WeaponPosition;
-            CurrentWeaponModel.Rotation = CurrentWeapon.WeaponRotationInDeg;
         }
     }
 
-    public void SwayWeapon(double delta)
+    public void SwayWeaponRig(double delta)
     {
-        float fDelta = (float)delta;
+        //default pos and rotation of weapon rig are 0
+        var fDelta = (float)delta;
         var mouseMovement =
             MouseCaptureComponent.RawRelativeMouseInput.Clamp(CurrentWeapon.SwayMin, CurrentWeapon.SwayMax);
-        var pos = CurrentWeaponModel.Position;
-        var rot = CurrentWeaponModel.Rotation;
-        CurrentWeaponModel.Position = pos with
+        var pos = WeaponModelParent.Position;
+        var rot = WeaponModelParent.Rotation;
+        WeaponModelParent.Position = pos with
         {
             X = Mathf.Lerp(pos.X, 
-                CurrentWeapon.WeaponPosition.X - mouseMovement.X * CurrentWeapon.SwayAmountPosition * fDelta,
+                -mouseMovement.X * CurrentWeapon.SwayAmountPosition * fDelta,
                 CurrentWeapon.SwaySpeedPosition),
             Y = Mathf.Lerp(pos.Y, 
-                CurrentWeapon.WeaponPosition.Y + mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta,
+                mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta,
                 CurrentWeapon.SwaySpeedPosition),
         };
-        CurrentWeaponModel.Rotation = rot with
+        WeaponModelParent.Rotation = rot with
         {
             Y = Mathf.DegToRad(Mathf.Lerp(rot.Y, 
-                CurrentWeapon.WeaponRotationInDeg.Y + mouseMovement.X * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
+                mouseMovement.X * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
                 CurrentWeapon.SwaySpeedRotation)),
             X = Mathf.DegToRad(Mathf.Lerp(rot.X, 
-                CurrentWeapon.WeaponRotationInDeg.X - mouseMovement.Y * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
+                -mouseMovement.Y * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
                 CurrentWeapon.SwaySpeedRotation)),
         };
     }
@@ -150,7 +151,7 @@ public partial class WeaponController : Node
             if (hit.gdObj is not null)
             {
                 //GD.Print($"Hit {hit.gdObj} at {hit.point}");
-                SpawnImpactMarker(hit.point);
+                this.SpawnImpactMarker(hit.point);
             }
         }
     }
@@ -184,23 +185,6 @@ public partial class WeaponController : Node
         projectile.LookAt(projectile.GlobalPosition + direction, Vector3.Up);
         
         projectile.Setup(velocity, CurrentWeapon.Damage);
-    }
-    
-    public void SpawnImpactMarker(Vector3 position)
-    {
-        var marker = new MeshInstance3D();
-        var box = new BoxMesh();
-        box.Size = new Vector3(0.1f, 0.1f, 0.1f);
-        marker.Mesh = box;
-
-        var material = new StandardMaterial3D();
-        material.AlbedoColor = Colors.Red;
-        marker.SetSurfaceOverrideMaterial(0, material);
-
-        GetTree().CurrentScene.AddChild(marker);
-        marker.GlobalPosition = position;
-
-        GetTree().CreateTimer(2.0).Timeout += marker.QueueFree;
     }
 
     public void SwitchWeapon(WeaponData weaponData)

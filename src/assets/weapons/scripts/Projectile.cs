@@ -1,4 +1,5 @@
-﻿using FirstPerson.Scenes.Player;
+﻿using FirstPerson.Helpers;
+using FirstPerson.Scenes.Player;
 using Godot;
 
 namespace FirstPerson.assets.weapons.scripts;
@@ -48,24 +49,7 @@ public partial class Projectile : Area3D
     public void OnBodyEntered(Node3D body)
     {
         GD.Print($"Projectile hit: {body.Name} at {GlobalPosition}");
-        SpawnImpactMarker(GlobalPosition);
+        this.SpawnImpactMarker(GlobalPosition);
         QueueFree();
-    }
-    
-    public void SpawnImpactMarker(Vector3 position)
-    {
-        var marker = new MeshInstance3D();
-        var box = new BoxMesh();
-        box.Size = new Vector3(0.1f, 0.1f, 0.1f);
-        marker.Mesh = box;
-
-        var material = new StandardMaterial3D();
-        material.AlbedoColor = Colors.Red;
-        marker.SetSurfaceOverrideMaterial(0, material);
-
-        GetTree().CurrentScene.AddChild(marker);
-        marker.GlobalPosition = position;
-
-        GetTree().CreateTimer(2.0).Timeout += marker.QueueFree;
     }
 }
