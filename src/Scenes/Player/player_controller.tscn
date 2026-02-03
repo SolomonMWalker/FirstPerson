@@ -125,7 +125,7 @@ CrouchingLocation = NodePath("../Locations/Crouching/CameraLocation")
 
 [node name="Camera3D" type="Camera3D" parent="CameraController"]
 current = true
-fov = 90.0
+fov = 77.0
 
 [node name="ShootRayCast" type="RayCast3D" parent="CameraController/Camera3D"]
 target_position = Vector3(0, 0, 0)
@@ -135,16 +135,23 @@ collide_with_areas = true
 [node name="InteractRayCast" type="RayCast3D" parent="CameraController/Camera3D"]
 collision_mask = 16
 
-[node name="WeaponRig" type="Node3D" parent="CameraController"]
+[node name="WeaponRig" type="Node3D" parent="CameraController/Camera3D"]
 
-[node name="CameraEffects" type="Node3D" parent="."]
+[node name="WeaponRig2" type="Node3D" parent="CameraController/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, -0.185, 0.285)
+
+[node name="WeaponParent" type="Node3D" parent="CameraController/Camera3D/WeaponRig2"]
+
+[node name="CameraEffects" type="Node3D" parent="." node_paths=PackedStringArray("PlayerController")]
 script = ExtResource("6_06sus")
+PlayerController = NodePath("..")
 EnableTilt = true
 EnableFallKick = true
 EnableDamageKick = true
 EnableWeaponKick = true
 EnableScreenShake = true
 EnableHeadbob = true
+BobPitch = 0.025
 
 [node name="Locations" type="Node3D" parent="."]
 
@@ -332,13 +339,12 @@ script = ExtResource("26_4556c")
 [node name="StepHandlerComponent" type="Node" parent="Components" node_paths=PackedStringArray("PlayerController")]
 script = ExtResource("27_a3051")
 PlayerController = NodePath("../..")
-StepHeight = 0.55
 
 [node name="WeaponController" type="Node" parent="Components" node_paths=PackedStringArray("Player", "CameraController", "WeaponModelParent", "WeaponStateMachine", "MouseCaptureComponent", "Reticle")]
 script = ExtResource("28_v0tgu")
 Player = NodePath("../..")
 CameraController = NodePath("../../CameraController")
-WeaponModelParent = NodePath("../../CameraController/WeaponRig")
+WeaponModelParent = NodePath("../../CameraController/Camera3D/WeaponRig2/WeaponParent")
 WeaponStateMachine = NodePath("../../WeaponStateMachine")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")

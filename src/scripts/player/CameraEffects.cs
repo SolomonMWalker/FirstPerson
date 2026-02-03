@@ -7,8 +7,6 @@ public partial class CameraEffects : Node3D
     [ExportCategory("References")]
     [Export] public PlayerController PlayerController;
 
-    [Export] public Node3D DamageSource;
-
     [ExportCategory("Effects")] 
     [Export] public bool EnableTilt { get; set; }
     [Export] public bool EnableFallKick { get; set; }

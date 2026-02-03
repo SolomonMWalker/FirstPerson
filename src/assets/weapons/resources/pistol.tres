@@ -1,15 +1,18 @@
 [gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3 uid="uid://ckdb26phy4kp4"]
 
 [ext_resource type="PackedScene" uid="uid://ckgl8ari50ceg" path="res://src/assets/weapons/resources/projectile.tscn" id="1_ffwsm"]
-[ext_resource type="PackedScene" uid="uid://cn3fqld7l3c3b" path="res://src/assets/weapons/resources/test_pistol.tscn" id="1_kmvif"]
 [ext_resource type="Script" uid="uid://yxetfin4alyg" path="res://src/assets/weapons/scripts/Weapon.cs" id="2_ffwsm"]
+[ext_resource type="PackedScene" uid="uid://b67fw5avsad6h" path="res://blenderTutorial/revolver_rig.tscn" id="2_pnvhc"]
 
 [resource]
 script = ExtResource("2_ffwsm")
 MaxAmmo = 20
 Range = 75.0
 AccuracyPenaltyAtMaxMovementSpeed = 5
-WeaponModel = ExtResource("1_kmvif")
+WeaponModel = ExtResource("2_pnvhc")
 ProjectileScene = ExtResource("1_ffwsm")
-SwaySpeedPosition = 0.05
+WeaponPosition = Vector3(0, 0, 0)
+SwaySpeedPosition = 1.0
+SwaySpeedRotation = 1.0
+SwayAmountPosition = 0.5
 metadata/_custom_type_script = "uid://yxetfin4alyg"

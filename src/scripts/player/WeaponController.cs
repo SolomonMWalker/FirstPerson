@@ -22,15 +22,19 @@ public partial class WeaponController : Node
     public Weapon CurrentWeapon { get; set; }
     public WeaponManager WeaponManager { get; set; }
     public Node ProjectileParent { get; set; }
-    public Node3D CurrentWeaponModel { get; set; }
+    public WeaponRig CurrentWeaponModel { get; set; }
     public float CurrentAccuracyPenalty { get; private set; }
     public float CurrentAccuracy() => 1f - CurrentAccuracyPenalty;
     public double FireRateTimer { get; private set; }
     public bool CanFireNextRound { get; private set; } = true;
 
+    private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
+
     public override void _Ready()
     {
         base._Ready();
+        WeaponModelParentDefaultPosition = WeaponModelParent.Position;
+        WeaponModelParentDefaultRotation = WeaponModelParent.Rotation;
         WeaponManager = (WeaponManager) GetTree().GetFirstNodeInGroup("WeaponManager");
         CurrentWeapon = GetCurrentWeaponData().Weapon;
         
@@ -73,9 +77,10 @@ public partial class WeaponController : Node
         CurrentWeaponModel?.QueueFree();
         if (CurrentWeapon.WeaponModel is not null)
         {
-            CurrentWeaponModel = CurrentWeapon.WeaponModel.Instantiate<Node3D>();
+            CurrentWeaponModel = CurrentWeapon.WeaponModel.Instantiate<WeaponRig>();
             WeaponModelParent.AddChild(CurrentWeaponModel);
             CurrentWeaponModel.Position = CurrentWeapon.WeaponPosition;
+            CurrentWeaponModel.PlayIdleAnimation();
         }
     }
 
@@ -116,6 +121,7 @@ public partial class WeaponController : Node
     {
         if (CanFire())
         {
+            CurrentWeaponModel.PlayFireAnimation();
             WeaponManager.UseAmmo(WeaponManager.CurrentSlot);
             GD.Print($"Fired! ammo at {GetCurrentWeaponData().Ammo}");
 

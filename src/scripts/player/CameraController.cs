@@ -15,7 +15,7 @@ public partial class CameraController : Node3D
     [Export] public Node3D CrouchingLocation { get; set; }
 
     [ExportCategory("Camera Settings")]
-    [Export] public int Fov { get; set; } = 90;
+    [Export] public int Fov { get; set; } = 77;
     
     [ExportGroup("Camera Tilt")]
     [Export] public float TiltLowerLimit
@@ -56,7 +56,8 @@ public partial class CameraController : Node3D
         set
         {
             _interactRaycastLength = value;
-            InteractRaycast.TargetPosition = Vector3.Forward * _interactRaycastLength;
+            if(InteractRaycast is not null)
+                InteractRaycast.TargetPosition = Vector3.Forward * _interactRaycastLength;
         }
     }
     [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
@@ -67,7 +68,8 @@ public partial class CameraController : Node3D
         set
         {
             _shootRaycastLength = value;
-            ShootRaycast.TargetPosition = Vector3.Forward * _shootRaycastLength;
+            if(ShootRaycast is not null)
+                ShootRaycast.TargetPosition = Vector3.Forward * _shootRaycastLength;
         }
     }
 
@@ -87,8 +89,10 @@ public partial class CameraController : Node3D
         //ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
         ShootRaycast.AddException(PlayerController);
         ShootRaycast.Enabled = false;
+        ShootRaycastLength = ShootRaycastLength;
         InteractRaycast.SetTargetPosition(Vector3.Forward * InteractRaycastLength);
         InteractRaycast.AddException(PlayerController);
+        InteractRaycastLength = InteractRaycastLength;
         InteractRaycast.Enabled = false;
         _rotation = PlayerController.Rotation;
     }
