@@ -6,7 +6,7 @@ public partial class Reticle : CenterContainer
 {
     [Export] public PlayerController Player { get; set; }
     [Export] public Godot.Collections.Array<Line2D> ReticleLines { get; set; }
-    [Export] public float ReticleMaxDistance { get; set; } = 3f;
+    [Export] public float ReticleMaxDistance { get; set; } = 30f;
     [Export] public float ReticleSpeed { get; set; } = 0.25f;
     [Export] public float ReticleDistance { get; set; } = 2f;
     [Export] public float DotRadius { get; private set; } = 1.0f;
@@ -33,7 +33,7 @@ public partial class Reticle : CenterContainer
     public void AdjustReticleLines()
     {
         var pos = Vector2.Zero;
-        var currentAccuracyPenalty = Player.WeaponController.CurrentAccuracyPenalty;
+        var currentAccuracyPenalty = Player.WeaponController.CurrentAccuracyAnglePenalty;
         var retPenaltyDist = currentAccuracyPenalty * ReticleMaxDistance;
         
         //top

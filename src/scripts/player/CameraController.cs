@@ -146,6 +146,19 @@ public partial class CameraController : Node3D
             (InteractRaycast.GetCollider(), InteractRaycast.GetCollisionPoint());
     }
     
+    public (GodotObject gdObj, Vector3 point) GetWhatAndWhereShootRaycastIsHitting(Vector2 rotationInDeg, int length)
+    {
+        ShootRaycast.Rotation = ShootRaycast.Rotation with
+        {
+            X = Mathf.DegToRad(rotationInDeg.X),
+            Y = Mathf.DegToRad(rotationInDeg.Y)
+        };
+        ShootRaycastLength = length;
+        ShootRaycast.ForceRaycastUpdate();
+        return !ShootRaycast.IsColliding() ? (null, Vector3.Zero) : 
+            (ShootRaycast.GetCollider(), ShootRaycast.GetCollisionPoint());
+    }
+    
     public (GodotObject gdObj, Vector3 point) GetWhatAndWhereShootRaycastIsHitting(Vector3 targetGlobalPosition)
     {
         ShootRaycast.TargetPosition = ShootRaycast.ToLocal(targetGlobalPosition);

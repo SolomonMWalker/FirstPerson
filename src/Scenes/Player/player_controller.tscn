@@ -136,11 +136,9 @@ collide_with_areas = true
 collision_mask = 16
 
 [node name="WeaponRig" type="Node3D" parent="CameraController/Camera3D"]
-
-[node name="WeaponRig2" type="Node3D" parent="CameraController/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, -0.185, 0.285)
 
-[node name="WeaponParent" type="Node3D" parent="CameraController/Camera3D/WeaponRig2"]
+[node name="WeaponParent" type="Node3D" parent="CameraController/Camera3D/WeaponRig"]
 
 [node name="CameraEffects" type="Node3D" parent="." node_paths=PackedStringArray("PlayerController")]
 script = ExtResource("6_06sus")
@@ -151,7 +149,6 @@ EnableDamageKick = true
 EnableWeaponKick = true
 EnableScreenShake = true
 EnableHeadbob = true
-BobPitch = 0.025
 
 [node name="Locations" type="Node3D" parent="."]
 
@@ -296,8 +293,7 @@ grow_vertical = 2
 script = ExtResource("25_dxex4")
 Player = NodePath("../..")
 ReticleLines = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
-ReticleMaxDistance = 5.0
-ReticleSpeed = 0.05
+ReticleMaxDistance = 4.0
 
 [node name="Top" type="Line2D" parent="UserInterface/Reticle"]
 points = PackedVector2Array(0, -5, 0, -15)
@@ -344,7 +340,8 @@ PlayerController = NodePath("../..")
 script = ExtResource("28_v0tgu")
 Player = NodePath("../..")
 CameraController = NodePath("../../CameraController")
-WeaponModelParent = NodePath("../../CameraController/Camera3D/WeaponRig2/WeaponParent")
+WeaponModelParent = NodePath("../../CameraController/Camera3D/WeaponRig/WeaponParent")
 WeaponStateMachine = NodePath("../../WeaponStateMachine")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")
+MaxAngleAccuracyPenalty = 7

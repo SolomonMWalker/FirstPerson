@@ -16,15 +16,14 @@ public partial class WeaponController : Node
     [Export] public Reticle Reticle { get; set; }
 
     [ExportCategory("Weapon Settings")]
-    [Export] public int MaxPercentAccuracyPenalty { get; set; } = 75;
+    [Export] public int MaxAngleAccuracyPenalty { get; set; } = 8;
     
     
     public Weapon CurrentWeapon { get; set; }
     public WeaponManager WeaponManager { get; set; }
     public Node ProjectileParent { get; set; }
     public WeaponRig CurrentWeaponModel { get; set; }
-    public float CurrentAccuracyPenalty { get; private set; }
-    public float CurrentAccuracy() => 1f - CurrentAccuracyPenalty;
+    public float CurrentAccuracyAnglePenalty { get; private set; }
     public double FireRateTimer { get; private set; }
     public bool CanFireNextRound { get; private set; } = true;
 
@@ -66,7 +65,7 @@ public partial class WeaponController : Node
     {
         base._PhysicsProcess(delta);
         SwayWeaponRig(delta);
-        CurrentAccuracyPenalty = GetCurrentAccuracyPenalty();
+        CurrentAccuracyAnglePenalty = GetCurrentAccuracyPenalty();
     }
 
     public WeaponData GetCurrentWeaponData() => WeaponManager.Weapons[WeaponManager.CurrentSlot];
@@ -143,9 +142,8 @@ public partial class WeaponController : Node
     {
         //retrieves gun accuracy and player real velocity to calculate accuracy
         var speedPercent = Player.Velocity.Length() / (Player.Speed * Player.SprintMovementMult);
-        var weaponAccuracyPenalty = (100 - CurrentWeapon.AccuracyPercent) / 100f;
-        var accuracySpeedPenalty = speedPercent * CurrentWeapon.AccuracyPenaltyAtMaxMovementSpeed;
-        return Mathf.Clamp(weaponAccuracyPenalty + accuracySpeedPenalty, 0, MaxPercentAccuracyPenalty);
+        var accuracySpeedPenalty = speedPercent * CurrentWeapon.AccuracyErrorAngleAtMaxMovementSpeed;
+        return Mathf.Clamp(CurrentWeapon.AccuracyErrorAngle + accuracySpeedPenalty, 0, MaxAngleAccuracyPenalty);
     }
 
     public void PerformHitscan()
@@ -157,21 +155,31 @@ public partial class WeaponController : Node
         }
 
         var forward = -CameraController.Camera.GlobalTransform.Basis.Z;
-        var targetMovementRange = CurrentAccuracyPenalty / 10f;
         for (int i = 0; i < CurrentWeapon.PelletCount; i++)
         {
-            (float x, float y) accuracyXY = ((float) GD.RandRange(-targetMovementRange, targetMovementRange),
-                (float) GD.RandRange(-targetMovementRange, targetMovementRange));
-            var direction = forward + new Vector3(accuracyXY.x, accuracyXY.y, 0) * CameraController.Camera.GlobalTransform.Basis;
+            (GodotObject gdObj, Vector3 point) hit;
+            var accuracyXy = new Vector2((float) GD.RandRange(-CurrentAccuracyAnglePenalty, CurrentAccuracyAnglePenalty),
+                (float) GD.RandRange(-CurrentAccuracyAnglePenalty, CurrentAccuracyAnglePenalty));
+            var direction = forward * CameraController.Camera.GlobalTransform.Basis;
             if (CurrentWeapon.PelletCount > 1)
             {
-                (float x, float y) spreadXY = ((float) GD.RandRange(-CurrentWeapon.SpreadAngle, CurrentWeapon.SpreadAngle),
-                    (float) GD.RandRange(-CurrentWeapon.SpreadAngle, CurrentWeapon.SpreadAngle));
-                direction += new Vector3(spreadXY.x, spreadXY.y, 0) * CameraController.Camera.GlobalTransform.Basis;
+                if (i != 0)
+                {
+                    hit = CameraController
+                        .GetWhatAndWhereShootRaycastIsHitting(Vector2.Zero, (int) CurrentWeapon.Range);
+                }
+                else
+                {
+                    hit = CameraController
+                        .GetWhatAndWhereShootRaycastIsHitting(accuracyXy, (int) CurrentWeapon.Range);
+                }
             }
-            var to = CameraController.Camera.GlobalPosition + direction * CurrentWeapon.Range;
-            var hit = CameraController
-                .GetWhatAndWhereShootRaycastIsHitting(to);
+            else
+            {
+                hit = CameraController
+                    .GetWhatAndWhereShootRaycastIsHitting(accuracyXy, (int) CurrentWeapon.Range);
+            }
+            
             if (hit.gdObj is not null)
             {
                 //GD.Print($"Hit {hit.gdObj} at {hit.point}");
@@ -198,7 +206,7 @@ public partial class WeaponController : Node
         ProjectileParent.AddChild(projectile);
         
         projectile.GlobalPosition = CameraController.Camera.GlobalPosition;
-        var targetMovementRange = CurrentAccuracyPenalty / 10f;
+        var targetMovementRange = CurrentAccuracyAnglePenalty / 10f;
         (float x, float y) accuracyXY = ((float) GD.RandRange(-targetMovementRange, targetMovementRange),
             (float) GD.RandRange(-targetMovementRange, targetMovementRange));
         var forward = -CameraController.Camera.GlobalTransform.Basis.Z;
