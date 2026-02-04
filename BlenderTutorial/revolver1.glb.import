@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://tjn1ltubd1ff"
-path="res://.godot/imported/revolver.glb-3788deac6c2b5407bfd25ef7f00a4822.scn"
+uid="uid://cv0maalbd05cy"
+path="res://.godot/imported/revolver1.glb-5b6bda589de37db95bcbaf648ca91126.scn"
 
 [deps]
 
-source_file="res://BlenderTutorial/revolver.glb"
-dest_files=["res://.godot/imported/revolver.glb-3788deac6c2b5407bfd25ef7f00a4822.scn"]
+source_file="res://BlenderTutorial/revolver1.glb"
+dest_files=["res://.godot/imported/revolver1.glb-5b6bda589de37db95bcbaf648ca91126.scn"]
 
 [params]
 
