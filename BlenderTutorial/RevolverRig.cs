@@ -17,19 +17,14 @@ public partial class WeaponRig : Node3D
 public partial class RevolverRig : WeaponRig
 {
     [Export] public AnimationPlayer ArmAnimationPlayer;
-    [Export] public AnimationPlayer GunAnimationPlayer;
-    [Export] public AudioStreamPlayer3D AudioStreamPlayer3D;
     
     public override void PlayIdleAnimation()
     {
-        ArmAnimationPlayer.Play("ArmsRevolverIdle");
-        GunAnimationPlayer.Play("RevolverIdle");
+        ArmAnimationPlayer.Play("RevolverIdle");
     }
 
     public override void PlayFireAnimation()
     {
-        AudioStreamPlayer3D.Play();
-        ArmAnimationPlayer.Play("ArmsRevolverFire");
-        GunAnimationPlayer.Play("RevolverFire");
+        ArmAnimationPlayer.Play("RevolverHipFire");
     }
 }
