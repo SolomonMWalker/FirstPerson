@@ -27,6 +27,7 @@ public partial class WeaponController : Node
     public float CurrentAccuracy() => 1f - CurrentAccuracyPenalty;
     public double FireRateTimer { get; private set; }
     public bool CanFireNextRound { get; private set; } = true;
+    public bool Aiming { get; private set; } = true;
 
     private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
 
@@ -59,6 +60,19 @@ public partial class WeaponController : Node
             {
                 CanFireNextRound = true;
             }
+        }
+
+        if(Input.IsActionJustPressed("Aim"))
+        {
+            GD.Print("Aim");
+            Aiming = true;
+            CurrentWeaponModel.PlayEnterAimAnimation();
+        }
+        else if(Aiming && Input.IsActionJustReleased("Aim"))
+        {
+            GD.Print("Stop Aim");
+            Aiming = false;
+            CurrentWeaponModel.PlayExitAimAnimation();
         }
     }
 
@@ -121,7 +135,15 @@ public partial class WeaponController : Node
     {
         if (CanFire())
         {
-            CurrentWeaponModel.PlayFireAnimation();
+            if(Aiming)
+            {
+                CurrentWeaponModel.PlayFireWhileAimingAnimation();
+            }
+            else
+            {
+                CurrentWeaponModel.PlayFireAnimation();
+            }
+            
             WeaponManager.UseAmmo(WeaponManager.CurrentSlot);
             GD.Print($"Fired! ammo at {GetCurrentWeaponData().Ammo}");
 
