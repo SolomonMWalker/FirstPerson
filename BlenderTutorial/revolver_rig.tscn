@@ -1,6 +1,9 @@
-[gd_scene load_steps=19 format=4 uid="uid://bty6mxy54dr71"]
+[gd_scene load_steps=22 format=4 uid="uid://bty6mxy54dr71"]
 
 [ext_resource type="Script" uid="uid://coxejc2xo11qw" path="res://BlenderTutorial/RevolverRig.cs" id="1_3ubni"]
+[ext_resource type="Script" uid="uid://s6h5quabullu" path="res://src/assets/weapons/scripts/states/baseStates/WeaponStateMachine.cs" id="2_6y7cj"]
+[ext_resource type="Script" uid="uid://cike71hun3kf3" path="res://src/assets/weapons/scripts/states/baseStates/WeaponCompoundState.cs" id="3_033ad"]
+[ext_resource type="Script" uid="uid://fitbaf4b05jq" path="res://src/assets/weapons/scripts/states/baseStates/WeaponAtomicState.cs" id="4_s38he"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8q1qu"]
 resource_name = "Material"
@@ -2233,3 +2236,51 @@ skin = SubResource("Skin_8cmss")
 libraries = {
 &"": SubResource("AnimationLibrary_xv76i")
 }
+
+[node name="RevolverStateMachine" type="Node" parent="."]
+script = ExtResource("2_6y7cj")
+metadata/_custom_type_script = "uid://s6h5quabullu"
+
+[node name="RevolverRootState" type="Node" parent="RevolverStateMachine"]
+script = ExtResource("3_033ad")
+metadata/_custom_type_script = "uid://cike71hun3kf3"
+
+[node name="RevolverLocationState" type="Node" parent="RevolverStateMachine/RevolverRootState"]
+script = ExtResource("3_033ad")
+metadata/_custom_type_script = "uid://cike71hun3kf3"
+
+[node name="RevolverHipState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState"]
+script = ExtResource("3_033ad")
+metadata/_custom_type_script = "uid://cike71hun3kf3"
+
+[node name="RevolverHipIdleState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState/RevolverHipState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="RevolverHipFireState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState/RevolverHipState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="RevolverHipEmptyState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState/RevolverHipState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="RevolverAimState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState"]
+script = ExtResource("3_033ad")
+metadata/_custom_type_script = "uid://cike71hun3kf3"
+
+[node name="RevolverAimIdleState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState/RevolverAimState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="RevolverAimFireState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState/RevolverAimState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="RevolverAimEmptyState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState/RevolverAimState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"
+
+[node name="RevolverReloadingState" type="Node" parent="RevolverStateMachine/RevolverRootState/RevolverLocationState"]
+script = ExtResource("4_s38he")
+metadata/_custom_type_script = "uid://fitbaf4b05jq"

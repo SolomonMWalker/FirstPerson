@@ -2,12 +2,12 @@ using Godot;
 using System;
 using FirstPerson.CustomTypes.StateMachine;
 
-public partial class    WeaponFiringState : WeaponAtomicState
+public partial class WeaponFiringState : WeaponAtomicState
 {
     public override void StateEntered()
     {
         base.StateEntered();
-        WeaponController.FireWeapon();
+        //WeaponController.FireWeapon();
     }
 
     public override void StatePhysicsProcessing(double delta)
@@ -25,7 +25,7 @@ public partial class    WeaponFiringState : WeaponAtomicState
             {
                 if (WeaponController.CanFire())
                 {
-                    WeaponController.FireWeapon();
+                    //WeaponController.FireWeapon();
                 }
             }
             else

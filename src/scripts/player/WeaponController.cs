@@ -60,19 +60,6 @@ public partial class WeaponController : Node
                 CanFireNextRound = true;
             }
         }
-
-        if(Input.IsActionJustPressed("Aim"))
-        {
-            GD.Print("Aim");
-            Aiming = true;
-            CurrentWeaponModel.PlayEnterAimAnimation();
-        }
-        else if(Aiming && Input.IsActionJustReleased("Aim"))
-        {
-            GD.Print("Stop Aim");
-            Aiming = false;
-            CurrentWeaponModel.PlayExitAimAnimation();
-        }
     }
 
     public override void _PhysicsProcess(double delta)
@@ -130,11 +117,11 @@ public partial class WeaponController : Node
         return GetCurrentWeaponData().Ammo > 0 && CanFireNextRound;
     }
 
-    public void FireWeapon()
+    public void FireWeapon(bool isAiming)
     {
         if (CanFire())
         {
-            if(Aiming)
+            if(isAiming)
             {
                 CurrentWeaponModel.PlayFireWhileAimingAnimation();
             }
