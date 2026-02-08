@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bkqmefe0jkyi1"
-path="res://.godot/imported/human_justmesh1.glb-4cacca7861519ae252b16bb7766f9396.scn"
+uid="uid://du4xa8ob0b80u"
+path="res://.godot/imported/flatPlane.glb-05048b8e1e8795a6b0ea1e432c8aa4fa.scn"
 
 [deps]
 
-source_file="res://blenderTutorial/human_justmesh1.glb"
-dest_files=["res://.godot/imported/human_justmesh1.glb-4cacca7861519ae252b16bb7766f9396.scn"]
+source_file="res://blenderTutorial/flatPlane.glb"
+dest_files=["res://.godot/imported/flatPlane.glb-05048b8e1e8795a6b0ea1e432c8aa4fa.scn"]
 
 [params]
 

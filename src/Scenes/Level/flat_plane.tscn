@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bk0srpe42clxe"]
+
+[ext_resource type="PackedScene" uid="uid://du4xa8ob0b80u" path="res://blenderTutorial/flatPlane.glb" id="1_bxre8"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_50m7a"]
+data = PackedVector3Array(46.9963, 1, -56.1289, -46.9963, 1, 56.1289, -46.9963, 1, -56.1289, 46.9963, 1, -56.1289, 46.9963, 1, 56.1289, -46.9963, 1, 56.1289, 46.9963, -1, 56.1289, -46.9963, 1, 56.1289, 46.9963, 1, 56.1289, 46.9963, -1, 56.1289, -46.9963, -1, 56.1289, -46.9963, 1, 56.1289, -46.9963, -1, 56.1289, -46.9963, 1, -56.1289, -46.9963, 1, 56.1289, -46.9963, -1, 56.1289, -46.9963, -1, -56.1289, -46.9963, 1, -56.1289, -46.9963, -1, -56.1289, 46.9963, -1, 56.1289, 46.9963, -1, -56.1289, -46.9963, -1, -56.1289, -46.9963, -1, 56.1289, 46.9963, -1, 56.1289, 46.9963, -1, -56.1289, 46.9963, 1, 56.1289, 46.9963, 1, -56.1289, 46.9963, -1, -56.1289, 46.9963, -1, 56.1289, 46.9963, 1, 56.1289, -46.9963, -1, -56.1289, 46.9963, 1, -56.1289, -46.9963, 1, -56.1289, -46.9963, -1, -56.1289, 46.9963, -1, -56.1289, 46.9963, 1, -56.1289)
+
+[node name="flatPlane" instance=ExtResource("1_bxre8")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Cube" index="0"]
+collision_layer = 261
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Cube/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_50m7a")

@@ -1,15 +1,16 @@
 using Godot;
 using System;
 using FirstPerson.CustomTypes.StateMachine;
+using FirstPerson.Scenes.Player;
 
 [GlobalClass]
 public partial class WeaponStateMachine : StateMachine
 {
-    [Export] public WeaponController WeaponController { get; set; }
+    public WeaponController WeaponController { get; set; }
     
     public override void _Ready()
     {
         base._Ready();
-        SetUniqueNameInOwner(true);
+        WeaponController = (WeaponController)GetTree().GetFirstNodeInGroup("weaponController");
     }
 }

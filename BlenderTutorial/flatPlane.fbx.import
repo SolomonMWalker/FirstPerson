@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bkqmefe0jkyi1"
-path="res://.godot/imported/human_justmesh1.glb-4cacca7861519ae252b16bb7766f9396.scn"
+uid="uid://5iak7x008ybg"
+path="res://.godot/imported/flatPlane.fbx-008a6689ffd2ff3a79e088e2cfa4d414.scn"
 
 [deps]
 
-source_file="res://blenderTutorial/human_justmesh1.glb"
-dest_files=["res://.godot/imported/human_justmesh1.glb-4cacca7861519ae252b16bb7766f9396.scn"]
+source_file="res://blenderTutorial/flatPlane.fbx"
+dest_files=["res://.godot/imported/flatPlane.fbx-008a6689ffd2ff3a79e088e2cfa4d414.scn"]
 
 [params]
 
@@ -30,7 +30,7 @@ meshes/force_disable_compression=false
 skins/use_named_skins=true
 animation/import=true
 animation/fps=30
-animation/trimming=false
+animation/trimming=true
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
@@ -38,5 +38,7 @@ materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
 _subresources={}
-gltf/naming_version=2
-gltf/embedded_image_handling=1
+fbx/importer=0
+fbx/allow_geometry_helper_nodes=false
+fbx/embedded_image_handling=1
+fbx/naming_version=2

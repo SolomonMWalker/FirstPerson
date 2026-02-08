@@ -42,6 +42,7 @@ model_point_class_save_path="res://trenchbroom/models"
 [global_group]
 
 player=""
+weaponController=""
 
 [input]
 

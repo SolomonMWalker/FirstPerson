@@ -11,13 +11,11 @@ public partial class WeaponController : Node
     [Export] public PlayerController Player;
     [Export] public CameraController CameraController;
     [Export] public Node3D WeaponModelParent { get; set; }
-    [Export] public WeaponStateMachine WeaponStateMachine { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     [Export] public Reticle Reticle { get; set; }
 
     [ExportCategory("Weapon Settings")]
     [Export] public int MaxAngleAccuracyPenalty { get; set; } = 8;
-    
     
     public Weapon CurrentWeapon { get; set; }
     public WeaponManager WeaponManager { get; set; }
@@ -80,7 +78,7 @@ public partial class WeaponController : Node
             CurrentWeaponModel = CurrentWeapon.WeaponModel.Instantiate<WeaponRig>();
             WeaponModelParent.AddChild(CurrentWeaponModel);
             CurrentWeaponModel.Position = CurrentWeapon.WeaponPosition;
-            CurrentWeaponModel.PlayIdleAnimation();
+            CurrentWeaponModel.PlayHipIdleAnimation();
         }
     }
 
@@ -123,15 +121,15 @@ public partial class WeaponController : Node
         {
             if(isAiming)
             {
-                CurrentWeaponModel.PlayFireWhileAimingAnimation();
+                CurrentWeaponModel.PlayAimFireAnimation();
             }
             else
             {
-                CurrentWeaponModel.PlayFireAnimation();
+                CurrentWeaponModel.PlayHipFireAnimation();
             }
             
             WeaponManager.UseAmmo(WeaponManager.CurrentSlot);
-            GD.Print($"Fired! ammo at {GetCurrentWeaponData().Ammo}");
+            GD.Print($"Fired! ammo at {GetCurrentWeaponAmmo()}");
 
             CanFireNextRound = false;
             FireRateTimer = 1.0 / CurrentWeapon.FireRatePerSecond;
@@ -232,6 +230,5 @@ public partial class WeaponController : Node
         CurrentWeapon = weaponData.Weapon;
         CurrentWeaponModel?.QueueFree();
         SpawnWeaponModel();
-        WeaponStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("WeaponIdleState"));
     }
 }

@@ -10,6 +10,13 @@ public partial class WeaponAtomicState : AtomicState
     public override void _Ready()
     {
         base._Ready();
-        WeaponController = GetNode<WeaponStateMachine>("%WeaponStateMachine").WeaponController;
+        WeaponController = (WeaponController)GetTree().GetFirstNodeInGroup("weaponController");
+    }
+
+    public override void StateProcessing(double delta)
+    {
+        base.StateProcessing(delta);
+        if (WeaponController?.CurrentWeaponModel is null ||
+            WeaponController.CurrentWeaponModel.IsAnimationPlaying()) return;
     }
 }
