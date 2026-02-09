@@ -1,0 +1,5 @@
+﻿- Make Reload revolver bullet-by-bullet animations
+- Make Reload revolver script piece
+    - Including animation addition that moves the cylinder (not in blender animation)
+- Take the time to fix reticle (how do angle accuracy changes affect reticle line distance)
+    - maybe we should switch to a static reticle, not sure yet
