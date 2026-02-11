@@ -1,0 +1,31 @@
+<Project Sdk="Godot.NET.Sdk/4.5.0">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net9.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="configuration.json" />
+    <Content Include="src\Resources\Images\Circle.png" />
+    <Content Include="src\Resources\Images\Circle.png.import" />
+    <Content Include="src\Resources\Images\icon.svg" />
+    <Content Include="src\Resources\Images\icon.svg.import" />
+    <Content Include="src\Resources\Materials\testEnemyMat.tres" />
+    <Content Include="src\Resources\Materials\testMat.tres" />
+    <Content Include="src\Resources\Meshes\test.tres" />
+    <Content Include="src\Resources\Shapes\testPlayerCrouchingShape.tres" />
+    <Content Include="src\Resources\Shapes\testPlayerShape.tres" />
+    <Content Include="src\Resources\Textures\circle.png" />
+    <Content Include="src\Resources\Textures\circle.png.import" />
+    <Content Include="src\Resources\Textures\icon.svg" />
+    <Content Include="src\Resources\Textures\icon.svg.import" />
+    <Content Include="src\Resources\Textures\testText.tres" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Resources\BlenderFiles\" />
+    <Folder Include="src\Resources\PhysicsMaterials\" />
+    <Folder Include="src\Resources\ShaderMaterials\" />
+    <Folder Include="src\Resources\Shaders\" />
+    <Folder Include="src\Resources\Themes\" />
+  </ItemGroup>
+</Project>
