@@ -26,8 +26,7 @@ public partial class WeaponController : Node
     public bool CanFireNextRound { get; private set; } = true;
     public bool Aiming { get; private set; } = true;
 
-    private (bool, string) _bulletAddedAndAnimationName;
-
+    private (bool, string) _bulletAddedAnimStartedAndName;
     private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
 
     public override void _Ready()
@@ -235,21 +234,37 @@ public partial class WeaponController : Node
         SpawnWeaponModel();
     }
 
+    public void InterruptReloadanimation()
+    {
+        _bulletAddedAnimStartedAndName = (false, null);
+    }
+
+    //kinda hacky, but allows me to keep the imported animation player intact
+    //and keeps me from having to chain them
     public void CheckForBulletAdd()
     {
         if (CurrentWeaponModel is not RevolverRig revolverRig) return;
-        if (!_bulletAddedAndAnimationName.Item1
+        if (!_bulletAddedAnimStartedAndName.Item1
             && revolverRig.BulletAddedAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation)
         ) {
-            _bulletAddedAndAnimationName.Item1 = true;
-            _bulletAddedAndAnimationName.Item2 = revolverRig.AnimationPlayer.CurrentAnimation;
+            _bulletAddedAnimStartedAndName.Item1 = true;
+            _bulletAddedAnimStartedAndName.Item2 = revolverRig.AnimationPlayer.CurrentAnimation;
+            return;
+        }
+
+        if
+        (_bulletAddedAnimStartedAndName.Item1 && 
+            (
+                !revolverRig.AnimationPlayer.IsPlaying() ||
+                revolverRig.AnimationPlayer.CurrentAnimation != _bulletAddedAnimStartedAndName.Item2
+            )        
+        )
+        {
             WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo += 1;
             GD.Print($"Ammo added, current ammo is {WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo}");
+            _bulletAddedAnimStartedAndName.Item1 = false;
+            _bulletAddedAnimStartedAndName.Item2 = null;
         }
-        else if (!revolverRig.AnimationPlayer.CurrentAnimation.Equals(_bulletAddedAndAnimationName.Item2))
-        {
-            _bulletAddedAndAnimationName.Item1 = false;
-            _bulletAddedAndAnimationName.Item2 = null;
-        }
+        
     }
 }

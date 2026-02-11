@@ -12,11 +12,11 @@
 [ext_resource type="Script" uid="uid://dh1jqh00at57p" path="res://src/assets/weapons/revolver/states/RevolverAimEmptyState.cs" id="9_xltmt"]
 [ext_resource type="Script" uid="uid://cxnkf3x2ciwij" path="res://src/assets/weapons/revolver/states/RevolverReloadState.cs" id="11_fvkro"]
 
-[node name="RevolverRig" unique_id=2061336019 node_paths=PackedStringArray("AnimationPlayer") instance=ExtResource("1_r5xbd")]
+[node name="RevolverRig" unique_id=1083974252 node_paths=PackedStringArray("AnimationPlayer") instance=ExtResource("1_r5xbd")]
 script = ExtResource("2_fvkro")
 AnimationPlayer = NodePath("AnimationPlayer")
 
-[node name="Circle" parent="." index="1" unique_id=615834939]
+[node name="Circle" parent="." index="1" unique_id=1621711775]
 visible = false
 
 [node name="RevolverStateMachine" type="Node" parent="." index="3" unique_id=679673906 node_paths=PackedStringArray("RootState")]

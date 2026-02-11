@@ -17,6 +17,7 @@ public partial class WeaponRig : Node3D
     public virtual void PlayAimToReloadAnimation() {}
     public virtual void PlayHipToReloadAnimation() {}
     public virtual void PlayReloadAnimation(int numberOfBullets) {}
+    public virtual void InterruptReloadanimation() {}
 }
 
 [GlobalClass]
@@ -32,6 +33,7 @@ public partial class RevolverRig : WeaponRig
     [Export] public StringName ReloadInsertNextBulletAnimationName { get; set; } = "RevolverReloadInsertNextBullet";
     [Export] public StringName ReloadTurnCylinderAnimationName { get; set; } = "RevolverReloadTurnCylinder";
     [Export] public StringName ReloadCloseCylinderAnimationName { get; set; } = "RevolverReloadCloseCylinder";
+    [Export] public StringName ReloadInterruptAnimationName { get; set; } = "RevolverReloadInterrupt";
 
     //upon entrance to these animations, a bullet has been added
     public List<StringName> BulletAddedAnimations { get; private set; } = [];
@@ -39,8 +41,16 @@ public partial class RevolverRig : WeaponRig
     public override void _Ready()
     {
         base._Ready();
-        BulletAddedAnimations.AddRange([ReloadTurnCylinderAnimationName, ReloadCloseCylinderAnimationName]);
+        BulletAddedAnimations.AddRange([AimToReloadAnimationName, HipToReloadAnimationName, ReloadInsertNextBulletAnimationName]);
     }
+
+    public override void InterruptReloadanimation()
+    {
+        if(AnimationPlayer.CurrentAnimation == ReloadCloseCylinderAnimationName) return;
+        AnimationPlayer.ClearQueue();
+        AnimationPlayer.Play(ReloadInterruptAnimationName);
+    }
+
 
     public override void PlayHipIdleAnimation()
     {
