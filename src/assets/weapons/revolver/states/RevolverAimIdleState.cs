@@ -27,5 +27,12 @@ public partial class RevolverAimIdleState : WeaponAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimEmptyState"));
             return;
         }
+
+        if (Input.IsActionJustPressed("Reload"))
+        {
+            WeaponController.CurrentWeaponModel.PlayAimToReloadAnimation();
+            OnStateChangeRequired(new ChangeStateEventArgs("RevolverReloadState"));
+            return;
+        }
     }
 }

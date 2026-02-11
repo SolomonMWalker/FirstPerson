@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="WeaponData" load_steps=3 format=3 uid="uid://dnqfmu70to5tg"]
+[gd_resource type="Resource" script_class="WeaponData" format=3 uid="uid://dnqfmu70to5tg"]
 
 [ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="1_dhw5i"]
 [ext_resource type="Resource" uid="uid://ckdb26phy4kp4" path="res://src/assets/weapons/resources/pistol.tres" id="1_vlxgn"]
@@ -7,5 +7,5 @@
 script = ExtResource("1_dhw5i")
 Weapon = ExtResource("1_vlxgn")
 Unlocked = true
-Ammo = 20
+Ammo = 6
 metadata/_custom_type_script = "uid://bri1qicowwv8g"

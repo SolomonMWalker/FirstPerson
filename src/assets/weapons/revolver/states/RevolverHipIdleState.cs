@@ -25,5 +25,12 @@ public partial class RevolverHipIdleState : WeaponAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipEmptyState"));
             return;
         }
+
+        if (Input.IsActionJustPressed("Reload"))
+        {
+            WeaponController.CurrentWeaponModel.PlayHipToReloadAnimation();
+            OnStateChangeRequired(new ChangeStateEventArgs("RevolverReloadState"));
+            return;
+        }
     }
 }

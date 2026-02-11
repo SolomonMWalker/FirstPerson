@@ -26,6 +26,8 @@ public partial class WeaponController : Node
     public bool CanFireNextRound { get; private set; } = true;
     public bool Aiming { get; private set; } = true;
 
+    private (bool, string) _bulletAddedAndAnimationName;
+
     private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
 
     public override void _Ready()
@@ -50,6 +52,7 @@ public partial class WeaponController : Node
     public override void _Process(double delta)
     {
         base._Process(delta);
+        CheckForBulletAdd();
         if (FireRateTimer > 0)
         {
             FireRateTimer -= delta;
@@ -230,5 +233,23 @@ public partial class WeaponController : Node
         CurrentWeapon = weaponData.Weapon;
         CurrentWeaponModel?.QueueFree();
         SpawnWeaponModel();
+    }
+
+    public void CheckForBulletAdd()
+    {
+        if (CurrentWeaponModel is not RevolverRig revolverRig) return;
+        if (!_bulletAddedAndAnimationName.Item1
+            && revolverRig.BulletAddedAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation)
+        ) {
+            _bulletAddedAndAnimationName.Item1 = true;
+            _bulletAddedAndAnimationName.Item2 = revolverRig.AnimationPlayer.CurrentAnimation;
+            WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo += 1;
+            GD.Print($"Ammo added, current ammo is {WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo}");
+        }
+        else if (!revolverRig.AnimationPlayer.CurrentAnimation.Equals(_bulletAddedAndAnimationName.Item2))
+        {
+            _bulletAddedAndAnimationName.Item1 = false;
+            _bulletAddedAndAnimationName.Item2 = null;
+        }
     }
 }
