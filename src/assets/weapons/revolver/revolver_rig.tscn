@@ -12,11 +12,59 @@
 [ext_resource type="Script" uid="uid://dh1jqh00at57p" path="res://src/assets/weapons/revolver/states/RevolverAimEmptyState.cs" id="9_xltmt"]
 [ext_resource type="Script" uid="uid://cxnkf3x2ciwij" path="res://src/assets/weapons/revolver/states/RevolverReloadState.cs" id="11_fvkro"]
 
-[node name="RevolverRig" unique_id=1083974252 node_paths=PackedStringArray("AnimationPlayer") instance=ExtResource("1_r5xbd")]
+[node name="RevolverRig" unique_id=166723857 node_paths=PackedStringArray("AnimationPlayer") instance=ExtResource("1_r5xbd")]
 script = ExtResource("2_fvkro")
 AnimationPlayer = NodePath("AnimationPlayer")
 
-[node name="Circle" parent="." index="1" unique_id=1621711775]
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1200169866) index="0" unique_id=1002484125]
+bones/2/rotation = Quaternion(-0.55774575, -0.13136154, 0.61478543, 0.5419435)
+bones/3/rotation = Quaternion(0.2694617, 0.003260482, 0.60364664, 0.75032693)
+bones/4/rotation = Quaternion(0.30312034, 0.09263746, -0.25047734, 0.91476643)
+bones/5/rotation = Quaternion(0.18456922, 0.004342667, 0.023117337, 0.98253804)
+bones/6/rotation = Quaternion(-0.6458305, 0.008049318, -0.009514114, 0.76337904)
+bones/7/rotation = Quaternion(-0.60951555, 0.004233776, -0.0055063623, 0.7927438)
+bones/8/rotation = Quaternion(-0.71031, 0.061425325, -0.060412467, 0.6985965)
+bones/9/rotation = Quaternion(-0.55607355, -0.007422666, 0.011092826, 0.8310259)
+bones/10/rotation = Quaternion(-0.26734877, 0.0033758685, -0.012166514, 0.9635171)
+bones/11/rotation = Quaternion(-0.7119356, 0.033944454, -0.033357777, 0.7006303)
+bones/12/rotation = Quaternion(-0.5388411, -0.008112857, 0.0126986075, 0.84227264)
+bones/13/rotation = Quaternion(-0.21498026, -0.0011419377, 0.0035261053, 0.97661144)
+bones/14/rotation = Quaternion(-0.775619, -0.0055234777, -0.0011483884, 0.63117635)
+bones/15/rotation = Quaternion(-0.25968808, 0.0029196355, -0.008178118, 0.96565354)
+bones/16/rotation = Quaternion(-0.447805, -0.021714268, 0.023507416, 0.8935583)
+bones/17/rotation = Quaternion(-0.23965707, -0.077018045, 0.29610413, 0.9213877)
+bones/18/rotation = Quaternion(0.062120203, 0.0071066096, -0.024679057, 0.9977382)
+bones/19/rotation = Quaternion(0.07178859, -0.029794259, -0.21406507, 0.97372216)
+bones/20/position = Vector3(0.11056637, 0.10206703, -0.04097449)
+bones/22/rotation = Quaternion(0.0037596584, -0.11551232, 0.991663, -0.056986053)
+bones/23/position = Vector3(0.016646925, 0.27106842, -0.12091503)
+bones/23/rotation = Quaternion(0.21712554, 0.0011415959, -0.0053783855, 0.9761282)
+bones/25/position = Vector3(-0.036433518, -0.4872771, -0.07523018)
+bones/25/rotation = Quaternion(-0.70263374, 0.073475115, 0.70394117, -0.073308)
+bones/26/position = Vector3(0.30802098, -0.46014398, 0.70582324)
+bones/28/rotation = Quaternion(-0.58777523, 0.30217966, -0.0727424, 0.746938)
+bones/29/rotation = Quaternion(0.212051, -0.0037111244, -0.4750356, 0.85402673)
+bones/30/rotation = Quaternion(-0.013074014, -0.3443373, -0.0921339, 0.93422276)
+bones/31/rotation = Quaternion(-0.6683724, -0.020014012, 0.022255393, 0.7432244)
+bones/32/rotation = Quaternion(-0.6665036, -0.053803787, 0.05982918, 0.74114686)
+bones/33/rotation = Quaternion(-0.7309765, -0.005077468, 0.0047396724, 0.6823672)
+bones/34/rotation = Quaternion(-0.66834, -0.021063855, 0.023422822, 0.7431886)
+bones/35/rotation = Quaternion(-0.66861206, 0.008924898, -0.009924361, 0.74349165)
+bones/36/rotation = Quaternion(-0.7456063, -0.009414908, 0.008413076, 0.6662672)
+bones/37/rotation = Quaternion(-0.6684236, 0.0047768853, -0.005315177, 0.7437465)
+bones/38/rotation = Quaternion(-0.7039222, 0.01060195, -0.010708434, 0.7101173)
+bones/39/rotation = Quaternion(-0.7086174, 0.0028662807, -0.0023498903, 0.70558316)
+bones/40/rotation = Quaternion(-0.6967564, 0.040555812, -0.04161475, 0.7149504)
+bones/41/rotation = Quaternion(-0.73987764, -0.006872383, 0.0053081126, 0.6726855)
+bones/42/rotation = Quaternion(-0.6983848, 0.027835721, -0.015788622, 0.71500665)
+bones/43/rotation = Quaternion(-0.15056096, 0.07988513, -0.13171536, 0.97652495)
+bones/44/rotation = Quaternion(0.051540464, -0.016643653, 0.19987193, 0.97832394)
+bones/45/rotation = Quaternion(-0.04343105, 0.06535192, -0.014455097, 0.9968119)
+bones/46/position = Vector3(0.6231991, -0.23332143, -0.69142526)
+bones/46/rotation = Quaternion(0.6735852, -0.2119018, 0.6818761, -0.19085485)
+bones/47/position = Vector3(-0.41848135, -0.46012557, 0.4370119)
+
+[node name="Circle" parent="." index="1" unique_id=365951774]
 visible = false
 
 [node name="RevolverStateMachine" type="Node" parent="." index="3" unique_id=679673906 node_paths=PackedStringArray("RootState")]

@@ -26,7 +26,7 @@ public partial class WeaponController : Node
     public bool CanFireNextRound { get; private set; } = true;
     public bool Aiming { get; private set; } = true;
 
-    private (bool, string) _bulletAddedAnimStartedAndName;
+    private (bool hasStarted, string name) _bulletAddedAnimStartedAndName;
     private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
 
     public override void _Ready()
@@ -244,26 +244,26 @@ public partial class WeaponController : Node
     public void CheckForBulletAdd()
     {
         if (CurrentWeaponModel is not RevolverRig revolverRig) return;
-        if (!_bulletAddedAnimStartedAndName.Item1
+        if (!_bulletAddedAnimStartedAndName.hasStarted
             && revolverRig.BulletAddedAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation)
         ) {
-            _bulletAddedAnimStartedAndName.Item1 = true;
-            _bulletAddedAnimStartedAndName.Item2 = revolverRig.AnimationPlayer.CurrentAnimation;
+            _bulletAddedAnimStartedAndName.hasStarted = true;
+            _bulletAddedAnimStartedAndName.name = revolverRig.AnimationPlayer.CurrentAnimation;
             return;
         }
 
         if
-        (_bulletAddedAnimStartedAndName.Item1 && 
+        (_bulletAddedAnimStartedAndName.hasStarted && 
             (
                 !revolverRig.AnimationPlayer.IsPlaying() ||
-                revolverRig.AnimationPlayer.CurrentAnimation != _bulletAddedAnimStartedAndName.Item2
+                revolverRig.AnimationPlayer.CurrentAnimation != _bulletAddedAnimStartedAndName.name
             )        
         )
         {
             WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo += 1;
             GD.Print($"Ammo added, current ammo is {WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo}");
-            _bulletAddedAnimStartedAndName.Item1 = false;
-            _bulletAddedAnimStartedAndName.Item2 = null;
+            _bulletAddedAnimStartedAndName.hasStarted = false;
+            _bulletAddedAnimStartedAndName.name = null;
         }
         
     }
