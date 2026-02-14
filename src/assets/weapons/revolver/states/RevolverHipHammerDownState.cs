@@ -2,29 +2,24 @@ using Godot;
 using System;
 using FirstPerson.CustomTypes.StateMachine;
 
-public partial class RevolverHipIdleState : WeaponAtomicState
+public partial class RevolverHipHammerDownState : WeaponAtomicState
 {
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
+        if(WeaponController.CurrentWeaponModel.AnimationPlayer.IsPlaying()) return;
+
         if (Input.IsActionJustPressed("Fire") && WeaponController.CanFire())
         {
-            if(WeaponController.CurrentWeaponModel is not RevolverRig revolverRig) return;
-            revolverRig.PlayHipHammerDownAnimation();
-            OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipHammerDownState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipFireState"));
             return;
         }
 
         if (Input.IsActionPressed("Aim"))
         {
-            WeaponController.CurrentWeaponModel.PlayHipToAimAnimation();
-            OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimIdleState"));
-            return;
-        }
-        
-        if (WeaponController.GetCurrentWeaponAmmo() <= 0)
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipEmptyState"));
+            if(WeaponController.CurrentWeaponModel is not RevolverRig revolverRig) return;
+            revolverRig.PlayHammerDownHipToAimAnimation();
+            OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimHammerDownState"));
             return;
         }
 

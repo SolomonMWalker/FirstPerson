@@ -1,5 +1,4 @@
 using FirstPerson;
-using FirstPerson.Configuration;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 using Godot;

@@ -13,10 +13,10 @@ public partial class PlayerStateMachine: StateMachine
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        if (StateLabel.Text != GetStateMachineString())
-        {
-            StateLabel.Text = GetStateMachineString();
-        }
+        // if (StateLabel.Text != GetStateMachineString())
+        // {
+        //     StateLabel.Text = GetStateMachineString();
+        // }
     }
 
     public string GetMovementState()

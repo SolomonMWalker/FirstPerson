@@ -1,11 +1,10 @@
-using FirstPerson.Configuration;
 using Godot;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 
 public partial class Explosion : Node3D
 {
-    private static string PathToExplosionScene = $"{Configuration.GetConfigValues().ProjectileDirectoryPath}/explosion.tscn";
+    private static string PathToExplosionScene = $"/explosion.tscn";
     private static PackedScene ExplosionPackedScene;
     
     public double LifetimeInSec { get; private set; } = 0.25;

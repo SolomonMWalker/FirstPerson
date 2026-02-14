@@ -1,10 +1,9 @@
-using FirstPerson.Configuration;
 using FirstPerson.Helpers;
 using Godot;
 
 public partial class Fireball : CharacterBody3D
 {
-    private static string PathToFireballScene = $"{Configuration.GetConfigValues().ProjectileDirectoryPath}/fireball.tscn";
+    private static string PathToFireballScene = $"/fireball.tscn";
     private static PackedScene FireballPackedScene;
     
     private bool VelocitySet { get; set; }

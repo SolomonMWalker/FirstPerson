@@ -1,6 +1,5 @@
 using Godot;
 using FirstPerson;
-using FirstPerson.Configuration;
 using FirstPerson.CustomTypes;
 using FirstPerson.Helpers;
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public partial class WeaponRig : Node3D
 {
     [Export] public AnimationPlayer AnimationPlayer;
+    [Export] public WeaponStateMachine WeaponStateMachine;
 
     public bool IsAnimationPlaying() => AnimationPlayer.IsPlaying();
     
@@ -26,8 +27,12 @@ public partial class RevolverRig : WeaponRig
     [Export] public StringName HipIdleAnimationName { get; set; } = "RevolverHipIdle";
     [Export] public StringName HipFireAnimationName { get; set; } = "RevolverHipFire";
     [Export] public StringName AimFireAnimationName { get; set; } = "RevolverAimFire";
+    [Export] public StringName AimHammerDownAnimationName { get; set; } = "RevolverAimHammerDown";
+    [Export] public StringName HipHammerDownAnimationName { get; set; } = "RevolverHipHammerDown";
     [Export] public StringName HipToAimAnimationName { get; set; } = "RevolverHipToAim";
     [Export] public StringName AimToHipAnimationName { get; set; } = "RevolverAimToHip";
+    [Export] public StringName HammerDownHipToAimAnimationName { get; set; } = "RevolverHammerDownHipToAim";
+    [Export] public StringName HammerDownAimToHipAnimationName { get; set; } = "RevolverHammerDownAimToHip";
     [Export] public StringName AimToReloadAnimationName { get; set; } = "RevolverReloadFromAimOpenCylinderInsertFirstBullet";
     [Export] public StringName HipToReloadAnimationName { get; set; } = "RevolverReloadFromHipOpenCylinderInsertFirstBullet";
     [Export] public StringName ReloadInsertNextBulletAnimationName { get; set; } = "RevolverReloadInsertNextBullet";
@@ -85,6 +90,26 @@ public partial class RevolverRig : WeaponRig
     public override void PlayHipToReloadAnimation()
     {
         AnimationPlayer.Play(HipToReloadAnimationName);
+    }
+
+    public void PlayHipHammerDownAnimation()
+    {
+        AnimationPlayer.Play(HipHammerDownAnimationName);
+    }
+
+    public void PlayAimHammerDownAnimation()
+    {
+        AnimationPlayer.Play(AimHammerDownAnimationName);
+    }
+
+    public void PlayHammerDownAimToHipAnimation()
+    {
+        AnimationPlayer.Play(HammerDownAimToHipAnimationName);
+    }
+
+    public void PlayHammerDownHipToAimAnimation()
+    {
+        AnimationPlayer.Play(HammerDownHipToAimAnimationName);
     }
     
     public override void PlayReloadAnimation(int numberOfBullets)

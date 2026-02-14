@@ -11,7 +11,9 @@ public partial class RevolverAimIdleState : WeaponAtomicState
         
         if (Input.IsActionJustPressed("Fire") && WeaponController.CanFire())
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimFireState"));
+            if(WeaponController.CurrentWeaponModel is not RevolverRig revolverRig) return;
+            revolverRig.PlayAimHammerDownAnimation();
+            OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimHammerDownState"));
             return;
         }
         
@@ -20,15 +22,16 @@ public partial class RevolverAimIdleState : WeaponAtomicState
             //play to hip animation because hip animation doesn't know how its being reached
             WeaponController.CurrentWeaponModel.PlayAimToHipAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipIdleState"));
+            return;
         }
-        
+
         if (WeaponController.GetCurrentWeaponAmmo() <= 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimEmptyState"));
             return;
         }
 
-        if (Input.IsActionJustPressed("Reload"))
+        if (Input.IsActionJustPressed("Reload") && WeaponController.CanReload())
         {
             WeaponController.CurrentWeaponModel.PlayAimToReloadAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverReloadState"));

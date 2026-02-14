@@ -1,5 +1,4 @@
 using FirstPerson;
-using FirstPerson.Configuration;
 using Godot;
 
 public partial class TestAgent : Agent

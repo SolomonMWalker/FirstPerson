@@ -1,11 +1,12 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-using FirstPerson.Configuration;
 using FirstPerson.Scenes.Player;
 
 public partial class CoverSpotController : Node
 {
+    [Export] PlayerController Player;
+
     private double PollTimeInSeconds { get; set; } = 1;
     private List<CoverSpot> CoverSpots { get; set; } = [];
 
@@ -23,8 +24,7 @@ public partial class CoverSpotController : Node
     {
         base._Ready();
         CoverSpots.AddRange(GetChildren().OfType<CoverSpot>());
-        _playerController = GetNode<PlayerController>(Configuration.GetConfigValues().PlayerSceneTreePath);
-        TargetToCoverSpots.Add(_playerController, 
+        TargetToCoverSpots.Add(Player, 
             new TargetToDistanceOrderedCoverSpots(GetReorderedCoverSpots(_playerController), GD.Randf() * PollTimeInSeconds));
     }
 

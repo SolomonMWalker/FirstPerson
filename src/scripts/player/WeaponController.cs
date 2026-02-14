@@ -13,6 +13,7 @@ public partial class WeaponController : Node
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     [Export] public Reticle Reticle { get; set; }
+    [Export] public Label StateLabel {get; set;}
 
     [ExportCategory("Weapon Settings")]
     [Export] public int MaxAngleAccuracyPenalty { get; set; } = 8;
@@ -60,6 +61,7 @@ public partial class WeaponController : Node
                 CanFireNextRound = true;
             }
         }
+        StateLabel.Text = CurrentWeaponModel.WeaponStateMachine?.GetStateMachineString();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -115,6 +117,11 @@ public partial class WeaponController : Node
     public bool CanFire()
     {
         return GetCurrentWeaponData().Ammo > 0 && CanFireNextRound;
+    }
+
+    public bool CanReload()
+    {
+        return GetCurrentWeaponData().Ammo < CurrentWeapon.MaxAmmo;
     }
 
     public void FireWeapon(bool isAiming)
