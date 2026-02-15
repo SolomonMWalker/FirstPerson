@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://snldves4ldlr"]
+
+[ext_resource type="ArrayMesh" uid="uid://bvnxa2w4lqxru" path="res://src/assets/weapons/revolver/revolverBulletMesh.tres" id="1_1bbx7"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bbx7"]
+albedo_color = Color(1, 1, 0.26666668, 1)
+
+[node name="RevolverBullet" type="Node3D" unique_id=983889294]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1813572983]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.019877791, 0)
+mesh = ExtResource("1_1bbx7")
+surface_material_override/0 = SubResource("StandardMaterial3D_1bbx7")

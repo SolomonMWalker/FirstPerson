@@ -1,6 +1,10 @@
-[gd_resource type="Skin" format=3 uid="uid://lwppnsh4sg22"]
+[gd_scene format=3 uid="uid://jg2a2hb3wif4"]
 
-[resource]
+[ext_resource type="ArrayMesh" uid="uid://d2g5xpp61i5cv" path="res://src/assets/weapons/revolver/revolverCylinderMesh.tres" id="1_kxvp2"]
+[ext_resource type="PackedScene" uid="uid://snldves4ldlr" path="res://src/assets/weapons/revolver/revolver_bullet.tscn" id="2_3men7"]
+[ext_resource type="PackedScene" uid="uid://bcfxdcyvy8x4b" path="res://src/assets/weapons/revolver/revolver_bullet_casing.tscn" id="3_wdvte"]
+
+[sub_resource type="Skin" id="Skin_8cmss"]
 resource_name = "Skin"
 bind_count = 48
 bind/0/name = &"root"
@@ -147,3 +151,51 @@ bind/46/pose = Transform3D(-1, 0, 0, 0, 0, 1, 0, 1, 0, 0.45161557, -0.8683568, -
 bind/47/name = &"ik.elbow.target.r"
 bind/47/bone = -1
 bind/47/pose = Transform3D(-0.01948456, 5.3551057e-09, 0.9998103, 0.9982823, 0.055264335, 0.019454828, -0.055253845, 0.99847174, -0.0010768148, -0.39121908, -0.8783378, -0.001252271)
+
+[node name="gunCylinderMesh2" type="MeshInstance3D" unique_id=2070607423]
+mesh = ExtResource("1_kxvp2")
+skin = SubResource("Skin_8cmss")
+
+[node name="Bullets" type="Node3D" parent="." unique_id=1168230238]
+
+[node name="BulletSpot1" type="MeshInstance3D" parent="Bullets" unique_id=1324244718]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.043416433, 0.030194193, 0)
+
+[node name="RevolverBullet" parent="Bullets/BulletSpot1" unique_id=983889294 instance=ExtResource("2_3men7")]
+
+[node name="RevolverBulletCasing" parent="Bullets/BulletSpot1" unique_id=458459207 instance=ExtResource("3_wdvte")]
+
+[node name="BulletSpot2" type="MeshInstance3D" parent="Bullets" unique_id=436812734]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.043, 0.015, 0.026)
+
+[node name="RevolverBullet" parent="Bullets/BulletSpot2" unique_id=746784242 instance=ExtResource("2_3men7")]
+
+[node name="RevolverBulletCasing" parent="Bullets/BulletSpot2" unique_id=281968228 instance=ExtResource("3_wdvte")]
+
+[node name="BulletSpot3" type="MeshInstance3D" parent="Bullets" unique_id=1454098291]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.043, -0.015, 0.026)
+
+[node name="RevolverBullet" parent="Bullets/BulletSpot3" unique_id=2077718859 instance=ExtResource("2_3men7")]
+
+[node name="RevolverBulletCasing" parent="Bullets/BulletSpot3" unique_id=1846935629 instance=ExtResource("3_wdvte")]
+
+[node name="BulletSpot4" type="MeshInstance3D" parent="Bullets" unique_id=1145691182]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.043, -0.03, 0)
+
+[node name="RevolverBullet" parent="Bullets/BulletSpot4" unique_id=1355880925 instance=ExtResource("2_3men7")]
+
+[node name="RevolverBulletCasing" parent="Bullets/BulletSpot4" unique_id=2110592684 instance=ExtResource("3_wdvte")]
+
+[node name="BulletSpot5" type="MeshInstance3D" parent="Bullets" unique_id=1624871951]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.043, -0.016, -0.026)
+
+[node name="RevolverBullet" parent="Bullets/BulletSpot5" unique_id=1409452998 instance=ExtResource("2_3men7")]
+
+[node name="RevolverBulletCasing" parent="Bullets/BulletSpot5" unique_id=768779053 instance=ExtResource("3_wdvte")]
+
+[node name="BulletSpot6" type="MeshInstance3D" parent="Bullets" unique_id=2102371930]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0.043, 0.015, -0.026)
+
+[node name="RevolverBullet" parent="Bullets/BulletSpot6" unique_id=1506268475 instance=ExtResource("2_3men7")]
+
+[node name="RevolverBulletCasing" parent="Bullets/BulletSpot6" unique_id=1609855927 instance=ExtResource("3_wdvte")]

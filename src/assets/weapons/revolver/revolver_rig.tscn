@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dmtaboa7oloj1" path="res://BlenderTutorial/Arms.glb" id="1_r5xbd"]
 [ext_resource type="Script" uid="uid://coxejc2xo11qw" path="res://src/assets/weapons/revolver/RevolverRig.cs" id="2_fvkro"]
 [ext_resource type="Script" uid="uid://s6h5quabullu" path="res://src/assets/weapons/scripts/states/baseStates/WeaponStateMachine.cs" id="2_xod4v"]
+[ext_resource type="PackedScene" uid="uid://jg2a2hb3wif4" path="res://src/assets/weapons/revolver/gun_cylinder_mesh_2.tscn" id="3_6ae14"]
 [ext_resource type="Script" uid="uid://cike71hun3kf3" path="res://src/assets/weapons/scripts/states/baseStates/WeaponCompoundState.cs" id="3_fvkro"]
 [ext_resource type="Script" uid="uid://dcvb0y4fqcxsu" path="res://src/assets/weapons/revolver/states/RevolverHipIdleState.cs" id="4_2brm7"]
 [ext_resource type="Script" uid="uid://byah31245edt0" path="res://src/assets/weapons/revolver/states/RevolverHipFireState.cs" id="5_pq06f"]
@@ -15,8 +16,14 @@
 [ext_resource type="Script" uid="uid://cxnkf3x2ciwij" path="res://src/assets/weapons/revolver/states/RevolverReloadState.cs" id="11_fvkro"]
 [ext_resource type="Script" uid="uid://yfbcdmkamml8" path="res://src/assets/weapons/revolver/CylinderController.cs" id="14_n5rcv"]
 
-[node name="RevolverRig" unique_id=1517891696 instance=ExtResource("1_r5xbd")]
+[node name="RevolverRig" unique_id=190959428 node_paths=PackedStringArray("AnimationPlayer", "WeaponStateMachine") instance=ExtResource("1_r5xbd")]
 script = ExtResource("2_fvkro")
+AnimationPlayer = NodePath("AnimationPlayer")
+WeaponStateMachine = NodePath("RevolverStateMachine")
+
+[node name="gunCylinderMesh2" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(360847624) index="2" unique_id=2070607423 instance=ExtResource("3_6ae14")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.29943466, -0.012573242, 1.1958123)
+visible = false
 
 [node name="RevolverStateMachine" type="Node" parent="." index="2" unique_id=679673906 node_paths=PackedStringArray("RootState")]
 script = ExtResource("2_xod4v")
@@ -64,6 +71,6 @@ metadata/_custom_type_script = "uid://fitbaf4b05jq"
 script = ExtResource("11_fvkro")
 metadata/_custom_type_script = "uid://fitbaf4b05jq"
 
-[node name="CylinderController" type="Node" parent="." index="4" unique_id=1061597558 node_paths=PackedStringArray("Cylinder")]
+[node name="CylinderController" type="Node" parent="." index="3" unique_id=1061597558 node_paths=PackedStringArray("Cylinder")]
 script = ExtResource("14_n5rcv")
 Cylinder = NodePath("../Armature/Skeleton3D/gunCylinderMesh")
