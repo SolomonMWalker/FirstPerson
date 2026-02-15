@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bb5ukvhrnw15k"
-path.s3tc="res://.godot/imported/Arms_MyTexture.png-f930978db4b8d77e1abcb6b6047bad81.s3tc.ctex"
+uid="uid://ifqnk3ofbd8t"
+path.s3tc="res://.godot/imported/Arms_cylinderTexture.png-78e6e0931779cd3e8c604faaceef1dd0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "a4e4c822068f70f6ddd29e655f5232b3"
+"md5": "06ad9483d8fdd0e709f20e84e3dc3ee3"
 }
 
 [deps]
 
-source_file="res://blenderTutorial/Arms_MyTexture.png"
-dest_files=["res://.godot/imported/Arms_MyTexture.png-f930978db4b8d77e1abcb6b6047bad81.s3tc.ctex"]
+source_file="res://blenderTutorial/Arms_cylinderTexture.png"
+dest_files=["res://.godot/imported/Arms_cylinderTexture.png-78e6e0931779cd3e8c604faaceef1dd0.s3tc.ctex"]
 
 [params]
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ckgl8ari50ceg" path="res://src/assets/weapons/resources/projectile.tscn" id="1_ffwsm"]
 [ext_resource type="Script" uid="uid://yxetfin4alyg" path="res://src/assets/weapons/scripts/Weapon.cs" id="2_ffwsm"]
-[ext_resource type="PackedScene" uid="uid://bfpnc5h3wf0sw" path="res://src/assets/weapons/revolver/revolver_rig.tscn" id="2_pnvhc"]
+[ext_resource type="PackedScene" uid="uid://clpaoquya0ccb" path="res://src/assets/weapons/revolver/revolver_rig_break_inher.tscn" id="2_pnvhc"]
 
 [resource]
 script = ExtResource("2_ffwsm")

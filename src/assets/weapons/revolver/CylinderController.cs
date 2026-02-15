@@ -2,17 +2,24 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+[GlobalClass]
 public partial class CylinderController : Node
 {
-    [Export] Node3D Cylinder;
-    [Export] int ReloadRotationState = 2;
+    [Export] public Node3D CylinderParent {get; set;}
+    [Export] public Node3D ForwardNode {get; set;}
+    [Export] public CylinderRotationEventController CylinderRotationEventController {get; set;}
+    [Export] public int ReloadRotationState = 2;
 
     //Can be 1-6
     //Movement from 1 -> 2 requires adding 60deg to bone rotation
     //all rotation is adding, so counter-clockwise rotation
 
+    public int CylinderBoneIndex;
+
+    private Vector3 LocalForward {get; set;}
     private int RotationState {get; set;} = 1;
     private float CylinderRotation {get; set;} = 0;
+    private Basis? RotationDestinationBasis {get;set;} = null;
     private Tween RotationTween {get; set;}
     private Dictionary<int, int> CylinderRotationStateToDegreeRotation {get; set;} = [];
 
@@ -27,27 +34,16 @@ public partial class CylinderController : Node
         CylinderRotationStateToDegreeRotation.Add(6, 300);
     }
 
-    public override void _Process(double delta)
+    public void SetLocalForward()
     {
-        base._Process(delta);
-        if(Cylinder.Rotation.Z != CylinderRotation)
-        {
-            Cylinder.Rotation = Cylinder.Rotation with { Z = CylinderRotation };
-        }
-        if(Cylinder.Rotation.Z == 360)
-        {
-            Cylinder.Rotation = Cylinder.Rotation with { Z = 0 };
-        }
+        LocalForward = CylinderParent.Position.DirectionTo(ForwardNode.Position);
     }
-
 
     public void RotateCylinderByOneBullet(float timeInSeconds)
     {
         RotationState += 1;
-        var rotationAmount = CylinderRotation + 60f;
-        rotationAmount = Mathf.DegToRad(rotationAmount);
-        RotationTween = CreateTween();
-        RotationTween.TweenProperty(this, "CylinderRotation", rotationAmount, timeInSeconds);
+        SetLocalForward();
+        CylinderRotationEventController.StartRotation(timeInSeconds, Mathf.DegToRad(60f), LocalForward, CylinderParent);
     }
 
     public void RotateCylinderToReload(float timeInSeconds)
@@ -66,8 +62,8 @@ public partial class CylinderController : Node
         }
         var rotationAmount = CylinderRotation + 60f * stepsToRotate;
         rotationAmount = Mathf.DegToRad(rotationAmount);
-        RotationTween = CreateTween();
-        RotationTween.TweenProperty(this, "CylinderRotation", rotationAmount, timeInSeconds);
+        SetLocalForward();
+        CylinderRotationEventController.StartRotation(timeInSeconds, rotationAmount, LocalForward, CylinderParent);
     }
 
     public void RotateCylinderToFireReady(float timeInSeconds)
@@ -76,7 +72,7 @@ public partial class CylinderController : Node
         var stepsToRotate = 7 - RotationState;
         var rotationAmount = CylinderRotation + 60f * stepsToRotate;
         rotationAmount = Mathf.DegToRad(rotationAmount);
-        RotationTween = CreateTween();
-        RotationTween.TweenProperty(this, "CylinderRotation", rotationAmount, timeInSeconds);
+        SetLocalForward();
+        CylinderRotationEventController.StartRotation(timeInSeconds, rotationAmount, LocalForward, CylinderParent);
     }
 }

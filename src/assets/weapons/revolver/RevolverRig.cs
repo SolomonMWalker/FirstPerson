@@ -1,29 +1,11 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-
-[GlobalClass]
-public partial class WeaponRig : Node3D
-{
-    [Export] public AnimationPlayer AnimationPlayer;
-    [Export] public WeaponStateMachine WeaponStateMachine;
-
-    public bool IsAnimationPlaying() => AnimationPlayer.IsPlaying();
-    
-    public virtual void PlayHipIdleAnimation() {}
-    public virtual void PlayHipFireAnimation() {}
-    public virtual void PlayAimFireAnimation() {}
-    public virtual void PlayHipToAimAnimation() {}
-    public virtual void PlayAimToHipAnimation() {}
-    public virtual void PlayAimToReloadAnimation() {}
-    public virtual void PlayHipToReloadAnimation() {}
-    public virtual void PlayReloadAnimation(int numberOfBullets) {}
-    public virtual void InterruptReloadanimation() {}
-}
+using System.Linq;
 
 [GlobalClass]
 public partial class RevolverRig : WeaponRig
 {
+    [Export] public CylinderController CylinderController;
     [Export] public StringName HipIdleAnimationName { get; set; } = "RevolverHipIdle";
     [Export] public StringName HipFireAnimationName { get; set; } = "RevolverHipFire";
     [Export] public StringName AimFireAnimationName { get; set; } = "RevolverAimFire";
@@ -33,11 +15,13 @@ public partial class RevolverRig : WeaponRig
     [Export] public StringName AimToHipAnimationName { get; set; } = "RevolverAimToHip";
     [Export] public StringName HammerDownHipToAimAnimationName { get; set; } = "RevolverHammerDownHipToAim";
     [Export] public StringName HammerDownAimToHipAnimationName { get; set; } = "RevolverHammerDownAimToHip";
-    [Export] public StringName AimToReloadAnimationName { get; set; } = "RevolverReloadFromAimOpenCylinderInsertFirstBullet";
-    [Export] public StringName HipToReloadAnimationName { get; set; } = "RevolverReloadFromHipOpenCylinderInsertFirstBullet";
+    [Export] public StringName AimToReloadAnimationName { get; set; } = "RevolverReloadFromAimOpenCylinder";
+    [Export] public StringName HipToReloadAnimationName { get; set; } = "RevolverReloadFromHipOpenCylinder";
+    [Export] public StringName OpenCylinderInsertFirstBulletAnimationName { get; set; } = "RevolverReloadOpenCylinderInsertFirstBullet";
     [Export] public StringName ReloadInsertNextBulletAnimationName { get; set; } = "RevolverReloadInsertNextBullet";
     [Export] public StringName ReloadTurnCylinderAnimationName { get; set; } = "RevolverReloadTurnCylinder";
-    [Export] public StringName ReloadCloseCylinderAnimationName { get; set; } = "RevolverReloadCloseCylinder";
+    [Export] public StringName ReloadToCloseCylinderAnimationName { get; set; } = "RevolverReloadToCloseCylinder";
+    [Export] public StringName ReloadCloseCylinderAnimationName { get; set; } = "RevolverCloseCylinder";
     [Export] public StringName ReloadInterruptAnimationName { get; set; } = "RevolverReloadInterrupt";
 
     //upon entrance to these animations, a bullet has been added
@@ -49,11 +33,19 @@ public partial class RevolverRig : WeaponRig
         BulletAddedAnimations.AddRange([AimToReloadAnimationName, HipToReloadAnimationName, ReloadInsertNextBulletAnimationName]);
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+    }
+
+
     public override void InterruptReloadanimation()
     {
-        if(AnimationPlayer.CurrentAnimation == ReloadCloseCylinderAnimationName) return;
+        string[] noInterruptAnimations = [ReloadInterruptAnimationName, ReloadCloseCylinderAnimationName, ReloadToCloseCylinderAnimationName];
+        if(noInterruptAnimations.Contains<string>(AnimationPlayer.CurrentAnimation)) return;
         AnimationPlayer.ClearQueue();
-        AnimationPlayer.Play(ReloadInterruptAnimationName);
+        AnimationPlayer.Queue(ReloadInterruptAnimationName);
+        AnimationPlayer.Queue(ReloadCloseCylinderAnimationName);
     }
 
 
@@ -94,11 +86,13 @@ public partial class RevolverRig : WeaponRig
 
     public void PlayHipHammerDownAnimation()
     {
+        CylinderController.RotateCylinderByOneBullet(0.1f);
         AnimationPlayer.Play(HipHammerDownAnimationName);
     }
 
     public void PlayAimHammerDownAnimation()
     {
+        CylinderController.RotateCylinderByOneBullet(0.1f);
         AnimationPlayer.Play(AimHammerDownAnimationName);
     }
 
@@ -110,14 +104,17 @@ public partial class RevolverRig : WeaponRig
     public void PlayHammerDownHipToAimAnimation()
     {
         AnimationPlayer.Play(HammerDownHipToAimAnimationName);
-    }
+    }    
     
     public override void PlayReloadAnimation(int numberOfBullets)
     {
         if(numberOfBullets <= 0) return;
 
+        AnimationPlayer.Queue(OpenCylinderInsertFirstBulletAnimationName);
+
         if (numberOfBullets == 1)
         {
+            AnimationPlayer.Queue(ReloadToCloseCylinderAnimationName);
             AnimationPlayer.Queue(ReloadCloseCylinderAnimationName);
             return;
         }
@@ -128,7 +125,8 @@ public partial class RevolverRig : WeaponRig
             animationsToPlay.AddRange([ReloadInsertNextBulletAnimationName, ReloadTurnCylinderAnimationName]);
         }
 
-        animationsToPlay[^1] = ReloadCloseCylinderAnimationName;
+        animationsToPlay[^1] = ReloadToCloseCylinderAnimationName;
+        animationsToPlay.Add(ReloadCloseCylinderAnimationName);
         animationsToPlay.ForEach(a => AnimationPlayer.Queue(a));
     }
 }
