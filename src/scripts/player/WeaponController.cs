@@ -52,7 +52,7 @@ public partial class WeaponController : Node
     public override void _Process(double delta)
     {
         base._Process(delta);
-        CheckForBulletAdd();
+        //CheckForBulletAdd();
         if (FireRateTimer > 0)
         {
             FireRateTimer -= delta;
@@ -239,39 +239,5 @@ public partial class WeaponController : Node
         CurrentWeapon = weaponData.Weapon;
         CurrentWeaponModel?.QueueFree();
         SpawnWeaponModel();
-    }
-
-    public void InterruptReloadanimation()
-    {
-        _bulletAddedAnimStartedAndName = (false, null);
-    }
-
-    //kinda hacky, but allows me to keep the imported animation player intact
-    //and keeps me from having to chain them
-    public void CheckForBulletAdd()
-    {
-        if (CurrentWeaponModel is not RevolverRig revolverRig) return;
-        if (!_bulletAddedAnimStartedAndName.hasStarted
-            && revolverRig.BulletAddedAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation)
-        ) {
-            _bulletAddedAnimStartedAndName.hasStarted = true;
-            _bulletAddedAnimStartedAndName.name = revolverRig.AnimationPlayer.CurrentAnimation;
-            return;
-        }
-
-        if
-        (_bulletAddedAnimStartedAndName.hasStarted && 
-            (
-                !revolverRig.AnimationPlayer.IsPlaying() ||
-                revolverRig.AnimationPlayer.CurrentAnimation != _bulletAddedAnimStartedAndName.name
-            )        
-        )
-        {
-            WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo += 1;
-            GD.Print($"Ammo added, current ammo is {WeaponManager.Weapons[WeaponManager.CurrentSlot].Ammo}");
-            _bulletAddedAnimStartedAndName.hasStarted = false;
-            _bulletAddedAnimStartedAndName.name = null;
-        }
-        
     }
 }

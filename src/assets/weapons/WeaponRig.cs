@@ -5,6 +5,14 @@ public partial class WeaponRig : Node3D
 {
     [Export] public AnimationPlayer AnimationPlayer;
     [Export] public WeaponStateMachine WeaponStateMachine;
+    public WeaponController WeaponController;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        WeaponController = (WeaponController) GetTree().GetFirstNodeInGroup("weaponController");
+    }
+
 
     public bool IsAnimationPlaying() => AnimationPlayer.IsPlaying();
     

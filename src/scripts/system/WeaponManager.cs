@@ -45,6 +45,7 @@ public partial class WeaponManager : Node
         }
     }
 
+    public WeaponData GetCurrentWeapon() => Weapons[CurrentSlot];
     private void SwitchToSlot(int slot)
     {
         if (!Weapons.TryGetValue(slot, out var weaponData))

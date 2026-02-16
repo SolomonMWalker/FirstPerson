@@ -24,20 +24,24 @@ public partial class RevolverRig : WeaponRig
     [Export] public StringName ReloadCloseCylinderAnimationName { get; set; } = "RevolverCloseCylinder";
     [Export] public StringName ReloadInterruptAnimationName { get; set; } = "RevolverReloadInterrupt";
 
-    //upon entrance to these animations, a bullet has been added
-    public List<StringName> BulletAddedAnimations { get; private set; } = [];
+    public List<StringName> InterruptibleReloadAnimations = [];
 
     public override void _Ready()
     {
         base._Ready();
-        BulletAddedAnimations.AddRange([AimToReloadAnimationName, HipToReloadAnimationName, ReloadInsertNextBulletAnimationName]);
+        InterruptibleReloadAnimations.AddRange([
+            OpenCylinderInsertFirstBulletAnimationName,
+            ReloadInsertNextBulletAnimationName
+        ]);
     }
+
 
     public override void _Process(double delta)
     {
         base._Process(delta);
     }
 
+    public int GetLastFiredBullet() => WeaponController.CurrentWeapon.MaxAmmo - WeaponController.WeaponManager.GetCurrentWeapon().Ammo;
 
     public override void InterruptReloadanimation()
     {
@@ -86,13 +90,13 @@ public partial class RevolverRig : WeaponRig
 
     public void PlayHipHammerDownAnimation()
     {
-        CylinderController.RotateCylinderByOneBullet(0.1f);
+        CylinderController.RotateCylinderByOneBulletHammerDown(0.1f);
         AnimationPlayer.Play(HipHammerDownAnimationName);
     }
 
     public void PlayAimHammerDownAnimation()
     {
-        CylinderController.RotateCylinderByOneBullet(0.1f);
+        CylinderController.RotateCylinderByOneBulletHammerDown(0.1f);
         AnimationPlayer.Play(AimHammerDownAnimationName);
     }
 
@@ -104,7 +108,34 @@ public partial class RevolverRig : WeaponRig
     public void PlayHammerDownHipToAimAnimation()
     {
         AnimationPlayer.Play(HammerDownHipToAimAnimationName);
-    }    
+    }
+
+    public void AddBullet() => WeaponController.WeaponManager.GetCurrentWeapon().Ammo += 1;
+
+    public void TurnCylinderHammerdown()
+    {
+        CylinderController.RotateCylinderByOneBulletHammerDown(0.1f);
+    }
+
+    public void TurnCylinderStartReload()
+    {
+        CylinderController.RotateCylinderByTwoBulletsStartReload(0.1f);
+    }
+
+    public void TurnCylinderReloadNext()
+    {
+        CylinderController.RotateCylinderByOneBulletReloadTurn(0.1f);
+    }
+
+    public void TurnCylinderEndReload()
+    {
+        CylinderController.RotateCylinderByOneBulletEndReload(0.1f);
+    }
+
+    public void TurnCylinderInterruptReload()
+    {
+        CylinderController.RotateCylinderByOneBulletInterruptReload(0.1f);
+    }
     
     public override void PlayReloadAnimation(int numberOfBullets)
     {

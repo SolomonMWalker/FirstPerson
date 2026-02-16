@@ -6,6 +6,7 @@ namespace FirstPerson.assets.weapons.scripts.revolver.states;
 
 public partial class RevolverReloadState : WeaponAtomicState
 {
+    public bool interrupted;
     public WeaponManager WeaponManager { get; private set; }
     public Timer Timer {get; private set;}
     public override void _Ready()
@@ -30,6 +31,13 @@ public partial class RevolverReloadState : WeaponAtomicState
         Timer.Start();
     }
 
+    public override void StateExited()
+    {
+        base.StateExited();
+        interrupted = false;
+    }
+
+
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
@@ -44,8 +52,10 @@ public partial class RevolverReloadState : WeaponAtomicState
         if(Input.IsActionJustPressed("Fire"))
         {
             if(WeaponController.CurrentWeaponModel is not RevolverRig revolverRig) return;
-            WeaponController.InterruptReloadanimation();
-            revolverRig.InterruptReloadanimation();
+            if(!revolverRig.InterruptibleReloadAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation))
+            {
+                revolverRig.InterruptReloadanimation();
+            }            
         }
     }
 }

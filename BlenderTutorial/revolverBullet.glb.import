@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cl1ogt6eacwn2"
-path="res://.godot/imported/revolverBullet.glb-498d39fce11a2c1cbe5a207acdf65d13.scn"
+path="res://.godot/imported/revolverBullet.glb-ebd7d069f5af8dcc1e98601b032f82bd.scn"
 
 [deps]
 
-source_file="res://blenderTutorial/revolverBullet.glb"
-dest_files=["res://.godot/imported/revolverBullet.glb-498d39fce11a2c1cbe5a207acdf65d13.scn"]
+source_file="res://BlenderTutorial/revolverBullet.glb"
+dest_files=["res://.godot/imported/revolverBullet.glb-ebd7d069f5af8dcc1e98601b032f82bd.scn"]
 
 [params]
 
