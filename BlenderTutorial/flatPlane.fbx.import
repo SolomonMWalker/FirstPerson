@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://5iak7x008ybg"
-path="res://.godot/imported/flatPlane.fbx-33f44916433c1f17f787d773e80a0881.scn"
+path="res://.godot/imported/flatPlane.fbx-008a6689ffd2ff3a79e088e2cfa4d414.scn"
 
 [deps]
 
-source_file="res://BlenderTutorial/flatPlane.fbx"
-dest_files=["res://.godot/imported/flatPlane.fbx-33f44916433c1f17f787d773e80a0881.scn"]
+source_file="res://blenderTutorial/flatPlane.fbx"
+dest_files=["res://.godot/imported/flatPlane.fbx-008a6689ffd2ff3a79e088e2cfa4d414.scn"]
 
 [params]
 

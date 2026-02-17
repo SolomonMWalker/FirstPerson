@@ -16,7 +16,7 @@ public partial class RevolverReloadState : WeaponAtomicState
         Timer = new Timer();
         Timer.Autostart = false;
         Timer.OneShot = true;
-        Timer.WaitTime = 0.5f;
+        Timer.WaitTime = 0.2f;
         AddChild(Timer);
     }
 
@@ -51,11 +51,28 @@ public partial class RevolverReloadState : WeaponAtomicState
 
         if(Input.IsActionJustPressed("Fire"))
         {
-            if(WeaponController.CurrentWeaponModel is not RevolverRig revolverRig) return;
-            if(!revolverRig.InterruptibleReloadAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation))
+            interrupted = true;
+            if (WeaponController.CurrentWeaponModel is not RevolverRig revolverRig) return;
+            if (revolverRig.InterruptibleReloadAnimations.Contains(revolverRig.AnimationPlayer.CurrentAnimation))
             {
-                revolverRig.InterruptReloadanimation();
-            }            
+                revolverRig.AnimationPlayer.Play(revolverRig.ReloadInterruptAnimationName);
+                revolverRig.AnimationPlayer.Queue(revolverRig.ReloadCloseCylinderStartAnimationName);
+                revolverRig.AnimationPlayer.Queue(revolverRig.ReloadCloseCylinderEndAnimationName);
+            }
+            else
+            {
+                var indexOfCurrentAnim = revolverRig.PostCylinderTurnInterruptReloadPath.IndexOf(
+                    revolverRig.AnimationPlayer.CurrentAnimation);
+                if (indexOfCurrentAnim < 0) return;
+                for (int i = indexOfCurrentAnim; i < revolverRig.PostCylinderTurnInterruptReloadPath.Count; i++)
+                {
+                    if(i == indexOfCurrentAnim) revolverRig.AnimationPlayer.Play(
+                        revolverRig.PostCylinderTurnInterruptReloadPath[i]);
+                    else revolverRig.AnimationPlayer.Queue(
+                        revolverRig.PostCylinderTurnInterruptReloadPath[i]);
+                }
+            }
         }
+        
     }
 }

@@ -68,6 +68,14 @@ public partial class WeaponManager : Node
         }
     }
 
+    public void AddAmmo(int slot, int amount = 1)
+    {
+        if (Weapons.TryGetValue(slot, out var weaponData))
+        {
+            weaponData.Ammo = Mathf.Min(weaponData.Ammo + amount, Weapons[CurrentSlot].Weapon.MaxAmmo);
+        }
+    }
+
     public int GetCurrentAmmo() => Weapons[CurrentSlot].Ammo;
 
     private void InitializeStartingWeapon()

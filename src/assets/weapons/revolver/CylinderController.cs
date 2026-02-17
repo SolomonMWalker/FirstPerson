@@ -9,62 +9,57 @@ public partial class CylinderController : Node
     [Export] public Node3D ForwardNode {get; set;}
     [Export] public CylinderRotationEventController CylinderRotationEventController {get; set;}
     [Export] public int ReloadRotationState = 2;
-
-    //Can be 1-6
-    //Movement from 1 -> 2 requires adding 60deg to bone rotation
-    //all rotation is adding, so counter-clockwise rotation
-
+    
     public int CylinderBoneIndex;
+    public Dictionary<int, Basis> BulletInTopLeftBasis = [];
 
     private Vector3 LocalForward {get; set;}
     private float CylinderRotation {get; set;} = 0;
+
+    public override void _Ready()
+    {
+        base._Ready();
+        SetLocalForward();
+        BulletInTopLeftBasis.Add(6, CylinderParent.Basis);
+        BulletInTopLeftBasis.Add(5, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(60)));
+        BulletInTopLeftBasis.Add(4, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(120)));
+        BulletInTopLeftBasis.Add(3, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(180)));
+        BulletInTopLeftBasis.Add(2, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(240)));
+        BulletInTopLeftBasis.Add(1, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(300)));
+        //copy of 6, allows for full rotation when out of ammo
+        BulletInTopLeftBasis.Add(0, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(360)));
+    }
+
     public void SetLocalForward()
     {
         LocalForward = CylinderParent.Position.DirectionTo(ForwardNode.Position);
     }
 
-    public void RotateCylinderByOneBulletHammerDown(float timeInSeconds)
+    public void RotateCylinderHammerDown(float timeInSeconds, int currentAmmo)
     {
         SetLocalForward();
-        RotateClockwise(1, timeInSeconds);
+        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo-1], 
+            CylinderParent);
     }
 
-    public void RotateCylinderByTwoBulletsStartReload(float timeInSeconds)
+    public void RotateCylinderOpenCylinder(float timeInSeconds, int currentAmmo)
     {
         SetLocalForward();
-        RotateCounterClockwise(2, timeInSeconds);
-    }
-    public void RotateCylinderByOneBulletReloadTurn(float timeInSeconds)
-    {
-        SetLocalForward();
-        RotateCounterClockwise(1, timeInSeconds);
+        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo+1], 
+            CylinderParent);
     }
 
-    public void RotateCylinderByOneBulletEndReload(float timeInSeconds)
+    public void RotateCylinderReloadTurn(float timeInSeconds, int currentAmmo)
     {
         SetLocalForward();
-        RotateClockwise(1, timeInSeconds);
+        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo+1], 
+            CylinderParent);
     }
 
-    public void RotateCylinderByOneBulletInterruptReload(float timeInSeconds)
+    public void RotateCylinderCloseCylinder(float timeInSeconds, int currentAmmo)
     {
         SetLocalForward();
-        RotateCounterClockwise(1, timeInSeconds);
+        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo], 
+            CylinderParent);
     }
-
-    private void RotateCounterClockwise(int spots, float timeInSeconds)
-    {
-        SetLocalForward();
-        CylinderRotationEventController.StartRotation(timeInSeconds, Mathf.DegToRad(-60f * spots), 
-            LocalForward, CylinderParent);
-    }
-
-    private void RotateClockwise(int spots, float timeInSeconds)
-    {
-        SetLocalForward();
-        CylinderRotationEventController.StartRotation(timeInSeconds, Mathf.DegToRad(60f * spots), 
-            LocalForward, CylinderParent);
-    }
-
-    
 }

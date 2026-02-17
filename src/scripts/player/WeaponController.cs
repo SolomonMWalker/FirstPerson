@@ -52,7 +52,6 @@ public partial class WeaponController : Node
     public override void _Process(double delta)
     {
         base._Process(delta);
-        //CheckForBulletAdd();
         if (FireRateTimer > 0)
         {
             FireRateTimer -= delta;
@@ -124,6 +123,11 @@ public partial class WeaponController : Node
         return GetCurrentWeaponData().Ammo < CurrentWeapon.MaxAmmo;
     }
 
+    public void AddBullet()
+    {
+        CurrentWeaponModel.AddBullet();
+    }
+
     public void FireWeapon(bool isAiming)
     {
         if (CanFire())
@@ -137,7 +141,7 @@ public partial class WeaponController : Node
                 CurrentWeaponModel.PlayHipFireAnimation();
             }
             
-            WeaponManager.UseAmmo(WeaponManager.CurrentSlot);
+            CurrentWeaponModel.FireBullet();
             GD.Print($"Fired! ammo at {GetCurrentWeaponAmmo()}");
 
             CanFireNextRound = false;

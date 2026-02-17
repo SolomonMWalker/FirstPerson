@@ -3,53 +3,57 @@ using System;
 
 public partial class CylinderRotationEventController : Node
 {
-    public float timeInSeconds;
-    public float rotationAmount;
-    public Vector3 rotationAxis;
-    public Node3D rotationNode;
-    public Basis startingBasis;
-    public Basis destinationBasis;
-
+    private Node3D _nodeToRotate;
+    private Basis _startBasis, _endBasis;
     private bool _active;
     private float _timeSinceStart;
+    private Tween _interpolateTween;
 
-    public override void _Process(double delta)
+    public void StartRotation(float time, Basis destination, Node3D node)
     {
-        base._Process(delta);
-        if(_active) SetFrameRotation(delta);
+        if (_interpolateTween is not null && _interpolateTween.IsRunning())
+        {
+            _nodeToRotate.Basis = destination;
+            _interpolateTween.Kill();
+        }
+        
+        _nodeToRotate = node;
+        _startBasis = node.Basis;
+        _endBasis = destination;
+        _active = true;
+        
+        _interpolateTween = CreateTween();
+        var callable = Callable.From((float weight) => Interpolate(weight));
+        _interpolateTween.TweenMethod(callable, 0.0, 1.0, time)
+            .SetTrans(Tween.TransitionType.Expo);
+        _interpolateTween.Finished += TweenDone;
     }
 
     public void StartRotation(float time, float rotAmount, Vector3 rotAxis, Node3D node)
-    {
-        timeInSeconds = time;
-        rotationAmount = rotAmount;
-        rotationAxis = rotAxis;
-        rotationNode = node;
-        destinationBasis = rotationNode.Basis.Rotated(rotationAxis, rotationAmount);
+    {        
+        var rotationAmount = rotAmount;
+        var rotationAxis = rotAxis;
+        var rotationNode = node;
+        _endBasis = rotationNode.Basis.Rotated(rotationAxis, rotationAmount);
+        _nodeToRotate = node;
+        _startBasis = node.Basis;
         _active = true;
-        _timeSinceStart = 0;
+        
+        _interpolateTween?.Kill();
+        _interpolateTween = CreateTween();
+        var callable = Callable.From((float weight) => Interpolate(weight));
+        _interpolateTween.TweenMethod(callable, 0.0, 1.0, time)
+            .SetTrans(Tween.TransitionType.Expo);
+        _interpolateTween.Finished += TweenDone;
     }
 
-    public void SetFrameRotation(double delta)
+    private void Interpolate(float weight)
     {
-        var fDelta = (float) delta;
-
-        if(_timeSinceStart > timeInSeconds)
-        {
-            rotationNode.Basis = destinationBasis;
-            _active = false;
-            _timeSinceStart = 0;
-            rotationAmount = 0;
-            rotationAxis = Vector3.Zero;
-            rotationNode = null;
-            startingBasis = Basis.Identity;
-            destinationBasis = Basis.Identity;
-            return;
-        }
-
-        var percentageToRotate = fDelta / timeInSeconds;
-        rotationNode.Basis = rotationNode.Basis.Rotated(rotationAxis, percentageToRotate * rotationAmount);
-        _timeSinceStart += fDelta;
+        _nodeToRotate.Basis = _startBasis.Slerp(_endBasis, weight);
     }
 
+    private void TweenDone()
+    {
+        _active = false;
+    }
 }

@@ -15,7 +15,9 @@ public partial class WeaponRig : Node3D
 
 
     public bool IsAnimationPlaying() => AnimationPlayer.IsPlaying();
-    
+
+    public virtual void AddBullet() {}
+    public virtual void FireBullet() {}
     public virtual void PlayHipIdleAnimation() {}
     public virtual void PlayHipFireAnimation() {}
     public virtual void PlayAimFireAnimation() {}

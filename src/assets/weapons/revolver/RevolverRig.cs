@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,37 +22,63 @@ public partial class RevolverRig : WeaponRig
     [Export] public StringName ReloadInsertNextBulletAnimationName { get; set; } = "RevolverReloadInsertNextBullet";
     [Export] public StringName ReloadTurnCylinderAnimationName { get; set; } = "RevolverReloadTurnCylinder";
     [Export] public StringName ReloadToCloseCylinderAnimationName { get; set; } = "RevolverReloadToCloseCylinder";
-    [Export] public StringName ReloadCloseCylinderAnimationName { get; set; } = "RevolverCloseCylinder";
+    [Export] public StringName ReloadCloseCylinderStartAnimationName { get; set; } = "RevolverCloseCylinderStart";
+    [Export] public StringName ReloadCloseCylinderEndAnimationName { get; set; } = "RevolverCloseCylinderEnd";
     [Export] public StringName ReloadInterruptAnimationName { get; set; } = "RevolverReloadInterrupt";
 
+    //on interrupt of reload, if pressed before cylinder turn, full interrupt
+    //otherwise, just reload that bullet and end the animation
     public List<StringName> InterruptibleReloadAnimations = [];
+    public List<StringName> PostCylinderTurnInterruptReloadPath = [];
+     
+    private Dictionary<int, MeshInstance3D> _bulletCasings = [];
+    private Dictionary<int, MeshInstance3D> _bullets = [];
+    private bool _isHammerDown;
 
     public override void _Ready()
     {
         base._Ready();
         InterruptibleReloadAnimations.AddRange([
+            AimToReloadAnimationName,
+            HipToReloadAnimationName,
             OpenCylinderInsertFirstBulletAnimationName,
             ReloadInsertNextBulletAnimationName
         ]);
-    }
+        PostCylinderTurnInterruptReloadPath.AddRange([
+            ReloadTurnCylinderAnimationName,
+            ReloadToCloseCylinderAnimationName,
+            ReloadCloseCylinderStartAnimationName,
+            ReloadCloseCylinderEndAnimationName
+        ]);
 
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
+        foreach (var child in CylinderController.CylinderParent.GetChildren().OfType<MeshInstance3D>())
+        {
+            var name = child.Name.ToString();
+            if (name.Contains("bulletWithCasing"))
+            {
+                var numberChar = name.ToCharArray().Where(char.IsDigit).First().ToString();
+                var number = Int16.Parse(numberChar);
+                _bullets.Add(number, child);
+            }
+            else if (name.Contains("bulletCasing"))
+            {
+                var numberChar = name.ToCharArray().Where(char.IsDigit).First().ToString();
+                var number = Int16.Parse(numberChar);
+                _bulletCasings.Add(number, child);
+            }
+        }
     }
 
     public int GetLastFiredBullet() => WeaponController.CurrentWeapon.MaxAmmo - WeaponController.WeaponManager.GetCurrentWeapon().Ammo;
 
     public override void InterruptReloadanimation()
     {
-        string[] noInterruptAnimations = [ReloadInterruptAnimationName, ReloadCloseCylinderAnimationName, ReloadToCloseCylinderAnimationName];
+        string[] noInterruptAnimations = [ReloadInterruptAnimationName, ReloadCloseCylinderStartAnimationName, ReloadToCloseCylinderAnimationName];
         if(noInterruptAnimations.Contains<string>(AnimationPlayer.CurrentAnimation)) return;
         AnimationPlayer.ClearQueue();
         AnimationPlayer.Queue(ReloadInterruptAnimationName);
-        AnimationPlayer.Queue(ReloadCloseCylinderAnimationName);
+        AnimationPlayer.Queue(ReloadCloseCylinderStartAnimationName);
     }
-
 
     public override void PlayHipIdleAnimation()
     {
@@ -90,13 +117,11 @@ public partial class RevolverRig : WeaponRig
 
     public void PlayHipHammerDownAnimation()
     {
-        CylinderController.RotateCylinderByOneBulletHammerDown(0.1f);
         AnimationPlayer.Play(HipHammerDownAnimationName);
     }
 
     public void PlayAimHammerDownAnimation()
     {
-        CylinderController.RotateCylinderByOneBulletHammerDown(0.1f);
         AnimationPlayer.Play(AimHammerDownAnimationName);
     }
 
@@ -110,43 +135,56 @@ public partial class RevolverRig : WeaponRig
         AnimationPlayer.Play(HammerDownHipToAimAnimationName);
     }
 
-    public void AddBullet() => WeaponController.WeaponManager.GetCurrentWeapon().Ammo += 1;
+    public override void AddBullet()
+    {
+        WeaponController.WeaponManager.AddAmmo(WeaponController.WeaponManager.CurrentSlot);
+        _bulletCasings[WeaponController.WeaponManager.GetCurrentAmmo()].SetVisible(false);
+        _bullets[WeaponController.WeaponManager.GetCurrentAmmo()].SetVisible(true);
+    }
+    
+    public override void FireBullet()
+    {
+        var ammo = WeaponController.WeaponManager.GetCurrentWeapon().Ammo;
+        GD.Print($"ammo at {ammo}, does bulletCasing exist? {_bulletCasings[ammo] != null}");
+        _bulletCasings[ammo].SetVisible(true);
+        _bullets[ammo].SetVisible(false);
+        WeaponController.WeaponManager.UseAmmo(WeaponController.WeaponManager.CurrentSlot);
+    }
+    
+    public void ReloadEjectCasings()
+    {
+        var casingsToEject = _bulletCasings.Where(kvp => kvp.Key > WeaponController.WeaponManager.GetCurrentAmmo());
+        casingsToEject.ToList().ForEach(casing => casing.Value.Visible = false);
+    }
 
     public void TurnCylinderHammerdown()
     {
-        CylinderController.RotateCylinderByOneBulletHammerDown(0.1f);
+        CylinderController.RotateCylinderHammerDown(0.2f, WeaponController.WeaponManager.GetCurrentAmmo());
     }
 
     public void TurnCylinderStartReload()
     {
-        CylinderController.RotateCylinderByTwoBulletsStartReload(0.1f);
+        CylinderController.RotateCylinderOpenCylinder(0.2f, WeaponController.WeaponManager.GetCurrentAmmo());
     }
 
     public void TurnCylinderReloadNext()
     {
-        CylinderController.RotateCylinderByOneBulletReloadTurn(0.1f);
+        CylinderController.RotateCylinderReloadTurn(0.2f, WeaponController.WeaponManager.GetCurrentAmmo());
     }
 
     public void TurnCylinderEndReload()
     {
-        CylinderController.RotateCylinderByOneBulletEndReload(0.1f);
-    }
-
-    public void TurnCylinderInterruptReload()
-    {
-        CylinderController.RotateCylinderByOneBulletInterruptReload(0.1f);
+        CylinderController.RotateCylinderCloseCylinder(0.2f, WeaponController.WeaponManager.GetCurrentAmmo());
     }
     
     public override void PlayReloadAnimation(int numberOfBullets)
     {
-        if(numberOfBullets <= 0) return;
-
         AnimationPlayer.Queue(OpenCylinderInsertFirstBulletAnimationName);
-
+        
         if (numberOfBullets == 1)
         {
             AnimationPlayer.Queue(ReloadToCloseCylinderAnimationName);
-            AnimationPlayer.Queue(ReloadCloseCylinderAnimationName);
+            AnimationPlayer.Queue(ReloadCloseCylinderStartAnimationName);
             return;
         }
         
@@ -157,7 +195,7 @@ public partial class RevolverRig : WeaponRig
         }
 
         animationsToPlay[^1] = ReloadToCloseCylinderAnimationName;
-        animationsToPlay.Add(ReloadCloseCylinderAnimationName);
+        animationsToPlay.Add(ReloadCloseCylinderStartAnimationName);
         animationsToPlay.ForEach(a => AnimationPlayer.Queue(a));
     }
 }
