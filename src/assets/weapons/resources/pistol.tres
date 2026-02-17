@@ -17,4 +17,7 @@ WeaponPosition = Vector3(0, 0, 0)
 SwaySpeedPosition = 0.5
 SwaySpeedRotation = 0.5
 SwayAmountPosition = 0.5
+WeaponKickYaw = 2.0
+WeaponKickPitch = 2.0
+WeaponKickRoll = 1.0
 metadata/_custom_type_script = "uid://yxetfin4alyg"

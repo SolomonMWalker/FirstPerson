@@ -50,4 +50,21 @@ public partial class Weapon : Resource
         set => _swayAmountRotationInDeg = Mathf.Clamp(value, 0, 50f);
     } private float _swayAmountRotationInDeg = 30f;
     
+    [Export] public float WeaponKickYaw
+    {
+        get => _weaponKickYaw;
+        set => _weaponKickYaw = Mathf.Clamp(value, 0, 10f);
+    } private float _weaponKickYaw = 0.1f;
+    [Export] public float WeaponKickPitch
+    {
+        get => _weaponKickPitch;
+        set => _weaponKickPitch = Mathf.Clamp(value, 0, 10f);
+    } private float _weaponKickPitch = 0.1f;
+    [Export] public float WeaponKickRoll
+    {
+        get => _weaponKickRoll;
+        set => _weaponKickRoll = Mathf.Clamp(value, 0, 50f);
+    } private float _weaponKickRoll = 10f;
+    
+    
 }

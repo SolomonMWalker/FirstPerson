@@ -10,6 +10,7 @@ public partial class WeaponController : Node
     [ExportCategory("References")] 
     [Export] public PlayerController Player;
     [Export] public CameraController CameraController;
+    [Export] public CameraEffects CameraEffects;
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     [Export] public Reticle Reticle { get; set; }
@@ -142,6 +143,11 @@ public partial class WeaponController : Node
             }
             
             CurrentWeaponModel.FireBullet();
+            CameraEffects.AddWeaponKick(
+                CurrentWeapon.WeaponKickPitch,
+                CurrentWeapon.WeaponKickYaw,
+                CurrentWeapon.WeaponKickRoll
+            );
             GD.Print($"Fired! ammo at {GetCurrentWeaponAmmo()}");
 
             CanFireNextRound = false;

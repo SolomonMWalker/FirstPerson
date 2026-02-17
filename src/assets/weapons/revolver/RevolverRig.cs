@@ -68,9 +68,7 @@ public partial class RevolverRig : WeaponRig
             }
         }
     }
-
-    public int GetLastFiredBullet() => WeaponController.CurrentWeapon.MaxAmmo - WeaponController.WeaponManager.GetCurrentWeapon().Ammo;
-
+    
     public override void InterruptReloadanimation()
     {
         string[] noInterruptAnimations = [ReloadInterruptAnimationName, ReloadCloseCylinderStartAnimationName, ReloadToCloseCylinderAnimationName];
