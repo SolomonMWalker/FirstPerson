@@ -162,6 +162,7 @@ public partial class RevolverRig : WeaponRig
             var casing = EjectedCasingScene.Instantiate<RigidBody3D>();
             ProjectileParent.AddChild(casing);
             casing.GlobalTransform = kvp.Value.GlobalTransform;
+            casing.GlobalPosition -= casing.GlobalBasis.Y * 0.02f;
             casing.LinearVelocity = -casing.GlobalBasis.Y * 2;
         }
     }
