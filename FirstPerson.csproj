@@ -5,7 +5,6 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="configuration.json" />
     <Content Include="src\Resources\Images\Circle.png" />
     <Content Include="src\Resources\Images\Circle.png.import" />
     <Content Include="src\Resources\Images\icon.svg" />
