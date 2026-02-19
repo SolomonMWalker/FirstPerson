@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bk117pxpe2hec"]
+
+[ext_resource type="ArrayMesh" uid="uid://cbdcahoue6bgx" path="res://src/assets/weapons/revolver/revolverBulletCaseMesh.tres" id="1_eh6ek"]
+[ext_resource type="Script" uid="uid://b7tukyg4edtb7" path="res://src/assets/weapons/revolver/RevolverBulletCasingPhysics.cs" id="1_sj24r"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_eh6ek"]
+bounce = 0.15
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1bbx7"]
+albedo_color = Color(1, 1, 0.26666668, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_eh6ek"]
+height = 0.032178216
+radius = 0.008898026
+
+[node name="RevolverBulletCasingPhysics" type="RigidBody3D" unique_id=945389864]
+collision_layer = 0
+collision_mask = 256
+mass = 0.2
+physics_material_override = SubResource("PhysicsMaterial_eh6ek")
+script = ExtResource("1_sj24r")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1813572983]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.019877791, 0)
+mesh = ExtResource("1_eh6ek")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_1bbx7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1966975022]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.014011443, 0)
+shape = SubResource("CylinderShape3D_eh6ek")

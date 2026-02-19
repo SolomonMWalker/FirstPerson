@@ -6,6 +6,8 @@ using System.Linq;
 [GlobalClass]
 public partial class RevolverRig : WeaponRig
 {
+    [Export] public PackedScene EjectedCasingScene;
+    [Export] public Node3D ForwardNode;
     [Export] public CylinderController CylinderController;
     [Export] public StringName HipIdleAnimationName { get; set; } = "RevolverHipIdle";
     [Export] public StringName HipFireAnimationName { get; set; } = "RevolverHipFire";
@@ -30,7 +32,8 @@ public partial class RevolverRig : WeaponRig
     //otherwise, just reload that bullet and end the animation
     public List<StringName> InterruptibleReloadAnimations = [];
     public List<StringName> PostCylinderTurnInterruptReloadPath = [];
-     
+
+    private Node3D ProjectileParent;
     private Dictionary<int, MeshInstance3D> _bulletCasings = [];
     private Dictionary<int, MeshInstance3D> _bullets = [];
     private bool _isHammerDown;
@@ -38,6 +41,7 @@ public partial class RevolverRig : WeaponRig
     public override void _Ready()
     {
         base._Ready();
+        ProjectileParent = (Node3D) GetTree().GetFirstNodeInGroup("projectileParent");
         InterruptibleReloadAnimations.AddRange([
             AimToReloadAnimationName,
             HipToReloadAnimationName,
@@ -153,6 +157,13 @@ public partial class RevolverRig : WeaponRig
     {
         var casingsToEject = _bulletCasings.Where(kvp => kvp.Key > WeaponController.WeaponManager.GetCurrentAmmo());
         casingsToEject.ToList().ForEach(casing => casing.Value.Visible = false);
+        foreach (var kvp in casingsToEject)
+        {
+            var casing = EjectedCasingScene.Instantiate<RigidBody3D>();
+            ProjectileParent.AddChild(casing);
+            casing.GlobalTransform = kvp.Value.GlobalTransform;
+            casing.LinearVelocity = -casing.GlobalBasis.Y * 2;
+        }
     }
 
     public void TurnCylinderHammerdown()

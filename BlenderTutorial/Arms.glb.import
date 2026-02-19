@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dmtaboa7oloj1"
-path="res://.godot/imported/Arms.glb-337ea7e6d5bfff14f73ce918f27bdabf.scn"
+path="res://.godot/imported/Arms.glb-f6d2bbdfe36706c60e863d0b1c90bd6e.scn"
 
 [deps]
 
-source_file="res://blenderTutorial/Arms.glb"
-dest_files=["res://.godot/imported/Arms.glb-337ea7e6d5bfff14f73ce918f27bdabf.scn"]
+source_file="res://BlenderTutorial/Arms.glb"
+dest_files=["res://.godot/imported/Arms.glb-f6d2bbdfe36706c60e863d0b1c90bd6e.scn"]
 
 [params]
 
@@ -42,7 +42,7 @@ _subresources={
 "RevolverAimFire": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverAimFire.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://cks3hhlkfngu3",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -2098,7 +2098,7 @@ _subresources={
 "RevolverAimHammerDown": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverAimHammerDown.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://b3x1iun7pssj1",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -6210,7 +6210,7 @@ _subresources={
 "RevolverCloseCylinder": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverCloseCylinder.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://d1nf5unjcq2u",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -14434,7 +14434,7 @@ _subresources={
 "RevolverHipFire": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverHipFire.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://c6ap08f8wurdq",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -16490,7 +16490,7 @@ _subresources={
 "RevolverHipHammerDown": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverHipHammerDown.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://jeabw53hya1f",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -26770,7 +26770,7 @@ _subresources={
 "RevolverReloadInsertNextBullet": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverReloadInsertNextBullet.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://tvpghfbkrluj",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -28826,7 +28826,7 @@ _subresources={
 "RevolverReloadInterrupt": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverReloadInterrupt.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://cr3ley1gvks0u",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -30882,7 +30882,7 @@ _subresources={
 "RevolverReloadOpenCylinderInsertFirstBullet": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverReloadOpenCylinderInsertFirstBullet.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://bbmui0q5ycjkt",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,
@@ -34994,7 +34994,7 @@ _subresources={
 "RevolverReloadTurnCylinder": {
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://src/assets/weapons/revolver/blenderAnimations/RevolverReloadTurnCylinder.res",
-"save_to_file/keep_custom_tracks": true,
+"save_to_file/keep_custom_tracks": false,
 "save_to_file/path": "uid://bjd0qpn60l1pe",
 "settings/loop_mode": 0,
 "slice_1/end_frame": 0,

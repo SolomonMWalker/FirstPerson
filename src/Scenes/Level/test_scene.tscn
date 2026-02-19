@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://1beqxuwtx1mb"]
+[gd_scene format=3 uid="uid://1beqxuwtx1mb"]
 
 [ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/scripts/system/WeaponManager.cs" id="1_37k7r"]
-[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/scenes/map/func_godot_test.tscn" id="1_t02g3"]
-[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/scenes/player/player_controller.tscn" id="2_c2a6q"]
+[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_t02g3"]
+[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player_controller.tscn" id="2_c2a6q"]
 [ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="2_fbnti"]
 [ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_b2mws"]
-[ext_resource type="Resource" uid="uid://cd3kmudgojmjo" path="res://src/assets/weapons/resources/shotgun_data.tres" id="4_fbnti"]
 [ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/scripts/system/GameManager.cs" id="5_b2mws"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
@@ -22,40 +21,39 @@ sky = SubResource("Sky_ppyta")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="TestScene" type="Node"]
+[node name="TestScene" type="Node" unique_id=1584830458]
 
-[node name="Managers" type="Node" parent="."]
+[node name="Managers" type="Node" parent="." unique_id=1348320096]
 
-[node name="WeaponManager" type="Node" parent="Managers" node_paths=PackedStringArray("PlayerController")]
+[node name="WeaponManager" type="Node" parent="Managers" unique_id=1945228329 node_paths=PackedStringArray("PlayerController")]
 script = ExtResource("1_37k7r")
 Weapons = Dictionary[int, ExtResource("2_fbnti")]({
-1: ExtResource("3_b2mws"),
-2: ExtResource("4_fbnti")
+1: ExtResource("3_b2mws")
 })
 PlayerController = NodePath("../../Level/Player")
 
-[node name="GameManager" type="Node" parent="Managers"]
+[node name="GameManager" type="Node" parent="Managers" unique_id=1197770358]
 script = ExtResource("5_b2mws")
 
-[node name="Level" type="Node3D" parent="."]
+[node name="Level" type="Node3D" parent="." unique_id=1045081351]
 
-[node name="ProjectileParent" type="Node3D" parent="Level"]
+[node name="ProjectileParent" type="Node3D" parent="Level" unique_id=1728880348 groups=["projectileParent"]]
 unique_name_in_owner = true
 
-[node name="Player" parent="Level" instance=ExtResource("2_c2a6q")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46.812, 2.3894086, 36.988)
+[node name="Player" parent="Level" unique_id=1478597815 instance=ExtResource("2_c2a6q")]
+transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, 46.812, 2.3894086, 36.988)
 
-[node name="Map" type="Node3D" parent="Level"]
+[node name="Map" type="Node3D" parent="Level" unique_id=39033084]
 
-[node name="funcGodotTest" parent="Level/Map" instance=ExtResource("1_t02g3")]
+[node name="funcGodotTest" parent="Level/Map" unique_id=552549584 instance=ExtResource("1_t02g3")]
 
-[node name="Enemies" type="Node3D" parent="Level"]
+[node name="Enemies" type="Node3D" parent="Level" unique_id=398296696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Level"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Level/WorldEnvironment"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Level/WorldEnvironment" unique_id=1385687857]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 light_bake_mode = 1
 shadow_enabled = true

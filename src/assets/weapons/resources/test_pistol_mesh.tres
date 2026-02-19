@@ -1,7 +1,0 @@
-[gd_resource type="BoxMesh" load_steps=2 format=3 uid="uid://bpldlwocw8xgx"]
-
-[ext_resource type="Material" uid="uid://vcjtuep0nwei" path="res://src/assets/weapons/resources/test_pistol_shader_material.tres" id="1_otpqs"]
-
-[resource]
-material = ExtResource("1_otpqs")
-size = Vector3(0.05, 0.05, 0.5)

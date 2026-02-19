@@ -12,8 +12,8 @@ public partial class CylinderController : Node
     
     public int CylinderBoneIndex;
     public Dictionary<int, Basis> BulletInTopLeftBasis = [];
-
-    private Vector3 LocalForward {get; set;}
+    public Vector3 LocalForward {get; set;}
+    
     private float CylinderRotation {get; set;} = 0;
 
     public override void _Ready()
