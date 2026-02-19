@@ -8,58 +8,50 @@ public partial class CylinderController : Node
     [Export] public Node3D CylinderParent {get; set;}
     [Export] public Node3D ForwardNode {get; set;}
     [Export] public CylinderRotationEventController CylinderRotationEventController {get; set;}
-    [Export] public int ReloadRotationState = 2;
-    
-    public int CylinderBoneIndex;
-    public Dictionary<int, Basis> BulletInTopLeftBasis = [];
-    public Vector3 LocalForward {get; set;}
-    
-    private float CylinderRotation {get; set;} = 0;
 
+    private readonly Dictionary<int, Basis> _bulletInTopLeftBasis = [];
+    private Vector3 LocalForward {get; set;}
+    
     public override void _Ready()
     {
         base._Ready();
         SetLocalForward();
-        BulletInTopLeftBasis.Add(6, CylinderParent.Basis);
-        BulletInTopLeftBasis.Add(5, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(60)));
-        BulletInTopLeftBasis.Add(4, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(120)));
-        BulletInTopLeftBasis.Add(3, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(180)));
-        BulletInTopLeftBasis.Add(2, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(240)));
-        BulletInTopLeftBasis.Add(1, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(300)));
+        _bulletInTopLeftBasis.Add(6, CylinderParent.Basis);
+        _bulletInTopLeftBasis.Add(5, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(60)));
+        _bulletInTopLeftBasis.Add(4, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(120)));
+        _bulletInTopLeftBasis.Add(3, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(180)));
+        _bulletInTopLeftBasis.Add(2, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(240)));
+        _bulletInTopLeftBasis.Add(1, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(300)));
         //copy of 6, allows for full rotation when out of ammo
-        BulletInTopLeftBasis.Add(0, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(360)));
+        _bulletInTopLeftBasis.Add(0, CylinderParent.Basis.Rotated(LocalForward, Mathf.DegToRad(360)));
     }
 
-    public void SetLocalForward()
+    private void SetLocalForward()
     {
         LocalForward = CylinderParent.Position.DirectionTo(ForwardNode.Position);
     }
 
     public void RotateCylinderHammerDown(float timeInSeconds, int currentAmmo)
     {
-        SetLocalForward();
-        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo-1], 
+        CylinderRotationEventController.StartRotation(timeInSeconds, _bulletInTopLeftBasis[currentAmmo-1], 
             CylinderParent);
     }
 
     public void RotateCylinderOpenCylinder(float timeInSeconds, int currentAmmo)
     {
-        SetLocalForward();
-        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo+1], 
+        CylinderRotationEventController.StartRotation(timeInSeconds, _bulletInTopLeftBasis[currentAmmo+1], 
             CylinderParent);
     }
 
     public void RotateCylinderReloadTurn(float timeInSeconds, int currentAmmo)
     {
-        SetLocalForward();
-        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo+1], 
+        CylinderRotationEventController.StartRotation(timeInSeconds, _bulletInTopLeftBasis[currentAmmo+1], 
             CylinderParent);
     }
 
     public void RotateCylinderCloseCylinder(float timeInSeconds, int currentAmmo)
     {
-        SetLocalForward();
-        CylinderRotationEventController.StartRotation(timeInSeconds, BulletInTopLeftBasis[currentAmmo], 
+        CylinderRotationEventController.StartRotation(timeInSeconds, _bulletInTopLeftBasis[currentAmmo], 
             CylinderParent);
     }
 }

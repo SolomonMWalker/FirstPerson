@@ -7,7 +7,7 @@
 [resource]
 script = ExtResource("2_ffwsm")
 MaxAmmo = 6
-FireRatePerSecond = 3.0
+FireRatePerSecond = 6.0
 Range = 75.0
 AccuracyErrorAngle = 1
 AccuracyErrorAngleAtMaxMovementSpeed = 1

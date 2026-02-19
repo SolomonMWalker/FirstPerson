@@ -6,9 +6,12 @@ using System.Linq;
 [GlobalClass]
 public partial class RevolverRig : WeaponRig
 {
-    [Export] public PackedScene EjectedCasingScene;
-    [Export] public Node3D ForwardNode;
-    [Export] public CylinderController CylinderController;
+    [ExportCategory("References")]
+    [Export] public PackedScene EjectedCasingScene { get; set; }
+    [Export] public CylinderController CylinderController { get; set; }
+    [Export] public AudioStreamPlayer3D AudioStreamPlayer3D { get; set; }
+    
+    [ExportCategory("AnimationNames")]
     [Export] public StringName HipIdleAnimationName { get; set; } = "RevolverHipIdle";
     [Export] public StringName HipFireAnimationName { get; set; } = "RevolverHipFire";
     [Export] public StringName AimFireAnimationName { get; set; } = "RevolverAimFire";
@@ -30,18 +33,18 @@ public partial class RevolverRig : WeaponRig
 
     //on interrupt of reload, if pressed before cylinder turn, full interrupt
     //otherwise, just reload that bullet and end the animation
-    public List<StringName> InterruptibleReloadAnimations = [];
-    public List<StringName> PostCylinderTurnInterruptReloadPath = [];
+    public readonly List<StringName> InterruptibleReloadAnimations = [];
+    public readonly List<StringName> PostCylinderTurnInterruptReloadPath = [];
 
-    private Node3D ProjectileParent;
-    private Dictionary<int, MeshInstance3D> _bulletCasings = [];
-    private Dictionary<int, MeshInstance3D> _bullets = [];
+    private Node3D _projectileParent;
+    private readonly Dictionary<int, MeshInstance3D> _bulletCasings = [];
+    private readonly Dictionary<int, MeshInstance3D> _bullets = [];
     private bool _isHammerDown;
 
     public override void _Ready()
     {
         base._Ready();
-        ProjectileParent = (Node3D) GetTree().GetFirstNodeInGroup("projectileParent");
+        _projectileParent = (Node3D) GetTree().GetFirstNodeInGroup("projectileParent");
         InterruptibleReloadAnimations.AddRange([
             AimToReloadAnimationName,
             HipToReloadAnimationName,
@@ -147,20 +150,22 @@ public partial class RevolverRig : WeaponRig
     public override void FireBullet()
     {
         var ammo = WeaponController.WeaponManager.GetCurrentWeapon().Ammo;
-        GD.Print($"ammo at {ammo}, does bulletCasing exist? {_bulletCasings[ammo] != null}");
         _bulletCasings[ammo].SetVisible(true);
         _bullets[ammo].SetVisible(false);
         WeaponController.WeaponManager.UseAmmo(WeaponController.WeaponManager.CurrentSlot);
+        AudioStreamPlayer3D.Play();
     }
     
     public void ReloadEjectCasings()
     {
-        var casingsToEject = _bulletCasings.Where(kvp => kvp.Key > WeaponController.WeaponManager.GetCurrentAmmo());
-        casingsToEject.ToList().ForEach(casing => casing.Value.Visible = false);
+        var casingsToEject = _bulletCasings
+            .Where(kvp => kvp.Key > WeaponController.WeaponManager.GetCurrentAmmo())
+            .Where(kvp => kvp.Value.Visible);
         foreach (var kvp in casingsToEject)
         {
+            kvp.Value.Visible = false;
             var casing = EjectedCasingScene.Instantiate<RigidBody3D>();
-            ProjectileParent.AddChild(casing);
+            _projectileParent.AddChild(casing);
             casing.GlobalTransform = kvp.Value.GlobalTransform;
             casing.GlobalPosition -= casing.GlobalBasis.Y * 0.02f;
             casing.LinearVelocity = -casing.GlobalBasis.Y * 2;
