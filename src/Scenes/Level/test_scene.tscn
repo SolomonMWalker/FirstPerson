@@ -51,9 +51,8 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 [node name="Enemies" type="Node3D" parent="Level" unique_id=398296696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Grunt" parent="Level/Enemies" unique_id=851878978 node_paths=PackedStringArray("NavAgentMovementTargetNode") instance=ExtResource("7_fbnti")]
+[node name="Grunt" parent="Level/Enemies" unique_id=851878978 instance=ExtResource("7_fbnti")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.87152, -1.0000076, -5.7003155)
-NavAgentMovementTargetNode = NodePath("../../Player")
 Speed = 3.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]

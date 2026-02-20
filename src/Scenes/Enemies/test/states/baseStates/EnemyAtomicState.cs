@@ -6,5 +6,5 @@ namespace FirstPerson.scenes.enemies.test.states;
 [GlobalClass]
 public partial class EnemyAtomicState: AtomicState
 {
-    public Grunt Grunt { get; set; }
+    [Export] public Grunt Grunt { get; set; }
 }

@@ -8,13 +8,19 @@ public partial class PlayerSprintingState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        PlayerController.Sprinting = true;
         PlayerController.CurrentMovementMult = PlayerController.SprintMovementMult;
         PlayerController.CameraController.EnterSprintTweenActivate();
+        if (PlayerController.WeaponController.Aiming)
+        {
+            PlayerController.WeaponController.Aiming = false;
+        }
     }
 
     public override void StateExited()
     {
         base.StateExited();
+        PlayerController.Sprinting = false;
         PlayerController.CameraController.ExitSprintTweenActivate();
     }
 

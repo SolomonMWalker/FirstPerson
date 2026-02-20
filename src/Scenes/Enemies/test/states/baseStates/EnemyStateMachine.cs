@@ -7,24 +7,4 @@ namespace FirstPerson.scenes.enemies.test.states;
 public partial class EnemyStateMachine : StateMachine
 {
     [Export] public Grunt Grunt { get; set; }
-
-    public override void _Ready()
-    {
-        base._Ready();
-        foreach (var child in GetChildren())
-        {
-            switch (child)
-            {
-                case EnemyAtomicState aState:
-                    aState.Grunt = Grunt;
-                    break;
-                case EnemyCompoundState cState:
-                    cState.Grunt = Grunt;
-                    break;
-                case EnemyParallelState pState:
-                    pState.Grunt = Grunt;
-                    break;
-            }
-        }
-    }
 }

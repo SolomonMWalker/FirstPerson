@@ -98,14 +98,13 @@ EnableHeadbob = true
 [node name="Crouching" type="Node3D" parent="Locations" unique_id=1496322166]
 
 [node name="CameraLocation" type="Node3D" parent="Locations/Crouching" unique_id=422639026]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 
 [node name="ClamberLocation" type="Node3D" parent="Locations/Crouching" unique_id=1291567547]
 
 [node name="Standing" type="Node3D" parent="Locations" unique_id=279515427]
 
 [node name="CameraLocation" type="Node3D" parent="Locations/Standing" unique_id=1283030038]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="ClamberLocation" type="Node3D" parent="Locations/Standing" unique_id=899263480]
 
