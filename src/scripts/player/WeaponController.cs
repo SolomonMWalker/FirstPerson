@@ -18,6 +18,7 @@ public partial class WeaponController : Node
 
     [ExportCategory("Weapon Settings")]
     [Export] public int MaxAngleAccuracyPenalty { get; set; } = 8;
+    [Export] public float AimSwayMult { get; set; } = 0.25f;
     
     public Weapon CurrentWeapon { get; set; }
     public WeaponManager WeaponManager { get; set; }
@@ -26,7 +27,7 @@ public partial class WeaponController : Node
     public float CurrentAccuracyAnglePenalty { get; private set; }
     public double FireRateTimer { get; private set; }
     public bool CanFireNextRound { get; private set; } = true;
-    public bool Aiming { get; private set; } = true;
+    public bool Aiming { get; set; } = true;
 
     private (bool hasStarted, string name) _bulletAddedAnimStartedAndName;
     private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
@@ -90,8 +91,9 @@ public partial class WeaponController : Node
     {
         //default pos and rotation of weapon rig are 0
         var fDelta = (float)delta;
-        var mouseMovement =
-            MouseCaptureComponent.RawRelativeMouseInput.Clamp(CurrentWeapon.SwayMin, CurrentWeapon.SwayMax);
+        var mouseMovement = MouseCaptureComponent.RawRelativeMouseInput.Clamp(
+            CurrentWeapon.SwayMin, CurrentWeapon.SwayMax);
+        if (Aiming) mouseMovement *= AimSwayMult;
         var pos = WeaponModelParent.Position;
         var rot = WeaponModelParent.Rotation;
         WeaponModelParent.Position = pos with

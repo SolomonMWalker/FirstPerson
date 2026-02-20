@@ -1,9 +1,18 @@
 using Godot;
 using System;
 using FirstPerson.CustomTypes.StateMachine;
+using FirstPerson.Scenes.Player;
 
 public partial class RevolverHipIdleState : WeaponAtomicState
 {
+    private PlayerController _playerController;
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        _playerController = (PlayerController) GetTree().GetFirstNodeInGroup("player");
+    }
+    
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
@@ -15,8 +24,9 @@ public partial class RevolverHipIdleState : WeaponAtomicState
             return;
         }
 
-        if (Input.IsActionPressed("Aim"))
+        if (Input.IsActionPressed("Aim") && !_playerController.Sprinting)
         {
+            WeaponController.CurrentWeaponModel.StartAiming();
             WeaponController.CurrentWeaponModel.PlayHipToAimAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverAimIdleState"));
             return;

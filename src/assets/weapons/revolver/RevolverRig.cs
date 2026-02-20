@@ -2,6 +2,7 @@ using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using FirstPerson.Scenes.Player;
 
 [GlobalClass]
 public partial class RevolverRig : WeaponRig
@@ -37,6 +38,7 @@ public partial class RevolverRig : WeaponRig
     public readonly List<StringName> PostCylinderTurnInterruptReloadPath = [];
 
     private Node3D _projectileParent;
+    private PlayerController _playerController;
     private readonly Dictionary<int, MeshInstance3D> _bulletCasings = [];
     private readonly Dictionary<int, MeshInstance3D> _bullets = [];
     private bool _isHammerDown;
@@ -45,6 +47,7 @@ public partial class RevolverRig : WeaponRig
     {
         base._Ready();
         _projectileParent = (Node3D) GetTree().GetFirstNodeInGroup("projectileParent");
+        _playerController = (PlayerController) GetTree().GetFirstNodeInGroup("player");
         InterruptibleReloadAnimations.AddRange([
             AimToReloadAnimationName,
             HipToReloadAnimationName,
@@ -109,6 +112,17 @@ public partial class RevolverRig : WeaponRig
     {
         AnimationPlayer.Play(AimToHipAnimationName);
     }
+    
+    public void PlayHammerDownAimToHipAnimation()
+    {
+        
+        AnimationPlayer.Play(HammerDownAimToHipAnimationName);
+    }
+
+    public void PlayHammerDownHipToAimAnimation()
+    {
+        AnimationPlayer.Play(HammerDownHipToAimAnimationName);
+    }
 
     public override void PlayAimToReloadAnimation()
     {
@@ -128,16 +142,6 @@ public partial class RevolverRig : WeaponRig
     public void PlayAimHammerDownAnimation()
     {
         AnimationPlayer.Play(AimHammerDownAnimationName);
-    }
-
-    public void PlayHammerDownAimToHipAnimation()
-    {
-        AnimationPlayer.Play(HammerDownAimToHipAnimationName);
-    }
-
-    public void PlayHammerDownHipToAimAnimation()
-    {
-        AnimationPlayer.Play(HammerDownHipToAimAnimationName);
     }
 
     public override void AddBullet()
@@ -212,5 +216,19 @@ public partial class RevolverRig : WeaponRig
         animationsToPlay[^1] = ReloadToCloseCylinderAnimationName;
         animationsToPlay.Add(ReloadCloseCylinderStartAnimationName);
         animationsToPlay.ForEach(a => AnimationPlayer.Queue(a));
+    }
+
+    public override void StartAiming()
+    {
+        WeaponController.Aiming = true;
+        _playerController.CameraEffects.Aiming = true;
+        _playerController.CameraController.EnterAimTweenActivate();
+    }
+
+    public override void StopAiming()
+    {
+        WeaponController.Aiming = false;
+        _playerController.CameraEffects.Aiming = false;
+        _playerController.CameraController.ExitAimTweenActivate();
     }
 }

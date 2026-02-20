@@ -17,9 +17,10 @@ public partial class RevolverAimIdleState : WeaponAtomicState
             return;
         }
         
-        if (!Input.IsActionPressed("Aim"))
+        if (!Input.IsActionPressed("Aim") || !WeaponController.Aiming)
         {
             //play to hip animation because hip animation doesn't know how its being reached
+            WeaponController.CurrentWeaponModel.StopAiming();
             WeaponController.CurrentWeaponModel.PlayAimToHipAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipIdleState"));
             return;
@@ -33,6 +34,7 @@ public partial class RevolverAimIdleState : WeaponAtomicState
 
         if (Input.IsActionJustPressed("Reload") && WeaponController.CanReload())
         {
+            WeaponController.CurrentWeaponModel.StopAiming();
             WeaponController.CurrentWeaponModel.PlayAimToReloadAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverReloadState"));
             return;

@@ -11,6 +11,7 @@ public partial class RevolverAimEmptyState : WeaponAtomicState
         
         if (!Input.IsActionPressed("Aim"))
         {
+            WeaponController.CurrentWeaponModel.StopAiming();
             WeaponController.CurrentWeaponModel.PlayAimToHipAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverHipIdleState"));
             return;
@@ -18,6 +19,7 @@ public partial class RevolverAimEmptyState : WeaponAtomicState
 
         if (Input.IsActionJustPressed("Reload") || Input.IsActionJustPressed("Fire"))
         {
+            WeaponController.CurrentWeaponModel.StopAiming();
             WeaponController.CurrentWeaponModel.PlayAimToReloadAnimation();
             OnStateChangeRequired(new ChangeStateEventArgs("RevolverReloadState"));
             return;

@@ -15,7 +15,9 @@ public partial class CameraController : Node3D
     [Export] public Node3D CrouchingLocation { get; set; }
 
     [ExportCategory("Camera Settings")]
-    [Export] public int Fov { get; set; } = 77;
+    [Export] public int DefaultFov { get; set; } = 77;
+
+    [Export] public int AimFov { get; set; } = 38;
     
     [ExportGroup("Camera Tilt")]
     [Export] public float TiltLowerLimit
@@ -38,6 +40,9 @@ public partial class CameraController : Node3D
     [ExportGroup("Sprint Movement")]
     [Export] public float SprintAnimationLengthInSec { get; set; } = 0.175f;
     [Export] public float SprintFovShiftMult { get; set; } = 1.05f;
+    
+    [ExportGroup("Aim Animation")]
+    [Export] public float AimAnimationLengthInSec { get; set; } = 0.175f;
 
     [ExportGroup("Step Smoothing")]
     [Export] public float StepSpeed { get; set; } = 8;
@@ -80,6 +85,8 @@ public partial class CameraController : Node3D
     private Tween ExitCrouchTween { get; set; }
     private Tween EnterSprintTween { get; set; }
     private Tween ExitSprintTween { get; set; }
+    private Tween EnterAimTween { get; set; }
+    private Tween ExitAimTween { get; set; }
     private Vector3 _rotation = Vector3.Zero;
     
     public override void _Ready()
@@ -199,12 +206,24 @@ public partial class CameraController : Node3D
     public void EnterSprintTweenActivate()
     {
         EnterSprintTween = CreateTween();
-        EnterSprintTween.TweenProperty(Camera, "fov", Fov * SprintFovShiftMult, SprintAnimationLengthInSec);
+        EnterSprintTween.TweenProperty(Camera, "fov", DefaultFov * SprintFovShiftMult, SprintAnimationLengthInSec);
     }
 
     public void ExitSprintTweenActivate()
     {
         ExitSprintTween = CreateTween();
-        ExitSprintTween.TweenProperty(Camera, "fov", Fov, SprintAnimationLengthInSec);
+        ExitSprintTween.TweenProperty(Camera, "fov", DefaultFov, SprintAnimationLengthInSec);
+    }
+
+    public void EnterAimTweenActivate()
+    {
+        EnterAimTween = CreateTween();
+        EnterAimTween.TweenProperty(Camera, "fov", AimFov, AimAnimationLengthInSec);
+    }
+    
+    public void ExitAimTweenActivate()
+    {
+        ExitAimTween = CreateTween();
+        ExitAimTween.TweenProperty(Camera, "fov", DefaultFov, AimAnimationLengthInSec);
     }
 }

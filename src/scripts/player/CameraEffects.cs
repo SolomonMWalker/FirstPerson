@@ -14,6 +14,12 @@ public partial class CameraEffects : Node3D
     [Export] public bool EnableWeaponKick { get; set; }
     [Export] public bool EnableScreenShake { get; set; }
     [Export] public bool EnableHeadbob { get; set; }
+    [Export] public float AimMult
+    {
+        get => _aimMult;
+        set => _aimMult = Mathf.Clamp(value, 0, 1f);
+    }
+    private float _aimMult = 0.1f;
     
     [ExportCategory("Kick & Recoil Settings")]
     [ExportGroup("Run Tilt")]  
@@ -61,6 +67,7 @@ public partial class CameraEffects : Node3D
     }
     private float _bobFrequency = 6.0f;
 
+    public bool Aiming { get; set; }
     private Random Random { get; set; } = new ();
     private float _tiltForwardDot, _tiltRightDot;
     private float _fallValue, _fallTimer;
@@ -150,12 +157,15 @@ public partial class CameraEffects : Node3D
         if (EnableHeadbob)
         {
             var pitchDelta = bobSin * Mathf.DegToRad(_bobPitch) * speed;
+            if (Aiming) pitchDelta *= _aimMult;
             angles.X -= (float) pitchDelta;
 
             var rollDelta = bobSin * Mathf.DegToRad(_bobRoll) * speed;
+            if (Aiming) rollDelta *= _aimMult;
             angles.Z -= (float) rollDelta;
 
             var bobHeight = bobSin * speed * _bobUp;
+            if (Aiming) bobHeight *= _aimMult;
             offset.Y += (float) bobHeight;
         }
 

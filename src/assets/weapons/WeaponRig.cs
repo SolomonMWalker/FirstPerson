@@ -6,6 +6,7 @@ public partial class WeaponRig : Node3D
     [Export] public AnimationPlayer AnimationPlayer;
     [Export] public WeaponStateMachine WeaponStateMachine;
     public WeaponController WeaponController;
+    public float AimSwayMultiplier { get; protected set; } = 1f;
 
     public override void _Ready()
     {
@@ -16,6 +17,8 @@ public partial class WeaponRig : Node3D
 
     public bool IsAnimationPlaying() => AnimationPlayer.IsPlaying();
 
+    public virtual void StartAiming() {}
+    public virtual void StopAiming() {}
     public virtual void AddBullet() {}
     public virtual void FireBullet() {}
     public virtual void PlayHipIdleAnimation() {}

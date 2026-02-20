@@ -5,20 +5,26 @@
 [ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/scenes/enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
 [ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/scenes/enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
 [ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/scenes/enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
-[ext_resource type="Script" uid="uid://1203ywfe4cex" path="res://src/customTypes/stateMachine/AtomicState.cs" id="6_em3r6"]
-[ext_resource type="Script" uid="uid://b67qq7nweqcd4" path="res://src/scenes/enemies/test/states/baseStates/EnemyAtomicState.cs" id="7_cb0wa"]
+[ext_resource type="Script" uid="uid://baiwq5mulwrs0" path="res://src/scenes/enemies/test/states/IdleState.cs" id="6_cb0wa"]
+[ext_resource type="Script" uid="uid://u51q4kxv2mdp" path="res://src/scenes/enemies/test/states/FollowState.cs" id="7_cb0wa"]
+[ext_resource type="Script" uid="uid://b0bgrdax5e1q3" path="res://src/scenes/enemies/test/states/NotMovingState.cs" id="8_fvv75"]
+[ext_resource type="Script" uid="uid://cq6lun81vj4ue" path="res://src/scenes/enemies/test/states/IsMovingState.cs" id="9_5v67s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_savwj"]
 radius = 0.36083984
 height = 1.5161133
 
-[node name="GruntParent" unique_id=95847344 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer") instance=ExtResource("1_savwj")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_cb0wa"]
+radius = 10.0
+
+[node name="GruntParent" unique_id=516032448 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer", "CombatTriggerArea") instance=ExtResource("1_savwj")]
 script = ExtResource("2_tbuhh")
 NavigationAgent3D = NodePath("Grunt/NavigationAgent3D")
 CharacterBody3D = NodePath("Grunt")
 AnimationPlayer = NodePath("AnimationPlayer")
+CombatTriggerArea = NodePath("CombatTriggerArea")
 
-[node name="Grunt" parent="." index="0" unique_id=333665208]
+[node name="Grunt" parent="." index="0" unique_id=763035393]
 collision_layer = 35
 collision_mask = 257
 
@@ -36,19 +42,46 @@ Grunt = NodePath("..")
 RootState = NodePath("RootState")
 metadata/_custom_type_script = "uid://br7t8yrauak3g"
 
-[node name="RootState" type="Node" parent="EnemyStateMachine" index="0" unique_id=2026020853]
+[node name="RootState" type="Node" parent="EnemyStateMachine" index="0" unique_id=2026020853 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("4_a2yja")
+Grunt = NodePath("../..")
 metadata/_custom_type_script = "uid://lf1fhmwkbv0g"
 
-[node name="BehaviorState" type="Node" parent="EnemyStateMachine/RootState" index="0" unique_id=1548370135]
+[node name="BehaviorState" type="Node" parent="EnemyStateMachine/RootState" index="0" unique_id=1548370135 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("5_a2yja")
+Grunt = NodePath("../../..")
 DefaultStateName = "IdleState"
 metadata/_custom_type_script = "uid://l3g8mxkedaro"
 
-[node name="IdleState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="0" unique_id=1249066955]
-script = ExtResource("6_em3r6")
+[node name="IdleState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="0" unique_id=1249066955 node_paths=PackedStringArray("Grunt")]
+script = ExtResource("6_cb0wa")
+Grunt = NodePath("../../../..")
 metadata/_custom_type_script = "uid://1203ywfe4cex"
 
-[node name="FollowState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="1" unique_id=806204658]
+[node name="FollowState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="1" unique_id=806204658 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("7_cb0wa")
+Grunt = NodePath("../../../..")
 metadata/_custom_type_script = "uid://b67qq7nweqcd4"
+
+[node name="MovementState" type="Node" parent="EnemyStateMachine/RootState" index="1" unique_id=1704605099 node_paths=PackedStringArray("Grunt")]
+script = ExtResource("5_a2yja")
+Grunt = NodePath("../../..")
+DefaultStateName = "NotMovingState"
+metadata/_custom_type_script = "uid://l3g8mxkedaro"
+
+[node name="NotMovingState" type="Node" parent="EnemyStateMachine/RootState/MovementState" index="0" unique_id=1505039993 node_paths=PackedStringArray("Grunt")]
+script = ExtResource("8_fvv75")
+Grunt = NodePath("../../../..")
+metadata/_custom_type_script = "uid://1203ywfe4cex"
+
+[node name="IsMovingState" type="Node" parent="EnemyStateMachine/RootState/MovementState" index="1" unique_id=1938855863 node_paths=PackedStringArray("Grunt")]
+script = ExtResource("9_5v67s")
+Grunt = NodePath("../../../..")
+metadata/_custom_type_script = "uid://1203ywfe4cex"
+
+[node name="CombatTriggerArea" type="Area3D" parent="." index="3" unique_id=349048505]
+collision_layer = 0
+collision_mask = 72
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CombatTriggerArea" index="0" unique_id=692055017]
+shape = SubResource("SphereShape3D_cb0wa")
