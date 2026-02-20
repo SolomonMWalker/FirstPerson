@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://ctos4y308wohb"]
+
+[ext_resource type="PackedScene" uid="uid://dpmk0kqwvhcdx" path="res://blenderTutorial/grunt.glb" id="1_savwj"]
+[ext_resource type="Script" uid="uid://bw7rxgwmc78ob" path="res://src/scenes/enemies/test/Grunt.cs" id="2_tbuhh"]
+[ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/scenes/enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
+[ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/scenes/enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
+[ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/scenes/enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
+[ext_resource type="Script" uid="uid://1203ywfe4cex" path="res://src/customTypes/stateMachine/AtomicState.cs" id="6_em3r6"]
+[ext_resource type="Script" uid="uid://b67qq7nweqcd4" path="res://src/scenes/enemies/test/states/baseStates/EnemyAtomicState.cs" id="7_cb0wa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_savwj"]
+radius = 0.36083984
+height = 1.5161133
+
+[node name="GruntParent" unique_id=95847344 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer") instance=ExtResource("1_savwj")]
+script = ExtResource("2_tbuhh")
+NavigationAgent3D = NodePath("Grunt/NavigationAgent3D")
+CharacterBody3D = NodePath("Grunt")
+AnimationPlayer = NodePath("AnimationPlayer")
+
+[node name="Grunt" parent="." index="0" unique_id=333665208]
+collision_layer = 35
+collision_mask = 257
+
+[node name="PhysicsCollisionShape" type="CollisionShape3D" parent="Grunt" index="0" unique_id=625347092]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75805664, 0)
+shape = SubResource("CapsuleShape3D_savwj")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Grunt" index="2" unique_id=1577324587]
+target_desired_distance = 3.0
+avoidance_enabled = true
+
+[node name="EnemyStateMachine" type="Node" parent="." index="2" unique_id=529673394 node_paths=PackedStringArray("Grunt", "RootState")]
+script = ExtResource("3_svei2")
+Grunt = NodePath("..")
+RootState = NodePath("RootState")
+metadata/_custom_type_script = "uid://br7t8yrauak3g"
+
+[node name="RootState" type="Node" parent="EnemyStateMachine" index="0" unique_id=2026020853]
+script = ExtResource("4_a2yja")
+metadata/_custom_type_script = "uid://lf1fhmwkbv0g"
+
+[node name="BehaviorState" type="Node" parent="EnemyStateMachine/RootState" index="0" unique_id=1548370135]
+script = ExtResource("5_a2yja")
+DefaultStateName = "IdleState"
+metadata/_custom_type_script = "uid://l3g8mxkedaro"
+
+[node name="IdleState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="0" unique_id=1249066955]
+script = ExtResource("6_em3r6")
+metadata/_custom_type_script = "uid://1203ywfe4cex"
+
+[node name="FollowState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="1" unique_id=806204658]
+script = ExtResource("7_cb0wa")
+metadata/_custom_type_script = "uid://b67qq7nweqcd4"

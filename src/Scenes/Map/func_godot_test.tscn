@@ -300,9 +300,7 @@ mesh = SubResource("ArrayMesh_oc8up")
 shape = SubResource("ConvexPolygonShape3D_0ie87")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=1647864655]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 navigation_mesh = SubResource("NavigationMesh_tcnp5")
-navigation_layers = 0
 
 [node name="entity_0_mesh_instance" type="MeshInstance3D" parent="NavigationRegion3D" unique_id=725388026]
 visible = false
