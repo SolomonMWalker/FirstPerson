@@ -8,5 +8,6 @@
         - go to side of circle away from target, run around circle around target
 - grunts can aim and shoot similar to quake grunts
     - hitscan, but takes a tiny amount of time between aim and shoot, so player can dodge if they keep moving
+    - gets close enough to shoot, then stops to shoot, then moves close until they can shoot again
 - storm trooper can implement circle strafe and a different enemy can implement zigzag
     - dog enemy: dog robot body with demon head in tank futurama style on it
