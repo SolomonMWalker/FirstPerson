@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dpmk0kqwvhcdx"
-path="res://.godot/imported/grunt.glb-3605aac1cc4179c00c7a7556d3d2971d.scn"
+path="res://.godot/imported/grunt.glb-4f34a89153031c63f008f0ea332ee735.scn"
 
 [deps]
 
-source_file="res://blenderTutorial/grunt.glb"
-dest_files=["res://.godot/imported/grunt.glb-3605aac1cc4179c00c7a7556d3d2971d.scn"]
+source_file="res://BlenderTutorial/grunt.glb"
+dest_files=["res://.godot/imported/grunt.glb-4f34a89153031c63f008f0ea332ee735.scn"]
 
 [params]
 
@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "idle": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/scenes/enemies/test/blenderAnimations/idle.res",
+"save_to_file/fallback_path": "res://src/Scenes/Enemies/test/blenderAnimations/idle.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bvrfyb1unyreq",
 "settings/loop_mode": 1,
@@ -2097,7 +2097,7 @@ _subresources={
 },
 "idleToWalk": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/scenes/enemies/test/blenderAnimations/idleToWalk.res",
+"save_to_file/fallback_path": "res://src/Scenes/Enemies/test/blenderAnimations/idleToWalk.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://c3l6ybptg00k3",
 "settings/loop_mode": 0,
@@ -4153,7 +4153,7 @@ _subresources={
 },
 "walk": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/scenes/enemies/test/blenderAnimations/walk.res",
+"save_to_file/fallback_path": "res://src/Scenes/Enemies/test/blenderAnimations/walk.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://xkavo85m5feu",
 "settings/loop_mode": 1,
@@ -6209,7 +6209,7 @@ _subresources={
 },
 "walkToIdle": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/scenes/enemies/test/blenderAnimations/walkToIdle.res",
+"save_to_file/fallback_path": "res://src/Scenes/Enemies/test/blenderAnimations/walkToIdle.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://fhcr0ybtknh1",
 "settings/loop_mode": 0,
