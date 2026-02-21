@@ -4,6 +4,12 @@ using FirstPerson.scenes.enemies.test.states;
 
 public partial class IdleState : EnemyAtomicState
 {
+    public override void StateEntered()
+    {
+        base.StateEntered();
+        Grunt.behaviorState = Grunt.BehaviorState.Idle;
+    }
+
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);

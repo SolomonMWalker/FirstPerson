@@ -4,22 +4,53 @@ using FirstPerson.Helpers;
 
 public partial class Grunt : Node3D
 {
+    [ExportCategory("References")]
+    [Export] public Node3D NavAgentMovementTargetNode { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CharacterBody3D CharacterBody3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
-    [Export] public Node3D NavAgentMovementTargetNode { get; set; }
-
+    [Export] public Timer FireRateTimer { get; set; }
+    
+    [ExportCategory("Enemy Settings")]
     [Export] public float Speed { get; set; } = 10f;
+    [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
 
-    private bool _walking, _ready;
+    [ExportCategory("Animation Settings")]
+    [ExportGroup("Names")]
+    [Export] public StringName IdleGunDown { get; set; } = "idleWithGunDown";
+    [Export] public StringName WalkGunDown { get; set; } = "walkGunDown";
+    [Export] public StringName IdleGunReady { get; set; } = "idleWithGunReady";
+    [Export] public StringName WalkGunReady { get; set; } = "walkGunReady";
+    [Export] public StringName IdleGunDownToWalkGunDown { get; set; } = "idleToWalkGunDown";
+    [Export] public StringName IdleGunReadyToWalkGunReady { get; set; } = "idleToWalkGunReady";
+    [Export] public StringName Aim { get; set; } = "aimGun";
+    [Export] public StringName Fire { get; set; } = "fireGun";
+
+    public BehaviorState behaviorState = BehaviorState.Idle;
+    public bool readyToFire = false;
+    public bool firing = false;
+    
+    private bool _ready;
+
+    public enum BehaviorState
+    {
+        Idle,
+        Following
+    }
 
     public override void _Ready()
     {
         base._Ready();
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
-        AnimationPlayer.Play("idle");
+        FireRateTimer.WaitTime = FireRatePauseInSeconds;
+        FireRateTimer.Timeout += () =>
+        {
+            GD.Print("Ready to fire");
+            readyToFire = true;
+        };
+        AnimationPlayer.Play(IdleGunDown);
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
     }
 
@@ -37,6 +68,14 @@ public partial class Grunt : Node3D
     }
 
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
+
+    public virtual void RotateToTarget()
+    {
+        if (NavAgentMovementTargetNode is null) return;
+        var direction = (NavAgentMovementTargetNode.GlobalPosition - CharacterBody3D.GlobalPosition).Normalized();
+        var targetRotation = Mathf.Atan2(direction.X, direction.Z);
+        CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+    }
 
     public virtual void HandleJustGravity(double delta)
     {

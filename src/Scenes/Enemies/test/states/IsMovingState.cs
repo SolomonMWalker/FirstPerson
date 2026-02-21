@@ -8,17 +8,29 @@ public partial class IsMovingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt?.AnimationPlayer.Play("idleToWalk");
-        Grunt?.AnimationPlayer.Queue("walk");
+        if (Grunt.behaviorState == Grunt.BehaviorState.Following)
+        {
+            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReady);
+            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunReady);
+        }
+        else //idle
+        {
+            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownToWalkGunDown);
+            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunDown);
+        }
     }
     
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
         if (Grunt is null) return;
+        if (Grunt.readyToFire)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
+        }
         if (Grunt.CharacterBody3D.Velocity.LengthSquared() == 0)
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("NotMovingState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
         }
     }
 }
