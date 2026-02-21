@@ -1,5 +1,12 @@
-﻿- Make Reload revolver bullet-by-bullet animations
-- Make Reload revolver script piece
-    - Including animation addition that moves the cylinder (not in blender animation)
-- Take the time to fix reticle (how do angle accuracy changes affect reticle line distance)
+﻿- Take the time to fix reticle (how do angle accuracy changes affect reticle line distance)
     - maybe we should switch to a static reticle, not sure yet
+- zigzag ai movement
+    - get target position, get normalized direction vector, apply angle to the right, apply half length of 
+        zigzag movement, tell target to move there. Once there, apply angle to the left and apply full length
+        of zigzag movement. Repeat to the right. Repeat until at target.
+    - similar idea will also work for circle strafe
+        - go to side of circle away from target, run around circle around target
+- grunts can aim and shoot similar to quake grunts
+    - hitscan, but takes a tiny amount of time between aim and shoot, so player can dodge if they keep moving
+- storm trooper can implement circle strafe and a different enemy can implement zigzag
+    - dog enemy: dog robot body with demon head in tank futurama style on it

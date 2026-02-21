@@ -761,11 +761,11 @@ _data = {
 &"RevolverRest": ExtResource("21_1qrpf")
 }
 
-[node name="RevolverRig" type="Node3D" unique_id=867317586 node_paths=PackedStringArray("ForwardNode", "CylinderController", "AnimationPlayer", "WeaponStateMachine")]
+[node name="RevolverRig" type="Node3D" unique_id=867317586 node_paths=PackedStringArray("CylinderController", "AudioStreamPlayer3D", "AnimationPlayer", "WeaponStateMachine")]
 script = ExtResource("2_cws75")
 EjectedCasingScene = ExtResource("2_5fee2")
-ForwardNode = NodePath("Armature/Skeleton3D/gun_cylinder_1/CylinderParent/ForwardPoint")
 CylinderController = NodePath("CylinderController")
+AudioStreamPlayer3D = NodePath("AudioStreamPlayer3D")
 AnimationPlayer = NodePath("AnimationPlayer")
 WeaponStateMachine = NodePath("RevolverStateMachine")
 
