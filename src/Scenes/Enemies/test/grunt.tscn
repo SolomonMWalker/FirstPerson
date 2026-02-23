@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://ctos4y308wohb"]
 
-[ext_resource type="PackedScene" uid="uid://dpmk0kqwvhcdx" path="res://BlenderTutorial/grunt.glb" id="1_savwj"]
-[ext_resource type="Script" uid="uid://bw7rxgwmc78ob" path="res://src/Scenes/Enemies/test/Grunt.cs" id="2_tbuhh"]
-[ext_resource type="Animation" uid="uid://bw8ne7vbj0j6j" path="res://src/Scenes/Enemies/test/myAnimations/editedAimGun.res" id="3_esefs"]
-[ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/Scenes/Enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
-[ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/Scenes/Enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
-[ext_resource type="Animation" uid="uid://can1ugai5px3j" path="res://src/Scenes/Enemies/test/myAnimations/editedFireGun.res" id="4_kxbtv"]
-[ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/Scenes/Enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
-[ext_resource type="Script" uid="uid://baiwq5mulwrs0" path="res://src/Scenes/Enemies/test/states/IdleState.cs" id="6_cb0wa"]
-[ext_resource type="Script" uid="uid://u51q4kxv2mdp" path="res://src/Scenes/Enemies/test/states/FollowState.cs" id="7_cb0wa"]
-[ext_resource type="Script" uid="uid://b0bgrdax5e1q3" path="res://src/Scenes/Enemies/test/states/NoActionState.cs" id="8_n4l6h"]
-[ext_resource type="Script" uid="uid://cq6lun81vj4ue" path="res://src/Scenes/Enemies/test/states/IsMovingState.cs" id="9_5v67s"]
-[ext_resource type="Script" uid="uid://dil6ykvr3iugp" path="res://src/Scenes/Enemies/test/states/AimingState.cs" id="10_lw80v"]
-[ext_resource type="Script" uid="uid://dbfx5k3cimdqv" path="res://src/Scenes/Enemies/test/states/FiringState.cs" id="11_q0el0"]
+[ext_resource type="PackedScene" uid="uid://dpmk0kqwvhcdx" path="res://blenderTutorial/grunt.glb" id="1_savwj"]
+[ext_resource type="Script" uid="uid://bw7rxgwmc78ob" path="res://src/scenes/enemies/test/Grunt.cs" id="2_tbuhh"]
+[ext_resource type="Animation" uid="uid://bw8ne7vbj0j6j" path="res://src/scenes/enemies/test/myAnimations/editedAimGun.res" id="3_esefs"]
+[ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/scenes/enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
+[ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/scenes/enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
+[ext_resource type="Animation" uid="uid://can1ugai5px3j" path="res://src/scenes/enemies/test/myAnimations/editedFireGun.res" id="4_kxbtv"]
+[ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/scenes/enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
+[ext_resource type="Script" uid="uid://baiwq5mulwrs0" path="res://src/scenes/enemies/test/states/IdleState.cs" id="6_cb0wa"]
+[ext_resource type="Script" uid="uid://u51q4kxv2mdp" path="res://src/scenes/enemies/test/states/FollowState.cs" id="7_cb0wa"]
+[ext_resource type="Script" uid="uid://b0bgrdax5e1q3" path="res://src/scenes/enemies/test/states/NoActionState.cs" id="8_n4l6h"]
+[ext_resource type="Script" uid="uid://cq6lun81vj4ue" path="res://src/scenes/enemies/test/states/IsMovingState.cs" id="9_5v67s"]
+[ext_resource type="Script" uid="uid://dil6ykvr3iugp" path="res://src/scenes/enemies/test/states/AimingState.cs" id="10_lw80v"]
+[ext_resource type="Script" uid="uid://dbfx5k3cimdqv" path="res://src/scenes/enemies/test/states/FiringState.cs" id="11_q0el0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_savwj"]
 radius = 0.36083984
@@ -27,25 +27,24 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_cb0wa"]
 radius = 10.0
 
-[node name="GruntParent" unique_id=1893381169 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer", "CombatTriggerArea", "ShootRaycast", "FireRateTimer") instance=ExtResource("1_savwj")]
+[node name="GruntParent" unique_id=1893381169 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer", "CombatTriggerArea") instance=ExtResource("1_savwj")]
 script = ExtResource("2_tbuhh")
 NavigationAgent3D = NodePath("Grunt/NavigationAgent3D")
 CharacterBody3D = NodePath("Grunt")
 AnimationPlayer = NodePath("AnimationPlayer")
 CombatTriggerArea = NodePath("CombatTriggerArea")
-ShootRaycast = NodePath("ShootRayCast3D")
-FireRateTimer = NodePath("FireRateTimer")
-FireRatePauseInSeconds = 2.0
 
-[node name="Grunt" parent="." index="0" unique_id=996054063]
+[node name="Grunt" parent="." index="0" unique_id=714846297]
 collision_layer = 35
 collision_mask = 257
 
 [node name="PhysicsCollisionShape" type="CollisionShape3D" parent="Grunt" index="0" unique_id=625347092]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75805664, 0)
+visible = false
 shape = SubResource("CapsuleShape3D_savwj")
 
-[node name="Skeleton3D" parent="Grunt" index="1" unique_id=170705873]
+[node name="Skeleton3D" parent="Grunt" index="1" unique_id=399241313]
+show_rest_only = true
 bones/0/position = Vector3(3.4385607e-08, 0.63131404, 0.3933255)
 bones/1/position = Vector3(0.22564317, 0.34714937, -0.55000365)
 bones/1/rotation = Quaternion(0.012912458, 0.98310953, -0.18090864, 0.024517527)
@@ -98,14 +97,64 @@ bones/52/rotation = Quaternion(-0.10245314, 0.9946858, 0.0044701393, 0.009136557
 bones/53/position = Vector3(0.79635763, 0.11532143, 0.110436976)
 bones/54/position = Vector3(-0.7963575, 0.1153214, 0.110436976)
 
-[node name="hand_R" parent="Grunt/Skeleton3D" index="0" unique_id=1670158494]
-transform = Transform3D(-0.9788396, -0.20389886, 0.017260075, -0.019092083, 0.007020496, -0.9997927, 0.20373549, -0.97896636, -0.01076485, 0.4121589, 0.90699345, -0.25937554)
+[node name="hand_R" parent="Grunt/Skeleton3D" index="0" unique_id=147323666]
+transform = Transform3D(-0.005378871, 0.99984187, 0.01696369, -0.99998534, -0.005378169, -8.0618775e-05, 1.0625459e-05, -0.0169639, 0.9998557, 0.91028124, 1.3877885, 0.004317725)
+
+[node name="LeftBicepAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="2" unique_id=2006102380]
+transform = Transform3D(0.023289204, -0.9992531, 0.030841231, 0.99972856, 0.023278076, -0.00071879476, 2.9057264e-07, 0.030849725, 0.9995238, -0.35818106, 1.3765627, 0.026700184)
+bone_name = "upper_arm.L"
+bone_idx = 11
+
+[node name="LeftForearmAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="3" unique_id=1604999631]
+transform = Transform3D(0.017884504, -0.9949277, -0.0989908, 0.99983984, 0.01779662, 0.0017705117, 1.2856617e-07, -0.09900646, 0.99508643, -0.6078887, 1.3823797, 0.03440935)
+bone_name = "forearm.L"
+bone_idx = 12
+
+[node name="RightBicepAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="4" unique_id=986779696]
+transform = Transform3D(0.023288604, 0.99925303, -0.030841261, -0.99972856, 0.023277592, -0.000719063, -6.183982e-07, 0.030849636, 0.99952376, 0.3581811, 1.3765627, 0.026700124)
+bone_name = "upper_arm.R"
+bone_idx = 23
+
+[node name="RightForearmAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="5" unique_id=325012684]
+transform = Transform3D(0.017884016, 0.9949279, 0.09899098, -0.99983984, 0.017796261, 0.0017704566, -1.9550498e-07, -0.09900677, 0.99508643, 0.6078886, 1.3823797, 0.03440927)
+bone_name = "forearm.R"
+bone_idx = 24
+
+[node name="LeftThighAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="6" unique_id=1289514886]
+transform = Transform3D(-1, 4.884898e-09, 2.2760105e-08, -6.2811036e-09, -0.9980912, -0.06175363, 2.241503e-08, -0.061753705, 0.99809045, -0.22527277, 0.88904554, 0.012400016)
+bone_name = "thigh.L"
+bone_idx = 38
+
+[node name="LeftCalfAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="7" unique_id=20143355]
+transform = Transform3D(-1, -7.172041e-14, 1.5099567e-07, 1.0922786e-08, -0.99738, 0.072337985, 1.506e-07, 0.07233782, 0.9973792, -0.22527277, 0.48350662, -0.012691414)
+bone_name = "shin.L"
+bone_idx = 39
+
+[node name="RightThighAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="8" unique_id=1500156538]
+transform = Transform3D(-1, -3.1788385e-08, 1.4336138e-08, 3.0842237e-08, -0.99809086, -0.061763808, 1.6272125e-08, -0.061763763, 0.99809164, 0.22527277, 0.8890455, 0.012399979)
+bone_name = "thigh.R"
+bone_idx = 43
+
+[node name="RightCalfAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="9" unique_id=943072906]
+transform = Transform3D(-1, 8.282264e-14, -1.5099563e-07, -1.0925534e-08, -0.9973789, 0.07235606, -1.5059999e-07, 0.0723562, 0.99737966, 0.22527272, 0.4835067, -0.012695534)
+bone_name = "shin.R"
+bone_idx = 44
+
+[node name="BodyAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="10" unique_id=1875292911]
+transform = Transform3D(1, -2.200437e-08, -6.6387706e-08, 3.8005766e-08, 0.9678052, 0.25170046, 5.8711855e-08, -0.25170046, 0.9678052, 4.8434785e-09, 0.83540696, 0.055402994)
+bone_name = "spine"
+bone_idx = 3
+
+[node name="HeadAttachment" type="BoneAttachment3D" parent="Grunt/Skeleton3D" index="11" unique_id=1540380116]
+transform = Transform3D(1, 3.419487e-14, 2.3841864e-07, 3.907985e-14, 0.9999996, -2.8312206e-07, -2.3841864e-07, 2.9802322e-07, 0.9999999, 6.280956e-10, 1.5617545, 0.0071847)
+bone_name = "spine.006"
+bone_idx = 9
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Grunt" index="2" unique_id=1577324587]
 target_desired_distance = 3.0
 avoidance_enabled = true
 
-[node name="AnimationPlayer" parent="." index="1" unique_id=2068974258]
+[node name="AnimationPlayer" parent="." index="1" unique_id=345304104]
 libraries/Edited = SubResource("AnimationLibrary_7enkk")
 
 [node name="EnemyStateMachine" type="Node" parent="." index="2" unique_id=529673394 node_paths=PackedStringArray("Grunt", "RootState")]

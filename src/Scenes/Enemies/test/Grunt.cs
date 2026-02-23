@@ -49,6 +49,7 @@ public partial class Grunt : Node3D
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
         FireRateTimer.WaitTime = FireRatePauseInSeconds;
+        
         FireRateTimer.Timeout += () =>
         {
             GD.Print("Ready to fire");
