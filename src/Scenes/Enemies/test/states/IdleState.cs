@@ -26,6 +26,5 @@ public partial class IdleState : EnemyAtomicState
         base.StatePhysicsProcessing(delta);
         if (Grunt is null) return;
         Grunt.HandleJustGravity(delta);
-        Grunt.CharacterBody3D.MoveAndSlide();
     }
 }

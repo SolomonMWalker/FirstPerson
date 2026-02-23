@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://dpmk0kqwvhcdx" path="res://BlenderTutorial/grunt.glb" id="1_savwj"]
 [ext_resource type="Script" uid="uid://bw7rxgwmc78ob" path="res://src/Scenes/Enemies/test/Grunt.cs" id="2_tbuhh"]
+[ext_resource type="Animation" uid="uid://bw8ne7vbj0j6j" path="res://src/Scenes/Enemies/test/myAnimations/editedAimGun.res" id="3_esefs"]
 [ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/Scenes/Enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
 [ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/Scenes/Enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
+[ext_resource type="Animation" uid="uid://can1ugai5px3j" path="res://src/Scenes/Enemies/test/myAnimations/editedFireGun.res" id="4_kxbtv"]
 [ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/Scenes/Enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
 [ext_resource type="Script" uid="uid://baiwq5mulwrs0" path="res://src/Scenes/Enemies/test/states/IdleState.cs" id="6_cb0wa"]
 [ext_resource type="Script" uid="uid://u51q4kxv2mdp" path="res://src/Scenes/Enemies/test/states/FollowState.cs" id="7_cb0wa"]
@@ -16,19 +18,26 @@
 radius = 0.36083984
 height = 1.5161133
 
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_7enkk"]
+_data = {
+&"editedAimGun": ExtResource("3_esefs"),
+&"editedFireGun": ExtResource("4_kxbtv")
+}
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_cb0wa"]
 radius = 10.0
 
-[node name="GruntParent" unique_id=1893381169 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer", "CombatTriggerArea", "FireRateTimer") instance=ExtResource("1_savwj")]
+[node name="GruntParent" unique_id=1893381169 node_paths=PackedStringArray("NavigationAgent3D", "CharacterBody3D", "AnimationPlayer", "CombatTriggerArea", "ShootRaycast", "FireRateTimer") instance=ExtResource("1_savwj")]
 script = ExtResource("2_tbuhh")
 NavigationAgent3D = NodePath("Grunt/NavigationAgent3D")
 CharacterBody3D = NodePath("Grunt")
 AnimationPlayer = NodePath("AnimationPlayer")
 CombatTriggerArea = NodePath("CombatTriggerArea")
+ShootRaycast = NodePath("ShootRayCast3D")
 FireRateTimer = NodePath("FireRateTimer")
-FireRatePauseInSeconds = 4.0
+FireRatePauseInSeconds = 2.0
 
-[node name="Grunt" parent="." index="0" unique_id=890844403]
+[node name="Grunt" parent="." index="0" unique_id=996054063]
 collision_layer = 35
 collision_mask = 257
 
@@ -36,7 +45,7 @@ collision_mask = 257
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75805664, 0)
 shape = SubResource("CapsuleShape3D_savwj")
 
-[node name="Skeleton3D" parent="Grunt" index="1" unique_id=831979694]
+[node name="Skeleton3D" parent="Grunt" index="1" unique_id=170705873]
 bones/0/position = Vector3(3.4385607e-08, 0.63131404, 0.3933255)
 bones/1/position = Vector3(0.22564317, 0.34714937, -0.55000365)
 bones/1/rotation = Quaternion(0.012912458, 0.98310953, -0.18090864, 0.024517527)
@@ -89,12 +98,15 @@ bones/52/rotation = Quaternion(-0.10245314, 0.9946858, 0.0044701393, 0.009136557
 bones/53/position = Vector3(0.79635763, 0.11532143, 0.110436976)
 bones/54/position = Vector3(-0.7963575, 0.1153214, 0.110436976)
 
-[node name="hand_R" parent="Grunt/Skeleton3D" index="0" unique_id=1448948258]
+[node name="hand_R" parent="Grunt/Skeleton3D" index="0" unique_id=1670158494]
 transform = Transform3D(-0.9788396, -0.20389886, 0.017260075, -0.019092083, 0.007020496, -0.9997927, 0.20373549, -0.97896636, -0.01076485, 0.4121589, 0.90699345, -0.25937554)
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Grunt" index="2" unique_id=1577324587]
 target_desired_distance = 3.0
 avoidance_enabled = true
+
+[node name="AnimationPlayer" parent="." index="1" unique_id=2068974258]
+libraries/Edited = SubResource("AnimationLibrary_7enkk")
 
 [node name="EnemyStateMachine" type="Node" parent="." index="2" unique_id=529673394 node_paths=PackedStringArray("Grunt", "RootState")]
 script = ExtResource("3_svei2")
@@ -158,3 +170,8 @@ shape = SubResource("SphereShape3D_cb0wa")
 
 [node name="FireRateTimer" type="Timer" parent="." index="4" unique_id=814516330]
 one_shot = true
+
+[node name="ShootRayCast3D" type="RayCast3D" parent="." index="5" unique_id=443233482]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+enabled = false
+collision_mask = 456

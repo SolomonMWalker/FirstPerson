@@ -10,26 +10,30 @@ public partial class Grunt : Node3D
     [Export] public CharacterBody3D CharacterBody3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
+    [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public Timer FireRateTimer { get; set; }
     
     [ExportCategory("Enemy Settings")]
     [Export] public float Speed { get; set; } = 10f;
     [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
+    [Export] public float ShootRange { get; set; } = 50f;
 
     [ExportCategory("Animation Settings")]
     [ExportGroup("Names")]
-    [Export] public StringName IdleGunDown { get; set; } = "idleWithGunDown";
-    [Export] public StringName WalkGunDown { get; set; } = "walkGunDown";
-    [Export] public StringName IdleGunReady { get; set; } = "idleWithGunReady";
-    [Export] public StringName WalkGunReady { get; set; } = "walkGunReady";
-    [Export] public StringName IdleGunDownToWalkGunDown { get; set; } = "idleToWalkGunDown";
-    [Export] public StringName IdleGunReadyToWalkGunReady { get; set; } = "idleToWalkGunReady";
-    [Export] public StringName Aim { get; set; } = "aimGun";
-    [Export] public StringName Fire { get; set; } = "fireGun";
+    [Export] public StringName IdleGunDownAnimation { get; set; } = "idleWithGunDown";
+    [Export] public StringName WalkGunDownAnimation { get; set; } = "walkGunDown";
+    [Export] public StringName IdleGunReadyAnimation { get; set; } = "idleWithGunReady";
+    [Export] public StringName WalkGunReadyAnimation { get; set; } = "walkGunReady";
+    [Export] public StringName IdleGunDownToWalkGunDownAnimation { get; set; } = "idleToWalkGunDown";
+    [Export] public StringName IdleGunReadyToWalkGunReadyAnimation { get; set; } = "idleToWalkGunReady";
+    [Export] public StringName AimAnimation { get; set; } = "Edited/editedAimGun";
+    [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
     public BehaviorState behaviorState = BehaviorState.Idle;
-    public bool readyToFire = false;
-    public bool firing = false;
+    public bool readyToFire;
+    public bool firing;
+    public Vector3 shootTargetRelativePosition;
+    public bool freezeRotation;
     
     private bool _ready;
 
@@ -50,7 +54,7 @@ public partial class Grunt : Node3D
             GD.Print("Ready to fire");
             readyToFire = true;
         };
-        AnimationPlayer.Play(IdleGunDown);
+        AnimationPlayer.Play(IdleGunDownAnimation);
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
     }
 
@@ -67,11 +71,28 @@ public partial class Grunt : Node3D
         }
     }
 
+    public virtual void Aim()
+    {
+        freezeRotation = true;
+        shootTargetRelativePosition = ShootRaycast.ToLocal(NavAgentMovementTargetNode.GlobalPosition);
+    }
+
+    public virtual void Fire()
+    {
+        ShootRaycast.TargetPosition = shootTargetRelativePosition;
+        ShootRaycast.ForceRaycastUpdate();
+        if (ShootRaycast.IsColliding())
+        {
+            var collided = (Node) ShootRaycast.GetCollider();
+            GD.Print($"hit {collided.Name}");
+        }
+    }
+
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
 
     public virtual void RotateToTarget()
     {
-        if (NavAgentMovementTargetNode is null) return;
+        if (NavAgentMovementTargetNode is null || freezeRotation) return;
         var direction = (NavAgentMovementTargetNode.GlobalPosition - CharacterBody3D.GlobalPosition).Normalized();
         var targetRotation = Mathf.Atan2(direction.X, direction.Z);
         CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
@@ -81,6 +102,10 @@ public partial class Grunt : Node3D
     {
         var velocityNoXz = CharacterBody3D.Velocity with { X = 0, Z = 0 };
         var currentVelocity = AddGravityToVelocity(velocityNoXz, delta);
+        if (NavigationAgent3D.AvoidanceEnabled)
+        {
+            NavigationAgent3D.Velocity = currentVelocity;
+        }
         OnVelocityComputed(currentVelocity);
     }
     
@@ -100,9 +125,12 @@ public partial class Grunt : Node3D
         {
             var velocityNoXz = CharacterBody3D.Velocity with { X = 0, Z = 0 };
             var gravOnlyVelocity = AddGravityToVelocity(velocityNoXz, delta);
-            var stoppedDirection = (NavAgentMovementTargetNode.GlobalPosition - CharacterBody3D.GlobalPosition).Normalized();
-            var targetRotation = Mathf.Atan2(stoppedDirection.X, stoppedDirection.Z);
-            CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+            if (!freezeRotation)
+            {
+                var stoppedDirection = (NavAgentMovementTargetNode.GlobalPosition - CharacterBody3D.GlobalPosition).Normalized();
+                var targetRotation = Mathf.Atan2(stoppedDirection.X, stoppedDirection.Z);
+                CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+            }
             OnVelocityComputed(gravOnlyVelocity);
             return;
         }
@@ -111,7 +139,7 @@ public partial class Grunt : Node3D
         var direction = (nextPathPosition - CharacterBody3D.GlobalPosition).Normalized();
         var currentVelocity = AddGravityToVelocity(direction * Speed, delta);
         
-        if (direction.Length() > 0.01f)
+        if (direction.Length() > 0.01f || freezeRotation)
         {
             var targetRotation = Mathf.Atan2(direction.X, direction.Z);
             CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };

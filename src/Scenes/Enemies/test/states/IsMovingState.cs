@@ -10,13 +10,13 @@ public partial class IsMovingState : EnemyAtomicState
         base.StateEntered();
         if (Grunt.behaviorState == Grunt.BehaviorState.Following)
         {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReady);
-            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunReady);
+            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReadyAnimation);
+            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunReadyAnimation);
         }
         else //idle
         {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownToWalkGunDown);
-            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunDown);
+            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownToWalkGunDownAnimation);   
+            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunDownAnimation);
         }
     }
     
@@ -27,10 +27,12 @@ public partial class IsMovingState : EnemyAtomicState
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
+            return;
         }
         if (Grunt.CharacterBody3D.Velocity.LengthSquared() == 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
+            return;
         }
     }
 }

@@ -8,10 +8,11 @@ public partial class AimingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        GD.Print("entering aiming state");
         if (Grunt is null) return;
         Grunt.readyToFire = false;
         Grunt.firing = true;
-        Grunt.AnimationPlayer.Play(Grunt.Aim);
+        Grunt.AnimationPlayer.Play(Grunt.AimAnimation);
     }
 
     public override void StateProcessing(double delta)
@@ -19,9 +20,12 @@ public partial class AimingState : EnemyAtomicState
         base.StateProcessing(delta);
         if (Grunt is null) return;
         Grunt.RotateToTarget();
+        Grunt.HandleJustGravity(delta);
         if (!Grunt.AnimationPlayer.IsPlaying())
         {
+            GD.Print("change to firing state");
             OnStateChangeRequired(new ChangeStateEventArgs("FiringState"));
+            return;
         }
         
     }

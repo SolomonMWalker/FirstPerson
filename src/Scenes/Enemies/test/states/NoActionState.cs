@@ -10,11 +10,11 @@ public partial class NoActionState : EnemyAtomicState
         base.StateEntered();
         if (Grunt.behaviorState == Grunt.BehaviorState.Following)
         {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReady);
+            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyAnimation);
         }
         else //idle
         {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDown);
+            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownAnimation);
         }
     }
 
@@ -25,10 +25,12 @@ public partial class NoActionState : EnemyAtomicState
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
+            return;
         }
         if (Grunt.CharacterBody3D.Velocity.LengthSquared() > 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IsMovingState"));
+            return;
         }
     }
 }

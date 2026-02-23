@@ -16,6 +16,5 @@ public partial class FollowState : EnemyAtomicState
         base.StatePhysicsProcessing(delta);
         if (Grunt is null || Grunt.firing) return;
         Grunt.HandleNavigation(delta);
-        Grunt.CharacterBody3D.MoveAndSlide();
     }
 }
