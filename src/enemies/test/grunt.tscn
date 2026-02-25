@@ -1,20 +1,20 @@
 [gd_scene format=3 uid="uid://ctos4y308wohb"]
 
 [ext_resource type="PackedScene" uid="uid://dpmk0kqwvhcdx" path="res://blenderTutorial/grunt.glb" id="1_savwj"]
-[ext_resource type="Script" uid="uid://bw7rxgwmc78ob" path="res://src/scenes/enemies/test/Grunt.cs" id="2_tbuhh"]
-[ext_resource type="Animation" uid="uid://bw8ne7vbj0j6j" path="res://src/scenes/enemies/test/myAnimations/editedAimGun.res" id="3_esefs"]
-[ext_resource type="Script" uid="uid://2bhtar1cgf4d" path="res://src/scenes/enemies/test/Hitbox.cs" id="3_gao1m"]
-[ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/scenes/enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
-[ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/scenes/enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
-[ext_resource type="Animation" uid="uid://can1ugai5px3j" path="res://src/scenes/enemies/test/myAnimations/editedFireGun.res" id="4_kxbtv"]
-[ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/scenes/enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
-[ext_resource type="Script" uid="uid://baiwq5mulwrs0" path="res://src/scenes/enemies/test/states/IdleState.cs" id="6_cb0wa"]
-[ext_resource type="Script" uid="uid://u51q4kxv2mdp" path="res://src/scenes/enemies/test/states/FollowState.cs" id="7_cb0wa"]
-[ext_resource type="Script" uid="uid://b0bgrdax5e1q3" path="res://src/scenes/enemies/test/states/NoActionState.cs" id="8_n4l6h"]
-[ext_resource type="Script" uid="uid://cq6lun81vj4ue" path="res://src/scenes/enemies/test/states/IsMovingState.cs" id="9_5v67s"]
-[ext_resource type="Script" uid="uid://dil6ykvr3iugp" path="res://src/scenes/enemies/test/states/AimingState.cs" id="10_lw80v"]
-[ext_resource type="Script" uid="uid://dbfx5k3cimdqv" path="res://src/scenes/enemies/test/states/FiringState.cs" id="11_q0el0"]
-[ext_resource type="Script" uid="uid://30kyxeyoy43d" path="res://src/scenes/enemies/test/HealthComponent.cs" id="15_be7p7"]
+[ext_resource type="Script" uid="uid://bw7rxgwmc78ob" path="res://src/enemies/test/Grunt.cs" id="2_tbuhh"]
+[ext_resource type="Animation" uid="uid://bw8ne7vbj0j6j" path="res://src/enemies/test/myAnimations/editedAimGun.res" id="3_esefs"]
+[ext_resource type="Script" uid="uid://2bhtar1cgf4d" path="res://src/enemies/test/Hitbox.cs" id="3_gao1m"]
+[ext_resource type="Script" uid="uid://br7t8yrauak3g" path="res://src/enemies/test/states/baseStates/EnemyStateMachine.cs" id="3_svei2"]
+[ext_resource type="Script" uid="uid://lf1fhmwkbv0g" path="res://src/enemies/test/states/baseStates/EnemyParallelState.cs" id="4_a2yja"]
+[ext_resource type="Animation" uid="uid://can1ugai5px3j" path="res://src/enemies/test/myAnimations/editedFireGun.res" id="4_kxbtv"]
+[ext_resource type="Script" uid="uid://l3g8mxkedaro" path="res://src/enemies/test/states/baseStates/EnemyCompoundState.cs" id="5_a2yja"]
+[ext_resource type="Script" uid="uid://baiwq5mulwrs0" path="res://src/enemies/test/states/IdleState.cs" id="6_cb0wa"]
+[ext_resource type="Script" uid="uid://u51q4kxv2mdp" path="res://src/enemies/test/states/FollowState.cs" id="7_cb0wa"]
+[ext_resource type="Script" uid="uid://b0bgrdax5e1q3" path="res://src/enemies/test/states/NoActionState.cs" id="8_n4l6h"]
+[ext_resource type="Script" uid="uid://cq6lun81vj4ue" path="res://src/enemies/test/states/IsMovingState.cs" id="9_5v67s"]
+[ext_resource type="Script" uid="uid://dil6ykvr3iugp" path="res://src/enemies/test/states/AimingState.cs" id="10_lw80v"]
+[ext_resource type="Script" uid="uid://dbfx5k3cimdqv" path="res://src/enemies/test/states/FiringState.cs" id="11_q0el0"]
+[ext_resource type="Script" uid="uid://30kyxeyoy43d" path="res://src/enemies/test/HealthComponent.cs" id="15_be7p7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_savwj"]
 radius = 0.36083984
@@ -190,7 +190,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/LeftForearmAttachment/Hitbox" index="0" unique_id=1340132180]
 transform = Transform3D(0.99999976, -5.626293e-07, 1.6508494e-08, 5.850614e-07, 1, 2.272427e-06, -1.6535555e-08, -2.2798777e-06, 1, -5.9604645e-07, -0.03363055, 7.450581e-09)
@@ -214,7 +213,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/RightBicepAttachment/Hitbox" index="0" unique_id=982939534]
 transform = Transform3D(1, 3.8105378e-07, 1.2584603e-08, -3.8105378e-07, 1, 1.1268942e-06, -1.2584174e-08, -1.1268942e-06, 1, 0, 0, 0)
@@ -238,7 +236,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/RightForearmAttachment/Hitbox" index="0" unique_id=1474319091]
 transform = Transform3D(0.99999976, -5.626293e-07, 1.6508494e-08, 5.850614e-07, 1, 2.272427e-06, -1.6535555e-08, -2.2798777e-06, 1, -5.9604645e-07, -0.03363055, 7.450581e-09)
@@ -262,7 +259,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/LeftThighAttachment/Hitbox" index="0" unique_id=953178569]
 transform = Transform3D(0.99999976, -5.626293e-07, 1.6508022e-08, 5.850614e-07, 1, 1.6503036e-06, -1.6535555e-08, -2.2798777e-06, 1, 0, 0, 0)
@@ -286,7 +282,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/LeftCalfAttachment/Hitbox" index="0" unique_id=2002944685]
 transform = Transform3D(0.99999976, -5.626293e-07, 1.6514363e-08, 5.850614e-07, 1, 1.6540289e-06, -1.6535566e-08, -2.2798777e-06, 1, -6.2584877e-07, 0.02363269, -9.685755e-08)
@@ -310,7 +305,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/RightThighAttachment/Hitbox" index="0" unique_id=2080466423]
 transform = Transform3D(0.99999976, -5.626293e-07, 1.6508022e-08, 5.850614e-07, 1, 1.6503036e-06, -1.6535555e-08, -2.2798777e-06, 1, 0, 0, 0)
@@ -334,7 +328,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/RightCalfAttachment/Hitbox" index="0" unique_id=297997619]
 transform = Transform3D(0.99999976, -5.626293e-07, 1.6514363e-08, 5.850614e-07, 1, 1.6540289e-06, -1.6535566e-08, -2.2798777e-06, 1, -6.2584877e-07, 0.02363269, -9.685755e-08)
@@ -358,7 +351,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/LowerBodyAttachment/Hitbox" index="0" unique_id=1716327767]
 transform = Transform3D(0.99999976, -5.62629e-07, 1.6497125e-08, 5.8506095e-07, 1.0000046, 1.9484723e-06, -1.653558e-08, -1.9410218e-06, 1.0000046, -1.3594192e-10, -2.3841858e-07, -0.008239791)
@@ -383,7 +375,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/UpperBodyAttachment/Hitbox" index="0" unique_id=1544793650]
 transform = Transform3D(0.99999976, -5.6262894e-07, 1.6487306e-08, 5.8506095e-07, 1.0000046, 1.9493164e-06, -1.6524908e-08, -1.9418658e-06, 1.0000046, 0.004943849, -0.013976693, -0.0108642485)
@@ -408,7 +399,6 @@ IsDebug = true
 HealthComponent = NodePath("../../../../Components/HealthComponent")
 DebugMesh = NodePath("MeshInstance3D")
 Parent = NodePath("../../..")
-metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Grunt/Skeleton3D/HeadAttachment/Hitbox" index="0" unique_id=500683448]
 transform = Transform3D(0.99999976, -5.625922e-07, 1.6487292e-08, 5.851344e-07, 1.0000046, 1.9493164e-06, -1.6524893e-08, -1.9418658e-06, 1.0000046, 5.142168e-09, -0.009140015, 1.7695129e-08)
@@ -430,18 +420,15 @@ libraries/Edited = SubResource("AnimationLibrary_7enkk")
 script = ExtResource("3_svei2")
 Grunt = NodePath("..")
 RootState = NodePath("RootState")
-metadata/_custom_type_script = "uid://br7t8yrauak3g"
 
 [node name="RootState" type="Node" parent="EnemyStateMachine" index="0" unique_id=2026020853 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("4_a2yja")
 Grunt = NodePath("../..")
-metadata/_custom_type_script = "uid://lf1fhmwkbv0g"
 
 [node name="BehaviorState" type="Node" parent="EnemyStateMachine/RootState" index="0" unique_id=1548370135 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("5_a2yja")
 Grunt = NodePath("../../..")
 DefaultStateName = "IdleState"
-metadata/_custom_type_script = "uid://l3g8mxkedaro"
 
 [node name="IdleState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="0" unique_id=1249066955 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("6_cb0wa")
@@ -451,13 +438,11 @@ metadata/_custom_type_script = "uid://1203ywfe4cex"
 [node name="FollowState" type="Node" parent="EnemyStateMachine/RootState/BehaviorState" index="1" unique_id=806204658 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("7_cb0wa")
 Grunt = NodePath("../../../..")
-metadata/_custom_type_script = "uid://b67qq7nweqcd4"
 
 [node name="ActionState" type="Node" parent="EnemyStateMachine/RootState" index="1" unique_id=1704605099 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("5_a2yja")
 Grunt = NodePath("../../..")
 DefaultStateName = "NoActionState"
-metadata/_custom_type_script = "uid://l3g8mxkedaro"
 
 [node name="NoActionState" type="Node" parent="EnemyStateMachine/RootState/ActionState" index="0" unique_id=1505039993 node_paths=PackedStringArray("Grunt")]
 script = ExtResource("8_n4l6h")

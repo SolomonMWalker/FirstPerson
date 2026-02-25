@@ -21,7 +21,7 @@ config/icon="res://src/assets/Textures/icon.svg"
 
 [autoload]
 
-Managers="*res://src/scripts/system/Managers.cs"
+Managers="*res://src/system/Managers.cs"
 
 [dotnet]
 

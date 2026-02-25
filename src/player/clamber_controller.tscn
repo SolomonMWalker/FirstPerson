@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://0wcam4m3xssr"]
+[gd_scene format=3 uid="uid://0wcam4m3xssr"]
 
-[ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://src/scripts/player/ClamberController.cs" id="1_o6tp5"]
+[ext_resource type="Script" uid="uid://b1ouw0pdf8bwr" path="res://src/player/ClamberController.cs" id="1_o6tp5"]
 
 [node name="ClamberController" type="Node3D" node_paths=PackedStringArray("PauseBetweenClamberAttemptsTimer")]
 script = ExtResource("1_o6tp5")

@@ -6,7 +6,7 @@
 [ext_resource type="Material" uid="uid://dfr3odvnnhtm8" path="res://trenchbroom/textures/GreenBoxBrownOutline.tres" id="4_nq3x0"]
 [ext_resource type="Material" uid="uid://cg6f3kg08rel0" path="res://trenchbroom/textures/RedBoxWhiteOutline.tres" id="5_edmn5"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="6_tcnp5"]
-[ext_resource type="Script" uid="uid://c3150ookrc8yq" path="res://src/scripts/environment/MovingPlatform.cs" id="7_q3mpp"]
+[ext_resource type="Script" uid="uid://c3150ookrc8yq" path="res://src/environment/MovingPlatform.cs" id="7_q3mpp"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q3mpp"]
 albedo_texture = ExtResource("6_tcnp5")

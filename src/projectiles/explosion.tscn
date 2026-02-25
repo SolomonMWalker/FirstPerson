@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://dg8ru8xrtp16g"]
+[gd_scene format=3 uid="uid://dg8ru8xrtp16g"]
 
-[ext_resource type="Script" uid="uid://vor114u2bg8" path="res://src/Scenes/Projectiles/Explosion.cs" id="1_4s5g4"]
+[ext_resource type="Script" uid="uid://vor114u2bg8" path="res://src/projectiles/Explosion.cs" id="1_4s5g4"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_l4vhy"]
 radius = 1.0
