@@ -19,6 +19,14 @@ public partial class AimingState : EnemyAtomicState
     {
         base.StateProcessing(delta);
         if (Grunt is null) return;
+        
+        if (Grunt.ragdoll || Grunt.dead)
+        {
+            Grunt.AnimationPlayer.Stop();
+            OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
+            return;
+        }
+        
         Grunt.RotateToTarget();
         Grunt.HandleJustGravity(delta);
         if (!Grunt.AnimationPlayer.IsPlaying())

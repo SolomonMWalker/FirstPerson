@@ -131,6 +131,9 @@ Reload={
 [physics]
 
 common/physics_jitter_fix=0.0
+3d/physics_engine="Jolt Physics"
+jolt_physics_3d/simulation/velocity_steps=20
+jolt_physics_3d/simulation/position_steps=10
 common/physics_interpolation=true
 
 [rendering]

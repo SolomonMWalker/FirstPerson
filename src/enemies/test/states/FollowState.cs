@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
 
 public partial class FollowState : EnemyAtomicState
@@ -15,6 +16,13 @@ public partial class FollowState : EnemyAtomicState
     {
         base.StatePhysicsProcessing(delta);
         if (Grunt is null || Grunt.firing) return;
+
+        if (Grunt.dead)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("DeadState"));
+            return;
+        }
+        
         Grunt.HandleNavigation(delta);
     }
 }

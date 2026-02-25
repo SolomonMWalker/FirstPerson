@@ -215,7 +215,8 @@ public partial class WeaponController : Node
                 this.SpawnImpactMarker(hit.point);
                 if (hit.gdObj is Hitbox hitbox)
                 {
-                    hitbox.Hit(new HitInformation(healthDamage: (int) CurrentWeapon.Damage, staggerDamage: null));
+                    hitbox.Hit(new HitInformation(healthDamage: (int) CurrentWeapon.Damage, staggerDamage: null, 
+                        sourceGlobalPosition: Player.GlobalPosition));
                 }
             }
         }

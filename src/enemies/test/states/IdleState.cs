@@ -30,6 +30,13 @@ public partial class IdleState : EnemyAtomicState
     {
         base.StatePhysicsProcessing(delta);
         if (Grunt is null) return;
+        
+        if (Grunt.dead)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("DeadState"));
+            return;
+        }
+        
         Grunt.HandleJustGravity(delta);
     }
 }

@@ -9,8 +9,12 @@ public partial class Grunt : Node3D
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CharacterBody3D CharacterBody3D { get; set; }
+    [Export] public CollisionShape3D CollisionShape3D { get; set; }
+    [Export] public Godot.Collections.Array<CollisionShape3D> BoneCollisionShapes { get; set; }
+    [Export] public Skeleton3D Skeleton3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
+    [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public Timer FireRateTimer { get; set; }
@@ -37,6 +41,9 @@ public partial class Grunt : Node3D
     public bool firing;
     public Vector3 shootTargetRelativePosition;
     public bool freezeRotation;
+    public bool ragdoll;
+    public bool dead;
+    public Vector3 dirLastDamage;
     
     private bool _ready;
 
@@ -63,9 +70,19 @@ public partial class Grunt : Node3D
         HealthComponent.OnDeath += () =>
         {
             GD.Print("grunt died!");
-            QueueFree();
+            GD.Print($"damage direction {dirLastDamage}");
+            GetTree().CreateTimer(5).Timeout += QueueFree;
+            dead = true;
         };
-        
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (Input.IsKeyLabelPressed(Key.G))
+        {
+            ragdoll = true;
+        }
     }
 
     private async void ActorSetup()
@@ -98,7 +115,7 @@ public partial class Grunt : Node3D
             if (collided is Hitbox hitbox)
             {
                 GD.Print("hit a hitbox!");
-                hitbox.Hit(new HitInformation(healthDamage: Damage, staggerDamage: null));
+                hitbox.Hit(new HitInformation(healthDamage: Damage, staggerDamage: null, sourceGlobalPosition: CharacterBody3D.GlobalPosition));
             }
             else
             {
@@ -185,7 +202,7 @@ public partial class Grunt : Node3D
         float newYVelocity;
         if (!CharacterBody3D.IsOnFloor())
         {
-            newYVelocity = velocity.Y - 20f * (float)delta;
+            newYVelocity = velocity.Y - 100f * (float)delta;
         }
         else
         {

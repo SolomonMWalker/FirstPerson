@@ -24,6 +24,14 @@ public partial class FiringState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
+        
+        if (Grunt.ragdoll || Grunt.dead)
+        {
+            Grunt.AnimationPlayer.Stop();
+            OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
+            return;
+        }
+        
         if (Grunt is null) return;
         if (!Grunt.AnimationPlayer.IsPlaying())
         {

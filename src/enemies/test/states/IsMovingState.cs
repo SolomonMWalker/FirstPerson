@@ -24,6 +24,13 @@ public partial class IsMovingState : EnemyAtomicState
     {
         base.StatePhysicsProcessing(delta);
         if (Grunt is null) return;
+        
+        if (Grunt.ragdoll || Grunt.dead)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
+            return;
+        }
+        
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
