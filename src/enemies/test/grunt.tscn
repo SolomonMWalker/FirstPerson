@@ -89,6 +89,7 @@ HealthComponent = NodePath("Components/HealthComponent")
 CombatTriggerArea = NodePath("CombatTriggerArea")
 ShootRaycast = NodePath("ShootRayCast3D")
 FireRateTimer = NodePath("FireRateTimer")
+FireRatePauseInSeconds = 2.0
 
 [node name="Grunt" parent="." index="0" unique_id=714846297]
 collision_mask = 257

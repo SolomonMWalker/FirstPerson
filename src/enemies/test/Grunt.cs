@@ -65,6 +65,7 @@ public partial class Grunt : Node3D
             GD.Print("grunt died!");
             QueueFree();
         };
+        
     }
 
     private async void ActorSetup()
