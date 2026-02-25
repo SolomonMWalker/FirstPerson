@@ -8,19 +8,14 @@ public partial class PlayerCrouchingState : PlayerAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        PlayerController.InAir = true;
-        PlayerController.CurrentMovementMult = PlayerController.CrouchMovementMult;
-        PlayerController.CrouchingCollisionShape.SetDisabled(false);
-        PlayerController.StandingCollisionShape.SetDisabled(true);
-        PlayerController.CameraController.EnterCrouchTweenActivate();
+        //PlayerController.InAir = true;
+        PlayerController.StartCrouch();
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        PlayerController.StandingCollisionShape.SetDisabled(false);
-        PlayerController.CrouchingCollisionShape.SetDisabled(true);
-        PlayerController.CameraController.ExitCrouchTweenActivate();
+       PlayerController.EndCrouch();
     }
     
     public override void StateProcessing(double delta)

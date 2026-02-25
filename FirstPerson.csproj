@@ -26,5 +26,6 @@
     <Folder Include="src\Resources\ShaderMaterials\" />
     <Folder Include="src\Resources\Shaders\" />
     <Folder Include="src\Resources\Themes\" />
+    <Folder Include="src\scripts\utilities\" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ using System;
 using FirstPerson.assets.weapons.scripts;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Helpers;
+using FirstPerson.scenes.enemies.test;
 using FirstPerson.Scenes.Player;
 
 public partial class WeaponController : Node
@@ -212,6 +213,10 @@ public partial class WeaponController : Node
             {
                 //GD.Print($"Hit {hit.gdObj} at {hit.point}");
                 this.SpawnImpactMarker(hit.point);
+                if (hit.gdObj is Hitbox hitbox)
+                {
+                    hitbox.Hit(new HitInformation(healthDamage: (int) CurrentWeapon.Damage, staggerDamage: null));
+                }
             }
         }
     }

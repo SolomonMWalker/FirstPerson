@@ -14,10 +14,15 @@ public partial class IdleState : EnemyAtomicState
     {
         base.StateProcessing(delta);
         if (Grunt is null) return;
-        if (Grunt.CombatTriggerArea.HasOverlappingBodies())
+        if (Grunt.CombatTriggerArea.HasOverlappingAreas())
         {
-            Grunt.NavAgentMovementTargetNode = Grunt.CombatTriggerArea.GetOverlappingBodies().First();
-            OnStateChangeRequired(new ChangeStateEventArgs("FollowState"));
+            var overlapArea = Grunt.CombatTriggerArea.GetOverlappingAreas().First();
+            if (overlapArea is Hitbox hitbox)
+            {
+                Grunt.NavAgentMovementTargetNode = hitbox.Parent;
+                OnStateChangeRequired(new ChangeStateEventArgs("FollowState"));
+                return;
+            }
         }
     }
 

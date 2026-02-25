@@ -4,6 +4,7 @@
 [ext_resource type="Shape3D" uid="uid://cm8kotwcib7ur" path="res://src/assets/shapes/testPlayerCapsuleShape.tres" id="2_mwsb4"]
 [ext_resource type="Shape3D" uid="uid://cl8vw2xtridr3" path="res://src/assets/shapes/testPlayerSphereCrouchingShape.tres" id="3_wgula"]
 [ext_resource type="PackedScene" uid="uid://0wcam4m3xssr" path="res://src/scenes/player/clamber_controller.tscn" id="4_h0hmk"]
+[ext_resource type="Script" uid="uid://2bhtar1cgf4d" path="res://src/scenes/enemies/test/Hitbox.cs" id="4_xmnbv"]
 [ext_resource type="Script" uid="uid://cn286n37w5ri7" path="res://src/scripts/player/CameraController.cs" id="5_ghgnf"]
 [ext_resource type="Script" uid="uid://bt3s7rcxgsl2w" path="res://src/scripts/player/CameraEffects.cs" id="6_06sus"]
 [ext_resource type="Script" uid="uid://cal65dlnr7o2c" path="res://src/scripts/player/playerState/baseTypes/PlayerStateMachine.cs" id="7_0b72j"]
@@ -19,24 +20,27 @@
 [ext_resource type="Script" uid="uid://dtpetyql5mlab" path="res://src/scripts/player/playerState/PlayerJumpingState.cs" id="17_rwumh"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/scripts/player/playerState/PlayerCoyoteTimeState.cs" id="18_lo20o"]
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/scripts/player/playerState/PlayerGroundedState.cs" id="19_dp15v"]
+[ext_resource type="Script" uid="uid://30kyxeyoy43d" path="res://src/scenes/enemies/test/HealthComponent.cs" id="24_5n4gj"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/scripts/ui/Reticle.cs" id="25_dxex4"]
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/scripts/player/MouseCaptureComponent.cs" id="26_4556c"]
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/scripts/player/StepHandlerComponent.cs" id="27_a3051"]
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/scripts/player/WeaponController.cs" id="28_v0tgu"]
 
-[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "WeaponController", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "BottomOfPlayer") groups=["player"]]
-collision_layer = 10
-collision_mask = 865
+[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("CameraController", "CameraEffects", "PlayerStateMachine", "ClamberController", "StepHandlerComponent", "HealthComponent", "WeaponController", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
+collision_mask = 769
 script = ExtResource("1_r8ls8")
 CameraController = NodePath("CameraController")
 CameraEffects = NodePath("CameraEffects")
 PlayerStateMachine = NodePath("PlayerStateMachine")
 ClamberController = NodePath("ClamberController")
 StepHandlerComponent = NodePath("Components/StepHandlerComponent")
+HealthComponent = NodePath("Components/HealthComponent")
 WeaponController = NodePath("Components/WeaponController")
 AnimationPlayer = NodePath("AnimationPlayer")
 StandingCollisionShape = NodePath("StandingCollisionShape3D")
 CrouchingCollisionShape = NodePath("CrouchingCollisionShape3D")
+StandingHitbox = NodePath("StandingHitbox")
+CrouchingHitbox = NodePath("CrouchingHitbox")
 BottomOfPlayer = NodePath("Locations/BottomOfPlayer")
 metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
@@ -48,6 +52,33 @@ debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = ExtResource("3_wgula")
 disabled = true
+debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
+
+[node name="StandingHitbox" type="Area3D" parent="." unique_id=846555808 node_paths=PackedStringArray("HealthComponent", "Parent")]
+collision_layer = 10
+collision_mask = 0
+script = ExtResource("4_xmnbv")
+HealthComponent = NodePath("../Components/HealthComponent")
+Parent = NodePath("..")
+metadata/_custom_type_script = "uid://2bhtar1cgf4d"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StandingHitbox" unique_id=779923807]
+shape = ExtResource("2_mwsb4")
+debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
+
+[node name="CrouchingHitbox" type="Area3D" parent="." unique_id=1342054131 node_paths=PackedStringArray("HealthComponent", "Parent")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 10
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("4_xmnbv")
+HealthComponent = NodePath("../Components/HealthComponent")
+Parent = NodePath("..")
+metadata/_custom_type_script = "uid://2bhtar1cgf4d"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CrouchingHitbox" unique_id=1810427541]
+shape = ExtResource("3_wgula")
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1756439257]
@@ -264,3 +295,7 @@ WeaponModelParent = NodePath("../../CameraController/WeaponRig/WeaponParent")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")
 StateLabel = NodePath("../../UserInterface/StateLabel")
+
+[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098]
+script = ExtResource("24_5n4gj")
+metadata/_custom_type_script = "uid://30kyxeyoy43d"

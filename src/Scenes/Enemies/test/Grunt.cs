@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using FirstPerson.Helpers;
+using FirstPerson.scenes.enemies.test;
 
 public partial class Grunt : Node3D
 {
@@ -9,6 +10,7 @@ public partial class Grunt : Node3D
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CharacterBody3D CharacterBody3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
+    [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public Timer FireRateTimer { get; set; }
@@ -17,6 +19,7 @@ public partial class Grunt : Node3D
     [Export] public float Speed { get; set; } = 10f;
     [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
     [Export] public float ShootRange { get; set; } = 50f;
+    [Export] public int Damage { get; set; } = 10;
 
     [ExportCategory("Animation Settings")]
     [ExportGroup("Names")]
@@ -57,6 +60,11 @@ public partial class Grunt : Node3D
         };
         AnimationPlayer.Play(IdleGunDownAnimation);
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
+        HealthComponent.OnDeath += () =>
+        {
+            GD.Print("grunt died!");
+            QueueFree();
+        };
     }
 
     private async void ActorSetup()
@@ -86,6 +94,15 @@ public partial class Grunt : Node3D
         {
             var collided = (Node) ShootRaycast.GetCollider();
             GD.Print($"hit {collided.Name}");
+            if (collided is Hitbox hitbox)
+            {
+                GD.Print("hit a hitbox!");
+                hitbox.Hit(new HitInformation(healthDamage: Damage, staggerDamage: null));
+            }
+            else
+            {
+                GD.Print("dit NOT hit a hitbox!");
+            }
         }
     }
 

@@ -16,10 +16,13 @@ public partial class PlayerController : HittableCharacterBody3D
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public ClamberController ClamberController { get; set; }
     [Export] public StepHandlerComponent StepHandlerComponent { get; set; }
+    [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public WeaponController WeaponController { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public CollisionShape3D StandingCollisionShape { get; set; }
     [Export] public CollisionShape3D CrouchingCollisionShape { get; set; }
+    [Export] public Hitbox StandingHitbox { get; set; }
+    [Export] public Hitbox CrouchingHitbox { get; set; }
     [Export] public Node3D BottomOfPlayer { get; set; }
     
     [ExportCategory("Player Settings")]
@@ -41,6 +44,15 @@ public partial class PlayerController : HittableCharacterBody3D
     public Vector3 PreviousFrameVelocity { get; set; }
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+
+    public override void _Ready()
+    {
+        base._Ready();
+        HealthComponent.OnHealthDepleted += amount =>
+        {
+            GD.Print($"Ow! was hit for {amount} damage!");
+        };
+    }
 
     public override void _Process(double delta)
     {
@@ -124,5 +136,31 @@ public partial class PlayerController : HittableCharacterBody3D
 
         CurrentFallVelocity = 0;
         return false;
+    }
+
+    public void StartCrouch()
+    {
+        CurrentMovementMult = CrouchMovementMult;
+        StandingCollisionShape.Disabled = true;
+        CrouchingCollisionShape.Disabled = false;
+
+        StandingHitbox.Monitorable = false;
+        StandingHitbox.Monitoring = false;
+        CrouchingHitbox.Monitorable = true;
+        CrouchingHitbox.Monitoring = true;
+        CameraController.EnterCrouchTweenActivate();
+    }
+
+    public void EndCrouch()
+    {
+        CurrentMovementMult = DefaultMovementMult;
+        StandingCollisionShape.Disabled = false;
+        CrouchingCollisionShape.Disabled = true;
+
+        StandingHitbox.Monitorable = true;
+        StandingHitbox.Monitoring = true;
+        CrouchingHitbox.Monitorable = false;
+        CrouchingHitbox.Monitoring = false;
+        CameraController.ExitCrouchTweenActivate();
     }
 }

@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://1beqxuwtx1mb"]
 
 [ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/scripts/system/WeaponManager.cs" id="1_37k7r"]
-[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/Scenes/Map/func_godot_test.tscn" id="1_t02g3"]
-[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/Scenes/Player/player_controller.tscn" id="2_c2a6q"]
+[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/scenes/map/func_godot_test.tscn" id="1_t02g3"]
+[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/scenes/player/player_controller.tscn" id="2_c2a6q"]
 [ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="2_fbnti"]
 [ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_b2mws"]
 [ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/scripts/system/GameManager.cs" id="5_b2mws"]
-[ext_resource type="PackedScene" uid="uid://ctos4y308wohb" path="res://src/Scenes/Enemies/test/grunt.tscn" id="7_fbnti"]
+[ext_resource type="PackedScene" uid="uid://ctos4y308wohb" path="res://src/scenes/enemies/test/grunt.tscn" id="7_fbnti"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -52,7 +52,7 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Grunt" parent="Level/Enemies" unique_id=516032448 node_paths=PackedStringArray("NavAgentMovementTargetNode") instance=ExtResource("7_fbnti")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.87152, -1.0000076, -5.7003155)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.79913, -1.0000076, 27.640432)
 NavAgentMovementTargetNode = NodePath("../../Player")
 Speed = 3.0
 
