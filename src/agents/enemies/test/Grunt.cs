@@ -11,7 +11,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public int Health { get; set; } = 50;
     [Export] public float Speed { get; set; } = 10f;
     [Export] public float MaxFallSpeed { get; set; } = 50f;
-    [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
+    [Export] public float FireRatePauseInSeconds { get; set; } = 2f;
     [Export] public float ShootRange { get; set; } = 50f;
     [Export] public int Damage { get; set; } = 10;
     
@@ -21,6 +21,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public HealthComponent HealthComponent { get; set; }
     
     [ExportCategory("References")]
+    [Export] public Label Label { get; set; }
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
@@ -84,7 +85,12 @@ public partial class Grunt : CharacterBody3D
         HealthComponent.OnDeath += () =>
         {
             GD.Print("grunt died!");
-            GetTree().CreateTimer(5).Timeout += QueueFree;
+            GetTree().CreateTimer(5).Timeout += () =>
+            {
+                PhysicalBoneSimulator3D.Active = false;
+                SetBoneCollisionShapesDisabled(true);
+                QueueFree();
+            };
             dead = true;
         };
         
@@ -104,6 +110,13 @@ public partial class Grunt : CharacterBody3D
         {
             HealthComponent.Kill();
         }
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        base._PhysicsProcess(delta);
+        ApplyFloorSnap();
+        Label.Text = $"velocity ({Velocity.X},{Velocity.Y},{Velocity.Z}) velocity l^2 {Velocity.LengthSquared()}";
     }
 
     private async void ActorSetup()
@@ -172,15 +185,14 @@ public partial class Grunt : CharacterBody3D
 
     public virtual Vector3 AddGravityToVelocity(Vector3 velocity, double delta)
     {
-        var yVel = Mathf.Clamp(velocity.Y - Gravity * (float)delta, -MaxFallSpeed, 0);
         return new Vector3(velocity.X, velocity.Y - Gravity * (float)delta, velocity.Z);
     }
 
     public virtual void HandleFalling(double delta)
     {
-        if (ShouldSnapToFloor())
+        // Do not query when the map has never synchronized and is empty.
+        if (NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
         {
-            ApplyFloorSnap();
             return;
         }
         
@@ -237,7 +249,12 @@ public partial class Grunt : CharacterBody3D
         return !freezeRotation;
     }
 
-    public virtual bool ShouldSnapToFloor()
+    public virtual void RaycastSnapToFloor()
+    {
+        if(IsFloorRaycastColliding()) ApplyFloorSnap();
+    }
+
+    public virtual bool IsFloorRaycastColliding()
     {
         return FloorRaycast.IsColliding();
     }

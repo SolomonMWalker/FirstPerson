@@ -6,25 +6,23 @@ public partial class AgentIdleComponent : BaseAiNavComponent
 {
     public override void HandleNavigation(double delta)
     {
-        if (!Grunt.IsOnFloor() && !Grunt.ShouldSnapToFloor())
+        // Do not query when the map has never synchronized and is empty.
+        if (NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
+        {
+            return;
+        }
+        
+        Grunt.NavigationAgent3D.TargetPosition = Grunt.GlobalPosition;
+        
+        if (!Grunt.IsOnFloor())
         {
             Grunt.HandleFalling(delta);
             return;
         }
-        Grunt.ApplyFloorSnap();
 
         if (Grunt.NavAgentMovementTargetNode is not null && Grunt.CanRotate())
         {
             Grunt.RotateToTarget();
-        }
-        
-        if (NavigationAgent3D.AvoidanceEnabled)
-        {
-            NavigationAgent3D.Velocity = Vector3.Zero;
-        }
-        else
-        {
-            Grunt.OnVelocityComputed(Vector3.Zero);
         }
     }
 }

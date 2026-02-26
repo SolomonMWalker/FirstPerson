@@ -8,7 +8,6 @@ public partial class NoActionState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        GD.Print("playing idle animation");
         if (Grunt.behaviorState == Grunt.BehaviorState.Following)
         {
             Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyAnimation);
@@ -30,7 +29,7 @@ public partial class NoActionState : EnemyAtomicState
             return;
         }
         
-        if(!Grunt.ShouldSnapToFloor())
+        if(!Grunt.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
@@ -41,7 +40,8 @@ public partial class NoActionState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
             return;
         }
-        if (Grunt.Velocity.X != 0 || Grunt.Velocity.Z != 0)
+        
+        if (Grunt.Velocity.LengthSquared() != 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IsMovingState"));
             return;

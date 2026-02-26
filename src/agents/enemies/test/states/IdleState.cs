@@ -14,11 +14,7 @@ public partial class IdleState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Grunt is null || Grunt.firing || Grunt.dead)
-        {
-            if(Grunt is null) GD.Print("grunt is null");
-            return;
-        }
+        if (Grunt is null || Grunt.firing || Grunt.dead) return;
         if (Grunt.CombatTriggerArea.HasOverlappingAreas())
         {
             var overlapArea = Grunt.CombatTriggerArea.GetOverlappingAreas().First();
@@ -28,7 +24,6 @@ public partial class IdleState : EnemyAtomicState
                 OnStateChangeRequired(new ChangeStateEventArgs("FollowState"));
                 return;
             }
-            GD.Print("not hitbox!");
         }
     }
 

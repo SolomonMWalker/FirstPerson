@@ -12,16 +12,15 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             return;
         }
         
-        if (!Grunt.IsOnFloor() && !Grunt.ShouldSnapToFloor())
+        NavigationAgent3D.TargetPosition = Grunt.NavAgentMovementTargetNode.GlobalPosition;
+        
+        if (!Grunt.IsOnFloor())
         {
             Grunt.HandleFalling(delta);
             return;
         }
-        Grunt.ApplyFloorSnap();
 
         if (Grunt.NavAgentMovementTargetNode == null) return;
-        
-        NavigationAgent3D.TargetPosition = Grunt.NavAgentMovementTargetNode.GlobalPosition;
         
         if (NavigationAgent3D.IsNavigationFinished() || !Grunt.CanMove())
         {
@@ -29,20 +28,13 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             {
                 Grunt.RotateToTarget();
             }
-            if (NavigationAgent3D.AvoidanceEnabled)
-            {
-                NavigationAgent3D.Velocity = Vector3.Zero;
-            }
-            else
-            {
-                Grunt.OnVelocityComputed(Vector3.Zero);
-            }
             return;
         }
 
         var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
         var direction = (nextPathPosition - Grunt.GlobalPosition).Normalized();
         var currentVelocity = direction * Grunt.Speed;
+        currentVelocity = currentVelocity with { Y = 0 };
         
         if (direction.Length() > 0.01f && Grunt.CanRotate())
         {

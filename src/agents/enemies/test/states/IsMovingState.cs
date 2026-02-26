@@ -8,7 +8,6 @@ public partial class IsMovingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        GD.Print("playing following animations");
         if (Grunt.behaviorState == Grunt.BehaviorState.Following)
         {
             Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReadyAnimation);
@@ -32,7 +31,7 @@ public partial class IsMovingState : EnemyAtomicState
             return;
         }
         
-        if(!Grunt.ShouldSnapToFloor())
+        if(!Grunt.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
@@ -43,6 +42,7 @@ public partial class IsMovingState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
             return;
         }
+        
         if (Grunt.Velocity.LengthSquared() == 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));

@@ -263,6 +263,7 @@ points = PackedVector2Array(-5, 0, -15, 0)
 width = 2.0
 
 [node name="Label" type="Label" parent="UserInterface" unique_id=951544714]
+visible = false
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -273,6 +274,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 
 [node name="StateLabel" type="Label" parent="UserInterface" unique_id=1148641770]
+visible = false
 layout_mode = 1
 offset_right = 1144.0
 offset_bottom = 147.0

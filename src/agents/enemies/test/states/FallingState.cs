@@ -29,7 +29,7 @@ public partial class FallingState : EnemyAtomicState
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
-        if (!_doneFalling && Grunt.IsOnFloor())
+        if (!_doneFalling && Grunt.IsFloorRaycastColliding())
         {
             _doneFalling = true;
             //Grunt.AnimationPlayer.Play(Grunt.FallingToIdle);

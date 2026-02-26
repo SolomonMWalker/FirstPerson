@@ -32,7 +32,7 @@ public partial class FiringState : EnemyAtomicState
             return;
         }
         
-        if(!Grunt.ShouldSnapToFloor())
+        if(!Grunt.IsFloorRaycastColliding())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
