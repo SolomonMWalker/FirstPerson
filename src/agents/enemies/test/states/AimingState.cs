@@ -28,7 +28,6 @@ public partial class AimingState : EnemyAtomicState
         }
         
         Grunt.RotateToTarget();
-        Grunt.HandleJustGravity(delta);
         if (!Grunt.AnimationPlayer.IsPlaying())
         {
             GD.Print("change to firing state");

@@ -20,6 +20,15 @@ public partial class HealthComponent : Node
         CurrentHealth = StartingHealth;
     }
 
+    public void SetHealth(int amount, bool setTotal)
+    {
+        if (setTotal)
+        {
+            StartingHealth = amount;
+        }
+        CurrentHealth = amount;
+    }
+
     public void DepleteHealth(int amount)
     {
         CurrentHealth -= amount;

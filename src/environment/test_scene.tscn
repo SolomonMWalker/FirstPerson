@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/system/GameManager.cs" id="4_4lq1p"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_qts6i"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_ju488"]
-[ext_resource type="PackedScene" uid="uid://ctos4y308wohb" path="res://src/enemies/test/grunt.tscn" id="7_bynor"]
+[ext_resource type="PackedScene" uid="uid://ctos4y308wohb" path="res://src/agents/enemies/test/grunt.tscn" id="7_bynor"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -52,7 +52,7 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="GruntParent" parent="Level/Enemies" unique_id=163997986 instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.16412, 3.8146973e-06, 31.850704)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.242035, 0, 25.579903)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")

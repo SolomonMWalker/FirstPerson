@@ -37,6 +37,6 @@ public partial class IdleState : EnemyAtomicState
             return;
         }
         
-        Grunt.HandleJustGravity(delta);
+        Grunt.AgentIdleComponent.HandleNavigation(delta);
     }
 }

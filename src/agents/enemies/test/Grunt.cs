@@ -1,30 +1,35 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using FirstPerson.Helpers;
 using FirstPerson.scenes.enemies.test;
 
 public partial class Grunt : Node3D
 {
+    [ExportCategory("Enemy Settings")]
+    [Export] public int Health { get; set; } = 50;
+    [Export] public float Speed { get; set; } = 10f;
+    [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
+    [Export] public float ShootRange { get; set; } = 50f;
+    [Export] public int Damage { get; set; } = 10;
+    
+    [ExportCategory("Components")]
+    [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
+    [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
+    [Export] public HealthComponent HealthComponent { get; set; }
+    
     [ExportCategory("References")]
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CharacterBody3D CharacterBody3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
-    [Export] public Godot.Collections.Array<CollisionShape3D> BoneCollisionShapes { get; set; }
-    [Export] public PhysicalBone3D HeadBone { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
-    [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public Timer FireRateTimer { get; set; }
-    
-    [ExportCategory("Enemy Settings")]
-    [Export] public float Speed { get; set; } = 10f;
-    [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
-    [Export] public float ShootRange { get; set; } = 50f;
-    [Export] public int Damage { get; set; } = 10;
 
     [ExportCategory("Animation Settings")]
     [ExportGroup("Names")]
@@ -38,15 +43,14 @@ public partial class Grunt : Node3D
     [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
     public BehaviorState behaviorState = BehaviorState.Idle;
-    public bool readyToFire;
-    public bool firing;
+    public bool readyToFire, firing, freezeRotation, ragdoll, dead;
     public Vector3 shootTargetRelativePosition;
-    public bool freezeRotation;
-    public bool ragdoll;
-    public bool dead;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage;
+    
     private bool _ready;
+    private List<PhysicalBone3D> _allPBones = [];
+    private List<CollisionShape3D> _boneCollisionShapes = [];
 
     public enum BehaviorState
     {
@@ -59,14 +63,18 @@ public partial class Grunt : Node3D
         base._Ready();
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
-        FireRateTimer.WaitTime = FireRatePauseInSeconds;
         
+        HealthComponent.SetHealth(Health, true);
+        
+        FireRateTimer.WaitTime = FireRatePauseInSeconds;
         FireRateTimer.Timeout += () =>
         {
             GD.Print("Ready to fire");
             readyToFire = true;
         };
+        
         AnimationPlayer.Play(IdleGunDownAnimation);
+        
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
         HealthComponent.OnDeath += () =>
         {
@@ -74,6 +82,13 @@ public partial class Grunt : Node3D
             GetTree().CreateTimer(5).Timeout += QueueFree;
             dead = true;
         };
+        
+        _allPBones.AddRange(PhysicalBoneSimulator3D.GetChildren().OfType<PhysicalBone3D>());
+        foreach (var pBone in _allPBones)
+        {
+            var cShape = (CollisionShape3D) pBone.GetChild(0);
+            _boneCollisionShapes.Add(cShape);
+        }
     }
 
     public override void _Process(double delta)
@@ -137,70 +152,19 @@ public partial class Grunt : Node3D
         CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
 
-    public virtual void HandleJustGravity(double delta)
+    public virtual void RotateToGlobalPoint(Vector3 globalPoint)
     {
-        var velocityNoXz = CharacterBody3D.Velocity with { X = 0, Z = 0 };
-        var currentVelocity = AddGravityToVelocity(velocityNoXz, delta);
-        if (NavigationAgent3D.AvoidanceEnabled)
-        {
-            NavigationAgent3D.Velocity = currentVelocity;
-        }
-        OnVelocityComputed(currentVelocity);
+        var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
+        CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
     
-    public virtual void HandleNavigation(double delta)
-    {
-        // Do not query when the map has never synchronized and is empty.
-        if (!_ready || NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
-        {
-            return;
-        }
-
-        if (NavAgentMovementTargetNode == null) return;
-        
-        NavigationAgent3D.TargetPosition = NavAgentMovementTargetNode.GlobalPosition;
-        
-        if (NavigationAgent3D.IsNavigationFinished())
-        {
-            var velocityNoXz = CharacterBody3D.Velocity with { X = 0, Z = 0 };
-            var gravOnlyVelocity = AddGravityToVelocity(velocityNoXz, delta);
-            if (!freezeRotation)
-            {
-                var stoppedDirection = (NavAgentMovementTargetNode.GlobalPosition - CharacterBody3D.GlobalPosition).Normalized();
-                var targetRotation = Mathf.Atan2(stoppedDirection.X, stoppedDirection.Z);
-                CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
-            }
-            OnVelocityComputed(gravOnlyVelocity);
-            return;
-        }
-
-        var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
-        var direction = (nextPathPosition - CharacterBody3D.GlobalPosition).Normalized();
-        var currentVelocity = AddGravityToVelocity(direction * Speed, delta);
-        
-        if (direction.Length() > 0.01f || freezeRotation)
-        {
-            var targetRotation = Mathf.Atan2(direction.X, direction.Z);
-            CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
-        }
-
-        if (NavigationAgent3D.AvoidanceEnabled)
-        {
-            NavigationAgent3D.Velocity = currentVelocity;
-        }
-        else
-        {
-            OnVelocityComputed(currentVelocity);
-        }
-    }
-    
-    private void OnVelocityComputed(Vector3 safeVelocity)
+    public void OnVelocityComputed(Vector3 safeVelocity)
     {
         CharacterBody3D.Velocity = safeVelocity;
         CharacterBody3D.MoveAndSlide();
     }
 
-    protected virtual Vector3 AddGravityToVelocity(Vector3 velocity, double delta)
+    public virtual Vector3 AddGravityToVelocity(Vector3 velocity, double delta)
     {
         float newYVelocity;
         if (!CharacterBody3D.IsOnFloor())
@@ -218,5 +182,20 @@ public partial class Grunt : Node3D
     public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionPoint)
     {
         dirLastDamage = (collisionPoint - sourceGlobalPosition).Normalized();
+    }
+
+    private void SetBoneCollisionShapesDisabled(bool disabled) => 
+        _boneCollisionShapes.ForEach(cs => cs.Disabled = disabled);
+
+    public void StartRagdoll()
+    {
+        SetBoneCollisionShapesDisabled(false);
+        CollisionShape3D.Disabled = true;
+        PhysicalBoneSimulator3D.Active = true;
+        PhysicalBoneSimulator3D.PhysicalBonesStartSimulation();
+        if (affectedBone is not null)
+        {
+            affectedBone.LinearVelocity = dirLastDamage * 20f;
+        }
     }
 }

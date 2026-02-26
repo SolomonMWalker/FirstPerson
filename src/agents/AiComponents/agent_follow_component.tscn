@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c41kae2mksfw2"]
+
+[ext_resource type="Script" uid="uid://b7yhi5kd2p5cw" path="res://src/agents/AiComponents/AgentFollowComponent.cs" id="1_3p2uk"]
+
+[node name="AgentFollowComponent" type="Node" unique_id=901364353]
+script = ExtResource("1_3p2uk")

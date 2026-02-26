@@ -23,6 +23,6 @@ public partial class FollowState : EnemyAtomicState
             return;
         }
         
-        Grunt.HandleNavigation(delta);
+        Grunt.AgentFollowComponent.HandleNavigation(delta);
     }
 }
