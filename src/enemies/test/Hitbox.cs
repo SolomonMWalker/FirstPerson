@@ -11,6 +11,7 @@ public partial class Hitbox : Area3D
     [Export] public HealthComponent HealthComponent { get; private set; }
     [Export] public MeshInstance3D DebugMesh { get; private set; }
     [Export] public Node3D Parent { get; private set; }
+    [Export] public PhysicalBone3D AffectedPhysicalBone { get; private set; }
 
     private Timer _debugMeshTimer;
 
@@ -36,6 +37,15 @@ public partial class Hitbox : Area3D
         {
             HealthComponent?.DepleteHealth(hitInformation.healthDamage.Value);
             if(IsDebug) DebugHit();
+            if (Parent is Grunt grunt && AffectedPhysicalBone is not null)
+            {
+                grunt.affectedBone = AffectedPhysicalBone;
+                if (hitInformation.sourceGlobalPosition.HasValue && hitInformation.collisionGlobalPosition.HasValue)
+                {
+                    grunt.SetLastDamageDirection(hitInformation.sourceGlobalPosition.Value, 
+                        hitInformation.collisionGlobalPosition.Value);
+                }
+            }
         }
     }
 

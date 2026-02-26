@@ -11,6 +11,7 @@ public partial class Grunt : Node3D
     [Export] public CharacterBody3D CharacterBody3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Godot.Collections.Array<CollisionShape3D> BoneCollisionShapes { get; set; }
+    [Export] public PhysicalBone3D HeadBone { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
@@ -43,8 +44,8 @@ public partial class Grunt : Node3D
     public bool freezeRotation;
     public bool ragdoll;
     public bool dead;
+    public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage;
-    
     private bool _ready;
 
     public enum BehaviorState
@@ -70,7 +71,6 @@ public partial class Grunt : Node3D
         HealthComponent.OnDeath += () =>
         {
             GD.Print("grunt died!");
-            GD.Print($"damage direction {dirLastDamage}");
             GetTree().CreateTimer(5).Timeout += QueueFree;
             dead = true;
         };
@@ -81,7 +81,7 @@ public partial class Grunt : Node3D
         base._Process(delta);
         if (Input.IsKeyLabelPressed(Key.G))
         {
-            ragdoll = true;
+            HealthComponent.Kill();
         }
     }
 
@@ -115,7 +115,10 @@ public partial class Grunt : Node3D
             if (collided is Hitbox hitbox)
             {
                 GD.Print("hit a hitbox!");
-                hitbox.Hit(new HitInformation(healthDamage: Damage, staggerDamage: null, sourceGlobalPosition: CharacterBody3D.GlobalPosition));
+                var hitInfo = new HitInformation(healthDamage: Damage, staggerDamage: null,
+                    sourceGlobalPosition: CharacterBody3D.GlobalPosition,
+                    collisionGlobalPosition: ShootRaycast.GetCollisionPoint());
+                hitbox.Hit(hitInfo);
             }
             else
             {
@@ -210,5 +213,10 @@ public partial class Grunt : Node3D
         }
 
         return velocity with { Y = newYVelocity };
+    }
+
+    public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionPoint)
+    {
+        dirLastDamage = (collisionPoint - sourceGlobalPosition).Normalized();
     }
 }

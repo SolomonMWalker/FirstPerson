@@ -32,4 +32,9 @@ public partial class HealthComponent : Node
             EmitSignal(SignalName.OnHealthDepleted, amount);
         }
     }
+
+    public void Kill()
+    {
+        DepleteHealth(StartingHealth);
+    }
 }

@@ -216,7 +216,7 @@ public partial class WeaponController : Node
                 if (hit.gdObj is Hitbox hitbox)
                 {
                     hitbox.Hit(new HitInformation(healthDamage: (int) CurrentWeapon.Damage, staggerDamage: null, 
-                        sourceGlobalPosition: Player.GlobalPosition));
+                        sourceGlobalPosition: Player.GlobalPosition, collisionGlobalPosition: hit.point));
                 }
             }
         }

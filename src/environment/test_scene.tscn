@@ -52,7 +52,7 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="GruntParent" parent="Level/Enemies" unique_id=163997986 instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88.11089, -7.6293945e-06, 30.15001)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.16412, 3.8146973e-06, 31.850704)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")
