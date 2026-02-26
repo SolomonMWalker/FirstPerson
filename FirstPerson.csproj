@@ -5,7 +5,6 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="src\agents\enemies\test\GruntCharacterBody3D.cs.uid" />
     <Content Include="src\agents\enemies\test\states\FallingState.cs.uid" />
     <Content Include="src\Resources\Images\Circle.png" />
     <Content Include="src\Resources\Images\Circle.png.import" />

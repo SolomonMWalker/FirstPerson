@@ -8,6 +8,7 @@ public partial class IsMovingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        GD.Print("playing following animations");
         if (Grunt.behaviorState == Grunt.BehaviorState.Following)
         {
             Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReadyAnimation);
