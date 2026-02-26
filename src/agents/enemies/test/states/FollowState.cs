@@ -15,7 +15,7 @@ public partial class FollowState : EnemyAtomicState
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
-        if (Grunt is null || Grunt.firing) return;
+        if (Grunt is null || Grunt.firing || Grunt.dead) return;
 
         if (Grunt.dead)
         {

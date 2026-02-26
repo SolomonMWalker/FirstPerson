@@ -7,7 +7,7 @@ public partial class DeadState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CharacterBody3D.Velocity = Vector3.Zero;
-        Grunt.NavigationAgent3D.Velocity = Vector3.Zero;
+        Grunt.NavigationAgent3D.TargetPosition = Grunt.NavigationAgent3D.TargetPosition;
+        Grunt.OnVelocityComputed(Vector3.Zero);
     }
 }

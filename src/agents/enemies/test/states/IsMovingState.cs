@@ -31,12 +31,18 @@ public partial class IsMovingState : EnemyAtomicState
             return;
         }
         
+        if(!Grunt.ShouldSnapToFloor())
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
+            return;
+        }
+        
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
             return;
         }
-        if (Grunt.CharacterBody3D.Velocity.LengthSquared() == 0)
+        if (Grunt.Velocity.LengthSquared() == 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;

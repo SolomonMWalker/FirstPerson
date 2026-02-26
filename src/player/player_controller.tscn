@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/player/WeaponController.cs" id="28_v0tgu"]
 
 [node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ClamberController", "WeaponController", "CameraController", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
+collision_layer = 0
 collision_mask = 769
 script = ExtResource("1_r8ls8")
 StepHandlerComponent = NodePath("Components/StepHandlerComponent")
@@ -79,6 +80,7 @@ metadata/_custom_type_script = "uid://2bhtar1cgf4d"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CrouchingHitbox" unique_id=1810427541]
 shape = ExtResource("3_wgula")
+disabled = true
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1756439257]

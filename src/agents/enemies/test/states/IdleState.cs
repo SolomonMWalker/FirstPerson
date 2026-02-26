@@ -1,6 +1,7 @@
 using System.Linq;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
+using Godot;
 
 public partial class IdleState : EnemyAtomicState
 {
@@ -13,7 +14,7 @@ public partial class IdleState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Grunt is null) return;
+        if (Grunt is null || Grunt.firing || Grunt.dead) return;
         if (Grunt.CombatTriggerArea.HasOverlappingAreas())
         {
             var overlapArea = Grunt.CombatTriggerArea.GetOverlappingAreas().First();

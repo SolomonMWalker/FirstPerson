@@ -48,11 +48,11 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="funcGodotTest" parent="Level/Map" unique_id=552549584 instance=ExtResource("6_ju488")]
 
-[node name="Enemies" type="Node3D" parent="Level" unique_id=398296696]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="Enemies" type="Node" parent="Level" unique_id=746725339]
 
-[node name="GruntParent" parent="Level/Enemies" unique_id=163997986 instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.242035, 0, 25.579903)
+[node name="GruntParent" parent="Level/Enemies" unique_id=1413960494 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85.33326, 9.717018, 39.36864)
+Health = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")

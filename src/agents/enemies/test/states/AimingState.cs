@@ -22,12 +22,17 @@ public partial class AimingState : EnemyAtomicState
         
         if (Grunt.ragdoll || Grunt.dead)
         {
-            Grunt.AnimationPlayer.Stop();
             OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
             return;
         }
         
-        Grunt.RotateToTarget();
+        if(!Grunt.ShouldSnapToFloor())
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
+            return;
+        }
+        
+        if(Grunt.CanRotate()) Grunt.RotateToTarget();
         if (!Grunt.AnimationPlayer.IsPlaying())
         {
             GD.Print("change to firing state");

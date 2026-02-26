@@ -32,6 +32,12 @@ public partial class FiringState : EnemyAtomicState
             return;
         }
         
+        if(!Grunt.ShouldSnapToFloor())
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
+            return;
+        }
+        
         if (Grunt is null) return;
         if (!Grunt.AnimationPlayer.IsPlaying())
         {

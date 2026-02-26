@@ -11,28 +11,40 @@ public partial class AgentFollowComponent : BaseAiNavComponent
         {
             return;
         }
+        
+        if (!Grunt.IsOnFloor() && !Grunt.ShouldSnapToFloor())
+        {
+            Grunt.HandleFalling(delta);
+            return;
+        }
+        Grunt.ApplyFloorSnap();
 
         if (Grunt.NavAgentMovementTargetNode == null) return;
         
         NavigationAgent3D.TargetPosition = Grunt.NavAgentMovementTargetNode.GlobalPosition;
         
-        if (NavigationAgent3D.IsNavigationFinished())
+        if (NavigationAgent3D.IsNavigationFinished() || !Grunt.CanMove())
         {
-            var velocityNoXz = Grunt.CharacterBody3D.Velocity with { X = 0, Z = 0 };
-            var gravOnlyVelocity = Grunt.AddGravityToVelocity(velocityNoXz, delta);
-            if (!Grunt.freezeRotation)
+            if (Grunt.CanRotate())
             {
                 Grunt.RotateToTarget();
             }
-            Grunt.OnVelocityComputed(gravOnlyVelocity);
+            if (NavigationAgent3D.AvoidanceEnabled)
+            {
+                NavigationAgent3D.Velocity = Vector3.Zero;
+            }
+            else
+            {
+                Grunt.OnVelocityComputed(Vector3.Zero);
+            }
             return;
         }
 
         var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
-        var direction = (nextPathPosition - Grunt.CharacterBody3D.GlobalPosition).Normalized();
-        var currentVelocity = Grunt.AddGravityToVelocity(direction * Grunt.Speed, delta);
+        var direction = (nextPathPosition - Grunt.GlobalPosition).Normalized();
+        var currentVelocity = direction * Grunt.Speed;
         
-        if (direction.Length() > 0.01f || Grunt.freezeRotation)
+        if (direction.Length() > 0.01f && Grunt.CanRotate())
         {
             Grunt.RotateToGlobalPoint(direction);
         }

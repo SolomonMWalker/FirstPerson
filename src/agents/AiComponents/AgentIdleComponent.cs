@@ -6,18 +6,25 @@ public partial class AgentIdleComponent : BaseAiNavComponent
 {
     public override void HandleNavigation(double delta)
     {
-        var velocityNoXz = Grunt.CharacterBody3D.Velocity with { X = 0, Z = 0 };
-        var currentVelocity = Grunt.AddGravityToVelocity(velocityNoXz, delta);
+        if (!Grunt.IsOnFloor() && !Grunt.ShouldSnapToFloor())
+        {
+            Grunt.HandleFalling(delta);
+            return;
+        }
+        Grunt.ApplyFloorSnap();
 
-        if (Grunt.NavAgentMovementTargetNode is not null)
+        if (Grunt.NavAgentMovementTargetNode is not null && Grunt.CanRotate())
         {
             Grunt.RotateToTarget();
         }
         
         if (NavigationAgent3D.AvoidanceEnabled)
         {
-            NavigationAgent3D.Velocity = currentVelocity;
+            NavigationAgent3D.Velocity = Vector3.Zero;
         }
-        Grunt.OnVelocityComputed(currentVelocity);
+        else
+        {
+            Grunt.OnVelocityComputed(Vector3.Zero);
+        }
     }
 }

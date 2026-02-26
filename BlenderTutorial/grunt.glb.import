@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "aimGun": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/aimGun.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/aimGun.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://i77pcuodhnjv",
 "settings/loop_mode": 0,
@@ -2097,7 +2097,7 @@ _subresources={
 },
 "fireGun": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/fireGun.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/fireGun.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://cd6rsdsqh0oel",
 "settings/loop_mode": 0,
@@ -4153,7 +4153,7 @@ _subresources={
 },
 "idleToWalkGunDown": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/idleToWalkGunDown.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleToWalkGunDown.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://7fyivh574t1d",
 "settings/loop_mode": 0,
@@ -6209,7 +6209,7 @@ _subresources={
 },
 "idleToWalkGunReady": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/idleToWalkGunReady.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleToWalkGunReady.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dl2r367u4y5ec",
 "settings/loop_mode": 0,
@@ -8265,7 +8265,7 @@ _subresources={
 },
 "idleWithGunDown": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/idleWithGunDown.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleWithGunDown.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bqirnedjwyjme",
 "settings/loop_mode": 1,
@@ -10321,7 +10321,7 @@ _subresources={
 },
 "idleWithGunReady": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/idleWithGunReady.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleWithGunReady.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://b2dow5idoq86c",
 "settings/loop_mode": 1,
@@ -12377,7 +12377,7 @@ _subresources={
 },
 "tPose": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/tPose.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/tPose.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bwikbkxispx0m",
 "settings/loop_mode": 1,
@@ -14433,7 +14433,7 @@ _subresources={
 },
 "walkGunDown": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/walkGunDown.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/walkGunDown.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://buj2ru47mleid",
 "settings/loop_mode": 1,
@@ -16489,7 +16489,7 @@ _subresources={
 },
 "walkGunReady": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/enemies/test/blenderAnimations/walkGunReady.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/walkGunReady.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://7j3xny42t36a",
 "settings/loop_mode": 1,

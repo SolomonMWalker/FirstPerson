@@ -5,11 +5,12 @@ using System.Linq;
 using FirstPerson.Helpers;
 using FirstPerson.scenes.enemies.test;
 
-public partial class Grunt : Node3D
+public partial class Grunt : CharacterBody3D
 {
     [ExportCategory("Enemy Settings")]
     [Export] public int Health { get; set; } = 50;
     [Export] public float Speed { get; set; } = 10f;
+    [Export] public float MaxFallSpeed { get; set; } = 50f;
     [Export] public float FireRatePauseInSeconds { get; set; } = 5f;
     [Export] public float ShootRange { get; set; } = 50f;
     [Export] public int Damage { get; set; } = 10;
@@ -22,13 +23,13 @@ public partial class Grunt : Node3D
     [ExportCategory("References")]
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
-    [Export] public CharacterBody3D CharacterBody3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
+    [Export] public RayCast3D FloorRaycast { get; set; }
     [Export] public Timer FireRateTimer { get; set; }
 
     [ExportCategory("Animation Settings")]
@@ -39,15 +40,19 @@ public partial class Grunt : Node3D
     [Export] public StringName WalkGunReadyAnimation { get; set; } = "walkGunReady";
     [Export] public StringName IdleGunDownToWalkGunDownAnimation { get; set; } = "idleToWalkGunDown";
     [Export] public StringName IdleGunReadyToWalkGunReadyAnimation { get; set; } = "idleToWalkGunReady";
+    [Export] public StringName Falling { get; set; } = "falling";
+    [Export] public StringName IdleToFalling { get; set; } = "idleToFalling";
+    [Export] public StringName FallingToIdle { get; set; } = "fallingToIdle";
     [Export] public StringName AimAnimation { get; set; } = "Edited/editedAimGun";
     [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
     public BehaviorState behaviorState = BehaviorState.Idle;
-    public bool readyToFire, firing, freezeRotation, ragdoll, dead;
+    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage;
     
+    private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     private bool _ready;
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
@@ -94,6 +99,7 @@ public partial class Grunt : Node3D
     public override void _Process(double delta)
     {
         base._Process(delta);
+        
         if (Input.IsKeyLabelPressed(Key.G))
         {
             HealthComponent.Kill();
@@ -131,7 +137,7 @@ public partial class Grunt : Node3D
             {
                 GD.Print("hit a hitbox!");
                 var hitInfo = new HitInformation(healthDamage: Damage, staggerDamage: null,
-                    sourceGlobalPosition: CharacterBody3D.GlobalPosition,
+                    sourceGlobalPosition: GlobalPosition,
                     collisionGlobalPosition: ShootRaycast.GetCollisionPoint());
                 hitbox.Hit(hitInfo);
             }
@@ -147,36 +153,50 @@ public partial class Grunt : Node3D
     public virtual void RotateToTarget()
     {
         if (NavAgentMovementTargetNode is null || freezeRotation) return;
-        var direction = (NavAgentMovementTargetNode.GlobalPosition - CharacterBody3D.GlobalPosition).Normalized();
+        var direction = (NavAgentMovementTargetNode.GlobalPosition - GlobalPosition).Normalized();
         var targetRotation = Mathf.Atan2(direction.X, direction.Z);
-        CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+        Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
 
     public virtual void RotateToGlobalPoint(Vector3 globalPoint)
     {
         var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
-        CharacterBody3D.Rotation = CharacterBody3D.Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+        Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
     
     public void OnVelocityComputed(Vector3 safeVelocity)
     {
-        CharacterBody3D.Velocity = safeVelocity;
-        CharacterBody3D.MoveAndSlide();
+        Velocity = safeVelocity;
+        MoveAndSlide();
     }
 
     public virtual Vector3 AddGravityToVelocity(Vector3 velocity, double delta)
     {
-        float newYVelocity;
-        if (!CharacterBody3D.IsOnFloor())
+        var yVel = Mathf.Clamp(velocity.Y - Gravity * (float)delta, -MaxFallSpeed, 0);
+        return new Vector3(velocity.X, velocity.Y - Gravity * (float)delta, velocity.Z);
+    }
+
+    public virtual void HandleFalling(double delta)
+    {
+        if (ShouldSnapToFloor())
         {
-            newYVelocity = velocity.Y - 100f * (float)delta;
+            ApplyFloorSnap();
+            return;
+        }
+        
+        var currentVelocity = Velocity;
+        currentVelocity = AddGravityToVelocity(currentVelocity, delta);
+
+        NavigationAgent3D.TargetPosition = GlobalPosition + currentVelocity;
+        
+        if (NavigationAgent3D.AvoidanceEnabled)
+        {
+            NavigationAgent3D.Velocity = currentVelocity;
         }
         else
         {
-            newYVelocity = 0;
+            OnVelocityComputed(currentVelocity);
         }
-
-        return velocity with { Y = newYVelocity };
     }
 
     public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionPoint)
@@ -190,12 +210,35 @@ public partial class Grunt : Node3D
     public void StartRagdoll()
     {
         SetBoneCollisionShapesDisabled(false);
+        FloorRaycast.Enabled = false;
         CollisionShape3D.Disabled = true;
+        // CharacterBody3D.GlobalPosition =
+        //     CharacterBody3D.GlobalPosition with { Y = CharacterBody3D.GlobalPosition.Y + 0.2f };
         PhysicalBoneSimulator3D.Active = true;
         PhysicalBoneSimulator3D.PhysicalBonesStartSimulation();
         if (affectedBone is not null)
         {
+            GD.Print($"dirLastDamage {dirLastDamage} affectedBone {affectedBone.Name}");
             affectedBone.LinearVelocity = dirLastDamage * 20f;
         }
+        else
+        {
+            GD.Print("affected bone is null");
+        }
+    }
+
+    public virtual bool CanMove()
+    {
+        return !(dead || ragdoll || firing || falling);
+    }
+
+    public virtual bool CanRotate()
+    {
+        return !freezeRotation;
+    }
+
+    public virtual bool ShouldSnapToFloor()
+    {
+        return FloorRaycast.IsColliding();
     }
 }
