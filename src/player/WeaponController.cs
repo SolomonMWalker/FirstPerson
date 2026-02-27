@@ -170,13 +170,11 @@ public partial class WeaponController : Node
     public float GetCurrentAccuracyPenalty()
     {
         //retrieves gun accuracy and player real velocity to calculate accuracy
-        var speedPercent = Player.Velocity.Length() / (Player.Speed * Player.SprintMovementMult);
-        if (Aiming)
-        {
-            return Mathf.Clamp(CurrentWeapon.AccuracyErrorAngle, 0, MaxAngleAccuracyPenalty);
-        }
+        var speedPercent = Player.PreviousFrameVelocityLength / (Player.Speed * Player.SprintMovementMult);
+        var weaponAccuracyPenalty =
+            Aiming ? CurrentWeapon.AccuracyErrorAngleWhenAiming : CurrentWeapon.AccuracyErrorAngle;
         var accuracySpeedPenalty = speedPercent * CurrentWeapon.AccuracyErrorAngleAtMaxMovementSpeed;
-        return Mathf.Clamp(CurrentWeapon.AccuracyErrorAngle + accuracySpeedPenalty, 0, MaxAngleAccuracyPenalty);
+        return Mathf.Clamp(weaponAccuracyPenalty + accuracySpeedPenalty, 0, MaxAngleAccuracyPenalty);
     }
 
     public void PerformHitscan()

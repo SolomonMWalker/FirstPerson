@@ -15,6 +15,11 @@ public partial class Weapon : Resource
         get => _accuracyErrorAngle;
         set => _accuracyErrorAngle = Mathf.Clamp(value, 0, 100);
     } private float _accuracyErrorAngle = 0;
+    [Export] public float AccuracyErrorAngleWhenAiming
+    {
+        get => _accuracyErrorAngleWhenAiming;
+        set => _accuracyErrorAngleWhenAiming = Mathf.Clamp(value, 0, 100);
+    } private float _accuracyErrorAngleWhenAiming = 0;
     [Export] public float AccuracyErrorAngleAtMaxMovementSpeed
     {
         get => _accuracyErrorAngleAtMaxMovementSpeed;

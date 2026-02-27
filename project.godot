@@ -44,6 +44,7 @@ model_point_class_save_path="res://trenchbroom/models"
 player=""
 weaponController=""
 projectileParent=""
+enemies=""
 
 [input]
 

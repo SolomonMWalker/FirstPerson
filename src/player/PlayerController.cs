@@ -47,6 +47,7 @@ public partial class PlayerController : HittableCharacterBody3D
     public bool Aiming { get; set; }
     public float CurrentFallVelocity { get; set; }
     public Vector3 PreviousFrameVelocity { get; set; }
+    public float PreviousFrameVelocityLength { get; set; }
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
 
@@ -69,6 +70,7 @@ public partial class PlayerController : HittableCharacterBody3D
     {
         base._PhysicsProcess(delta);
         PreviousFrameVelocity = Velocity;
+        PreviousFrameVelocityLength = Velocity.Length();
         HandleMovement(delta);
     }
 
