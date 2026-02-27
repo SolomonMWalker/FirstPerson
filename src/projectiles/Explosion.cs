@@ -13,7 +13,7 @@ public partial class Explosion : Node3D
     //private List<CollisionObject3D> ObjectsHit { get; set; } = [];
     private ShapeCast3D ShapeCast3D { get; set; }
     private Vector3 InitialGlobalPosition { get; set; }
-    private Poll TimeAlivePoll { get; set; }
+    //private Poll TimeAlivePoll { get; set; }
 
     public static void Initialize(Node3D parent, Vector3 globalPosition)
     {
@@ -30,17 +30,17 @@ public partial class Explosion : Node3D
         base._Ready();
         GlobalPosition = InitialGlobalPosition;
         ShapeCast3D = GetNode<ShapeCast3D>("ShapeCast3D");
-        TimeAlivePoll = new Poll(LifetimeInSec, 0);
+        //TimeAlivePoll = new Poll(LifetimeInSec, 0);
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (TimeAlivePoll.IsPollPinged(delta))
-        {
-            QueueFree();
-            return;
-        }
+        // if (TimeAlivePoll.IsPollPinged(delta))
+        // {
+        //     QueueFree();
+        //     return;
+        // }
 
         if (!ShapeCast3D.IsColliding()) return;
         for (int index = 0; index < ShapeCast3D.GetCollisionCount(); index++)

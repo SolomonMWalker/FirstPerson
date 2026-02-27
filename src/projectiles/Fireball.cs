@@ -12,7 +12,7 @@ public partial class Fireball : CharacterBody3D
     private double TimeToLive { get; set; } = 5;
     private Vector3 TargetGlobalPosition { get; set; }
     private Vector3 GlobalPositionSpawnPoint { get; set; }
-    private Poll TimeToLivePoll { get; set; }
+    //private Poll TimeToLivePoll { get; set; }
     private Node3D ProjectilesParent { get; set; }
     private PackedScene ExplosionPackedScene { get; set; }
     
@@ -34,18 +34,18 @@ public partial class Fireball : CharacterBody3D
     public override void _Ready()
     {
         base._Ready();
-        TimeToLivePoll = new Poll(TimeToLive, 0);
+        //TimeToLivePoll = new Poll(TimeToLive, 0);
         GlobalPosition = GlobalPositionSpawnPoint;
         ProjectilesParent = GetNode<Node3D>("/root/Test/ProjectilesParent");
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        if (QueuedForFree || TimeToLivePoll.IsPollPinged(delta))
-        {
-            QueueFree();
-            return;
-        }
+        // if (QueuedForFree || TimeToLivePoll.IsPollPinged(delta))
+        // {
+        //     QueueFree();
+        //     return;
+        // }
         base._PhysicsProcess(delta);
         
         if (!VelocitySet)
