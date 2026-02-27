@@ -8,16 +8,6 @@ public partial class IsMovingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        // if (Grunt.behaviorState == Grunt.BehaviorState.Following)
-        // {
-        //     Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReadyAnimation);
-        //     Grunt?.AnimationPlayer.Queue(Grunt.WalkGunReadyAnimation);
-        // }
-        // else //idle
-        // {
-        //     Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownToWalkGunDownAnimation);   
-        //     Grunt?.AnimationPlayer.Queue(Grunt.WalkGunDownAnimation);
-        // }
         Grunt.CustomAnimationTree.TrySetParam("moving", true);
     }
 
