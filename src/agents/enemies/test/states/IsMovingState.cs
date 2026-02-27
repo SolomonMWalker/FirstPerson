@@ -50,7 +50,7 @@ public partial class IsMovingState : EnemyAtomicState
             return;
         }
         
-        if (Grunt.Velocity.LengthSquared() == 0)
+        if (Grunt.previousFrameVelocityLengthSquared == 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;

@@ -51,6 +51,7 @@ public partial class Grunt : CharacterBody3D
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage;
+    public float previousFrameVelocityLengthSquared;
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     private bool _ready;
@@ -136,6 +137,7 @@ public partial class Grunt : CharacterBody3D
     {
         base._PhysicsProcess(delta);
         ApplyFloorSnap();
+        previousFrameVelocityLengthSquared = Velocity.LengthSquared();
     }
 
     private async void ActorSetup()
