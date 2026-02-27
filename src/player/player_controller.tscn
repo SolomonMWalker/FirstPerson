@@ -26,7 +26,7 @@
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/player/StepHandlerComponent.cs" id="27_a3051"]
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/player/WeaponController.cs" id="28_v0tgu"]
 
-[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ClamberController", "WeaponController", "CameraController", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
+[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ClamberController", "WeaponController", "CameraController", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "Reticle", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
 collision_layer = 0
 collision_mask = 769
 script = ExtResource("1_r8ls8")
@@ -38,6 +38,7 @@ CameraController = NodePath("CameraController")
 CameraEffects = NodePath("CameraEffects")
 PlayerStateMachine = NodePath("PlayerStateMachine")
 AnimationPlayer = NodePath("AnimationPlayer")
+Reticle = NodePath("UserInterface/Reticle")
 StandingCollisionShape = NodePath("StandingCollisionShape3D")
 CrouchingCollisionShape = NodePath("CrouchingCollisionShape3D")
 StandingHitbox = NodePath("StandingHitbox")

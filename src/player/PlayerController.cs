@@ -32,6 +32,7 @@ public partial class PlayerController : HittableCharacterBody3D
     [Export] public CameraEffects CameraEffects { get; set; }
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
+    [Export] public Reticle Reticle { get; set; }
     [Export] public CollisionShape3D StandingCollisionShape { get; set; }
     [Export] public CollisionShape3D CrouchingCollisionShape { get; set; }
     [Export] public Hitbox StandingHitbox { get; set; }
