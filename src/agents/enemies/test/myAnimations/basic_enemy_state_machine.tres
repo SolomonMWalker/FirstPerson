@@ -18,11 +18,11 @@ advance_mode = 2
 advance_condition = &"notInCombat"
 
 [resource]
-states/End/position = Vector2(421.70377, 428.63373)
+states/End/position = Vector2(419.9319, 427.83374)
 states/InCombatStateMachine/node = ExtResource("1_s5qnx")
 states/InCombatStateMachine/position = Vector2(422.00003, 340.61728)
 states/NotInCombatStateMachine/node = ExtResource("2_oyqev")
 states/NotInCombatStateMachine/position = Vector2(420.88892, 245.61682)
 states/Start/position = Vector2(422.88892, 133.48148)
 transitions = ["Start", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_t20en"), "NotInCombatStateMachine", "InCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_172i6"), "InCombatStateMachine", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_l1nqy")]
-graph_offset = Vector2(106.17786, 70.79614)
+graph_offset = Vector2(106.17786, 206.79616)
