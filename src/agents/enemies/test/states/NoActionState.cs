@@ -8,14 +8,21 @@ public partial class NoActionState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        if (Grunt.behaviorState == Grunt.BehaviorState.Following)
-        {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyAnimation);
-        }
-        else //idle
-        {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownAnimation);
-        }
+        // if (Grunt.behaviorState == Grunt.BehaviorState.Following)
+        // {
+        //     Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyAnimation);
+        // }
+        // else //idle
+        // {
+        //     Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownAnimation);
+        // }
+        Grunt.CustomAnimationTree.TrySetParam("stopped", true);
+    }
+
+    public override void StateExited()
+    {
+        base.StateExited();
+        Grunt.CustomAnimationTree.TrySetParam("stopped", false);
     }
 
     public override void StatePhysicsProcessing(double delta)

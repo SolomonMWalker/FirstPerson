@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FirstPerson.Helpers;
 using FirstPerson.scenes.enemies.test;
+using FirstPerson.scenes.enemies.test.states;
 
 public partial class Grunt : CharacterBody3D
 {
@@ -25,8 +26,10 @@ public partial class Grunt : CharacterBody3D
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
+    [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
+    [Export] public EnemyStateMachine EnemyStateMachine { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
@@ -46,8 +49,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public StringName AimAnimation { get; set; } = "Edited/editedAimGun";
     [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
-    public BehaviorState behaviorState = BehaviorState.Idle;
-    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling;
+    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage;
@@ -56,12 +58,6 @@ public partial class Grunt : CharacterBody3D
     private bool _ready;
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
-
-    public enum BehaviorState
-    {
-        Idle,
-        Following
-    }
 
     public override void _Ready()
     {
@@ -143,18 +139,12 @@ public partial class Grunt : CharacterBody3D
         if (ShootRaycast.IsColliding())
         {
             var collided = (Node) ShootRaycast.GetCollider();
-            GD.Print($"hit {collided.Name}");
             if (collided is Hitbox hitbox)
             {
-                GD.Print("hit a hitbox!");
                 var hitInfo = new HitInformation(healthDamage: Damage, staggerDamage: null,
                     sourceGlobalPosition: GlobalPosition,
                     collisionGlobalPosition: ShootRaycast.GetCollisionPoint());
                 hitbox.Hit(hitInfo);
-            }
-            else
-            {
-                GD.Print("dit NOT hit a hitbox!");
             }
         }
     }
@@ -171,6 +161,7 @@ public partial class Grunt : CharacterBody3D
 
     public virtual void RotateToGlobalPoint(Vector3 globalPoint)
     {
+        if (freezeRotation) return;
         var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
         Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
@@ -219,6 +210,7 @@ public partial class Grunt : CharacterBody3D
 
     public void StartRagdoll()
     {
+        AnimationPlayer.Stop();
         SetBoneCollisionShapesDisabled(false);
         FloorRaycast.Enabled = false;
         CollisionShape3D.Disabled = true;
@@ -256,4 +248,7 @@ public partial class Grunt : CharacterBody3D
     {
         return FloorRaycast.IsColliding();
     }
+
+    public virtual void StopFiring() => firing = false;
+    public virtual void StopAiming() => aimingOver = true;
 }

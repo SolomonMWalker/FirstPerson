@@ -5,25 +5,13 @@ using Godot;
 
 public partial class IdleState : EnemyAtomicState
 {
-    public override void StateEntered()
-    {
-        base.StateEntered();
-        Grunt.behaviorState = Grunt.BehaviorState.Idle;
-    }
-
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
         if (Grunt is null || Grunt.firing || Grunt.dead) return;
-        if (Grunt.CombatTriggerArea.HasOverlappingAreas())
+        if (Grunt.EnemyStateMachine.CurrentCombatState == "InCombatState")
         {
-            var overlapArea = Grunt.CombatTriggerArea.GetOverlappingAreas().First();
-            if (overlapArea is Hitbox hitbox)
-            {
-                Grunt.NavAgentMovementTargetNode = hitbox.Parent;
-                OnStateChangeRequired(new ChangeStateEventArgs("FollowState"));
-                return;
-            }
+            OnStateChangeRequired(new ChangeStateEventArgs("FollowState"));
         }
     }
 

@@ -8,18 +8,25 @@ public partial class IsMovingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        if (Grunt.behaviorState == Grunt.BehaviorState.Following)
-        {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReadyAnimation);
-            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunReadyAnimation);
-        }
-        else //idle
-        {
-            Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownToWalkGunDownAnimation);   
-            Grunt?.AnimationPlayer.Queue(Grunt.WalkGunDownAnimation);
-        }
+        // if (Grunt.behaviorState == Grunt.BehaviorState.Following)
+        // {
+        //     Grunt?.AnimationPlayer.Play(Grunt.IdleGunReadyToWalkGunReadyAnimation);
+        //     Grunt?.AnimationPlayer.Queue(Grunt.WalkGunReadyAnimation);
+        // }
+        // else //idle
+        // {
+        //     Grunt?.AnimationPlayer.Play(Grunt.IdleGunDownToWalkGunDownAnimation);   
+        //     Grunt?.AnimationPlayer.Queue(Grunt.WalkGunDownAnimation);
+        // }
+        Grunt.CustomAnimationTree.TrySetParam("moving", true);
     }
-    
+
+    public override void StateExited()
+    {
+        base.StateExited();
+        Grunt.CustomAnimationTree.TrySetParam("moving", false);
+    }
+
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);

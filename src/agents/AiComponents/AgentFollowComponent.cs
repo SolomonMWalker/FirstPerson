@@ -12,8 +12,6 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             return;
         }
         
-        NavigationAgent3D.TargetPosition = Grunt.NavAgentMovementTargetNode.GlobalPosition;
-        
         if (!Grunt.IsOnFloor())
         {
             Grunt.HandleFalling(delta);
@@ -22,11 +20,21 @@ public partial class AgentFollowComponent : BaseAiNavComponent
 
         if (Grunt.NavAgentMovementTargetNode == null) return;
         
-        if (NavigationAgent3D.IsNavigationFinished() || !Grunt.CanMove())
+        NavigationAgent3D.TargetPosition =  Grunt.CanMove()
+            ? Grunt.NavAgentMovementTargetNode.GlobalPosition
+            : Grunt.GlobalPosition;
+        
+        if (NavigationAgent3D.IsNavigationFinished())
         {
-            if (Grunt.CanRotate())
+            Grunt.RotateToTarget();
+            
+            if (NavigationAgent3D.AvoidanceEnabled)
             {
-                Grunt.RotateToTarget();
+                NavigationAgent3D.Velocity = Vector3.Zero;
+            }
+            else
+            {
+                Grunt.OnVelocityComputed(Vector3.Zero);
             }
             return;
         }
@@ -36,9 +44,13 @@ public partial class AgentFollowComponent : BaseAiNavComponent
         var currentVelocity = direction * Grunt.Speed;
         currentVelocity = currentVelocity with { Y = 0 };
         
-        if (direction.Length() > 0.01f && Grunt.CanRotate())
+        if (direction.Length() > 0.01f)
         {
             Grunt.RotateToGlobalPoint(direction);
+        }
+        else
+        {
+            Grunt.RotateToTarget();
         }
 
         if (NavigationAgent3D.AvoidanceEnabled)

@@ -8,11 +8,18 @@ public partial class AimingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        GD.Print("entering aiming state");
         if (Grunt is null) return;
         Grunt.readyToFire = false;
         Grunt.firing = true;
-        Grunt.AnimationPlayer.Play(Grunt.AimAnimation);
+        Grunt.aimingOver = false;
+        Grunt.CustomAnimationTree.TrySetParam("doneFiring", false);
+        Grunt.CustomAnimationTree.TrySetParam("aiming", true);
+    }
+
+    public override void StateExited()
+    {
+        base.StateExited();
+        Grunt.CustomAnimationTree.TrySetParam("aiming", false);
     }
 
     public override void StateProcessing(double delta)
@@ -32,13 +39,10 @@ public partial class AimingState : EnemyAtomicState
             return;
         }
         
-        if(Grunt.CanRotate()) Grunt.RotateToTarget();
-        if (!Grunt.AnimationPlayer.IsPlaying())
+        if (Grunt.aimingOver)
         {
-            GD.Print("change to firing state");
             OnStateChangeRequired(new ChangeStateEventArgs("FiringState"));
             return;
         }
-        
     }
 }

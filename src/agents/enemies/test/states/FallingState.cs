@@ -13,8 +13,10 @@ public partial class FallingState : EnemyAtomicState
         base.StateEntered();
         _doneFalling = false;
         Grunt.falling = true;
-        Grunt.AnimationPlayer.Play(Grunt.IdleToFalling);
-        Grunt.AnimationPlayer.Queue(Grunt.Falling);
+        // Grunt.AnimationPlayer.Play(Grunt.IdleToFalling);
+        // Grunt.AnimationPlayer.Queue(Grunt.Falling);
+        Grunt.CustomAnimationTree.TrySetParam("notFalling", false);        
+        Grunt.CustomAnimationTree.TrySetParam("falling", true);
     }
 
     public override void StateExited()
@@ -22,6 +24,8 @@ public partial class FallingState : EnemyAtomicState
         base.StateExited();
         Grunt.falling = false;
         Grunt.ApplyFloorSnap();
+        Grunt.CustomAnimationTree.TrySetParam("notFalling", true);        
+        Grunt.CustomAnimationTree.TrySetParam("falling", false);
     }
 
     public override void StatePhysicsProcessing(double delta)

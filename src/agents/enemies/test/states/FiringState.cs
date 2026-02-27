@@ -5,25 +5,18 @@ using Godot;
 
 public partial class FiringState : EnemyAtomicState
 {
-    public override void StateEntered()
-    {
-        base.StateEntered();
-        GD.Print("entering firing state");
-        if (Grunt is null) return;
-        Grunt.AnimationPlayer.Play(Grunt.FireAnimation);
-    }
-
     public override void StateExited()
     {
         base.StateExited();
+        Grunt.CustomAnimationTree.TrySetParam("doneFiring", true);
         Grunt.FireRateTimer.Start();
-        Grunt.firing = false;
         Grunt.freezeRotation = false;
     }
 
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
+        if (Grunt is null) return;
         
         if (Grunt.ragdoll || Grunt.dead)
         {
@@ -32,14 +25,13 @@ public partial class FiringState : EnemyAtomicState
             return;
         }
         
-        if(!Grunt.IsFloorRaycastColliding())
+        if(!Grunt.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
         }
         
-        if (Grunt is null) return;
-        if (!Grunt.AnimationPlayer.IsPlaying())
+        if (!Grunt.firing)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;

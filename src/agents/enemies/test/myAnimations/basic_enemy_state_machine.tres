@@ -1,0 +1,28 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://22d6pu6ymuv2"]
+
+[ext_resource type="AnimationNodeStateMachine" uid="uid://buhpq7rv6hi5n" path="res://src/agents/enemies/test/myAnimations/basic_enemy_combat_state_machine.tres" id="1_s5qnx"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cwv3glh7km1h2" path="res://src/agents/enemies/test/myAnimations/basic_enemy_noncombat_state_machine.tres" id="2_oyqev"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t20en"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_172i6"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"inCombat"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l1nqy"]
+xfade_time = 0.2
+break_loop_at_end = true
+advance_mode = 2
+advance_condition = &"notInCombat"
+
+[resource]
+states/End/position = Vector2(421.70377, 428.63373)
+states/InCombatStateMachine/node = ExtResource("1_s5qnx")
+states/InCombatStateMachine/position = Vector2(422.00003, 340.61728)
+states/NotInCombatStateMachine/node = ExtResource("2_oyqev")
+states/NotInCombatStateMachine/position = Vector2(420.88892, 245.61682)
+states/Start/position = Vector2(422.88892, 133.48148)
+transitions = ["Start", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_t20en"), "NotInCombatStateMachine", "InCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_172i6"), "InCombatStateMachine", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_l1nqy")]
+graph_offset = Vector2(106.17786, 70.79614)
