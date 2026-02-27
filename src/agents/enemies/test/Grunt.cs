@@ -21,7 +21,6 @@ public partial class Grunt : CharacterBody3D
     [Export] public HealthComponent HealthComponent { get; set; }
     
     [ExportCategory("References")]
-    [Export] public Label Label { get; set; }
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
@@ -116,7 +115,6 @@ public partial class Grunt : CharacterBody3D
     {
         base._PhysicsProcess(delta);
         ApplyFloorSnap();
-        Label.Text = $"velocity ({Velocity.X},{Velocity.Y},{Velocity.Z}) velocity l^2 {Velocity.LengthSquared()}";
     }
 
     private async void ActorSetup()

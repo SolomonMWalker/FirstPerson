@@ -11,17 +11,15 @@ public partial class FallingState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        GD.Print("started falling");
         _doneFalling = false;
         Grunt.falling = true;
-        //Grunt.AnimationPlayer.Play(Grunt.IdleToFalling);
-        //Grunt.AnimationPlayer.Queue(Grunt.Falling);
+        Grunt.AnimationPlayer.Play(Grunt.IdleToFalling);
+        Grunt.AnimationPlayer.Queue(Grunt.Falling);
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        GD.Print("stopped falling");
         Grunt.falling = false;
         Grunt.ApplyFloorSnap();
     }
@@ -32,12 +30,11 @@ public partial class FallingState : EnemyAtomicState
         if (!_doneFalling && Grunt.IsFloorRaycastColliding())
         {
             _doneFalling = true;
-            //Grunt.AnimationPlayer.Play(Grunt.FallingToIdle);
-            //return;
+            Grunt.AnimationPlayer.Play(Grunt.FallingToIdle);
+            return;
         }
 
-        //if (_doneFalling && Grunt.AnimationPlayer.IsPlaying())
-        if(_doneFalling)
+        if (_doneFalling && Grunt.AnimationPlayer.IsPlaying())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;
