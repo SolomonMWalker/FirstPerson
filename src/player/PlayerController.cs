@@ -44,6 +44,7 @@ public partial class PlayerController : HittableCharacterBody3D
     public bool InAir { get; set; } = true; //always start "in air"
     public bool Clambering { get; set; }
     public bool Sprinting { get; set; }
+    public bool Aiming { get; set; }
     public float CurrentFallVelocity { get; set; }
     public Vector3 PreviousFrameVelocity { get; set; }
     

@@ -1,8 +1,6 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using FirstPerson.Helpers;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
 
@@ -58,6 +56,34 @@ public partial class Grunt : CharacterBody3D
     private bool _ready;
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
+    
+    public virtual bool CanMove()
+    {
+        return !(dead || ragdoll || firing || falling);
+    }
+
+    public virtual bool CanRotate()
+    {
+        return !freezeRotation;
+    }
+
+    public virtual void RaycastSnapToFloor()
+    {
+        if(IsFloorRaycastColliding()) ApplyFloorSnap();
+    }
+
+    public virtual bool IsFloorRaycastColliding()
+    {
+        return FloorRaycast.IsColliding();
+    }
+
+    public virtual void StopFiring() => firing = false;
+    public virtual void StopAiming() => aimingOver = true;
+    public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
+    public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionPoint)
+    {
+        dirLastDamage = (collisionPoint - sourceGlobalPosition).Normalized();
+    }
 
     public override void _Ready()
     {
@@ -82,11 +108,10 @@ public partial class Grunt : CharacterBody3D
             GD.Print("grunt died!");
             GetTree().CreateTimer(5).Timeout += () =>
             {
-                PhysicalBoneSimulator3D.Active = false;
-                SetBoneCollisionShapesDisabled(true);
                 QueueFree();
             };
             dead = true;
+            ragdoll = true;
         };
         
         _allPBones.AddRange(PhysicalBoneSimulator3D.GetChildren().OfType<PhysicalBone3D>());
@@ -149,8 +174,6 @@ public partial class Grunt : CharacterBody3D
         }
     }
 
-    public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
-
     public virtual void RotateToTarget()
     {
         if (NavAgentMovementTargetNode is null || freezeRotation) return;
@@ -200,11 +223,6 @@ public partial class Grunt : CharacterBody3D
         }
     }
 
-    public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionPoint)
-    {
-        dirLastDamage = (collisionPoint - sourceGlobalPosition).Normalized();
-    }
-
     private void SetBoneCollisionShapesDisabled(bool disabled) => 
         _boneCollisionShapes.ForEach(cs => cs.Disabled = disabled);
 
@@ -213,9 +231,6 @@ public partial class Grunt : CharacterBody3D
         AnimationPlayer.Stop();
         SetBoneCollisionShapesDisabled(false);
         FloorRaycast.Enabled = false;
-        CollisionShape3D.Disabled = true;
-        // CharacterBody3D.GlobalPosition =
-        //     CharacterBody3D.GlobalPosition with { Y = CharacterBody3D.GlobalPosition.Y + 0.2f };
         PhysicalBoneSimulator3D.Active = true;
         PhysicalBoneSimulator3D.PhysicalBonesStartSimulation();
         if (affectedBone is not null)
@@ -229,26 +244,5 @@ public partial class Grunt : CharacterBody3D
         }
     }
 
-    public virtual bool CanMove()
-    {
-        return !(dead || ragdoll || firing || falling);
-    }
 
-    public virtual bool CanRotate()
-    {
-        return !freezeRotation;
-    }
-
-    public virtual void RaycastSnapToFloor()
-    {
-        if(IsFloorRaycastColliding()) ApplyFloorSnap();
-    }
-
-    public virtual bool IsFloorRaycastColliding()
-    {
-        return FloorRaycast.IsColliding();
-    }
-
-    public virtual void StopFiring() => firing = false;
-    public virtual void StopAiming() => aimingOver = true;
 }

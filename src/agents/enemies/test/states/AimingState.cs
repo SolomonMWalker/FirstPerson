@@ -1,7 +1,5 @@
-using System.Linq;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
-using Godot;
 
 public partial class AimingState : EnemyAtomicState
 {

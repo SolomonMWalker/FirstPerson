@@ -1,7 +1,4 @@
-﻿using Godot;
-using System;
-using System.Linq;
-using FirstPerson.CustomTypes.StateMachine;
+﻿using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
 
 public partial class FallingState : EnemyAtomicState
@@ -13,8 +10,6 @@ public partial class FallingState : EnemyAtomicState
         base.StateEntered();
         _doneFalling = false;
         Grunt.falling = true;
-        // Grunt.AnimationPlayer.Play(Grunt.IdleToFalling);
-        // Grunt.AnimationPlayer.Queue(Grunt.Falling);
         Grunt.CustomAnimationTree.TrySetParam("notFalling", false);        
         Grunt.CustomAnimationTree.TrySetParam("falling", true);
     }
@@ -31,14 +26,7 @@ public partial class FallingState : EnemyAtomicState
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
-        if (!_doneFalling && Grunt.IsFloorRaycastColliding())
-        {
-            _doneFalling = true;
-            Grunt.AnimationPlayer.Play(Grunt.FallingToIdle);
-            return;
-        }
-
-        if (_doneFalling && Grunt.AnimationPlayer.IsPlaying())
+        if (Grunt.IsFloorRaycastColliding())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;

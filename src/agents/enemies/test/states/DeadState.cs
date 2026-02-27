@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using FirstPerson.scenes.enemies.test.states;
 
 public partial class DeadState : EnemyAtomicState

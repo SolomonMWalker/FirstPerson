@@ -50,8 +50,60 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 
-[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=2032980226 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=1932533227 instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.8257, 29.780684, 35.176903)
+Speed = 3.0
+
+[node name="GruntBasicEnemy2" parent="Level/Enemies" unique_id=1123677161 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.577576, 29.780684, 37.2231)
+Speed = 3.0
+
+[node name="GruntBasicEnemy3" parent="Level/Enemies" unique_id=1091491137 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92.413025, 29.780684, 31.006054)
+Speed = 3.0
+
+[node name="GruntBasicEnemy4" parent="Level/Enemies" unique_id=1772257607 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.08154, 29.780684, 24.305145)
+Speed = 3.0
+
+[node name="GruntBasicEnemy5" parent="Level/Enemies" unique_id=618829144 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 93.38756, 29.780687, 44.102623)
+Speed = 3.0
+
+[node name="GruntBasicEnemy6" parent="Level/Enemies" unique_id=1310362863 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.73857, 29.780684, 39.76157)
+Speed = 3.0
+
+[node name="GruntBasicEnemy7" parent="Level/Enemies" unique_id=1599260410 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 109.64165, 29.78068, 29.497967)
+Speed = 3.0
+
+[node name="GruntBasicEnemy8" parent="Level/Enemies" unique_id=427063469 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 109.64165, 23.304514, 11.001274)
+Speed = 3.0
+
+[node name="GruntBasicEnemy9" parent="Level/Enemies" unique_id=513226901 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 109.64165, 21.93302, 23.333626)
+Speed = 3.0
+
+[node name="GruntBasicEnemy10" parent="Level/Enemies" unique_id=1894369959 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104.96294, 21.93302, 46.39583)
+Speed = 3.0
+
+[node name="GruntBasicEnemy11" parent="Level/Enemies" unique_id=908457749 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.00651, 21.933023, 43.797302)
+Speed = 3.0
+
+[node name="GruntBasicEnemy12" parent="Level/Enemies" unique_id=2109562215 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.00651, 30.393103, 41.834568)
+Speed = 3.0
+
+[node name="GruntBasicEnemy13" parent="Level/Enemies" unique_id=874101308 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 117.75653, 30.393103, 45.74211)
+Speed = 3.0
+
+[node name="GruntBasicEnemy14" parent="Level/Enemies" unique_id=2133515990 instance=ExtResource("7_bynor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 125.69379, 30.393103, 28.421684)
 Speed = 3.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]

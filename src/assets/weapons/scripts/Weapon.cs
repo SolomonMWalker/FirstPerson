@@ -10,16 +10,16 @@ public partial class Weapon : Resource
     [Export] public float FireRatePerSecond { get; set; } = 2.0f;
     [Export] public bool IsAutomatic { get; set; } = false;
     [Export] public float Range { get; set; } = 25f;
-    [Export] public int AccuracyErrorAngle
+    [Export] public float AccuracyErrorAngle
     {
         get => _accuracyErrorAngle;
         set => _accuracyErrorAngle = Mathf.Clamp(value, 0, 100);
-    } private int _accuracyErrorAngle = 100;
-    [Export] public int AccuracyErrorAngleAtMaxMovementSpeed
+    } private float _accuracyErrorAngle = 0;
+    [Export] public float AccuracyErrorAngleAtMaxMovementSpeed
     {
         get => _accuracyErrorAngleAtMaxMovementSpeed;
         set => _accuracyErrorAngleAtMaxMovementSpeed = Mathf.Clamp(value, 0, 100);
-    } private int _accuracyErrorAngleAtMaxMovementSpeed = 100;
+    } private float _accuracyErrorAngleAtMaxMovementSpeed = 0;
     [Export] public float ProjectileSpeed { get; set; } = 50f;
     [Export] public bool IsHitscan { get; set; } = true;
     [Export] public PackedScene WeaponModel { get; set; }
