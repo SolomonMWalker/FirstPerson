@@ -50,7 +50,7 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 
-[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=1932533227 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=942920759 instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.8257, 29.780684, 35.176903)
 Speed = 3.0
 

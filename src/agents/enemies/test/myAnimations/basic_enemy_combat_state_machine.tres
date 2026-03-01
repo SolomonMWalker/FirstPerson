@@ -1,16 +1,19 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://buhpq7rv6hi5n"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c2shi"]
-animation = &"Edited/editedAimGun"
+animation = &"EditedGruntLibrary/editedAimGun"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5xh8m"]
-animation = &"Edited/editedFireGun"
+animation = &"EditedGruntLibrary/editedFireGun"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pchik"]
 animation = &"falling"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hehml"]
 animation = &"idleWithGunReady"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fkb5v"]
+animation = &"EditedGruntLibrary/editedStagger"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7nw7a"]
 animation = &"walkGunReady"
@@ -76,6 +79,36 @@ advance_condition = &"aiming"
 advance_mode = 2
 advance_condition = &"moving"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mjf2y"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"staggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_owpqq"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"staggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_medd3"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"staggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g8uci"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"staggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mgirg"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"notStaggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bsjv1"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"falling"
+
 [resource]
 states/Edited_editedAimGun/node = SubResource("AnimationNodeAnimation_c2shi")
 states/Edited_editedAimGun/position = Vector2(297.87656, 215.99998)
@@ -86,8 +119,10 @@ states/Start/position = Vector2(298.81482, -33.906418)
 states/falling/node = SubResource("AnimationNodeAnimation_pchik")
 states/falling/position = Vector2(571.4074, 304.77368)
 states/idleWithGunReady/node = SubResource("AnimationNodeAnimation_hehml")
-states/idleWithGunReady/position = Vector2(298.8889, 72.75915)
+states/idleWithGunReady/position = Vector2(297.8985, 71.42581)
+states/stagger/node = SubResource("AnimationNodeAnimation_fkb5v")
+states/stagger/position = Vector2(82.47323, 59.204082)
 states/walkGunReady/node = SubResource("AnimationNodeAnimation_7nw7a")
 states/walkGunReady/position = Vector2(572.6667, 77.86396)
-transitions = ["Start", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_t20en"), "idleWithGunReady", "Edited_editedAimGun", SubResource("AnimationNodeStateMachineTransition_172i6"), "Edited_editedAimGun", "Edited_editedFireGun", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Edited_editedFireGun", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_51ae0"), "idleWithGunReady", "walkGunReady", SubResource("AnimationNodeStateMachineTransition_nswck"), "idleWithGunReady", "falling", SubResource("AnimationNodeStateMachineTransition_0dmmb"), "Edited_editedAimGun", "falling", SubResource("AnimationNodeStateMachineTransition_wnh2b"), "Edited_editedFireGun", "falling", SubResource("AnimationNodeStateMachineTransition_f80lm"), "walkGunReady", "falling", SubResource("AnimationNodeStateMachineTransition_in0d3"), "walkGunReady", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_c2shi"), "falling", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_fkb5v"), "walkGunReady", "Edited_editedAimGun", SubResource("AnimationNodeStateMachineTransition_fbwej"), "Start", "walkGunReady", SubResource("AnimationNodeStateMachineTransition_1kqji")]
-graph_offset = Vector2(-29, -19.661978)
+transitions = ["Start", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_t20en"), "idleWithGunReady", "Edited_editedAimGun", SubResource("AnimationNodeStateMachineTransition_172i6"), "Edited_editedAimGun", "Edited_editedFireGun", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Edited_editedFireGun", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_51ae0"), "idleWithGunReady", "walkGunReady", SubResource("AnimationNodeStateMachineTransition_nswck"), "idleWithGunReady", "falling", SubResource("AnimationNodeStateMachineTransition_0dmmb"), "Edited_editedAimGun", "falling", SubResource("AnimationNodeStateMachineTransition_wnh2b"), "Edited_editedFireGun", "falling", SubResource("AnimationNodeStateMachineTransition_f80lm"), "walkGunReady", "falling", SubResource("AnimationNodeStateMachineTransition_in0d3"), "walkGunReady", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_c2shi"), "falling", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_fkb5v"), "walkGunReady", "Edited_editedAimGun", SubResource("AnimationNodeStateMachineTransition_fbwej"), "Start", "walkGunReady", SubResource("AnimationNodeStateMachineTransition_1kqji"), "Edited_editedAimGun", "stagger", SubResource("AnimationNodeStateMachineTransition_mjf2y"), "Edited_editedFireGun", "stagger", SubResource("AnimationNodeStateMachineTransition_owpqq"), "idleWithGunReady", "stagger", SubResource("AnimationNodeStateMachineTransition_medd3"), "walkGunReady", "stagger", SubResource("AnimationNodeStateMachineTransition_g8uci"), "stagger", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_mgirg"), "stagger", "falling", SubResource("AnimationNodeStateMachineTransition_bsjv1")]
+graph_offset = Vector2(-29, -93.46258)

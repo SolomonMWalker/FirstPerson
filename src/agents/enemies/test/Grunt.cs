@@ -21,6 +21,7 @@ public partial class Grunt : CharacterBody3D
     
     [ExportCategory("References")]
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
+    [Export] public Label StateLabel { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
@@ -47,7 +48,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public StringName AimAnimation { get; set; } = "Edited/editedAimGun";
     [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
-    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver;
+    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver, staggered;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage;
@@ -60,12 +61,12 @@ public partial class Grunt : CharacterBody3D
     
     public virtual bool CanMove()
     {
-        return !(dead || ragdoll || firing || falling);
+        return !(dead || ragdoll || firing || falling || staggered);
     }
 
     public virtual bool CanRotate()
     {
-        return !freezeRotation;
+        return !(freezeRotation || staggered);
     }
 
     public virtual void RaycastSnapToFloor()
@@ -80,6 +81,7 @@ public partial class Grunt : CharacterBody3D
 
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
+    public virtual void StopStagger() => staggered = false;
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
     public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionPoint)
     {
@@ -126,7 +128,8 @@ public partial class Grunt : CharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        
+        StateLabel.Text =
+            $"behavior:{EnemyStateMachine.CurrentBehaviorState};action:{EnemyStateMachine.CurrentActionState};combat:{EnemyStateMachine.CurrentCombatState}";
         if (Input.IsKeyLabelPressed(Key.G))
         {
             HealthComponent.Kill();
