@@ -44,12 +44,12 @@ public partial class StateMachine: Node
             PathsToAtomicStates.Add(new PathToAtomicState(aState));
         }
 
-        foreach (var path in PathsToAtomicStates)
-        {
-            var s = "Path: ";
-            path.Path.ForEach(state => s += $"{state.Name}, ");
-            GD.Print(s);
-        }
+        // foreach (var path in PathsToAtomicStates)
+        // {
+        //     var s = "Path: ";
+        //     path.Path.ForEach(state => s += $"{state.Name}, ");
+        //     GD.Print(s);
+        // }
     }
 
     public void AddChangeStateDelegatesToEventHandler()

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bgio0w4k1o78d"]
 
-[ext_resource type="Script" uid="uid://du0q52wdwgan" path="res://src/agents/AiComponents/AgentIdleComponent.cs" id="1_ed14e"]
+[ext_resource type="Script" uid="uid://du0q52wdwgan" path="res://src/components/AiComponents/AgentIdleComponent.cs" id="1_ed14e"]
 
 [node name="AgentIdleComponent" type="Node" unique_id=901364353]
 script = ExtResource("1_ed14e")

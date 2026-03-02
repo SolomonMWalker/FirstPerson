@@ -51,8 +51,8 @@ public partial class Grunt : CharacterBody3D
     public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver, staggered;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
-    public Vector3 dirLastDamage;
-    public Vector2 dirLastDamageXz;
+    public Vector3 dirLastDamage; //vel of bones on ragdoll
+    public Vector2 dirLastDamageXz; //determines impact animation blend
     public float previousFrameVelocityLengthSquared;
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
@@ -86,10 +86,12 @@ public partial class Grunt : CharacterBody3D
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
     public void SetLastDamageDirection(Node3D sourceNode, Vector3 collisionGlobalPoint)
     {
-        dirLastDamage = (collisionGlobalPoint - sourceNode.GlobalPosition).Normalized();
-        var relativeDirLastDamage = (ToLocal(sourceNode.GlobalPosition) - ToLocal(collisionGlobalPoint)).Normalized();
+        //rotated because player forward is -z, it works
+        dirLastDamage = (sourceNode.GlobalPosition - collisionGlobalPoint).Rotated(Vector3.Up, Mathf.DegToRad(180))
+            .Normalized();
+        var relativeDirLastDamage = ToLocal(sourceNode.GlobalPosition) - ToLocal(collisionGlobalPoint);
         dirLastDamageXz = new Vector2(relativeDirLastDamage.X, relativeDirLastDamage.Z).Normalized();
-        CustomAnimationTree.TrySetParam("impact", dirLastDamageXz); 
+        CustomAnimationTree.TrySetParam("impact", dirLastDamageXz);
         CustomAnimationTree.TrySetParam("impactOneShot", 1);
     }
 
@@ -186,17 +188,17 @@ public partial class Grunt : CharacterBody3D
 
     public virtual void RotateToTarget()
     {
-        // if (NavAgentMovementTargetNode is null || freezeRotation) return;
-        // var direction = (NavAgentMovementTargetNode.GlobalPosition - GlobalPosition).Normalized();
-        // var targetRotation = Mathf.Atan2(direction.X, direction.Z);
-        // Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+        if (NavAgentMovementTargetNode is null || freezeRotation) return;
+        var direction = (NavAgentMovementTargetNode.GlobalPosition - GlobalPosition).Normalized();
+        var targetRotation = Mathf.Atan2(direction.X, direction.Z);
+        Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
 
     public virtual void RotateToGlobalPoint(Vector3 globalPoint)
     {
-        // if (freezeRotation) return;
-        // var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
-        // Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+        if (freezeRotation) return;
+        var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
+        Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
     
     public void OnVelocityComputed(Vector3 safeVelocity)
