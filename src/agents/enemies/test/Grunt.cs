@@ -172,7 +172,7 @@ public partial class Grunt : CharacterBody3D
         ShootRaycast.ForceRaycastUpdate();
         if (ShootRaycast.IsColliding())
         {
-            var collided = (Node) ShootRaycast.GetCollider();
+            var collided = ShootRaycast.GetCollider();
             if (collided is Hitbox hitbox)
             {
                 var hitInfo = new HitInformation(healthDamage: Damage, staggerDamage: null,
