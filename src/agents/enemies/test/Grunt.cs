@@ -177,7 +177,9 @@ public partial class Grunt : CharacterBody3D
             {
                 var hitInfo = new HitInformation(healthDamage: Damage, staggerDamage: null,
                     source: this,
-                    collisionGlobalPosition: ShootRaycast.GetCollisionPoint());
+                    collisionGlobalPosition: ShootRaycast.GetCollisionPoint(),
+                    pitch: 1,
+                    roll: 1);
                 hitbox.Hit(hitInfo);
             }
         }

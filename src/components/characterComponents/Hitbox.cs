@@ -1,10 +1,14 @@
 using Godot;
 using System;
 using FirstPerson.scenes.enemies.test;
+using FirstPerson.Scenes.Player;
 
 [GlobalClass]
 public partial class Hitbox : Area3D
 {
+    [Signal]
+    public delegate void OnHitEventHandler(float pitch, float roll, Vector3 source);
+    
     [Export] public bool IsDebug { get; private set; }
     
     [ExportCategory("References")]
@@ -33,6 +37,11 @@ public partial class Hitbox : Area3D
 
     public void Hit(HitInformation hitInformation)
     {
+        if (hitInformation.pitch.HasValue && hitInformation.roll.HasValue && hitInformation.source is not null)
+        {
+            EmitSignalOnHit(hitInformation.pitch.Value, hitInformation.roll.Value, hitInformation.source.GlobalPosition);
+        }
+        
         if (hitInformation.healthDamage.HasValue)
         {
             HealthComponent?.DepleteHealth(hitInformation.healthDamage.Value);

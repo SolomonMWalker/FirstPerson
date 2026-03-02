@@ -62,6 +62,14 @@ public partial class PlayerController : HittableCharacterBody3D
         {
             GD.Print($"Ow! was hit for {amount} damage!");
         };
+        StandingHitbox.OnHit += (pitch, roll, source) =>
+        {
+            CameraEffects.AddDamageKick(pitch, roll, source);
+        };
+        CrouchingHitbox.OnHit += (pitch, roll, source) =>
+        {
+            CameraEffects.AddDamageKick(pitch, roll, source);
+        };
     }
 
     public override void _Process(double delta)
