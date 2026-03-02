@@ -40,9 +40,9 @@ public partial class Hitbox : Area3D
             if (Parent is Grunt grunt && AffectedPhysicalBone is not null)
             {
                 grunt.affectedBone = AffectedPhysicalBone;
-                if (hitInformation.sourceGlobalPosition.HasValue && hitInformation.collisionGlobalPosition.HasValue)
+                if (hitInformation.source is not null && hitInformation.collisionGlobalPosition.HasValue)
                 {
-                    grunt.SetLastDamageDirection(hitInformation.sourceGlobalPosition.Value, 
+                    grunt.SetLastDamageDirection(hitInformation.source, 
                         hitInformation.collisionGlobalPosition.Value);
                 }
             }

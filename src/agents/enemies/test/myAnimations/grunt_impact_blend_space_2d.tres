@@ -1,0 +1,24 @@
+[gd_resource type="AnimationNodeBlendSpace2D" format=3 uid="uid://70weimhb68gc"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hehml"]
+animation = &"EditedGruntLibrary/editedImpactPushForward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7nw7a"]
+animation = &"EditedGruntLibrary/editedImpactPushBackward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t20en"]
+animation = &"EditedGruntLibrary/editedImpactPushLeft"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_172i6"]
+animation = &"EditedGruntLibrary/editedImpactPushRight"
+
+[resource]
+blend_point_0/node = SubResource("AnimationNodeAnimation_hehml")
+blend_point_0/pos = Vector2(0, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_7nw7a")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_t20en")
+blend_point_2/pos = Vector2(1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_172i6")
+blend_point_3/pos = Vector2(-1, 0)
+snap = Vector2(1, 1)

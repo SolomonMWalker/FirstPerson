@@ -34,4 +34,24 @@ public partial class CustomAnimationTree : AnimationTree
         }
         return true;
     }
+    
+    public bool TrySetParam(string param, Vector2 value)
+    {
+        if (!ParamToPath.ContainsKey(param)) return false;
+        foreach (var path in ParamToPath[param])
+        {
+            Set(path, value);
+        }
+        return true;
+    }
+    
+    public bool TrySetParam(string param, string value)
+    {
+        if (!ParamToPath.ContainsKey(param)) return false;
+        foreach (var path in ParamToPath[param])
+        {
+            Set(path, value);
+        }
+        return true;
+    }
 }
