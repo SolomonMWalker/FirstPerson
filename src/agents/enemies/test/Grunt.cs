@@ -21,7 +21,6 @@ public partial class Grunt : CharacterBody3D
     
     [ExportCategory("References")]
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
-    [Export] public Label StateLabel { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
@@ -135,8 +134,6 @@ public partial class Grunt : CharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        StateLabel.Text =
-            $"behavior:{EnemyStateMachine.CurrentBehaviorState};action:{EnemyStateMachine.CurrentActionState};combat:{EnemyStateMachine.CurrentCombatState}";
         if (Input.IsKeyLabelPressed(Key.G))
         {
             HealthComponent.Kill();

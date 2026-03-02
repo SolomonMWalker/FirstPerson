@@ -1,0 +1,101 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://bh3qr83whf80m"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_exjnc"]
+animation = &"RevolverCloseCylinderEnd"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rllcd"]
+animation = &"RevolverCloseCylinderStart"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_aynim"]
+animation = &"RevolverReloadInsertNextBullet"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_oygj8"]
+animation = &"RevolverReloadInterrupt"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q7txf"]
+animation = &"RevolverReloadOpenCylinderInsertFirstBullet"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8hi6u"]
+animation = &"RevolverReloadToCloseCylinder"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r6tkv"]
+animation = &"RevolverReloadTurnCylinder"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0ht7w"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_chuei"]
+priority = 2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5gcqo"]
+priority = 2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_crfd5"]
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"closeCylinder"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t13sp"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"interrupt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_87oh8"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"interrupt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_47ybg"]
+xfade_time = 0.2
+advance_mode = 2
+advance_condition = &"interrupt"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xfh4g"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vad6d"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1qrpf"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_np3a7"]
+priority = 2
+switch_mode = 2
+advance_mode = 2
+advance_condition = &"closeCylinder"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_pmfon"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jcx2x"]
+switch_mode = 2
+advance_mode = 2
+
+[resource]
+states/End/position = Vector2(695.3334, 480.5926)
+states/RevolverCloseCylinderEnd/node = SubResource("AnimationNodeAnimation_exjnc")
+states/RevolverCloseCylinderEnd/position = Vector2(943.5185, 480.33334)
+states/RevolverCloseCylinderStart/node = SubResource("AnimationNodeAnimation_rllcd")
+states/RevolverCloseCylinderStart/position = Vector2(942.7777, 397.6667)
+states/RevolverReloadInsertNextBullet/node = SubResource("AnimationNodeAnimation_aynim")
+states/RevolverReloadInsertNextBullet/position = Vector2(443.25928, 306.6667)
+states/RevolverReloadInterrupt/node = SubResource("AnimationNodeAnimation_oygj8")
+states/RevolverReloadInterrupt/position = Vector2(1005.03284, 207.07408)
+states/RevolverReloadOpenCylinderInsertFirstBullet/node = SubResource("AnimationNodeAnimation_q7txf")
+states/RevolverReloadOpenCylinderInsertFirstBullet/position = Vector2(660.96295, 120.66667)
+states/RevolverReloadToCloseCylinder/node = SubResource("AnimationNodeAnimation_8hi6u")
+states/RevolverReloadToCloseCylinder/position = Vector2(942.6666, 313.35803)
+states/RevolverReloadTurnCylinder/node = SubResource("AnimationNodeAnimation_r6tkv")
+states/RevolverReloadTurnCylinder/position = Vector2(444, 208.41975)
+states/Start/position = Vector2(660.4197, 0.666687)
+transitions = ["RevolverReloadOpenCylinderInsertFirstBullet", "RevolverReloadTurnCylinder", SubResource("AnimationNodeStateMachineTransition_0ht7w"), "RevolverReloadTurnCylinder", "RevolverReloadInsertNextBullet", SubResource("AnimationNodeStateMachineTransition_chuei"), "RevolverReloadInsertNextBullet", "RevolverReloadTurnCylinder", SubResource("AnimationNodeStateMachineTransition_5gcqo"), "RevolverReloadInsertNextBullet", "RevolverReloadToCloseCylinder", SubResource("AnimationNodeStateMachineTransition_crfd5"), "RevolverReloadInsertNextBullet", "RevolverReloadInterrupt", SubResource("AnimationNodeStateMachineTransition_t13sp"), "RevolverReloadTurnCylinder", "RevolverReloadInterrupt", SubResource("AnimationNodeStateMachineTransition_87oh8"), "RevolverReloadOpenCylinderInsertFirstBullet", "RevolverReloadInterrupt", SubResource("AnimationNodeStateMachineTransition_47ybg"), "RevolverReloadToCloseCylinder", "RevolverCloseCylinderStart", SubResource("AnimationNodeStateMachineTransition_xfh4g"), "RevolverCloseCylinderStart", "RevolverCloseCylinderEnd", SubResource("AnimationNodeStateMachineTransition_vad6d"), "RevolverReloadInterrupt", "RevolverReloadToCloseCylinder", SubResource("AnimationNodeStateMachineTransition_1qrpf"), "RevolverReloadOpenCylinderInsertFirstBullet", "RevolverReloadToCloseCylinder", SubResource("AnimationNodeStateMachineTransition_np3a7"), "Start", "RevolverReloadOpenCylinderInsertFirstBullet", SubResource("AnimationNodeStateMachineTransition_pmfon"), "RevolverCloseCylinderEnd", "End", SubResource("AnimationNodeStateMachineTransition_jcx2x")]
+graph_offset = Vector2(145, 12.9596405)

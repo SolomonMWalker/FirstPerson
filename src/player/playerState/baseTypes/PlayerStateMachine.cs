@@ -8,7 +8,7 @@ namespace FirstPerson.Scenes.Player.PlayerState;
 public partial class PlayerStateMachine: StateMachine
 {
     [Export] public PlayerController PlayerController { get; set; }
-    [Export] public Label StateLabel { get; set; }
+    //[Export] public Label StateLabel { get; set; }
 
     public override void _PhysicsProcess(double delta)
     {

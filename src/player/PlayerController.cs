@@ -22,6 +22,7 @@ public partial class PlayerController : HittableCharacterBody3D
     [ExportCategory("Components")]
     [Export] public StepHandlerComponent StepHandlerComponent { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
+    [Export] public ShieldComponent ShieldComponent { get; set; }
     
     [ExportCategory("Controllers")]
     [Export] public ClamberController ClamberController { get; set; }
@@ -29,6 +30,8 @@ public partial class PlayerController : HittableCharacterBody3D
     [Export] public CameraController CameraController { get; set; }
     
     [ExportCategory("References")]
+    [Export] public Label HealthLabel { get; set; }
+    [Export] public Label ShieldLabel { get; set; }
     [Export] public CameraEffects CameraEffects { get; set; }
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
@@ -65,6 +68,8 @@ public partial class PlayerController : HittableCharacterBody3D
     {
         base._Process(delta);
         HandleInteractCheck(delta);
+        HealthLabel.Text = $"Current health: {HealthComponent.CurrentHealth}";
+        ShieldLabel.Text = $"Current shield : {ShieldComponent.CurrentAmount}";
     }
 
     public override void _PhysicsProcess(double delta)

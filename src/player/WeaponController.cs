@@ -15,7 +15,7 @@ public partial class WeaponController : Node
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     [Export] public Reticle Reticle { get; set; }
-    [Export] public Label StateLabel {get; set;}
+    //[Export] public Label StateLabel {get; set;}
 
     [ExportCategory("Weapon Settings")]
     [Export] public int MaxAngleAccuracyPenalty { get; set; } = 8;
@@ -48,12 +48,6 @@ public partial class WeaponController : Node
         ProjectileParent = GetTree().CurrentScene;
 
         SpawnWeaponModel();
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-        StateLabel.Text = CurrentWeaponModel.WeaponStateMachine?.GetStateMachineString();
     }
 
     public override void _PhysicsProcess(double delta)

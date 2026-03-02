@@ -10,6 +10,7 @@ public partial class HealthComponent : Node
     [Signal]
     public delegate void OnHealthDepletedEventHandler(int amount);
 
+    [Export] public ShieldComponent ShieldComponent { get; private set; }
     [Export] public int StartingHealth { get; private set; } = 100;
 
     public int CurrentHealth { get; private set; }
@@ -31,6 +32,7 @@ public partial class HealthComponent : Node
 
     public void DepleteHealth(int amount)
     {
+        if (ShieldComponent is not null && ShieldComponent.TryBlockWithShield(amount)) return;
         CurrentHealth -= amount;
         if (CurrentHealth <= 0)
         {
