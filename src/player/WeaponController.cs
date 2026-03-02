@@ -26,8 +26,6 @@ public partial class WeaponController : Node
     public Node ProjectileParent { get; set; }
     public WeaponRig CurrentWeaponModel { get; set; }
     public float CurrentAccuracyAnglePenalty { get; private set; }
-    public double FireRateTimer { get; private set; }
-    public bool CanFireNextRound { get; private set; } = true;
     public bool Aiming { get; set; } = true;
 
     private (bool hasStarted, string name) _bulletAddedAnimStartedAndName;
@@ -55,14 +53,6 @@ public partial class WeaponController : Node
     public override void _Process(double delta)
     {
         base._Process(delta);
-        if (FireRateTimer > 0)
-        {
-            FireRateTimer -= delta;
-            if (FireRateTimer <= 0)
-            {
-                CanFireNextRound = true;
-            }
-        }
         StateLabel.Text = CurrentWeaponModel.WeaponStateMachine?.GetStateMachineString();
     }
 
@@ -119,7 +109,7 @@ public partial class WeaponController : Node
 
     public bool CanFire()
     {
-        return GetCurrentWeaponData().Ammo > 0 && CanFireNextRound;
+        return GetCurrentWeaponData().Ammo > 0;
     }
 
     public bool CanReload()
@@ -152,9 +142,6 @@ public partial class WeaponController : Node
                 CurrentWeapon.WeaponKickRoll
             );
             GD.Print($"Fired! ammo at {GetCurrentWeaponAmmo()}");
-
-            CanFireNextRound = false;
-            FireRateTimer = 1.0 / CurrentWeapon.FireRatePerSecond;
             
             if (CurrentWeapon.IsHitscan)
             {

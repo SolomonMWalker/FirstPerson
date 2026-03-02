@@ -240,7 +240,6 @@ public partial class Grunt : CharacterBody3D
 
     public void StartRagdoll()
     {
-        AnimationPlayer.Stop();
         SetBoneCollisionShapesDisabled(false);
         FloorRaycast.Enabled = false;
         PhysicalBoneSimulator3D.Active = true;

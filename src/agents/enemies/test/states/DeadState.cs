@@ -8,5 +8,6 @@ public partial class DeadState : EnemyAtomicState
         base.StateEntered();
         Grunt.NavigationAgent3D.TargetPosition = Grunt.NavigationAgent3D.TargetPosition;
         Grunt.OnVelocityComputed(Vector3.Zero);
+        Grunt.CustomAnimationTree.TrySetParam("dead", true);
     }
 }
