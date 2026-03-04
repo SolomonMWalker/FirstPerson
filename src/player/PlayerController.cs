@@ -6,7 +6,7 @@ using Godot;
 
 namespace FirstPerson.Scenes.Player;
 
-public partial class PlayerController : HittableCharacterBody3D
+public partial class PlayerController : CharacterBody3D
 {
     [Export] public bool Debug { get; set; }
     
@@ -86,12 +86,6 @@ public partial class PlayerController : HittableCharacterBody3D
         PreviousFrameVelocity = Velocity;
         PreviousFrameVelocityLength = Velocity.Length();
         HandleMovement(delta);
-    }
-
-    public override void Hit(HitParameters hitParameters)
-    {
-        base.Hit(hitParameters);
-        AnimationPlayer.Play("Shot");
     }
 
     private void HandleMovement(double delta)

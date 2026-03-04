@@ -1292,4 +1292,4 @@ script = ExtResource("25_hekba")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=839788554]
 stream = ExtResource("36_exjnc")
-volume_db = -38.942
+volume_db = -62.13

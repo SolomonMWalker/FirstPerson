@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://n16weacxue2m"]
+
+[ext_resource type="Script" uid="uid://dnxhw1x52w1ba" path="res://src/components/characterComponents/StaggerComponent.cs" id="1_50khk"]
+
+[node name="StaggerComponent" type="Node" unique_id=1046773979 node_paths=PackedStringArray("RechargeTimer", "NextStaggerTimer")]
+script = ExtResource("1_50khk")
+RechargeTimer = NodePath("RechargeTimer")
+NextStaggerTimer = NodePath("NextStaggerTimer")
+metadata/_custom_type_script = "uid://dnxhw1x52w1ba"
+
+[node name="RechargeTimer" type="Timer" parent="." unique_id=1867853979]
+one_shot = true
+
+[node name="NextStaggerTimer" type="Timer" parent="." unique_id=649401884]
+one_shot = true

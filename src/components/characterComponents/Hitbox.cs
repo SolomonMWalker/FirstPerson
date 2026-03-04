@@ -38,9 +38,9 @@ public partial class Hitbox : Area3D
 
     public void Hit(HitInformation hitInformation)
     {
-        if (hitInformation.pitch.HasValue && hitInformation.roll.HasValue && hitInformation.source is not null)
+        if (hitInformation.pitch.HasValue && hitInformation.roll.HasValue && hitInformation.sourceGlobalPosition is not null)
         {
-            EmitSignalOnHit(hitInformation.pitch.Value, hitInformation.roll.Value, hitInformation.source.GlobalPosition);
+            EmitSignalOnHit(hitInformation.pitch.Value, hitInformation.roll.Value, hitInformation.sourceGlobalPosition.Value);
         }
         
         if (hitInformation.healthDamage.HasValue)
@@ -50,10 +50,10 @@ public partial class Hitbox : Area3D
             if (Parent is Grunt grunt && AffectedPhysicalBone is not null)
             {
                 grunt.affectedBone = AffectedPhysicalBone;
-                if (hitInformation.source is not null && hitInformation.collisionGlobalPosition.HasValue
-                    && HealthComponent?.CurrentHealth > 0)
+                if (hitInformation.sourceGlobalPosition is not null && hitInformation.collisionGlobalPosition.HasValue
+                                                                    && HealthComponent?.CurrentHealth > 0)
                 {
-                    grunt.SetLastDamageDirection(hitInformation.source, 
+                    grunt.SetLastDamageDirection(hitInformation.sourceGlobalPosition.Value, 
                         hitInformation.collisionGlobalPosition.Value);
                 }
             }

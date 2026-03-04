@@ -198,11 +198,20 @@ public partial class WeaponController : Node
                 this.SpawnImpactMarker(hit.point);
                 if (hit.gdObj is Hitbox hitbox)
                 {
-                    hitbox.Hit(new HitInformation(healthDamage: (int) CurrentWeapon.Damage, staggerDamage: null, 
-                        source: Player, collisionGlobalPosition: hit.point));
+                    hitbox.Hit(BuildHitInformation(hit.point));
                 }
             }
         }
+    }
+
+    private HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
+    {
+        return new HitInformation(
+            healthDamage: (int) CurrentWeapon.Damage,
+            staggerDamage: (int) CurrentWeapon.StaggerDamage,
+            sourceGlobalPosition: Player.GlobalPosition,
+            collisionGlobalPosition: collisionGlobalPosition
+        );
     }
 
     public void SpawnProjectile()

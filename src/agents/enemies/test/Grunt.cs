@@ -13,7 +13,8 @@ public partial class Grunt : CharacterBody3D
     [Export] public float FireRatePauseInSeconds { get; set; } = 2f;
     [Export] public float ShootRange { get; set; } = 50f;
     [Export] public int Damage { get; set; } = 10;
-    
+    [Export] public int StaggerDamage { get; set; } = 10;
+
     [ExportCategory("Components")]
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
     [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
@@ -83,12 +84,12 @@ public partial class Grunt : CharacterBody3D
     public virtual void StopAiming() => aimingOver = true;
     public virtual void StopStagger() => staggered = false;
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
-    public void SetLastDamageDirection(Node3D sourceNode, Vector3 collisionGlobalPoint)
+    public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
     {
         //rotated because player forward is -z, it works
-        dirLastDamage = (sourceNode.GlobalPosition - collisionGlobalPoint).Rotated(Vector3.Up, Mathf.DegToRad(180))
+        dirLastDamage = (sourceGlobalPosition - collisionGlobalPoint).Rotated(Vector3.Up, Mathf.DegToRad(180))
             .Normalized();
-        var relativeDirLastDamage = ToLocal(sourceNode.GlobalPosition) - ToLocal(collisionGlobalPoint);
+        var relativeDirLastDamage = ToLocal(sourceGlobalPosition) - ToLocal(collisionGlobalPoint);
         dirLastDamageXz = new Vector2(relativeDirLastDamage.X, relativeDirLastDamage.Z).Normalized();
         CustomAnimationTree.TrySetParam("impact", dirLastDamageXz);
         CustomAnimationTree.TrySetParam("impactOneShot", 1);
@@ -175,14 +176,21 @@ public partial class Grunt : CharacterBody3D
             var collided = ShootRaycast.GetCollider();
             if (collided is Hitbox hitbox)
             {
-                var hitInfo = new HitInformation(healthDamage: Damage, staggerDamage: null,
-                    source: this,
-                    collisionGlobalPosition: ShootRaycast.GetCollisionPoint(),
-                    pitch: 1,
-                    roll: 1);
-                hitbox.Hit(hitInfo);
+                hitbox.Hit(BuildHitInformation(ShootRaycast.GetCollisionPoint()));
             }
         }
+    }
+
+    private HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
+    {
+        return new HitInformation(
+            healthDamage: (int) Damage,
+            staggerDamage: (int) StaggerDamage,
+            sourceGlobalPosition: GlobalPosition,
+            collisionGlobalPosition: collisionGlobalPosition,
+            pitch: 1,
+            roll: 1
+        );
     }
 
     public virtual void RotateToTarget()

@@ -6,6 +6,7 @@ public partial class Weapon : Resource
 {
     [Export] public string WeaponName { get; set; } = "Pistol";
     [Export] public float Damage { get; set; } = 25.0f;
+    [Export] public float StaggerDamage { get; set; } = 25.0f;
     [Export] public int MaxAmmo { get; set; } = 12;
     [Export] public bool IsAutomatic { get; set; } = false;
     [Export] public float Range { get; set; } = 25f;
