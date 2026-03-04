@@ -13,6 +13,7 @@ public partial class Hitbox : Area3D
     
     [ExportCategory("References")]
     [Export] public HealthComponent HealthComponent { get; private set; }
+    [Export] public StaggerComponent StaggerComponent { get; private set; }
     [Export] public MeshInstance3D DebugMesh { get; private set; }
     [Export] public Node3D Parent { get; private set; }
     [Export] public PhysicalBone3D AffectedPhysicalBone { get; private set; }
@@ -56,6 +57,11 @@ public partial class Hitbox : Area3D
                         hitInformation.collisionGlobalPosition.Value);
                 }
             }
+        }
+
+        if (hitInformation.staggerDamage.HasValue)
+        {
+            StaggerComponent?.DepleteStagger(hitInformation.staggerDamage.Value);
         }
     }
 

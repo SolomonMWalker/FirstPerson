@@ -23,22 +23,19 @@
 [ext_resource type="Script" uid="uid://30kyxeyoy43d" path="res://src/components/characterComponents/HealthComponent.cs" id="24_5n4gj"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/ui/Reticle.cs" id="25_dxex4"]
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/player/MouseCaptureComponent.cs" id="26_4556c"]
-[ext_resource type="Script" uid="uid://b3oc4laptvhuj" path="res://src/components/characterComponents/ShieldComponent.cs" id="26_arxxo"]
+[ext_resource type="PackedScene" uid="uid://qprpio4lvlfc" path="res://src/components/characterComponents/shield_component.tscn" id="26_arxxo"]
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/player/StepHandlerComponent.cs" id="27_a3051"]
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/player/WeaponController.cs" id="28_v0tgu"]
 
-[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ShieldComponent", "ClamberController", "WeaponController", "CameraController", "HealthLabel", "ShieldLabel", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "Reticle", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
+[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ClamberController", "WeaponController", "CameraController", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "Reticle", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
 collision_layer = 0
 collision_mask = 769
 script = ExtResource("1_r8ls8")
 StepHandlerComponent = NodePath("Components/StepHandlerComponent")
 HealthComponent = NodePath("Components/HealthComponent")
-ShieldComponent = NodePath("Components/ShieldComponent")
 ClamberController = NodePath("ClamberController")
 WeaponController = NodePath("Components/WeaponController")
 CameraController = NodePath("CameraController")
-HealthLabel = NodePath("UserInterface/Label")
-ShieldLabel = NodePath("UserInterface/StateLabel")
 CameraEffects = NodePath("CameraEffects")
 PlayerStateMachine = NodePath("PlayerStateMachine")
 AnimationPlayer = NodePath("AnimationPlayer")
@@ -300,15 +297,8 @@ WeaponModelParent = NodePath("../../CameraController/WeaponRig/WeaponParent")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")
 
-[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098 node_paths=PackedStringArray("ShieldComponent")]
+[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098]
 script = ExtResource("24_5n4gj")
-ShieldComponent = NodePath("../ShieldComponent")
 metadata/_custom_type_script = "uid://30kyxeyoy43d"
 
-[node name="ShieldComponent" type="Node" parent="Components" unique_id=1335933452 node_paths=PackedStringArray("RechargeTimer")]
-script = ExtResource("26_arxxo")
-RechargeTimer = NodePath("StartRechargeTimer")
-TimeBeforeRecharge = 3.5
-
-[node name="StartRechargeTimer" type="Timer" parent="Components/ShieldComponent" unique_id=188801521]
-one_shot = true
+[node name="ShieldComponent" parent="Components" unique_id=1483144528 instance=ExtResource("26_arxxo")]

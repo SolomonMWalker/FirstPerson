@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://qprpio4lvlfc"]
+
+[ext_resource type="Script" uid="uid://b3oc4laptvhuj" path="res://src/components/characterComponents/ShieldComponent.cs" id="1_ni0s8"]
+
+[node name="ShieldComponent" type="Node" unique_id=1483144528 node_paths=PackedStringArray("RechargeTimer")]
+script = ExtResource("1_ni0s8")
+TimeBeforeRecharge = 3.5
+RechargeTimer = NodePath("StartRechargeTimer")
+
+[node name="StartRechargeTimer" type="Timer" parent="." unique_id=245218491]
+one_shot = true
