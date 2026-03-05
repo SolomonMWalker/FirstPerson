@@ -32,10 +32,11 @@ public partial class Reticle : CenterContainer
 
     public void SetReticleExtraVisibility(bool visible)
     {
-        foreach (var line in ReticleLines)
-        {
-            line.Visible = visible;
-        }
+        // foreach (var line in ReticleLines)
+        // {
+        //     line.Visible = visible;
+        // }
+        Visible = visible;
     }
 
     public void AdjustReticleLines()
