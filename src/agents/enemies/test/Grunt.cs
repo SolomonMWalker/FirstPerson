@@ -261,13 +261,14 @@ public partial class Grunt : CharacterBody3D
     public void StartRagdoll()
     {
         SetBoneCollisionShapesDisabled(false);
+        CollisionShape3D.Disabled = true;
         FloorRaycast.Enabled = false;
         PhysicalBoneSimulator3D.Active = true;
         PhysicalBoneSimulator3D.PhysicalBonesStartSimulation();
         if (affectedBone is not null)
         {
             GD.Print($"dirLastDamage {dirLastDamage} affectedBone {affectedBone.Name}");
-            affectedBone.LinearVelocity = dirLastDamage * 20f;
+            affectedBone.ApplyCentralImpulse(dirLastDamage * 20f);
         }
         else
         {
