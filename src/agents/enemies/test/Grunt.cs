@@ -260,6 +260,7 @@ public partial class Grunt : CharacterBody3D
 
     public void StartRagdoll()
     {
+        AnimationPlayer.Free();
         SetBoneCollisionShapesDisabled(false);
         CollisionShape3D.Disabled = true;
         FloorRaycast.Enabled = false;
@@ -268,7 +269,7 @@ public partial class Grunt : CharacterBody3D
         if (affectedBone is not null)
         {
             GD.Print($"dirLastDamage {dirLastDamage} affectedBone {affectedBone.Name}");
-            affectedBone.ApplyCentralImpulse(dirLastDamage * 20f);
+            affectedBone.ApplyCentralImpulse(dirLastDamage * 20);
         }
         else
         {

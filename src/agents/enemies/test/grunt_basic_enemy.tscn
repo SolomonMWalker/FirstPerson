@@ -80,67 +80,127 @@ size = Vector3(0.69836426, 0.28112793, 0.11791992)
 radius = 0.09326172
 height = 0.2741394
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m2veq"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_172i6"]
+radius = 0.08693572
+height = 0.8693572
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_l1nqy"]
 radius = 0.015177955
 height = 0.15177955
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yh8sd"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_51ae0"]
+radius = 0.014809011
+height = 0.14809011
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_75fee"]
 radius = 0.011685008
 height = 0.116850086
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vrah4"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nswck"]
 radius = 0.019257845
 height = 0.19257845
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d8x8m"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0dmmb"]
+radius = 0.0061953724
+height = 0.061953723
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wnh2b"]
 radius = 0.006270132
 height = 0.06270132
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xtgws"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f80lm"]
 radius = 0.027318737
 height = 0.27318737
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fa5g0"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_in0d3"]
 radius = 0.02498943
 height = 0.24989429
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_i1e81"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pd7pr"]
 radius = 0.030393427
 height = 0.30393428
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jlk6r"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fvemo"]
+radius = 0.012802313
+height = 0.12802313
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f6da6"]
+radius = 0.0040795044
+height = 0.040795043
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2vema"]
+radius = 0.0024666323
+height = 0.024666322
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ynfop"]
+radius = 0.003539933
+height = 0.03539933
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qhjbi"]
+radius = 0.003121827
+height = 0.03121827
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ydyf"]
+radius = 0.005314997
+height = 0.05314997
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ghdb0"]
 radius = 0.02731874
 height = 0.2731874
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_r2u6x"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_eh7ig"]
 radius = 0.024989419
 height = 0.24989419
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gjm1a"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h32t7"]
 radius = 0.030393425
 height = 0.30393425
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4ogkh"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_clicw"]
+radius = 0.012802315
+height = 0.12802315
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qi2im"]
+radius = 0.004079512
+height = 0.040795118
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4yw6j"]
+radius = 0.0024666274
+height = 0.024666274
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pb1v6"]
+radius = 0.0035399299
+height = 0.0353993
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j5n5b"]
+radius = 0.0031218245
+height = 0.031218246
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2hwi5"]
+radius = 0.0053149983
+height = 0.053149983
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5do62"]
 radius = 0.04063145
 height = 0.4063145
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dputm"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8x300"]
 radius = 0.03993536
 height = 0.39935362
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ng1ld"]
-radius = 0.04063145
-height = 0.4063145
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_q572w"]
-radius = 0.039935354
-height = 0.39935353
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c2shi"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d4gb8"]
 radius = 0.016928062
 height = 0.16928062
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5xh8m"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c2r01"]
+radius = 0.04063145
+height = 0.4063145
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xpvd5"]
+radius = 0.039935354
+height = 0.39935353
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_th0k2"]
 radius = 0.016928038
 height = 0.16928038
 
@@ -182,7 +242,7 @@ bones/0/position = Vector3(3.4385607e-08, 0.63131404, 0.3933255)
 bones/1/position = Vector3(0.22564317, 0.34714937, -0.55000365)
 bones/1/rotation = Quaternion(0.012912458, 0.98310953, -0.18090864, 0.024517527)
 bones/2/position = Vector3(0.366564, 1.375041, -0.096836925)
-bones/3/position = Vector3(9.270173e-10, 0.3379225, -0.024391543)
+bones/3/position = Vector3(1.8302229e-09, 0.3379225, -0.048156522)
 bones/3/rotation = Quaternion(0.6116778, -5.972697e-08, -4.6180425e-08, 0.79110694)
 bones/4/rotation = Quaternion(0.07031589, 1.1891429e-07, -2.2351054e-09, 0.9975248)
 bones/5/rotation = Quaternion(0.0803012, -4.2511608e-14, 7.020152e-09, 0.9967707)
@@ -212,31 +272,31 @@ bones/30/rotation = Quaternion(-2.3254945e-09, -7.8741344e-08, -0.46521834, 0.88
 bones/31/rotation = Quaternion(-5.5753578e-08, 1.2006821e-07, -0.4652183, 0.885196)
 bones/32/position = Vector3(0.06781127, 0.05738648, -0.05164496)
 bones/32/rotation = Quaternion(-0.099158786, -0.68540424, -0.011869298, 0.72128195)
-bones/38/rotation = Quaternion(0.06727831, -0.45825088, 0.8860528, 0.01975615)
-bones/39/rotation = Quaternion(0.69375676, -2.7175322e-08, -2.6140668e-07, 0.7202095)
-bones/40/rotation = Quaternion(-0.85124284, 0.064722486, -0.010144598, 0.52066654)
-bones/43/rotation = Quaternion(-0.067278, -0.458251, 0.8860528, -0.019756244)
-bones/44/rotation = Quaternion(0.6937587, 3.1198848e-08, 5.629382e-07, 0.7202075)
-bones/45/rotation = Quaternion(-0.85124266, -0.06472205, 0.01014416, 0.52066714)
+bones/38/rotation = Quaternion(0.066922694, -0.47513044, 0.87710947, 0.021248464)
+bones/39/rotation = Quaternion(0.72305346, -2.97693e-08, -2.6823733e-07, 0.6907921)
+bones/40/rotation = Quaternion(-0.86267585, 0.0645304, -0.011385355, 0.50149435)
+bones/43/rotation = Quaternion(-0.06692241, -0.47513026, 0.8771095, -0.021248564)
+bones/44/rotation = Quaternion(0.72305524, 2.5700466e-08, 5.846466e-07, 0.69079024)
+bones/45/rotation = Quaternion(-0.8626756, -0.06452998, 0.01138487, 0.501495)
 bones/46/rotation = Quaternion(0.0072349366, 0.9649416, -0.2609979, -0.026748637)
 bones/48/position = Vector3(-0.22564304, 0.34715146, -0.5500047)
 bones/48/rotation = Quaternion(-0.012912451, 0.98311013, -0.18090513, -0.024517879)
-bones/49/position = Vector3(8.3266727e-16, 0.38614094, 0.701956)
+bones/49/position = Vector3(8.3266727e-16, 0.38614094, 0.678191)
 bones/49/rotation = Quaternion(0.7071068, 3.0908623e-08, 3.0908623e-08, 0.7071068)
-bones/50/position = Vector3(-0.49562073, 0.46937302, 0.17823064)
+bones/50/position = Vector3(-0.49562073, 0.46937302, 0.15446568)
 bones/50/rotation = Quaternion(-0.10509137, -0.9558743, 0.2561958, 0.09810052)
 bones/51/position = Vector3(-0.36656407, 1.375041, -0.096836925)
-bones/52/position = Vector3(0.49562073, 0.46937305, 0.17831218)
+bones/52/position = Vector3(0.4956207, 0.46937305, 0.15462667)
 bones/52/rotation = Quaternion(-0.1050915, 0.95587444, -0.25619578, 0.09810035)
-bones/53/position = Vector3(0.79635763, 0.11532143, 0.086045414)
-bones/54/position = Vector3(-0.7963575, 0.1153214, 0.086045414)
-bones/55/position = Vector3(-1.7763568e-15, 0.1467044, 0.701956)
+bones/53/position = Vector3(0.79635763, 0.11532143, 0.062280506)
+bones/54/position = Vector3(-0.7963575, 0.1153214, 0.062280506)
+bones/55/position = Vector3(-1.7763568e-15, 0.1467044, 0.678191)
 
 [node name="hand_R" parent="GruntRig/Skeleton3D" index="0" unique_id=102633850]
-transform = Transform3D(-0.9586642, -0.15064263, 0.241391, -0.13369527, -0.5104006, -0.8494799, 0.2511741, -0.8466389, 0.46916252, 0.4956244, 0.80951726, -0.076065555)
+transform = Transform3D(-0.9586642, -0.15064263, 0.241391, -0.13369527, -0.5104006, -0.8494799, 0.2511741, -0.8466389, 0.46916252, 0.4956244, 0.7857523, -0.076065555)
 
 [node name="LeftBicepAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="2" unique_id=1198875392]
-transform = Transform3D(-0.712503, -0.70024574, -0.044671386, 0.48133558, -0.5340992, 0.69502044, -0.51054406, 0.47370237, 0.71760035, -0.35818106, 1.1480781, 0.026700176)
+transform = Transform3D(-0.712503, -0.70024574, -0.044671386, 0.48133558, -0.5340992, 0.69502044, -0.51054406, 0.47370237, 0.71760035, -0.35818106, 1.1243131, 0.026700176)
 bone_name = "upper_arm.L"
 bone_idx = 11
 
@@ -261,7 +321,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="LeftForearmAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="3" unique_id=1744034716]
-transform = Transform3D(-0.7382862, 0.12352602, -0.66307986, 0.42743626, -0.6747932, -0.6016241, -0.52175814, -0.72759503, 0.44539112, -0.5331683, 1.0146097, 0.14507578)
+transform = Transform3D(-0.7382862, 0.12352602, -0.66307986, 0.42743626, -0.6747932, -0.6016241, -0.52175814, -0.72759503, 0.44539112, -0.5331683, 0.99084467, 0.14507578)
 bone_name = "forearm.L"
 bone_idx = 12
 
@@ -286,7 +346,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="RightBicepAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="4" unique_id=850175641]
-transform = Transform3D(-0.71249974, 0.7002489, 0.0446696, -0.48133996, -0.53409696, 0.69501907, 0.51054436, 0.4736998, 0.7176017, 0.3581811, 1.1480782, 0.02670011)
+transform = Transform3D(-0.71249974, 0.7002489, 0.0446696, -0.48133996, -0.53409696, 0.69501907, 0.51054436, 0.4736998, 0.7176017, 0.3581811, 1.1243132, 0.02670011)
 bone_name = "upper_arm.R"
 bone_idx = 23
 
@@ -311,7 +371,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="RightForearmAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="5" unique_id=901825919]
-transform = Transform3D(-0.73828626, -0.123529606, 0.66307884, -0.42743278, -0.6747948, -0.6016249, 0.52176076, -0.7275932, 0.44539118, 0.53316927, 1.0146105, 0.14507493)
+transform = Transform3D(-0.73828626, -0.123529606, 0.66307884, -0.42743278, -0.6747948, -0.6016249, 0.52176076, -0.7275932, 0.44539118, 0.53316927, 0.99084556, 0.14507493)
 bone_name = "forearm.R"
 bone_idx = 24
 
@@ -336,7 +396,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="LeftThighAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="6" unique_id=625991627]
-transform = Transform3D(-0.99016654, -0.096670575, 0.10111758, 0.008773502, -0.7643122, -0.64478564, 0.1396174, -0.6375587, 0.757644, -0.22527277, 0.6605611, 0.01240002)
+transform = Transform3D(-0.9901396, -0.10086838, 0.09720534, 0.009158876, -0.7390412, -0.6735969, 0.13978356, -0.66606534, 0.73267746, -0.22527277, 0.6367961, 0.01240002)
 bone_name = "thigh.L"
 bone_idx = 38
 
@@ -361,7 +421,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="LeftCalfAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="7" unique_id=1500598407]
-transform = Transform3D(-0.99016654, 0.097430706, 0.10038545, 0.008774027, -0.67292225, 0.7396603, 0.13961743, 0.7332672, 0.6654508, -0.26455143, 0.35000995, -0.24664931)
+transform = Transform3D(-0.9901396, 0.10170471, 0.096330024, 0.009159415, -0.63918626, 0.7689964, 0.13978358, 0.7622959, 0.6319527, -0.26625705, 0.33651295, -0.25823197)
 bone_name = "shin.L"
 bone_idx = 39
 
@@ -386,7 +446,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="RightThighAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="8" unique_id=882040289]
-transform = Transform3D(-0.9901668, 0.09667063, -0.101117164, -0.008773882, -0.76431227, -0.6447871, -0.13961695, -0.63755906, 0.75764537, 0.22527277, 0.660561, 0.012399979)
+transform = Transform3D(-0.99013984, 0.100868426, -0.097205006, -0.009159315, -0.7390418, -0.67359793, -0.13978319, -0.6660652, 0.7326791, 0.22527277, 0.63679606, 0.012399979)
 bone_name = "thigh.R"
 bone_idx = 43
 
@@ -411,7 +471,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="RightCalfAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="9" unique_id=930074706]
-transform = Transform3D(-0.9901668, -0.09743041, -0.10038537, -0.00877501, -0.6729195, 0.739664, -0.13961695, 0.73327225, 0.6654471, 0.2645514, 0.3500099, -0.2466495)
+transform = Transform3D(-0.99013984, -0.10170445, -0.09633001, -0.009160485, -0.6391832, 0.7690005, -0.13978316, 0.7623009, 0.6319485, 0.26625705, 0.33651266, -0.25823197)
 bone_name = "shin.R"
 bone_idx = 44
 
@@ -436,7 +496,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="LowerBodyAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="10" unique_id=736897338]
-transform = Transform3D(1, -9.917612e-09, 1.7428118e-07, -9.917606e-09, 0.9935442, 0.113444194, -1.7428121e-07, -0.113444194, 0.9935442, 2.4306857e-09, 0.75381553, 0.017200008)
+transform = Transform3D(1, -9.917612e-09, 1.7428118e-07, -9.917606e-09, 0.9935442, 0.113444194, -1.7428121e-07, -0.113444194, 0.9935442, 3.333892e-09, 0.73005056, 0.017200008)
 bone_name = "spine.001"
 bone_idx = 4
 
@@ -462,7 +522,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="UpperBodyAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="11" unique_id=1462453982]
-transform = Transform3D(1, 2.4967888e-09, 1.7480983e-07, 2.496795e-09, 0.99959177, -0.028560009, -1.7480986e-07, 0.028559988, 0.9995919, 1.4428134e-09, 1.0176702, 0.0059000845)
+transform = Transform3D(1, 2.4967888e-09, 1.7480983e-07, 2.496795e-09, 0.99959177, -0.028560009, -1.7480986e-07, 0.028559988, 0.9995919, 2.3460198e-09, 0.9939052, 0.0059000845)
 bone_name = "spine.003"
 bone_idx = 6
 
@@ -488,7 +548,7 @@ visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
 [node name="HeadAttachment" type="BoneAttachment3D" parent="GruntRig/Skeleton3D" index="12" unique_id=501855136]
-transform = Transform3D(1, 3.375078e-14, 1.7484555e-07, 1.0658141e-14, 0.9999995, -2.5331974e-07, -1.7484555e-07, 2.5331974e-07, 0.99999976, 1.5551225e-09, 1.33327, 0.0071846927)
+transform = Transform3D(1, 3.375078e-14, 1.7484555e-07, 1.0658141e-14, 0.9999995, -2.5331974e-07, -1.7484555e-07, 2.5331974e-07, 0.99999976, 2.4583289e-09, 1.309505, 0.0071846927)
 bone_name = "spine.006"
 bone_idx = 9
 
@@ -514,325 +574,508 @@ transform = Transform3D(1.585, 0, 0, 0, 1.585, 0, 0, 0, 1.585, 0, 0, 0)
 visible = false
 mesh = SubResource("SphereMesh_fh2k5")
 
-[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="GruntRig/Skeleton3D" index="13" unique_id=408196218]
-visible = false
+[node name="PhysicalBoneSimulator3D" type="PhysicalBoneSimulator3D" parent="GruntRig/Skeleton3D" index="13" unique_id=226511541]
 active = false
 
-[node name="Physical Bone spine" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="0" unique_id=68787779]
-transform = Transform3D(1, -6.638765e-08, 2.2004365e-08, 3.8005744e-08, 0.2517005, -0.96780515, 5.87118e-08, 0.96780515, 0.2517005, 7.532701e-09, -0.016515613, 0.036301762)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone root" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="0" unique_id=1354601095]
+transform = Transform3D(0.9577522, -0.12475808, -0.25912565, 0.28759465, 0.41547108, 0.8629444, -8.372937e-08, -0.9010101, 0.43379807, 0.11270264, 0.25621057, 0.20476274)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.343424e-05, 8.255243e-06, 0.43469578)
+body_offset = Transform3D(0.9577522, -0.124758, -0.25912568, 0, 0.9010101, -0.43379804, 0.28759465, 0.41547108, 0.8629444, 0.112702616, 0.18856275, -0.37510347)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "root"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone root" index="0" unique_id=2100473920]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_172i6")
+
+[node name="Physical Bone spine" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="1" unique_id=1105469340]
+transform = Transform3D(1, -6.63877e-08, 2.2004352e-08, 3.800574e-08, 0.2517005, -0.96780515, 5.871185e-08, 0.96780515, 0.2517005, 3.7211294e-09, 0.6902031, 0.036298305)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3053499e-08, 0.16498175, -0.5584771)
-body_offset = Transform3D(1, 6.750156e-14, -8.881784e-16, -1.7763568e-15, 2.9802322e-08, -1.0000001, -5.684342e-14, 1.0000001, 2.9802322e-08, -2.305351e-08, -0.55847716, -0.16498175)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.898516e-12, -5.0890156e-07, 0.07590442)
+body_offset = Transform3D(1, 1.7763568e-14, -1.3322676e-14, -1.4210855e-14, 2.9802322e-08, -1.0000001, -7.1054274e-15, 1.0000001, 2.9802322e-08, -5.8975047e-12, 0.07590443, 5.066395e-07)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "spine"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine" index="0" unique_id=866254056]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_m2veq")
-disabled = true
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine" index="0" unique_id=855205482]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_l1nqy")
 
-[node name="Physical Bone spine_002" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="1" unique_id=1280990323]
-transform = Transform3D(1, 1.7474926e-07, -4.1151305e-09, 4.1147428e-09, -0.04706923, -0.99889165, -1.7474926e-07, 0.99889165, -0.04706923, 4.3731925e-09, 0.26244116, 0.003150832)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone spine_001" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="2" unique_id=828866853]
+transform = Transform3D(1, 1.7428019e-07, 9.91756e-09, -9.917545e-09, 0.11344424, -0.99354446, -1.7428017e-07, 0.9935444, 0.11344424, 1.3262904e-09, 0.83713514, 0.008816862)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1003891e-09, -0.030852454, -0.5963021)
-body_offset = Transform3D(1, 6.6791017e-13, -2.0516921e-13, -2.0072832e-13, -8.940697e-08, -1.0000001, -6.3948846e-13, 1.0000001, -1.0430813e-07, -1.1004908e-09, -0.59630215, 0.030852396)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.900688e-13, -9.106262e-06, 0.07397638)
+body_offset = Transform3D(1, -1.0516032e-12, -5.8619776e-14, -5.684342e-14, 2.2351742e-08, -1.0000002, 1.0373924e-12, 1.0000001, 2.2351742e-08, 8.9439567e-13, 0.0739764, 9.1046095e-06)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "spine.001"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
+joint_constraints/bias = 0.3
+joint_constraints/softness = 0.8
+joint_constraints/relaxation = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_001" index="0" unique_id=616444905]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_51ae0")
+
+[node name="Physical Bone spine_002" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="3" unique_id=1410806127]
+transform = Transform3D(1, 1.747486e-07, -4.1150456e-09, 4.1147885e-09, -0.04706918, -0.99889165, -1.747486e-07, 0.99889165, -0.04706918, 8.311129e-10, 0.9690228, 0.003158755)
+joint_type = 2
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.437023e-14, -1.3705808e-05, 0.058318727)
+body_offset = Transform3D(1, 1.4210855e-14, -1.2878587e-13, -1.2434498e-13, -4.0978193e-08, -1.0000001, 0, 1.0000001, -5.5879354e-08, -3.6859404e-14, 0.058318734, 1.3709068e-05)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "spine.002"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_002" index="0" unique_id=71790851]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_002" index="0" unique_id=1574144409]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_yh8sd")
-disabled = true
+shape = SubResource("CapsuleShape3D_75fee")
 
-[node name="Physical Bone spine_003" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="2" unique_id=183128540]
-transform = Transform3D(1, 1.7480997e-07, -2.497005e-09, 2.4967606e-09, -0.028561004, -0.9995921, -1.7480995e-07, 0.9995921, -0.028561004, 4.9472475e-09, 0.41675228, 0.008643946)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone spine_003" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="4" unique_id=1073647870]
+transform = Transform3D(1, 1.7480987e-07, -2.4970583e-09, 2.4966902e-09, -0.02856092, -0.9995921, -1.7480986e-07, 0.9995921, -0.02856092, 1.3105886e-09, 1.1234616, 0.008648345)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3821256e-11, -0.018722702, -0.5591962)
-body_offset = Transform3D(1, 9.947598e-14, -4.0412118e-14, -3.7303494e-14, -9.872019e-07, -1.0000004, -9.947598e-14, 1.0000002, -1.0058284e-06, 5.380052e-11, -0.55919635, 0.018722143)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7082749e-13, -6.1010455e-06, 0.096011005)
+body_offset = Transform3D(1, 0, -1.0791368e-13, -1.04805054e-13, -9.033829e-07, -1.0000004, 0, 1.0000002, -9.2200935e-07, 1.811884e-13, 0.09601104, 6.18957e-06)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "spine.003"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_003" index="0" unique_id=1700929333]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_003" index="0" unique_id=518735507]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_vrah4")
-disabled = true
+shape = SubResource("CapsuleShape3D_nswck")
 
-[node name="Physical Bone spine_005" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="3" unique_id=1576647861]
-transform = Transform3D(1, -3.2087206e-07, 2.6706615e-09, 6.24954e-08, 0.18659039, -0.9824378, 3.1473854e-07, 0.9824378, 0.18659039, 8.488257e-09, 0.6055821, 0.013031693)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone spine_004" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="5" unique_id=1517758749]
+transform = Transform3D(1, 1.3049392e-07, -2.9977944e-08, -1.3993574e-08, -0.120808735, -0.99267584, -1.3315974e-07, 0.99267584, -0.120808735, 2.475862e-09, 1.250753, 0.015141753)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7747977e-08, 0.12230812, -0.61261)
-body_offset = Transform3D(1, -2.122113e-07, -3.2828197e-08, -3.2829874e-08, -7.987022e-06, -1.0000005, 2.1221123e-07, 1.0000002, -8.076429e-06, -3.1903692e-08, -0.6126093, -0.1223131)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.2949218e-12, 2.2461497e-06, 0.030989993)
+body_offset = Transform3D(1, -1.4210855e-14, 7.1054274e-15, 0, 1.1920929e-07, -1.0000004, 0, 1.0000002, 1.2665987e-07, -3.295142e-12, 0.030990005, -2.2500753e-06)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "spine.004"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
+joint_constraints/bias = 0.3
+joint_constraints/softness = 0.8
+joint_constraints/relaxation = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_004" index="0" unique_id=1487862664]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_0dmmb")
+
+[node name="Physical Bone spine_005" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="6" unique_id=643380345]
+transform = Transform3D(1, -1.0866366e-07, 3.5497298e-08, 5.5150316e-08, 0.18659854, -0.98243624, 1.0013138e-07, 0.98243624, 0.18659854, 2.3064435e-09, 1.3122911, 0.013034726)
+joint_type = 2
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1710399e-11, -3.0503088e-07, 0.03135203)
+body_offset = Transform3D(1, -2.6005864e-12, -6.590284e-13, -6.2350125e-13, 2.9802322e-07, -1.0000005, 2.742695e-12, 1.0000002, 2.2351742e-07, 1.1731061e-11, 0.031352043, 2.9802322e-07)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "spine.005"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_005" index="0" unique_id=1788218765]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone spine_005" index="0" unique_id=1561187842]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_d8x8m")
-disabled = true
+shape = SubResource("CapsuleShape3D_wnh2b")
 
-[node name="Physical Bone shoulder_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="4" unique_id=101681760]
-transform = Transform3D(-0.1410264, 0.36948332, 0.91847354, 0.97778594, -0.093333125, 0.1876795, 0.15506843, 0.9245383, -0.34811315, -0.23272222, 0.4768226, -0.02085017)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone shoulder_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="7" unique_id=68291745]
+transform = Transform3D(-0.14102632, 0.36948332, 0.9184736, 0.97778594, -0.093333155, 0.18767944, 0.15506844, 0.9245383, -0.34811318, -0.23261932, 1.183153, -0.020875446)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.64091563, -0.0611777, 0.259612)
-body_offset = Transform3D(0.98551124, -0.16928117, -0.010588052, 2.9802322e-08, 0.062425703, -0.9980496, 0.16961205, 0.9835891, 0.061520994, -0.639237, 0.26292467, -0.06450488)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00039081543, -5.0246716e-05, 0.13656066)
+body_offset = Transform3D(0.98551124, -0.1692812, -0.010588111, -3.7252903e-08, 0.062425703, -0.9980496, 0.16961208, 0.9835891, 0.061520994, 0.0010522604, 0.13629743, -0.008418212)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "shoulder.L"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shoulder_L" index="0" unique_id=998126521]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shoulder_L" index="0" unique_id=1035334099]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_xtgws")
-disabled = true
+shape = SubResource("CapsuleShape3D_f80lm")
 
-[node name="Physical Bone upper_arm_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="5" unique_id=946220674]
-transform = Transform3D(0.52263325, -0.7982762, 0.29934877, -0.21224669, -0.46189076, -0.86116683, 0.8257154, 0.38653862, -0.41083091, -0.018930107, 1.4264746, 0.15478653)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21518776, 0.36902365, 0.22647858)
-body_offset = Transform3D(-0.8961041, 0.14910442, -0.41805008, 0.13853264, 0.9887892, 0.05571942, 0.42167145, -0.0079832375, -0.906714, -0.15317428, -0.34769532, 0.29903585)
-gravity_scale = 2.0
+[node name="Physical Bone upper_arm_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="8" unique_id=2079733783]
+transform = Transform3D(-0.7125037, -0.04467147, 0.70024496, 0.48133525, 0.69502074, 0.5340998, -0.51054376, 0.7176007, -0.47370282, -0.4457118, 1.0910608, 0.0857632)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.0672683e-05, 0.00015936785, 0.12496896)
+body_offset = Transform3D(1.0000002, 5.9604645e-08, 1.1324883e-06, 8.046627e-07, 8.940697e-08, -1, 2.9802322e-08, 1.0000005, 1.1920929e-07, 4.053116e-05, 0.12496896, -0.00015938282)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "upper_arm.L"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
-joint_constraints/bias = 0.3
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone upper_arm_L" index="0" unique_id=773454195]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone upper_arm_L" index="0" unique_id=1704921584]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_fa5g0")
-disabled = true
+shape = SubResource("CapsuleShape3D_in0d3")
 
-[node name="Physical Bone forearm_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="6" unique_id=20833685]
-transform = Transform3D(-0.1886763, -0.28187728, 0.9407159, 0.98189914, -0.037963636, 0.18556082, -0.016592382, 0.9586991, 0.28393787, -0.76367223, 0.42137045, 0.9336782)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5114297, -0.8419554, 0.09532145)
-body_offset = Transform3D(0.5676539, -0.30833024, -0.76334906, -0.6738135, -0.7067469, -0.2156044, -0.4730173, 0.6367433, -0.6089443, -0.47715184, -0.2298894, 0.83607006)
-gravity_scale = 2.0
+[node name="Physical Bone forearm_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="9" unique_id=554940177]
+transform = Transform3D(-0.73828626, -0.66307986, -0.12352559, 0.4274367, -0.60162425, 0.67479336, -0.5217579, 0.44539133, 0.72759557, -0.51438236, 0.9220931, 0.034756467)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.173598e-05, 2.3839171e-05, 0.15164424)
+body_offset = Transform3D(1.0000001, -2.9802322e-07, -3.874302e-07, -5.066395e-07, 2.9802322e-08, -1.0000007, -1.0430813e-07, 1.0000002, -1.7881393e-07, -5.1677227e-05, 0.15164435, -2.3812056e-05)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "forearm.L"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone forearm_L" index="0" unique_id=1466625026]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_pd7pr")
+
+[node name="Physical Bone hand_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="10" unique_id=1137516208]
+transform = Transform3D(0.95677435, 0.278424, -0.08404167, -0.14024216, 0.6948383, 0.70535946, 0.25478438, -0.6630836, 0.7038502, -0.4903164, 0.7741053, -0.12110019)
+joint_type = 2
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2034477e-05, 8.872617e-05, 0.06404828)
+body_offset = Transform3D(-0.99997014, -0.0074693263, -0.0019179285, 0, 0.24868858, -0.96858394, 0.0077118054, -0.9685549, -0.2486813, 0.00017553568, 0.062014073, 0.016013145)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.L"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone forearm_L" index="0" unique_id=431550609]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_L" index="0" unique_id=1980709299]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_i1e81")
-disabled = true
+shape = SubResource("CapsuleShape3D_fvemo")
 
-[node name="Physical Bone shoulder_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="7" unique_id=1808635724]
-transform = Transform3D(-0.14102823, -0.36948386, -0.91847306, -0.97778505, -0.093336195, 0.18768269, -0.15507251, 0.9245377, -0.34811276, 0.23272225, 0.47681707, -0.021750793)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone hand_L_001" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="11" unique_id=455218722]
+transform = Transform3D(0.10604733, -0.24390137, -0.96398455, -0.5186463, -0.84070104, 0.155653, -0.84838676, 0.48346037, -0.21565266, -0.4652085, 0.7255525, -0.16164203)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5208428e-05, -0.00032417977, 0.020468295)
+body_offset = Transform3D(1.0000005, 3.2782555e-07, 4.2915344e-06, 4.23193e-06, -3.3527613e-07, -1, -2.9802322e-08, 1.0000005, -4.7683716e-07, 4.5120716e-05, 0.020468295, 0.00032418966)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.L.001"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_L_001" index="0" unique_id=2053405077]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_f6da6")
+
+[node name="Physical Bone hand_L_002" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="12" unique_id=714330925]
+transform = Transform3D(0.96722764, -0.24390146, 0.07058895, -0.17458592, -0.84069777, -0.51258856, 0.18436506, 0.48346603, -0.85572785, -0.44648635, 0.7290159, -0.14685246)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.081089e-05, 3.6161914e-06, 0.012318246)
+body_offset = Transform3D(0.9999998, 1.2665987e-07, 1.0579824e-06, 1.0877848e-06, 6.2584877e-06, -1.0000006, -7.450581e-09, 1.0000002, 6.4373016e-06, -8.08239e-05, 0.0123182535, -3.695488e-06)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.L.002"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_L_002" index="0" unique_id=1756452683]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_2vema")
+
+[node name="Physical Bone hand_L_004" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="13" unique_id=1745963605]
+transform = Transform3D(0.10604831, -0.243902, -0.96398425, -0.51864666, -0.8407008, 0.15565298, -0.8483864, 0.4834604, -0.21565385, -0.4531486, 0.7727143, -0.19442335)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3265016e-05, 0.00030304946, 0.017513096)
+body_offset = Transform3D(1.0000005, 1.4901161e-07, 3.874302e-06, 3.7699938e-06, -1.013279e-06, -1, 0, 1.0000005, -1.1175871e-06, 5.3197145e-05, 0.017513096, -0.00030303)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.L.004"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_L_004" index="0" unique_id=928436625]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ynfop")
+
+[node name="Physical Bone hand_L_005" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="14" unique_id=1365012399]
+transform = Transform3D(0.96722746, -0.24390101, 0.07059254, -0.17458476, -0.8407009, -0.5125839, 0.18436693, 0.48346087, -0.85573035, -0.43698302, 0.77780324, -0.177107)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.767014e-05, 0.0001523457, 0.015575701)
+body_offset = Transform3D(1, 1.4156103e-07, 5.0365925e-06, 5.096197e-06, 8.940697e-08, -1.0000004, -2.2351742e-08, 1.0000004, 2.3841858e-07, 6.759167e-05, 0.015575707, -0.00015234947)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.L.005"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_L_005" index="0" unique_id=205753849]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_qhjbi")
+
+[node name="Physical Bone hand_L_007" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="15" unique_id=1687463108]
+transform = Transform3D(-0.78926635, -0.1970322, -0.5815815, 0.008325871, -0.9504692, 0.31070745, -0.6139946, 0.24038875, 0.7518137, -0.45730507, 0.83096004, -0.1721263)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1189892e-06, 0.00014426341, 0.0266481)
+body_offset = Transform3D(1.0000002, -1.4901161e-08, 5.066395e-07, 9.536743e-07, -4.917383e-07, -1.0000001, 1.4901161e-08, 1.0000006, -7.599592e-07, -1.1324883e-06, 0.026648104, -0.00014424324)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.L.007"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_L_007" index="0" unique_id=488983758]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_4ydyf")
+
+[node name="Physical Bone shoulder_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="16" unique_id=632227602]
+transform = Transform3D(-0.14102542, -0.36948332, -0.91847366, -0.97778577, -0.093335554, 0.18767938, -0.15507066, 0.92453796, -0.34811288, 0.23272306, 1.1835248, -0.020852145)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6410597, -0.060347565, 0.25930157)
-body_offset = Transform3D(0.9855107, 0.16928473, 0.0105846645, -3.5092235e-06, 0.062425405, -0.99805, -0.16961539, 0.9835885, 0.06152132, 0.6392424, 0.2625609, -0.06532897)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.052805e-06, 1.180917e-06, 0.13659427)
+body_offset = Transform3D(0.98551077, 0.16928399, 0.010588047, -1.1920929e-07, 0.062425822, -0.99804986, -0.16961485, 0.9835887, 0.061521143, -0.0014375448, 0.13632782, -0.008406132)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "shoulder.R"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shoulder_R" index="0" unique_id=916403408]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shoulder_R" index="0" unique_id=128338665]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_jlk6r")
-disabled = true
+shape = SubResource("CapsuleShape3D_ghdb0")
 
-[node name="Physical Bone upper_arm_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="8" unique_id=1961842937]
-transform = Transform3D(0.6737671, 0.7203223, 0.16484474, 0.46050432, -0.23484038, -0.85602915, -0.57790464, 0.652676, -0.4899392, -0.06368059, 1.417514, 0.15982054)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.21801925, 0.28999215, 0.40086)
-body_offset = Transform3D(-0.9967643, -0.06697118, 0.04445353, -0.047902763, 0.93900526, 0.3405509, -0.06454921, 0.3373196, -0.939175, 0.21891528, -0.3983737, 0.29273063)
-gravity_scale = 2.0
+[node name="Physical Bone upper_arm_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="17" unique_id=1046310910]
+transform = Transform3D(-0.7125002, 0.04466966, -0.70024854, -0.48133987, 0.6950193, 0.53409755, 0.5105442, 0.7176022, -0.4737001, 0.44561118, 1.0912912, 0.08603507)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.963635e-05, -0.00019142021, 0.12490426)
+body_offset = Transform3D(1.0000001, 8.940697e-08, -7.003546e-07, -5.2154064e-07, 1.7881393e-07, -1.0000001, -8.940697e-08, 1.0000005, 2.3841858e-07, 5.9723854e-05, 0.124904275, 0.00019139051)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "upper_arm.R"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
-joint_constraints/bias = 0.3
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone upper_arm_R" index="0" unique_id=1916741138]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone upper_arm_R" index="0" unique_id=394670289]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_r2u6x")
-disabled = true
+shape = SubResource("CapsuleShape3D_eh7ig")
 
-[node name="Physical Bone forearm_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="9" unique_id=1208355223]
-transform = Transform3D(-0.2591818, 0.48452038, -0.83550274, -0.8437649, 0.30736148, 0.43998832, 0.46998465, 0.8190048, 0.32915884, 0.7883707, 0.5528108, 1.056713)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7170181, -0.74107623, 0.09811211)
-body_offset = Transform3D(0.797223, -0.061766446, 0.60051703, 0.25942728, -0.8631614, -0.43318647, 0.5450995, 0.50113666, -0.67210793, 0.46693176, -0.41115344, 0.82816863)
-gravity_scale = 2.0
+[node name="Physical Bone forearm_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="18" unique_id=1325918328]
+transform = Transform3D(-0.7382865, 0.6630789, 0.12352949, -0.42743245, -0.6016249, 0.67479557, 0.52176106, 0.44539192, 0.72759295, 0.51439136, 0.9218215, 0.03446319)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.881785e-06, -1.5217398e-05, 0.15203992)
+body_offset = Transform3D(1.0000001, 3.2782555e-07, -3.874302e-07, -4.4703484e-07, -5.662441e-07, -1.0000002, -2.5331974e-07, 1.0000004, -5.662441e-07, 8.940697e-06, 0.15203995, 1.5303493e-05)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "forearm.R"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone forearm_R" index="0" unique_id=49427333]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_h32t7")
+
+[node name="Physical Bone hand_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="19" unique_id=1023333984]
+transform = Transform3D(0.95677423, -0.27842408, 0.08404218, 0.14024201, 0.6948388, 0.705359, -0.25478467, -0.663083, 0.7038506, 0.4900538, 0.77414757, -0.12093979)
+joint_type = 2
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00023398513, 9.3052164e-05, 0.06392771)
+body_offset = Transform3D(-0.9999703, 0.0074692518, 0.0019177496, 1.1920929e-07, 0.2486884, -0.9685838, -0.007711485, -0.9685551, -0.24868107, 0.000110685825, 0.061896205, 0.015989542)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.R"
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone forearm_R" index="0" unique_id=1910454327]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_R" index="0" unique_id=211957350]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_gjm1a")
-disabled = true
+shape = SubResource("CapsuleShape3D_clicw")
 
-[node name="Physical Bone thigh_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="10" unique_id=1087250306]
-transform = Transform3D(-0.9132779, -0.059533972, 0.402963, -0.33319852, -0.4598676, -0.82310426, 0.23431231, -0.88598955, 0.4001503, -0.4524268, 0.6398964, -0.60627687)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05557707, -0.55212224, 0.35617816)
-body_offset = Transform3D(0.93388253, -0.06937313, -0.35078615, 0.17414999, 0.9450337, 0.27673757, 0.31230676, -0.31952998, 0.89463234, 0.13854238, 0.43288505, -0.47771105)
-gravity_scale = 2.0
+[node name="Physical Bone hand_R_001" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="20" unique_id=1823012526]
+transform = Transform3D(-0.42771387, 0.24390152, 0.87038666, 0.35416362, -0.8407012, 0.40962142, 0.8316423, 0.4834601, 0.27319852, 0.46701023, 0.72064775, -0.17184313)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7736794e-05, 4.428836e-05, 0.020524735)
+body_offset = Transform3D(1.0000002, -1.7881393e-07, -4.0382147e-06, -4.1276217e-06, -1.3411045e-07, -1.0000002, 2.0861626e-07, 1.0000005, -1.0430813e-07, -4.7653913e-05, 0.02052474, -4.428625e-05)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.R.001"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_R_001" index="0" unique_id=1057274965]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_qi2im")
+
+[node name="Physical Bone hand_R_002" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="21" unique_id=1292777079]
+transform = Transform3D(0.47429603, 0.24390121, 0.8459052, 0.5382328, -0.8407015, -0.05938439, 0.6966698, 0.48345965, -0.53001696, 0.4389103, 0.71304107, -0.17077722)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1217078e-05, -1.2396296e-05, 0.012347636)
+body_offset = Transform3D(1.0000004, -6.854534e-07, -5.751848e-06, -5.722046e-06, -2.0861626e-07, -1.0000002, 5.662441e-07, 1.0000004, -1.1920929e-07, -1.1146069e-05, 0.012347639, 1.2397766e-05)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.R.002"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_R_002" index="0" unique_id=300462730]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_4yw6j")
+
+[node name="Physical Bone hand_R_004" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="22" unique_id=1013776472]
+transform = Transform3D(-0.4277112, 0.24390127, 0.8703881, 0.35416502, -0.8407013, 0.40962008, 0.8316431, 0.48346013, 0.27319604, 0.45466954, 0.76808715, -0.20288)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8990298e-05, 0.00013005253, 0.017689342)
+body_offset = Transform3D(1.0000005, -1.1920929e-07, -5.468726e-06, -5.6922436e-06, 2.0861626e-07, -1.0000004, 1.4901161e-07, 1.0000005, 2.682209e-07, 2.9087067e-05, 0.017689347, -0.00013005733)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.R.004"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_R_004" index="0" unique_id=21797949]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_pb1v6")
+
+[node name="Physical Bone hand_R_005" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="23" unique_id=1197630219]
+transform = Transform3D(0.473982, 0.2436296, 0.8461594, 0.53810114, -0.8407891, -0.05933771, 0.6969851, 0.48344436, -0.52961624, 0.42608094, 0.76135594, -0.19942231)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0001641577, -0.00023115489, 0.015596021)
+body_offset = Transform3D(1.0000004, -0.00018712878, 0.0004172027, 0.00041750073, 0.00021636486, -1.0000001, 0.00018718839, 1.0000005, 0.00021639466, -0.0001707077, 0.015596002, 0.00022774935)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.R.005"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_R_005" index="0" unique_id=1843253170]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_j5n5b")
+
+[node name="Physical Bone hand_R_007" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="24" unique_id=1403703156]
+transform = Transform3D(0.1636707, 0.9314566, 0.32496232, -0.9105954, 0.015922284, 0.41299212, 0.3795101, -0.3635039, 0.85078615, 0.40086728, 0.8140561, -0.15467799)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000246725, -8.131062e-05, 0.026688443)
+body_offset = Transform3D(1.0000005, 5.9604645e-08, -8.046627e-07, -8.6426735e-07, -5.364418e-07, -1.0000005, 0, 1.0000004, -7.4505806e-07, -0.00024670362, 0.026688457, 8.133054e-05)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "hand.R.007"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone hand_R_007" index="0" unique_id=855472984]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_2hwi5")
+
+[node name="Physical Bone thigh_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="25" unique_id=1851666575]
+transform = Transform3D(-0.99017686, 0.10273507, 0.094843276, 0.0086233765, -0.63215965, 0.77479017, 0.13955422, 0.76799715, 0.625064, -0.24454965, 0.5129286, -0.114637405)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1326186e-06, 9.839618e-06, 0.2032272)
+body_offset = Transform3D(1.0000004, -1.244247e-06, -8.791685e-07, -8.866191e-07, 2.9951334e-05, -1.0000005, 1.2591481e-06, 1.0000012, 2.989173e-05, 1.3113022e-06, 0.20322731, -1.591444e-05)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "thigh.L"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
-joint_constraints/bias = 0.3
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone thigh_L" index="0" unique_id=597331964]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone thigh_L" index="0" unique_id=1991170007]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_4ogkh")
-disabled = true
+shape = SubResource("CapsuleShape3D_5do62")
 
-[node name="Physical Bone shin_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="11" unique_id=1109222751]
-transform = Transform3D(-0.932895, -0.1177908, -0.34034154, 0.3447544, -0.018737346, -0.93850595, 0.10417028, -0.9928616, 0.05808888, -0.28470287, -0.03324321, 0.06531936)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.07336473, 0.3204095, -0.36269444)
-body_offset = Transform3D(0.9415156, -0.022468738, 0.33621997, -0.22783819, -0.77758384, 0.58605075, 0.24827117, -0.628379, -0.7372261, 0.060070276, 0.4784179, -0.084263556)
-gravity_scale = 2.0
+[node name="Physical Bone shin_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="26" unique_id=1956693152]
+transform = Transform3D(-0.9901771, 0.102063894, -0.09556361, 0.008623669, 0.72675836, 0.68683916, 0.13955313, 0.67926824, -0.7204996, -0.24471688, 0.21838671, -0.09765066)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4916087e-06, -8.343031e-06, 0.19973247)
+body_offset = Transform3D(1.0000002, -3.7252903e-08, 5.066395e-07, 4.991889e-07, 3.951788e-05, -1.0000012, 1.4901161e-08, 1.0000005, 3.9458275e-05, -2.592802e-06, 0.1997327, 4.61936e-07)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "shin.L"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
-joint_constraints/bias = 0.3
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
 
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shin_L" index="0" unique_id=1101704787]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shin_L" index="0" unique_id=1990202329]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_dputm")
-disabled = true
+shape = SubResource("CapsuleShape3D_8x300")
 
-[node name="Physical Bone thigh_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="12" unique_id=844597618]
-transform = Transform3D(-0.9132767, 0.05953083, -0.40296623, 0.33319563, -0.45989433, -0.82309043, -0.23432116, -0.8859759, 0.40017536, 0.45325598, 0.6395787, -0.60606986)
-collision_layer = 0
-collision_mask = 256
+[node name="Physical Bone foot_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="27" unique_id=1292561930]
+transform = Transform3D(-0.9984644, -0.04352858, 0.03426504, 0.052876573, -0.93330467, 0.35517114, 0.016519628, 0.3564376, 0.9341731, -0.22854304, 0.0512344, -0.032890767)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05648309, -0.5521245, 0.3561839)
-body_offset = Transform3D(0.93388236, 0.06937434, 0.3507862, -0.17414181, 0.94504297, 0.27671054, -0.31231114, -0.31950125, 0.8946392, -0.13938968, 0.43305758, -0.4774202)
-gravity_scale = 2.0
-bone_name = "thigh.R"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
-joint_constraints/bias = 0.3
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
-
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone thigh_R" index="0" unique_id=1337903152]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_ng1ld")
-disabled = true
-
-[node name="Physical Bone shin_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="13" unique_id=1137546861]
-transform = Transform3D(-0.93289286, 0.11778507, 0.34034932, -0.3447583, -0.018703217, -0.9385052, -0.104176275, -0.99286294, 0.058055475, 0.2800822, -0.028408796, 0.066551805)
-collision_layer = 0
-collision_mask = 256
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075879574, 0.32228065, -0.3566449)
-body_offset = Transform3D(0.9415146, 0.022473812, -0.33622193, 0.22783288, -0.7776073, 0.58601844, -0.2482787, -0.6283481, -0.7372494, -0.055712983, 0.47689617, -0.07927105)
-gravity_scale = 2.0
-bone_name = "shin.R"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
-joint_constraints/bias = 0.3
-joint_constraints/softness = 0.8
-joint_constraints/relaxation = 1.0
-
-[node name="PBoneCollisionShape" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shin_R" index="0" unique_id=93838715]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_q572w")
-disabled = true
-
-[node name="Physical Bone foot_L" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="14" unique_id=1702490757]
-transform = Transform3D(-0.99808496, -0.03827902, 0.048591577, 0.03996617, -0.9986143, 0.034237582, 0.047213662, 0.036114037, 0.99823177, -0.22980084, 0.056103237, 0.01776884)
-joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0018060046, -0.024232615, 0.029445102)
-body_offset = Transform3D(0.9994456, -0.013989467, -0.030217836, -0.024104215, 0.32214698, -0.9463835, 0.022973796, 0.9465871, 0.3216317, 0.0023557693, 0.035629287, 0.013509292)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0730915e-06, 1.1818004e-05, 0.0846395)
+body_offset = Transform3D(1.0000002, -3.3890828e-06, -7.012859e-07, -5.8021396e-07, -0.00011301041, -1.0000006, 3.203284e-06, 1.0000008, -0.00011229515, 1.1324883e-06, 0.08463955, -2.3134053e-06)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "foot.L"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone foot_L" index="0" unique_id=476089846]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone foot_L" index="0" unique_id=1465710332]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_c2shi")
-disabled = true
+shape = SubResource("CapsuleShape3D_d4gb8")
 
-[node name="Physical Bone foot_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="15" unique_id=1680382070]
-transform = Transform3D(-0.998085, 0.038276862, -0.04859211, -0.039964322, -0.9986142, 0.034243714, -0.047214027, 0.036120087, 0.99823153, 0.22980304, 0.056105122, 0.0177667)
+[node name="Physical Bone thigh_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="28" unique_id=1050404815]
+transform = Transform3D(-0.9901773, -0.10273362, -0.09484071, -0.008622307, -0.6321596, 0.7747902, -0.13955148, 0.76799744, 0.62506425, 0.24454065, 0.5129926, -0.11457919)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4300708e-06, 4.7050576e-06, 0.20314032)
+body_offset = Transform3D(1, 4.172325e-07, -1.758337e-06, -1.758337e-06, 2.977252e-05, -1, -4.4703484e-07, 0.99999905, 2.965331e-05, -1.0728836e-06, 0.20314032, -1.0728836e-05)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "thigh.R"
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone thigh_R" index="0" unique_id=704004786]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_c2r01")
+
+[node name="Physical Bone shin_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="29" unique_id=410438694]
+transform = Transform3D(-0.99017715, -0.10206108, 0.09556547, -0.008625061, 0.7267814, 0.68681467, -0.13955225, 0.6792439, -0.7205226, 0.24472657, 0.21842077, -0.09768596)
+joint_type = 3
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.174082e-06, -1.6072806e-06, 0.19968285)
+body_offset = Transform3D(0.99999994, 7.450581e-09, 7.450581e-09, 0, 1.0818243e-05, -0.99999917, -1.4901161e-08, 1, 1.1146069e-05, -2.1755695e-06, 0.19968268, -6.183982e-07)
+linear_damp = 10.0
+angular_damp = 10.0
+bone_name = "shin.R"
+joint_constraints/angular_limit_enabled = true
+joint_constraints/angular_limit_upper = 45.0
+joint_constraints/angular_limit_lower = -45.0
+joint_constraints/angular_limit_bias = 0.3
+joint_constraints/angular_limit_softness = 0.9
+joint_constraints/angular_limit_relaxation = 1.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone shin_R" index="0" unique_id=886145659]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_xpvd5")
+
+[node name="Physical Bone foot_R" type="PhysicalBone3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D" index="30" unique_id=2095766370]
+transform = Transform3D(-0.99846435, 0.0435351, -0.03425933, -0.05287879, -0.9333442, 0.35506687, -0.016517872, 0.3563332, 0.934213, 0.22854336, 0.05124414, -0.03285511)
 joint_type = 2
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001807957, -0.024231503, 0.029449245)
-body_offset = Transform3D(0.99944556, 0.0139905615, 0.030218037, 0.024104202, 0.32214814, -0.94638234, -0.022975242, 0.9465855, 0.3216316, -0.0023578405, 0.035632797, 0.013506919)
-gravity_scale = 2.0
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3147315e-06, -1.5737372e-06, 0.084604755)
+body_offset = Transform3D(1, -1.6856939e-07, 1.1641532e-07, 2.3469329e-07, 6.109476e-06, -0.9999996, -1.0244548e-08, 0.9999995, 5.2154064e-06, -2.3245811e-06, 0.08460472, 1.1324883e-06)
+linear_damp = 10.0
+angular_damp = 10.0
 bone_name = "foot.R"
-joint_constraints/swing_span = 60.0
-joint_constraints/twist_span = 19.999998
+joint_constraints/swing_span = 45.0
+joint_constraints/twist_span = 30.0
 joint_constraints/bias = 0.3
 joint_constraints/softness = 0.8
 joint_constraints/relaxation = 1.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone foot_R" index="0" unique_id=1785338851]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GruntRig/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone foot_R" index="0" unique_id=1024155204]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_5xh8m")
-disabled = true
+shape = SubResource("CapsuleShape3D_th0k2")
 
 [node name="CombatTriggerArea" type="Area3D" parent="." index="3" unique_id=1366615888]
 collision_layer = 0
