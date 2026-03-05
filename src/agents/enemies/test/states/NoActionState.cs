@@ -34,6 +34,12 @@ public partial class NoActionState : EnemyAtomicState
             return;
         }
         
+        if (Grunt.staggered)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
+            return;
+        }
+        
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));

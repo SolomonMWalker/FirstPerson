@@ -37,6 +37,12 @@ public partial class AimingState : EnemyAtomicState
             return;
         }
         
+        if (Grunt.staggered)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
+            return;
+        }
+        
         if (Grunt.aimingOver)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FiringState"));

@@ -30,6 +30,12 @@ public partial class FiringState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
         }
+
+        if (Grunt.staggered)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
+            return;
+        }
         
         if (!Grunt.firing)
         {

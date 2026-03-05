@@ -48,7 +48,6 @@ CrouchingCollisionShape = NodePath("CrouchingCollisionShape3D")
 StandingHitbox = NodePath("StandingHitbox")
 CrouchingHitbox = NodePath("CrouchingHitbox")
 BottomOfPlayer = NodePath("Locations/BottomOfPlayer")
-metadata/_custom_type_script = "uid://bspdm2cmm76n3"
 
 [node name="StandingCollisionShape3D" type="CollisionShape3D" parent="." unique_id=1287733819]
 shape = ExtResource("2_mwsb4")
@@ -300,9 +299,8 @@ WeaponModelParent = NodePath("../../CameraController/WeaponRig/WeaponParent")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")
 
-[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098 node_paths=PackedStringArray("ShieldComponent")]
+[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098]
 script = ExtResource("24_5n4gj")
-ShieldComponent = NodePath("../ShieldComponent")
 metadata/_custom_type_script = "uid://30kyxeyoy43d"
 
 [node name="ShieldComponent" parent="Components" unique_id=1483144528 instance=ExtResource("26_arxxo")]

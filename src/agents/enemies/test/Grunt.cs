@@ -8,6 +8,8 @@ public partial class Grunt : CharacterBody3D
 {
     [ExportCategory("Enemy Settings")]
     [Export] public int Health { get; set; } = 50;
+
+    [Export] public int StaggerAmount { get; set; } = 50;
     [Export] public float Speed { get; set; } = 10f;
     [Export] public float MaxFallSpeed { get; set; } = 50f;
     [Export] public float FireRatePauseInSeconds { get; set; } = 2f;
@@ -19,6 +21,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
     [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
+    [Export] public StaggerComponent StaggerComponent { get; set; }
     
     [ExportCategory("References")]
     [Export] public Node3D NavAgentMovementTargetNode { get; set; }
@@ -60,30 +63,17 @@ public partial class Grunt : CharacterBody3D
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
     
-    public virtual bool CanMove()
-    {
-        return !(dead || ragdoll || firing || falling || staggered);
-    }
-
-    public virtual bool CanRotate()
-    {
-        return !(freezeRotation || staggered);
-    }
-
-    public virtual void RaycastSnapToFloor()
-    {
-        if(IsFloorRaycastColliding()) ApplyFloorSnap();
-    }
-
-    public virtual bool IsFloorRaycastColliding()
-    {
-        return FloorRaycast.IsColliding();
-    }
-
+    public virtual bool CanMove() => !(dead || ragdoll || firing || falling || staggered);
+    public virtual bool CanRotate() => !(freezeRotation || staggered);
+    public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
     public virtual void StopStagger() => staggered = false;
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
+    public virtual void RaycastSnapToFloor()
+    {
+        if (IsFloorRaycastColliding()) ApplyFloorSnap();
+    }
     public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
     {
         //rotated because player forward is -z, it works
@@ -102,6 +92,7 @@ public partial class Grunt : CharacterBody3D
         Callable.From(ActorSetup).CallDeferred();
         
         HealthComponent.SetHealth(Health, true);
+        StaggerComponent.SetStagger(StaggerAmount,true);
         
         FireRateTimer.WaitTime = FireRatePauseInSeconds;
         FireRateTimer.Timeout += () =>
@@ -122,6 +113,11 @@ public partial class Grunt : CharacterBody3D
             };
             dead = true;
             ragdoll = true;
+        };
+
+        StaggerComponent.OnStagger += () =>
+        {
+            staggered = true;
         };
         
         _allPBones.AddRange(PhysicalBoneSimulator3D.GetChildren().OfType<PhysicalBone3D>());
@@ -184,8 +180,8 @@ public partial class Grunt : CharacterBody3D
     private HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
     {
         return new HitInformation(
-            healthDamage: (int) Damage,
-            staggerDamage: (int) StaggerDamage,
+            healthDamage: Damage,
+            staggerDamage: StaggerDamage,
             sourceGlobalPosition: GlobalPosition,
             collisionGlobalPosition: collisionGlobalPosition,
             pitch: 1,

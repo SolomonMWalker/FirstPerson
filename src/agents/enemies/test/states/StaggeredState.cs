@@ -10,7 +10,6 @@ public partial class StaggeredState : EnemyAtomicState
     {
         base.StateEntered();
         if (Grunt is null) return;
-        Grunt.staggered = true;
         Grunt.CustomAnimationTree.TrySetParam("notStaggered", false);
         Grunt.CustomAnimationTree.TrySetParam("staggered", true);
     }
@@ -19,7 +18,6 @@ public partial class StaggeredState : EnemyAtomicState
     {
         base.StateExited();
         if (Grunt is null) return;
-        Grunt.readyToFire = false;
         Grunt.FireRateTimer.Start();
         Grunt.CustomAnimationTree.TrySetParam("notStaggered", true);
         Grunt.CustomAnimationTree.TrySetParam("staggered", false);

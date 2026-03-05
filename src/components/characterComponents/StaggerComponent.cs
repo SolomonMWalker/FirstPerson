@@ -35,6 +35,15 @@ public partial class StaggerComponent : Node
         }
     }
 
+    public void SetStagger(int amount, bool setTotal)
+    {
+        if (setTotal)
+        {
+            CurrentMax = amount;
+        }
+        CurrentAmount = amount;
+    }
+
     public void DepleteStagger(float staggerAmount)
     {
         RechargeTimer.Start();
