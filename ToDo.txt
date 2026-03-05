@@ -17,3 +17,4 @@
 - implement exit idle if shot
 - implement area alert system where enemies will tell other enemies when alerted
     - could be zone based (enemies in zone, one alert will alert all) or distance area based
+- implement dedicated weapon camera to eliminate clip and FOV shifts
