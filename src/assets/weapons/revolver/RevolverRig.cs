@@ -221,7 +221,7 @@ public partial class RevolverRig : WeaponRig
     public override void StartAiming()
     {
         WeaponController.Aiming = true;
-        _playerController.Reticle.Visible = false;
+        _playerController.Reticle.SetReticleExtraVisibility(false);
         _playerController.CameraEffects.Aiming = true;
         _playerController.CameraController.EnterAimTweenActivate();
     }
@@ -229,7 +229,7 @@ public partial class RevolverRig : WeaponRig
     public override void StopAiming()
     {
         WeaponController.Aiming = false;
-        _playerController.Reticle.Visible = true;
+        _playerController.Reticle.SetReticleExtraVisibility(true);
         _playerController.CameraEffects.Aiming = false;
         _playerController.CameraController.ExitAimTweenActivate();
     }

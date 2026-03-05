@@ -30,6 +30,14 @@ public partial class Reticle : CenterContainer
         DrawCircle(Vector2.Zero, DotRadius, DotColor);
     }
 
+    public void SetReticleExtraVisibility(bool visible)
+    {
+        foreach (var line in ReticleLines)
+        {
+            line.Visible = visible;
+        }
+    }
+
     public void AdjustReticleLines()
     {
         var pos = Vector2.Zero;

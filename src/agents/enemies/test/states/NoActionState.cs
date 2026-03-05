@@ -34,7 +34,7 @@ public partial class NoActionState : EnemyAtomicState
             return;
         }
         
-        if (Grunt.staggered)
+        if (Grunt.Staggered)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;

@@ -37,7 +37,7 @@ public partial class AimingState : EnemyAtomicState
             return;
         }
         
-        if (Grunt.staggered)
+        if (Grunt.Staggered)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;

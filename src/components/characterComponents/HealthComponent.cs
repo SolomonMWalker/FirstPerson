@@ -8,12 +8,14 @@ public partial class HealthComponent : Node
     public delegate void OnDeathEventHandler();
 
     [Signal]
-    public delegate void OnHealthDepletedEventHandler(int amount);
+    public delegate void OnHealthDepletedEventHandler(float amount);
 
     [Export] public ShieldComponent ShieldComponent { get; private set; }
-    [Export] public int StartingHealth { get; private set; } = 100;
+    [Export] public float StartingHealth { get; private set; } = 100;
 
-    public int CurrentHealth { get; private set; }
+    public float DamageMult { get; set; } = 1f;
+
+    public float CurrentHealth { get; private set; }
 
     public override void _Ready()
     {
@@ -21,7 +23,7 @@ public partial class HealthComponent : Node
         CurrentHealth = StartingHealth;
     }
 
-    public void SetHealth(int amount, bool setTotal)
+    public void SetHealth(float amount, bool setTotal)
     {
         if (setTotal)
         {
@@ -30,7 +32,7 @@ public partial class HealthComponent : Node
         CurrentHealth = amount;
     }
 
-    public void DepleteHealth(int amount)
+    public void DepleteHealth(float amount)
     {
         if (ShieldComponent is not null && ShieldComponent.TryBlockWithShield(amount)) return;
         CurrentHealth -= amount;

@@ -8,8 +8,19 @@ public partial class Hitbox : Area3D
 {
     [Signal]
     public delegate void OnHitEventHandler(float pitch, float roll, Vector3 source);
-    
+
+    public enum Type
+    {
+        Regular,
+        Weakspot
+    }
+
+    [Export] public Type HitboxType;
     [Export] public bool IsDebug { get; private set; }
+
+    [ExportCategory("Settings")] 
+    [Export] public float WeakspotDamageMult = 1.5f;
+    [Export] public float WeakspotStaggerMult = 1.5f;
     
     [ExportCategory("References")]
     [Export] public HealthComponent HealthComponent { get; private set; }
@@ -45,7 +56,12 @@ public partial class Hitbox : Area3D
         
         if (hitInformation.healthDamage.HasValue)
         {
-            HealthComponent?.DepleteHealth(hitInformation.healthDamage.Value);
+            var damage = hitInformation.healthDamage.Value;
+            if (HitboxType == Type.Weakspot)
+            {
+                damage *= WeakspotDamageMult;
+            }
+            HealthComponent?.DepleteHealth(damage);
             if(IsDebug) DebugHit();
             if (Parent is Grunt grunt && AffectedPhysicalBone is not null)
             {
@@ -61,7 +77,12 @@ public partial class Hitbox : Area3D
 
         if (hitInformation.staggerDamage.HasValue)
         {
-            StaggerComponent?.DepleteStagger(hitInformation.staggerDamage.Value);
+            var damage = hitInformation.staggerDamage.Value;
+            if (HitboxType == Type.Weakspot)
+            {
+                damage *= WeakspotStaggerMult;
+            }
+            StaggerComponent?.DepleteStagger(damage);
         }
     }
 

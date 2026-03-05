@@ -16,11 +16,12 @@ ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 sky_material = SubResource("ProceduralSkyMaterial_6uqi0")
 
 [sub_resource type="Environment" id="Environment_ykrsh"]
-background_mode = 1
-background_color = Color(0.1573502, 0.114532284, 0.17875917, 1)
+background_mode = 2
+background_color = Color(0.35083738, 0.27109975, 0.39447403, 1)
 sky = SubResource("Sky_ppyta")
 tonemap_mode = 2
 glow_enabled = true
+glow_normalized = true
 
 [node name="TestScene" type="Node" unique_id=1584830458]
 
@@ -52,7 +53,6 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=948164215 instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.184113, 7.4530926, -5.1308994)
-Health = 500000
 Speed = 3.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]

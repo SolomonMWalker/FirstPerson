@@ -8,7 +8,6 @@ public partial class Grunt : CharacterBody3D
 {
     [ExportCategory("Enemy Settings")]
     [Export] public int Health { get; set; } = 50;
-
     [Export] public int StaggerAmount { get; set; } = 50;
     [Export] public float Speed { get; set; } = 10f;
     [Export] public float MaxFallSpeed { get; set; } = 50f;
@@ -16,6 +15,8 @@ public partial class Grunt : CharacterBody3D
     [Export] public float ShootRange { get; set; } = 50f;
     [Export] public int Damage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
+    [Export] public float StaggeredDamageReceivedMult { get; set; } = 1.5f;
+    [Export] public float DefaultDamageReceivedMult { get; set; } = 1.0f;
 
     [ExportCategory("Components")]
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
@@ -51,7 +52,23 @@ public partial class Grunt : CharacterBody3D
     [Export] public StringName AimAnimation { get; set; } = "Edited/editedAimGun";
     [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
-    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver, staggered;
+    public bool Staggered
+    {
+        get => _staggered;
+        set
+        {
+            _staggered = value;
+            if (_staggered)
+            {
+                HealthComponent.DamageMult = StaggeredDamageReceivedMult;
+            }
+            else
+            {
+                HealthComponent.DamageMult = DefaultDamageReceivedMult;
+            }
+        }
+    }
+    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage; //vel of bones on ragdoll
@@ -59,16 +76,16 @@ public partial class Grunt : CharacterBody3D
     public float previousFrameVelocityLengthSquared;
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
-    private bool _ready;
+    private bool _ready, _staggered;
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
     
-    public virtual bool CanMove() => !(dead || ragdoll || firing || falling || staggered);
-    public virtual bool CanRotate() => !(freezeRotation || staggered);
+    public virtual bool CanMove() => !(dead || ragdoll || firing || falling || Staggered);
+    public virtual bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
-    public virtual void StopStagger() => staggered = false;
+    public virtual void StopStagger() => Staggered = false;
     public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
     public virtual void RaycastSnapToFloor()
     {
@@ -117,7 +134,7 @@ public partial class Grunt : CharacterBody3D
 
         StaggerComponent.OnStagger += () =>
         {
-            staggered = true;
+            Staggered = true;
         };
         
         _allPBones.AddRange(PhysicalBoneSimulator3D.GetChildren().OfType<PhysicalBone3D>());

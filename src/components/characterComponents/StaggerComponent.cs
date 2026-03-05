@@ -24,6 +24,10 @@ public partial class StaggerComponent : Node
         CurrentMax = StartingAmount;
         RechargeTimer.WaitTime = TimeBeforeRecharge;
         NextStaggerTimer.WaitTime = TimeBeforeAnotherStagger;
+        NextStaggerTimer.Timeout += () =>
+        {
+            CurrentAmount = CurrentMax;
+        };
     }
 
     public override void _Process(double delta)
@@ -35,7 +39,7 @@ public partial class StaggerComponent : Node
         }
     }
 
-    public void SetStagger(int amount, bool setTotal)
+    public void SetStagger(float amount, bool setTotal)
     {
         if (setTotal)
         {
