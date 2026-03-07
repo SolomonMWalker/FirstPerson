@@ -9,6 +9,7 @@ public partial class InCombatState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        Grunt.inCombat = true;
         Grunt.CustomAnimationTree.TrySetParam("inCombat", true);
     }
 

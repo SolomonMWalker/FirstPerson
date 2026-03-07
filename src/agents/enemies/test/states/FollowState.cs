@@ -23,7 +23,7 @@ public partial class FollowState : EnemyAtomicState
         }
 
         if (Grunt.EnemyStateMachine.CurrentCombatState == "NotInCombatState"
-            || Grunt.NavAgentMovementTargetNode is null)
+            || Grunt.CombatTarget is null)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
             return;

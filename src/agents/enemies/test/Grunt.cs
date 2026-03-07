@@ -25,7 +25,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public StaggerComponent StaggerComponent { get; set; }
     
     [ExportCategory("References")]
-    [Export] public Node3D NavAgentMovementTargetNode { get; set; }
+    [Export] public Node3D CombatTarget { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
@@ -37,20 +37,6 @@ public partial class Grunt : CharacterBody3D
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
     [Export] public Timer FireRateTimer { get; set; }
-
-    [ExportCategory("Animation Settings")]
-    [ExportGroup("Names")]
-    [Export] public StringName IdleGunDownAnimation { get; set; } = "idleWithGunDown";
-    [Export] public StringName WalkGunDownAnimation { get; set; } = "walkGunDown";
-    [Export] public StringName IdleGunReadyAnimation { get; set; } = "idleWithGunReady";
-    [Export] public StringName WalkGunReadyAnimation { get; set; } = "walkGunReady";
-    [Export] public StringName IdleGunDownToWalkGunDownAnimation { get; set; } = "idleToWalkGunDown";
-    [Export] public StringName IdleGunReadyToWalkGunReadyAnimation { get; set; } = "idleToWalkGunReady";
-    [Export] public StringName Falling { get; set; } = "falling";
-    [Export] public StringName IdleToFalling { get; set; } = "idleToFalling";
-    [Export] public StringName FallingToIdle { get; set; } = "fallingToIdle";
-    [Export] public StringName AimAnimation { get; set; } = "Edited/editedAimGun";
-    [Export] public StringName FireAnimation { get; set; } = "Edited/editedFireGun";
 
     public bool Staggered
     {
@@ -68,7 +54,7 @@ public partial class Grunt : CharacterBody3D
             }
         }
     }
-    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver;
+    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver, inCombat;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage; //vel of bones on ragdoll
@@ -86,7 +72,7 @@ public partial class Grunt : CharacterBody3D
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
     public virtual void StopStagger() => Staggered = false;
-    public virtual void SetTarget(Node3D target) => NavAgentMovementTargetNode = target;
+    public virtual void SetTarget(Node3D target) => CombatTarget = target;
     public virtual void RaycastSnapToFloor()
     {
         if (IsFloorRaycastColliding()) ApplyFloorSnap();
@@ -117,8 +103,6 @@ public partial class Grunt : CharacterBody3D
             GD.Print("Ready to fire");
             readyToFire = true;
         };
-        
-        AnimationPlayer.Play(IdleGunDownAnimation);
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
         HealthComponent.OnDeath += () =>
@@ -168,16 +152,16 @@ public partial class Grunt : CharacterBody3D
         await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 
         // Now that the navigation map is no longer empty, set the movement target.
-        if (NavAgentMovementTargetNode != null)
+        if (CombatTarget != null)
         {
-            NavigationAgent3D.TargetPosition = NavAgentMovementTargetNode.GlobalPosition;
+            NavigationAgent3D.TargetPosition = CombatTarget.GlobalPosition;
         }
     }
 
     public virtual void Aim()
     {
         freezeRotation = true;
-        shootTargetRelativePosition = ShootRaycast.ToLocal(NavAgentMovementTargetNode.GlobalPosition);
+        shootTargetRelativePosition = ShootRaycast.ToLocal(CombatTarget.GlobalPosition);
     }
 
     public virtual void Fire()
@@ -208,8 +192,8 @@ public partial class Grunt : CharacterBody3D
 
     public virtual void RotateToTarget()
     {
-        if (NavAgentMovementTargetNode is null || freezeRotation) return;
-        var direction = (NavAgentMovementTargetNode.GlobalPosition - GlobalPosition).Normalized();
+        if (CombatTarget is null || freezeRotation) return;
+        var direction = (CombatTarget.GlobalPosition - GlobalPosition).Normalized();
         var targetRotation = Mathf.Atan2(direction.X, direction.Z);
         Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
@@ -277,5 +261,10 @@ public partial class Grunt : CharacterBody3D
         }
     }
 
-
+    public void PostSpawnInitialize(EncounterZone encounterZone)
+    {
+        if (!encounterZone.TryGetTarget(out var target)) return;
+        CombatTarget = target;
+        inCombat = true;
+    }
 }

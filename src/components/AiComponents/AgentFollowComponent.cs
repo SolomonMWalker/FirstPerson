@@ -18,10 +18,10 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             return;
         }
 
-        if (Grunt.NavAgentMovementTargetNode == null) return;
+        if (Grunt.CombatTarget == null) return;
         
         NavigationAgent3D.TargetPosition =  Grunt.CanMove()
-            ? Grunt.NavAgentMovementTargetNode.GlobalPosition
+            ? Grunt.CombatTarget.GlobalPosition
             : Grunt.GlobalPosition;
         
         if (NavigationAgent3D.IsNavigationFinished())

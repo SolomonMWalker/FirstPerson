@@ -20,7 +20,7 @@ public partial class AgentIdleComponent : BaseAiNavComponent
             return;
         }
 
-        if (Grunt.NavAgentMovementTargetNode is not null && Grunt.CanRotate())
+        if (Grunt.CombatTarget is not null && Grunt.CanRotate())
         {
             Grunt.RotateToTarget();
         }

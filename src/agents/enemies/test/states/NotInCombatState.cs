@@ -27,10 +27,16 @@ public partial class NotInCombatState : EnemyAtomicState
             var overlapArea = Grunt.CombatTriggerArea.GetOverlappingAreas().First();
             if (overlapArea is Hitbox hitbox)
             {
-                Grunt.NavAgentMovementTargetNode = hitbox.Parent;
+                Grunt.CombatTarget = hitbox.Parent;
                 OnStateChangeRequired(new ChangeStateEventArgs("InCombatState"));
                 return;
             }
+        }
+
+        if (Grunt.inCombat && Grunt.CombatTarget is not null)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("InCombatState"));
+            return;
         }
     }
 }
