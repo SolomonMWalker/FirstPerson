@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://dtpetyql5mlab" path="res://src/player/playerState/PlayerJumpingState.cs" id="17_rwumh"]
 [ext_resource type="Script" uid="uid://cpoj2n22hin7x" path="res://src/player/playerState/PlayerCoyoteTimeState.cs" id="18_lo20o"]
 [ext_resource type="Script" uid="uid://dpclvu43ru10h" path="res://src/player/playerState/PlayerGroundedState.cs" id="19_dp15v"]
+[ext_resource type="LabelSettings" uid="uid://8xah8hla61bd" path="res://src/player/ui/font_settings.tres" id="22_8fim5"]
 [ext_resource type="Script" uid="uid://30kyxeyoy43d" path="res://src/components/characterComponents/HealthComponent.cs" id="24_5n4gj"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/ui/Reticle.cs" id="25_dxex4"]
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/player/MouseCaptureComponent.cs" id="26_4556c"]
@@ -27,9 +28,9 @@
 [ext_resource type="Script" uid="uid://ynfxw11ydbe1" path="res://src/player/StepHandlerComponent.cs" id="27_a3051"]
 [ext_resource type="Script" uid="uid://d15mhlbrskvvl" path="res://src/player/WeaponController.cs" id="28_v0tgu"]
 
-[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ShieldComponent", "ClamberController", "WeaponController", "CameraController", "HealthLabel", "ShieldLabel", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "Reticle", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
+[node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ShieldComponent", "ClamberController", "WeaponController", "CameraController", "HealthLabel", "ShieldLabel", "InteractLabel", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "Reticle", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
 collision_layer = 0
-collision_mask = 769
+collision_mask = 99
 script = ExtResource("1_r8ls8")
 StepHandlerComponent = NodePath("Components/StepHandlerComponent")
 HealthComponent = NodePath("Components/HealthComponent")
@@ -37,8 +38,9 @@ ShieldComponent = NodePath("Components/ShieldComponent")
 ClamberController = NodePath("ClamberController")
 WeaponController = NodePath("Components/WeaponController")
 CameraController = NodePath("CameraController")
-HealthLabel = NodePath("UserInterface/Label")
-ShieldLabel = NodePath("UserInterface/StateLabel")
+HealthLabel = NodePath("UserInterface/HealthShieldControl/HealthLabel")
+ShieldLabel = NodePath("UserInterface/HealthShieldControl/ShieldLabel")
+InteractLabel = NodePath("UserInterface/InteractControl/InteractLabel")
 CameraEffects = NodePath("CameraEffects")
 PlayerStateMachine = NodePath("PlayerStateMachine")
 AnimationPlayer = NodePath("AnimationPlayer")
@@ -60,7 +62,7 @@ disabled = true
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
 [node name="StandingHitbox" type="Area3D" parent="." unique_id=846555808 node_paths=PackedStringArray("HealthComponent", "Parent")]
-collision_layer = 10
+collision_layer = 8
 collision_mask = 0
 script = ExtResource("4_xmnbv")
 HealthComponent = NodePath("../Components/HealthComponent")
@@ -73,7 +75,7 @@ debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
 [node name="CrouchingHitbox" type="Area3D" parent="." unique_id=1342054131 node_paths=PackedStringArray("HealthComponent", "Parent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-collision_layer = 10
+collision_layer = 8
 collision_mask = 0
 monitoring = false
 monitorable = false
@@ -102,18 +104,23 @@ PlayerController = NodePath("..")
 MouseCaptureComponent = NodePath("../Components/MouseCaptureComponent")
 StandingLocation = NodePath("../Locations/Standing/CameraLocation")
 CrouchingLocation = NodePath("../Locations/Crouching/CameraLocation")
+InteractRaycastLength = 2
 
 [node name="Camera3D" type="Camera3D" parent="CameraController" unique_id=1965713961]
 current = true
 fov = 77.0
 
 [node name="ShootRayCast" type="RayCast3D" parent="CameraController/Camera3D" unique_id=458075684]
+enabled = false
 target_position = Vector3(0, 0, 0)
-collision_mask = 258
+collision_mask = 99
 collide_with_areas = true
 
 [node name="InteractRayCast" type="RayCast3D" parent="CameraController/Camera3D" unique_id=1681079911]
+target_position = Vector3(0, 0, -1)
 collision_mask = 16
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="WeaponRig" type="Node3D" parent="CameraController" unique_id=1012836030]
 transform = Transform3D(-1, 0, -8.742277e-08, 0, 0.9999999, 0, 8.742278e-08, 0, -0.9999999, 0, -0.185, 0.2)
@@ -265,19 +272,69 @@ width = 2.0
 points = PackedVector2Array(-5, 0, -15, 0)
 width = 2.0
 
-[node name="Label" type="Label" parent="UserInterface" unique_id=951544714]
+[node name="InteractControl" type="Control" parent="UserInterface" unique_id=1923764051]
 layout_mode = 1
-offset_right = 40.0
-offset_bottom = 23.0
-
-[node name="StateLabel" type="Label" parent="UserInterface" unique_id=1148641770]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 467.0
+offset_top = 394.0
+offset_right = -466.0
+offset_bottom = -168.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InteractLabel" type="Label" parent="UserInterface/InteractControl" unique_id=381229466]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -17.5
+offset_bottom = 17.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Interact (F)"
+label_settings = ExtResource("22_8fim5")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HealthShieldControl" type="Control" parent="UserInterface" unique_id=1297214276]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 534.0
+offset_right = -66.0
+offset_bottom = -23.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthLabel" type="Label" parent="UserInterface/HealthShieldControl" unique_id=951544714]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_right = 40.0
+offset_bottom = 11.5
+grow_vertical = 2
+label_settings = ExtResource("22_8fim5")
+
+[node name="ShieldLabel" type="Label" parent="UserInterface/HealthShieldControl" unique_id=1148641770]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
 offset_left = -219.0
-offset_bottom = 73.0
+offset_top = -36.5
+offset_bottom = 36.5
 grow_horizontal = 0
+grow_vertical = 2
+label_settings = ExtResource("22_8fim5")
 autowrap_mode = 3
 
 [node name="Components" type="Node" parent="." unique_id=617439353]
@@ -299,8 +356,9 @@ WeaponModelParent = NodePath("../../CameraController/WeaponRig/WeaponParent")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")
 
-[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098]
+[node name="HealthComponent" type="Node" parent="Components" unique_id=376964098 node_paths=PackedStringArray("ShieldComponent")]
 script = ExtResource("24_5n4gj")
+ShieldComponent = NodePath("../ShieldComponent")
 metadata/_custom_type_script = "uid://30kyxeyoy43d"
 
 [node name="ShieldComponent" parent="Components" unique_id=1483144528 instance=ExtResource("26_arxxo")]

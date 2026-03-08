@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://ckgl8ari50ceg"]
+[gd_scene format=3 uid="uid://ckgl8ari50ceg"]
 
 [ext_resource type="Script" uid="uid://30cojh8y5xhy" path="res://src/assets/weapons/scripts/Projectile.cs" id="1_ftosq"]
 
@@ -15,23 +15,23 @@ emission_enabled = true
 emission = Color(0.85490197, 0.20392157, 0.2627451, 1)
 emission_energy_multiplier = 1.99
 
-[node name="Projectile" type="Area3D" node_paths=PackedStringArray("RayCast")]
+[node name="Projectile" type="Area3D" unique_id=1356140707 node_paths=PackedStringArray("RayCast")]
 collision_layer = 0
-collision_mask = 416
+collision_mask = 99
 monitoring = false
 script = ExtResource("1_ftosq")
 RayCast = NodePath("CollisionShape3D/RayCast3D")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=843281213]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_c52xh")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D" unique_id=158219116]
 mesh = SubResource("CapsuleMesh_c52xh")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_ftosq")
 
-[node name="RayCast3D" type="RayCast3D" parent="CollisionShape3D"]
+[node name="RayCast3D" type="RayCast3D" parent="CollisionShape3D" unique_id=995425087]
 enabled = false
 target_position = Vector3(0, 0, 0)
-collision_mask = 416
+collision_mask = 99

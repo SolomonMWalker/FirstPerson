@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_qts6i"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_ju488"]
 [ext_resource type="PackedScene" uid="uid://c231ri1aeucyc" path="res://src/agents/enemies/test/grunt_basic_enemy.tscn" id="7_bynor"]
+[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="8_4lq1p"]
+[ext_resource type="Script" uid="uid://ca3rbsogipkiy" path="res://src/components/characterComponents/InteractHitbox.cs" id="8_v18j3"]
+[ext_resource type="Script" uid="uid://b8dusn8hkeft7" path="res://src/environment/TestInteractable.cs" id="9_qts6i"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -22,6 +25,10 @@ sky = SubResource("Sky_ppyta")
 tonemap_mode = 2
 glow_enabled = true
 glow_normalized = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_bynor"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4alok"]
 
 [node name="TestScene" type="Node" unique_id=1584830458]
 
@@ -92,3 +99,19 @@ light_bake_mode = 1
 shadow_enabled = true
 shadow_transmittance_bias = 9.138
 shadow_opacity = 0.66
+
+[node name="TestInteractable" type="MeshInstance3D" parent="Level" unique_id=1555373907 node_paths=PackedStringArray("InteractHitbox")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.978386, 2.41633, 36.54735)
+mesh = SubResource("SphereMesh_bynor")
+surface_material_override/0 = ExtResource("8_4lq1p")
+script = ExtResource("9_qts6i")
+InteractHitbox = NodePath("InteractHitbox")
+
+[node name="InteractHitbox" type="Area3D" parent="Level/TestInteractable" unique_id=952538197]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("8_v18j3")
+metadata/_custom_type_script = "uid://ca3rbsogipkiy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Level/TestInteractable/InteractHitbox" unique_id=1194022531]
+shape = SubResource("SphereShape3D_4alok")

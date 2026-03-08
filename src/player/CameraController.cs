@@ -54,7 +54,7 @@ public partial class CameraController : Node3D
 
     [ExportCategory("Raycast Settings")]
     
-    private int _interactRaycastLength  = 50;
+    private int _interactRaycastLength  = 5;
     [Export] public int InteractRaycastLength
     {
         get => _interactRaycastLength;
@@ -65,7 +65,6 @@ public partial class CameraController : Node3D
                 InteractRaycast.TargetPosition = Vector3.Forward * _interactRaycastLength;
         }
     }
-    [Export] public float InteractRaycastWaitInSec { get; set; } = 0.2f;
     
     private int _shootRaycastLength = 50;
     [Export] public int ShootRaycastLength {
@@ -93,14 +92,11 @@ public partial class CameraController : Node3D
     {
         base._Ready();
         InitialPosition = Position;
-        //ShootRaycast.SetTargetPosition(Vector3.Forward * ShootRaycastLength);
         ShootRaycast.AddException(PlayerController);
         ShootRaycast.Enabled = false;
         ShootRaycastLength = ShootRaycastLength;
         InteractRaycast.SetTargetPosition(Vector3.Forward * InteractRaycastLength);
         InteractRaycast.AddException(PlayerController);
-        InteractRaycastLength = InteractRaycastLength;
-        InteractRaycast.Enabled = false;
         _rotation = PlayerController.Rotation;
     }
 
@@ -146,13 +142,6 @@ public partial class CameraController : Node3D
         _stepSmoothing = true;
     }
     
-    public (GodotObject gdObj, Vector3 point) GetWhatAndWhereInteractRaycastIsHitting()
-    {
-        InteractRaycast.ForceRaycastUpdate();
-        return !InteractRaycast.IsColliding() ? (null, Vector3.Zero) : 
-            (InteractRaycast.GetCollider(), InteractRaycast.GetCollisionPoint());
-    }
-    
     public (GodotObject gdObj, Vector3 point) GetWhatAndWhereShootRaycastIsHitting(Vector2 rotationInDeg, int length)
     {
         ShootRaycast.Rotation = ShootRaycast.Rotation with
@@ -172,6 +161,11 @@ public partial class CameraController : Node3D
         ShootRaycast.ForceRaycastUpdate();
         return !ShootRaycast.IsColliding() ? (null, Vector3.Zero) : 
             (ShootRaycast.GetCollider(), ShootRaycast.GetCollisionPoint());
+    }
+    
+    public (bool successful, InteractHitbox interactable) GetWhatInteractRaycastIsHitting()
+    {
+        return !InteractRaycast.IsColliding() ? (false, null) : (true, (InteractHitbox)InteractRaycast.GetCollider());
     }
 
     public bool AreCrouchTweensRunning() => IsEnterCrouchTweenRunning() || IsExitCrouchTweenRunning();

@@ -32,6 +32,7 @@ public partial class PlayerController : CharacterBody3D
     [ExportCategory("References")]
     [Export] public Label HealthLabel { get; set; }
     [Export] public Label ShieldLabel { get; set; }
+    [Export] public Label InteractLabel { get; set; }
     [Export] public CameraEffects CameraEffects { get; set; }
     [Export] public PlayerStateMachine PlayerStateMachine { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
@@ -54,6 +55,7 @@ public partial class PlayerController : CharacterBody3D
     public float PreviousFrameVelocityLength { get; set; }
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+    private InteractHitbox _interactable = null;
 
     public override void _Ready()
     {
@@ -75,9 +77,9 @@ public partial class PlayerController : CharacterBody3D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        HandleInteractCheck(delta);
-        HealthLabel.Text = $"Current health: {HealthComponent.CurrentHealth}";
-        ShieldLabel.Text = $"Current shield : {ShieldComponent.CurrentAmount}";
+        HandleInteractCheck();
+        HealthLabel.Text = $"Health: {(int)HealthComponent.CurrentHealth}/{HealthComponent.CurrentMax}";
+        ShieldLabel.Text = $"Shield : {(int)ShieldComponent.CurrentAmount}/{ShieldComponent.CurrentMax}";
     }
 
     public override void _PhysicsProcess(double delta)
@@ -132,13 +134,23 @@ public partial class PlayerController : CharacterBody3D
 
     public void Jump() => Velocity = Velocity with { Y = JumpVelocity };
 
-    private void HandleInteractCheck(double delta)
+    private void HandleInteractCheck()
     {
-        // if (InteractCheckPoll.IsPollPinged(delta))
-        // {
-        //     if (!InteractRaycast.IsColliding()) return;
-        //     if interactable is on screen, turn on interact prompt
-        // }        
+        var interactHit = CameraController.GetWhatInteractRaycastIsHitting();
+        _interactable = !interactHit.successful ? null : interactHit.interactable;
+
+        if (_interactable is null)
+        {
+            InteractLabel.Visible = false;
+        }
+        else
+        {
+            InteractLabel.Visible = true;
+            if (Input.IsActionJustPressed("Interact"))
+            {
+                _interactable.Interact();
+            }
+        }
     }
 
     public bool CheckFallSpeed()

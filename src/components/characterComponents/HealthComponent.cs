@@ -16,18 +16,20 @@ public partial class HealthComponent : Node
     public float DamageMult { get; set; } = 1f;
 
     public float CurrentHealth { get; private set; }
+    public float CurrentMax { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
         CurrentHealth = StartingHealth;
+        CurrentMax = StartingHealth;
     }
 
     public void SetHealth(float amount, bool setTotal)
     {
         if (setTotal)
         {
-            StartingHealth = amount;
+            CurrentMax = amount;
         }
         CurrentHealth = amount;
     }
@@ -48,6 +50,6 @@ public partial class HealthComponent : Node
 
     public void Kill()
     {
-        DepleteHealth(StartingHealth);
+        DepleteHealth(CurrentMax);
     }
 }
