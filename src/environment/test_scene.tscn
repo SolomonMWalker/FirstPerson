@@ -8,8 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_ju488"]
 [ext_resource type="PackedScene" uid="uid://c231ri1aeucyc" path="res://src/agents/enemies/test/grunt_basic_enemy.tscn" id="7_bynor"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="8_4lq1p"]
+[ext_resource type="Script" uid="uid://bvbtmtyw1pk08" path="res://src/agents/spawners/Spawner.cs" id="8_qts6i"]
 [ext_resource type="Script" uid="uid://ca3rbsogipkiy" path="res://src/components/characterComponents/InteractHitbox.cs" id="8_v18j3"]
+[ext_resource type="Resource" uid="uid://ehqvsnexn0k6" path="res://src/agents/spawners/spawnables/master_spawnable_collection.tres" id="9_ju488"]
 [ext_resource type="Script" uid="uid://b8dusn8hkeft7" path="res://src/environment/TestInteractable.cs" id="9_qts6i"]
+[ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="10_q644f"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -90,6 +93,20 @@ Speed = 3.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.752365, 7.4530926, -30.570993)
 Speed = 3.0
 
+[node name="Spawner" type="Node3D" parent="Level/Enemies" unique_id=1737404308 node_paths=PackedStringArray("EncounterZone", "SpawnLocationNode", "ParentOfSpawned")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.244343, 0, 24.559898)
+script = ExtResource("8_qts6i")
+EncounterZone = NodePath("../EncounterNode")
+SpawnableCollection = ExtResource("9_ju488")
+SpawnLocationNode = NodePath("SpawnableLocation")
+ParentOfSpawned = NodePath("..")
+
+[node name="SpawnableLocation" type="Node3D" parent="Level/Enemies/Spawner" unique_id=1340211387]
+
+[node name="EncounterNode" type="Node3D" parent="Level/Enemies" unique_id=545916618 node_paths=PackedStringArray("Target")]
+script = ExtResource("10_q644f")
+Target = NodePath("../../Player")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")
 
@@ -100,11 +117,12 @@ shadow_enabled = true
 shadow_transmittance_bias = 9.138
 shadow_opacity = 0.66
 
-[node name="TestInteractable" type="MeshInstance3D" parent="Level" unique_id=1555373907 node_paths=PackedStringArray("InteractHitbox")]
+[node name="TestInteractable" type="MeshInstance3D" parent="Level" unique_id=1555373907 node_paths=PackedStringArray("Spawner", "InteractHitbox")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.978386, 2.41633, 36.54735)
 mesh = SubResource("SphereMesh_bynor")
 surface_material_override/0 = ExtResource("8_4lq1p")
 script = ExtResource("9_qts6i")
+Spawner = NodePath("../Enemies/Spawner")
 InteractHitbox = NodePath("InteractHitbox")
 
 [node name="InteractHitbox" type="Area3D" parent="Level/TestInteractable" unique_id=952538197]

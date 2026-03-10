@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Spawnable" format=3 uid="uid://b54320x52f0il"]
+
+[ext_resource type="Script" uid="uid://hc2lexfp0xdn" path="res://src/agents/spawners/Spawnable.cs" id="1_gsmcv"]
+[ext_resource type="PackedScene" uid="uid://c231ri1aeucyc" path="res://src/agents/enemies/test/grunt_basic_enemy.tscn" id="1_jrokj"]
+
+[resource]
+script = ExtResource("1_gsmcv")
+ToSpawn = ExtResource("1_jrokj")
+metadata/_custom_type_script = "uid://hc2lexfp0xdn"

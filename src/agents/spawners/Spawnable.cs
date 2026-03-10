@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace FirstPerson.agents.enemies;
+namespace FirstPerson.agents.spawners;
 
 [GlobalClass]
 public partial class Spawnable : Resource

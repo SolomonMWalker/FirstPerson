@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SpawnableCollection" format=3 uid="uid://ehqvsnexn0k6"]
+
+[ext_resource type="Script" uid="uid://c8ojmnf71e0nm" path="res://src/agents/spawners/SpawnableCollection.cs" id="1_mlabe"]
+[ext_resource type="Resource" uid="uid://b54320x52f0il" path="res://src/agents/spawners/spawnables/grunt_spawnable.tres" id="1_q02ct"]
+
+[resource]
+script = ExtResource("1_mlabe")
+SpawnableList = Array[Object]([ExtResource("1_q02ct")])
+metadata/_custom_type_script = "uid://c8ojmnf71e0nm"
