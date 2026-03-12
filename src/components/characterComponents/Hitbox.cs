@@ -51,14 +51,17 @@ public partial class Hitbox : Area3D
 
     public void Hit(HitInformation hitInformation)
     {
-        if (hitInformation.pitch.HasValue && hitInformation.roll.HasValue && hitInformation.sourceGlobalPosition is not null)
+        if (hitInformation.Pitch.HasValue 
+            && hitInformation.Roll.HasValue 
+            && hitInformation.SourceGlobalPosition is not null)
         {
-            EmitSignalOnHitSetImpulseReaction(hitInformation.pitch.Value, hitInformation.roll.Value, hitInformation.sourceGlobalPosition.Value);
+            EmitSignalOnHitSetImpulseReaction(hitInformation.Pitch.Value, 
+                hitInformation.Roll.Value, hitInformation.SourceGlobalPosition.Value);
         }
         
-        if (hitInformation.healthDamage.HasValue)
+        if (hitInformation.HealthDamage.HasValue)
         {
-            var damage = hitInformation.healthDamage.Value;
+            var damage = hitInformation.HealthDamage.Value;
             if (HitboxType == Type.Weakspot)
             {
                 damage *= WeakspotDamageMult;
@@ -68,18 +71,19 @@ public partial class Hitbox : Area3D
             if (Parent is Grunt grunt && AffectedPhysicalBone is not null)
             {
                 grunt.affectedBone = AffectedPhysicalBone;
-                if (hitInformation.sourceGlobalPosition is not null && hitInformation.collisionGlobalPosition.HasValue
-                                                                    && HealthComponent?.CurrentHealth > 0)
+                if (hitInformation.SourceGlobalPosition is not null 
+                    && hitInformation.CollisionGlobalPosition.HasValue
+                    && HealthComponent?.CurrentHealth > 0)
                 {
-                    grunt.SetLastDamageDirection(hitInformation.sourceGlobalPosition.Value, 
-                        hitInformation.collisionGlobalPosition.Value);
+                    grunt.SetLastDamageDirection(hitInformation.SourceGlobalPosition.Value, 
+                        hitInformation.CollisionGlobalPosition.Value);
                 }
             }
         }
 
-        if (hitInformation.staggerDamage.HasValue)
+        if (hitInformation.StaggerDamage.HasValue)
         {
-            var damage = hitInformation.staggerDamage.Value;
+            var damage = hitInformation.StaggerDamage.Value;
             if (HitboxType == Type.Weakspot)
             {
                 damage *= WeakspotStaggerMult;
@@ -87,9 +91,9 @@ public partial class Hitbox : Area3D
             StaggerComponent?.DepleteStagger(damage);
         }
 
-        if (hitInformation.sourceCombatTargetNode3D is not null)
+        if (hitInformation.SourceCombatTargetNode3D is not null)
         {
-            EmitSignalOnHitSetCombatTarget(hitInformation.sourceCombatTargetNode3D);
+            EmitSignalOnHitSetCombatTarget(hitInformation.SourceCombatTargetNode3D);
         }
     }
 

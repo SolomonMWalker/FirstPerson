@@ -27,6 +27,7 @@ public partial class Grunt : CharacterBody3D
     
     [ExportCategory("References")]
     [Export] public Node3D CombatTarget { get; set; }
+    [Export] public EncounterZone EncounterZone { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
@@ -113,6 +114,10 @@ public partial class Grunt : CharacterBody3D
             {
                 CombatTarget = target;
                 inCombat = true;
+                if (EncounterZone is not null && !EncounterZone.Alerted)
+                {
+                    EncounterZone.AlertZone(CombatTarget);
+                }
             };
         }
         

@@ -10,25 +10,25 @@ public partial class EncounterZone : Node3D
     [Signal]
     public delegate void OnCombatStartEventHandler(Node3D target);
 
-    private bool _alerted;
+    public bool Alerted { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
-        if (Target is not null) _alerted = true;
+        if (Target is not null) Alerted = true;
     }
 
     public void AlertZone(Node3D target)
     {
+        Alerted = true;
         EmitSignalOnCombatStart(target);
     }
 
     public bool TryGetTarget(out Node3D target)
     {
         target = null;
-        if (!_alerted || Target is null) return false;
+        if (!Alerted || Target is null) return false;
         target = Target;
         return true;
-
     }
 }

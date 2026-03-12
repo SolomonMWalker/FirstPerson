@@ -11,11 +11,11 @@ public class HitInformation(
     float? pitch = null,
     float? roll = null)
 {
-    public float? healthDamage = healthDamage;
-    public float? staggerDamage = staggerDamage;
-    public Node3D sourceCombatTargetNode3D = sourceCombatTargetNode3D;
-    public Vector3? sourceGlobalPosition = sourceGlobalPosition;
-    public Vector3? collisionGlobalPosition = collisionGlobalPosition;
-    public float? pitch = pitch;
-    public float? roll = roll;
+    public float? HealthDamage = healthDamage;
+    public float? StaggerDamage = staggerDamage;
+    public readonly Node3D SourceCombatTargetNode3D = sourceCombatTargetNode3D;
+    public Vector3? SourceGlobalPosition = sourceGlobalPosition;
+    public Vector3? CollisionGlobalPosition = collisionGlobalPosition;
+    public float? Pitch = pitch;
+    public float? Roll = roll;
 }
