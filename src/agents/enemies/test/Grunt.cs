@@ -23,6 +23,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public StaggerComponent StaggerComponent { get; set; }
+    [Export] public Godot.Collections.Array<Hitbox> Hitboxes { get; set; }
     
     [ExportCategory("References")]
     [Export] public Node3D CombatTarget { get; set; }
@@ -105,6 +106,16 @@ public partial class Grunt : CharacterBody3D
         };
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
+
+        foreach (var hitbox in Hitboxes)
+        {
+            hitbox.OnHitSetCombatTarget += target =>
+            {
+                CombatTarget = target;
+                inCombat = true;
+            };
+        }
+        
         HealthComponent.OnDeath += () =>
         {
             GD.Print("grunt died!");
@@ -183,6 +194,7 @@ public partial class Grunt : CharacterBody3D
         return new HitInformation(
             healthDamage: Damage,
             staggerDamage: StaggerDamage,
+            sourceCombatTargetNode3D: this,
             sourceGlobalPosition: GlobalPosition,
             collisionGlobalPosition: collisionGlobalPosition,
             pitch: 1,

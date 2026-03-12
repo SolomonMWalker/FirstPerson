@@ -64,11 +64,11 @@ public partial class PlayerController : CharacterBody3D
         {
             GD.Print($"Ow! was hit for {amount} damage!");
         };
-        StandingHitbox.OnHit += (pitch, roll, source) =>
+        StandingHitbox.OnHitSetImpulseReaction += (pitch, roll, source) =>
         {
             CameraEffects.AddDamageKick(pitch, roll, source);
         };
-        CrouchingHitbox.OnHit += (pitch, roll, source) =>
+        CrouchingHitbox.OnHitSetImpulseReaction += (pitch, roll, source) =>
         {
             CameraEffects.AddDamageKick(pitch, roll, source);
         };

@@ -7,7 +7,9 @@ using FirstPerson.Scenes.Player;
 public partial class Hitbox : Area3D
 {
     [Signal]
-    public delegate void OnHitEventHandler(float pitch, float roll, Vector3 source);
+    public delegate void OnHitSetImpulseReactionEventHandler(float pitch, float roll, Vector3 source);
+    [Signal]
+    public delegate void OnHitSetCombatTargetEventHandler(Node3D combatTarget);
 
     public enum Type
     {
@@ -51,7 +53,7 @@ public partial class Hitbox : Area3D
     {
         if (hitInformation.pitch.HasValue && hitInformation.roll.HasValue && hitInformation.sourceGlobalPosition is not null)
         {
-            EmitSignalOnHit(hitInformation.pitch.Value, hitInformation.roll.Value, hitInformation.sourceGlobalPosition.Value);
+            EmitSignalOnHitSetImpulseReaction(hitInformation.pitch.Value, hitInformation.roll.Value, hitInformation.sourceGlobalPosition.Value);
         }
         
         if (hitInformation.healthDamage.HasValue)
@@ -83,6 +85,11 @@ public partial class Hitbox : Area3D
                 damage *= WeakspotStaggerMult;
             }
             StaggerComponent?.DepleteStagger(damage);
+        }
+
+        if (hitInformation.sourceCombatTargetNode3D is not null)
+        {
+            EmitSignalOnHitSetCombatTarget(hitInformation.sourceCombatTargetNode3D);
         }
     }
 

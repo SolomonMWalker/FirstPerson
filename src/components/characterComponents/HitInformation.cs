@@ -5,6 +5,7 @@ namespace FirstPerson.scenes.enemies.test;
 public class HitInformation(
     float? healthDamage = null, 
     float? staggerDamage = null, 
+    Node3D sourceCombatTargetNode3D = null,
     Vector3? sourceGlobalPosition = null,
     Vector3? collisionGlobalPosition = null,
     float? pitch = null,
@@ -12,6 +13,7 @@ public class HitInformation(
 {
     public float? healthDamage = healthDamage;
     public float? staggerDamage = staggerDamage;
+    public Node3D sourceCombatTargetNode3D = sourceCombatTargetNode3D;
     public Vector3? sourceGlobalPosition = sourceGlobalPosition;
     public Vector3? collisionGlobalPosition = collisionGlobalPosition;
     public float? pitch = pitch;

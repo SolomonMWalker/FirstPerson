@@ -209,6 +209,7 @@ public partial class WeaponController : Node
         return new HitInformation(
             healthDamage: (int) CurrentWeapon.Damage,
             staggerDamage: (int) CurrentWeapon.StaggerDamage,
+            sourceCombatTargetNode3D: Player,
             sourceGlobalPosition: Player.GlobalPosition,
             collisionGlobalPosition: collisionGlobalPosition
         );
