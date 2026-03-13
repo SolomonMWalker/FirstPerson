@@ -6,12 +6,12 @@
 [ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/system/GameManager.cs" id="4_4lq1p"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_qts6i"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_ju488"]
-[ext_resource type="PackedScene" uid="uid://c231ri1aeucyc" path="res://src/agents/enemies/test/grunt_basic_enemy.tscn" id="7_bynor"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="8_4lq1p"]
 [ext_resource type="Script" uid="uid://bvbtmtyw1pk08" path="res://src/agents/spawners/Spawner.cs" id="8_qts6i"]
 [ext_resource type="Script" uid="uid://ca3rbsogipkiy" path="res://src/components/characterComponents/InteractHitbox.cs" id="8_v18j3"]
 [ext_resource type="Resource" uid="uid://ehqvsnexn0k6" path="res://src/agents/spawners/spawnables/master_spawnable_collection.tres" id="9_ju488"]
 [ext_resource type="Script" uid="uid://b8dusn8hkeft7" path="res://src/environment/TestInteractable.cs" id="9_qts6i"]
+[ext_resource type="PackedScene" uid="uid://d27lymk4264ob" path="res://src/agents/enemies/test/grunt_basic_enemy_zigzag.tscn" id="10_8whai"]
 [ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="10_q644f"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
@@ -61,46 +61,6 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 
-[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=948164215 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.184113, 7.4530926, -5.1308994)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy2" parent="Level/Enemies" unique_id=1229731549 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.886154, 7.4530926, -21.444296)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy3" parent="Level/Enemies" unique_id=1347495237 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.02982, 7.4530926, -9.142744)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy4" parent="Level/Enemies" unique_id=951607118 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.8777, 7.4530926, -7.4907055)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy5" parent="Level/Enemies" unique_id=712225892 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95.561455, 7.4530926, -22.58726)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy6" parent="Level/Enemies" unique_id=189212498 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.09702, 7.4530926, -10.645586)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy7" parent="Level/Enemies" unique_id=305008686 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 61.162308, 7.4530926, -26.766874)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
-[node name="GruntBasicEnemy8" parent="Level/Enemies" unique_id=329895197 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.752365, 7.4530926, -30.570993)
-Speed = 3.0
-EncounterZone = NodePath("../EncounterNode")
-
 [node name="Spawner" type="Node3D" parent="Level/Enemies" unique_id=1737404308 node_paths=PackedStringArray("EncounterZone", "SpawnLocationNode", "ParentOfSpawned")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.244343, 0, 24.559898)
 script = ExtResource("8_qts6i")
@@ -113,6 +73,10 @@ ParentOfSpawned = NodePath("..")
 
 [node name="EncounterNode" type="Node3D" parent="Level/Enemies" unique_id=545916618]
 script = ExtResource("10_q644f")
+
+[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=1229731549 instance=ExtResource("10_8whai")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.44932, 10.306591, 12.713722)
+FireRatePauseInSeconds = 300000000000.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")

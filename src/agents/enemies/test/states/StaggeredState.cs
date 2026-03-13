@@ -18,7 +18,7 @@ public partial class StaggeredState : EnemyAtomicState
     {
         base.StateExited();
         if (Grunt is null) return;
-        Grunt.FuzzyStartTimer.FuzzyStart();
+        Grunt.FireRateTimer.FuzzyStart();
         Grunt.CustomAnimationTree.TrySetParam("notStaggered", true);
         Grunt.CustomAnimationTree.TrySetParam("staggered", false);
     }

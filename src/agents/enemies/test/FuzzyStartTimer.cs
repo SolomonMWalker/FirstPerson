@@ -14,6 +14,8 @@ public partial class FuzzyStartTimer : Timer
         _random = new Random();
     }
 
+    public void SetStartTime(float time) => _accessibleWaitTime = time;
+
     public void FuzzyStart()
     {
         if (!_started)

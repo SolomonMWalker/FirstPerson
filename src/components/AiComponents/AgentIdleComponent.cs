@@ -2,6 +2,7 @@ using Godot;
 using System;
 using FirstPerson.agents.AiComponents;
 
+[GlobalClass]
 public partial class AgentIdleComponent : BaseAiNavComponent
 {
     public override void HandleNavigation(double delta)

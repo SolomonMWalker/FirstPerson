@@ -20,4 +20,23 @@ public static class TestSpawnImpactMarker
         marker.GlobalPosition = position;
 
         spawner.GetTree().CreateTimer(2.0).Timeout += marker.QueueFree;
-    }}
+    }
+    
+    public static void SpawnPermaMarker(this Node spawner, Vector3 position)
+    {
+        //for 2d decal, get normal of collision, slap it there, maybe edged a bit down the normal for visibility
+        var marker = new MeshInstance3D();
+        var box = new BoxMesh();
+        box.Size = new Vector3(1f, 1f, 1f);
+        marker.Mesh = box;
+
+        var material = new StandardMaterial3D();
+        material.AlbedoColor = Colors.Yellow;
+        marker.SetSurfaceOverrideMaterial(0, material);
+
+        spawner.GetTree().CurrentScene.AddChild(marker);
+        marker.GlobalPosition = position;
+
+        spawner.GetTree().CreateTimer(5.0).Timeout += marker.QueueFree;
+    }
+}

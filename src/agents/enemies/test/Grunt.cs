@@ -20,6 +20,7 @@ public partial class Grunt : CharacterBody3D
 
     [ExportCategory("Components")]
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
+    [Export] public AgentZigzagComponent AgentZigzagComponent { get; set; }
     [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public StaggerComponent StaggerComponent { get; set; }
@@ -52,7 +53,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
-    [Export] public FuzzyStartTimer FuzzyStartTimer { get; set; }
+    [Export] public FuzzyStartTimer FireRateTimer { get; set; }
 
     public bool Staggered
     {
@@ -113,8 +114,8 @@ public partial class Grunt : CharacterBody3D
         HealthComponent.SetHealth(Health, true);
         StaggerComponent.SetStagger(StaggerAmount,true);
         
-        FuzzyStartTimer.WaitTime = FireRatePauseInSeconds;
-        FuzzyStartTimer.Timeout += () =>
+        FireRateTimer.SetStartTime(FireRatePauseInSeconds);
+        FireRateTimer.Timeout += () =>
         {
             GD.Print("Ready to fire");
             readyToFire = true;
