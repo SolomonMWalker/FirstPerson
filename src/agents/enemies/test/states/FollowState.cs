@@ -8,7 +8,7 @@ public partial class FollowState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.FireRateTimer.Start();
+        Grunt.FuzzyStartTimer.FuzzyStart();
     }
 
     public override void StatePhysicsProcessing(double delta)

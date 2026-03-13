@@ -9,7 +9,7 @@ public partial class FiringState : EnemyAtomicState
     {
         base.StateExited();
         Grunt.CustomAnimationTree.TrySetParam("doneFiring", true);
-        Grunt.FireRateTimer.Start();
+        Grunt.FuzzyStartTimer.FuzzyStart();
         Grunt.freezeRotation = false;
     }
 

@@ -27,7 +27,21 @@ public partial class Grunt : CharacterBody3D
     
     [ExportCategory("References")]
     [Export] public Node3D CombatTarget { get; set; }
-    [Export] public EncounterZone EncounterZone { get; set; }
+
+    [Export]
+    public EncounterZone EncounterZone
+    {
+        get => _encounterZone;
+        set
+        {
+            _encounterZone = value;
+            EncounterZone.OnCombatStart += target =>
+            {
+                CombatTarget = target;
+                inCombat = true;
+            };
+        }
+    } private EncounterZone _encounterZone;
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
@@ -38,7 +52,7 @@ public partial class Grunt : CharacterBody3D
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
-    [Export] public Timer FireRateTimer { get; set; }
+    [Export] public FuzzyStartTimer FuzzyStartTimer { get; set; }
 
     public bool Staggered
     {
@@ -99,19 +113,23 @@ public partial class Grunt : CharacterBody3D
         HealthComponent.SetHealth(Health, true);
         StaggerComponent.SetStagger(StaggerAmount,true);
         
-        FireRateTimer.WaitTime = FireRatePauseInSeconds;
-        FireRateTimer.Timeout += () =>
+        FuzzyStartTimer.WaitTime = FireRatePauseInSeconds;
+        FuzzyStartTimer.Timeout += () =>
         {
             GD.Print("Ready to fire");
             readyToFire = true;
         };
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
-        EncounterZone.OnCombatStart += target =>
+
+        if (EncounterZone is not null)
         {
-            CombatTarget = target;
-            inCombat = true;
-        };
+            EncounterZone.OnCombatStart += target =>
+            {
+                CombatTarget = target;
+                inCombat = true;
+            };
+        }
 
         foreach (var hitbox in Hitboxes)
         {
@@ -148,6 +166,7 @@ public partial class Grunt : CharacterBody3D
             var cShape = (CollisionShape3D) pBone.GetChild(0);
             _boneCollisionShapes.Add(cShape);
         }
+        
     }
 
     public override void _Process(double delta)
@@ -285,7 +304,8 @@ public partial class Grunt : CharacterBody3D
 
     public void PostSpawnInitialize(EncounterZone encounterZone)
     {
-        if (!encounterZone.TryGetTarget(out var target)) return;
+        EncounterZone = encounterZone;
+        if (!EncounterZone.TryGetTarget(out var target)) return;
         CombatTarget = target;
         inCombat = true;
     }
