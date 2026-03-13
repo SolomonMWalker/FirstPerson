@@ -107,6 +107,11 @@ public partial class Grunt : CharacterBody3D
         };
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
+        EncounterZone.OnCombatStart += target =>
+        {
+            CombatTarget = target;
+            inCombat = true;
+        };
 
         foreach (var hitbox in Hitboxes)
         {

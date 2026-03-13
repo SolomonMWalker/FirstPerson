@@ -61,37 +61,45 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 
-[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=948164215 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=948164215 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.184113, 7.4530926, -5.1308994)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy2" parent="Level/Enemies" unique_id=1229731549 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy2" parent="Level/Enemies" unique_id=1229731549 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.886154, 7.4530926, -21.444296)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy3" parent="Level/Enemies" unique_id=1347495237 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy3" parent="Level/Enemies" unique_id=1347495237 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.02982, 7.4530926, -9.142744)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy4" parent="Level/Enemies" unique_id=951607118 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy4" parent="Level/Enemies" unique_id=951607118 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84.8777, 7.4530926, -7.4907055)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy5" parent="Level/Enemies" unique_id=712225892 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy5" parent="Level/Enemies" unique_id=712225892 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 95.561455, 7.4530926, -22.58726)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy6" parent="Level/Enemies" unique_id=189212498 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy6" parent="Level/Enemies" unique_id=189212498 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.09702, 7.4530926, -10.645586)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy7" parent="Level/Enemies" unique_id=305008686 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy7" parent="Level/Enemies" unique_id=305008686 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 61.162308, 7.4530926, -26.766874)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
-[node name="GruntBasicEnemy8" parent="Level/Enemies" unique_id=329895197 instance=ExtResource("7_bynor")]
+[node name="GruntBasicEnemy8" parent="Level/Enemies" unique_id=329895197 node_paths=PackedStringArray("EncounterZone") instance=ExtResource("7_bynor")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.752365, 7.4530926, -30.570993)
 Speed = 3.0
+EncounterZone = NodePath("../EncounterNode")
 
 [node name="Spawner" type="Node3D" parent="Level/Enemies" unique_id=1737404308 node_paths=PackedStringArray("EncounterZone", "SpawnLocationNode", "ParentOfSpawned")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.244343, 0, 24.559898)
@@ -103,9 +111,8 @@ ParentOfSpawned = NodePath("..")
 
 [node name="SpawnableLocation" type="Node3D" parent="Level/Enemies/Spawner" unique_id=1340211387]
 
-[node name="EncounterNode" type="Node3D" parent="Level/Enemies" unique_id=545916618 node_paths=PackedStringArray("Target")]
+[node name="EncounterNode" type="Node3D" parent="Level/Enemies" unique_id=545916618]
 script = ExtResource("10_q644f")
-Target = NodePath("../../Player")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")
