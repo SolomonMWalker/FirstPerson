@@ -8,7 +8,7 @@ filter_enabled = true
 filters = ["GruntRig/Skeleton3D:spine", "GruntRig/Skeleton3D:spine.001", "GruntRig/Skeleton3D:spine.002", "GruntRig/Skeleton3D:spine.003", "GruntRig/Skeleton3D:spine.004", "GruntRig/Skeleton3D:spine.005", "GruntRig/Skeleton3D:spine.006"]
 
 [resource]
-graph_offset = Vector2(7.3333335, 64)
+graph_offset = Vector2(-116.67468, 6.022003)
 nodes/output/position = Vector2(848, 176)
 nodes/AnimationNodeBlendSpace2D/node = ExtResource("1_6vck5")
 nodes/AnimationNodeBlendSpace2D/position = Vector2(48, 384)

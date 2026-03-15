@@ -1,6 +1,6 @@
 ﻿- Take the time to fix reticle (how do angle accuracy changes affect reticle line distance)
     - maybe we should switch to a static reticle, not sure yet
-- zigzag ai movement
+- DONE - zigzag ai movement
     - get target position, get normalized direction vector, apply angle to the right, apply half length of 
         zigzag movement, tell target to move there. Once there, apply angle to the left and apply full length
         of zigzag movement. Repeat to the right. Repeat until at target.
@@ -13,8 +13,21 @@
     - dog enemy: dog robot body with demon head in tank futurama style on it
 - DONE - implement stagger for enemy
 - DONE - implement weakspot as an a subclass of hitbox
-- implement grunt spawner
-- implement exit idle if shot
-- implement area alert system where enemies will tell other enemies when alerted
-    - could be zone based (enemies in zone, one alert will alert all) or distance area based
+- DONE - implement grunt spawner
+- DONE - implement exit idle if shot
+- DONE - implement area alert system where enemies will tell other enemies when alerted
+    - DONE - could be zone based (enemies in zone, one alert will alert all) or distance area based
 - implement dedicated weapon camera to eliminate clip and FOV shifts
+- dog enemy
+    - zigzag to target
+    - leap melee attack
+        - code velocity or animation root movement?
+            - probably code velocity, still don't know root movement
+    - generic melee attack (bite)
+- exploder
+    - slowly move towards target
+    - explodes when close enough
+- charger
+    - holds shield, tough to normally shoot
+    - charges, which exposes weakspot on front
+    - has a weakspot on the back which can be hit when you dodge the charge

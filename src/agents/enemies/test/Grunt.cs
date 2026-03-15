@@ -15,12 +15,11 @@ public partial class Grunt : CharacterBody3D
     [Export] public float ShootRange { get; set; } = 50f;
     [Export] public int Damage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
-    [Export] public float StaggeredDamageReceivedMult { get; set; } = 1.5f;
+    [Export] public float StaggeredDamageReceivedMult { get; set; } = 1.0f;
     [Export] public float DefaultDamageReceivedMult { get; set; } = 1.0f;
 
     [ExportCategory("Components")]
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
-    [Export] public AgentZigzagComponent AgentZigzagComponent { get; set; }
     [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
     [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public StaggerComponent StaggerComponent { get; set; }

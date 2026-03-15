@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cjk53dyljkw1k"]
+
+[ext_resource type="Script" uid="uid://bvbtmtyw1pk08" path="res://src/agents/spawners/Spawner.cs" id="1_o2nun"]
+[ext_resource type="Resource" uid="uid://ehqvsnexn0k6" path="res://src/agents/spawners/spawnables/master_spawnable_collection.tres" id="2_nxn6f"]
+
+[node name="Spawner" type="Node3D" unique_id=1038078890 node_paths=PackedStringArray("EncounterZone", "SpawnLocationNode", "ParentOfSpawned")]
+script = ExtResource("1_o2nun")
+EncounterZone = NodePath("")
+SpawnableCollection = ExtResource("2_nxn6f")
+SpawnLocationNode = NodePath("SpawnableLocation")
+ParentOfSpawned = NodePath("")
+
+[node name="SpawnableLocation" type="Node3D" parent="." unique_id=1968911248]

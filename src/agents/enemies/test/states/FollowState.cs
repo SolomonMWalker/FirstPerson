@@ -35,13 +35,6 @@ public partial class FollowState : EnemyAtomicState
             return;
         }
 
-        if (Grunt.AgentZigzagComponent is not null)
-        {
-            Grunt.AgentZigzagComponent.HandleNavigation(delta);
-        }
-        else
-        {
-            Grunt.AgentFollowComponent.HandleNavigation(delta);
-        }
+        Grunt.AgentFollowComponent.HandleNavigation(delta);
     }
 }
