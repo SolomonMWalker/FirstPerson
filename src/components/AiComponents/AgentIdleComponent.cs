@@ -13,17 +13,17 @@ public partial class AgentIdleComponent : BaseAiNavComponent
             return;
         }
         
-        Grunt.NavigationAgent3D.TargetPosition = Grunt.GlobalPosition;
+        Enemy.NavigationAgent3D.TargetPosition = Enemy.GlobalPosition;
         
-        if (!Grunt.IsOnFloor())
+        if (!Enemy.IsOnFloor())
         {
-            Grunt.HandleFalling(delta);
+            Enemy.HandleFalling(delta);
             return;
         }
 
-        if (Grunt.CombatTarget is not null && Grunt.CanRotate())
+        if (Enemy.CombatTarget is not null && Enemy.CanRotate())
         {
-            Grunt.RotateToTarget();
+            Enemy.RotateToTarget();
         }
     }
 }

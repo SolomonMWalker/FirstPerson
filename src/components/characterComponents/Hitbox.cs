@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.Scenes.Player;
 
@@ -68,14 +69,14 @@ public partial class Hitbox : Area3D
             }
             HealthComponent?.DepleteHealth(damage);
             if(IsDebug) DebugHit();
-            if (Parent is Grunt grunt && AffectedPhysicalBone is not null)
+            if (Parent is Enemy enemy && enemy.HasAffectedBone())
             {
-                grunt.affectedBone = AffectedPhysicalBone;
+                enemy.SetAffectedBone(AffectedPhysicalBone);
                 if (hitInformation.SourceGlobalPosition is not null 
                     && hitInformation.CollisionGlobalPosition.HasValue
                     && HealthComponent?.CurrentHealth > 0)
                 {
-                    grunt.SetLastDamageDirection(hitInformation.SourceGlobalPosition.Value, 
+                    enemy.SetLastDamageDirection(hitInformation.SourceGlobalPosition.Value, 
                         hitInformation.CollisionGlobalPosition.Value);
                 }
             }

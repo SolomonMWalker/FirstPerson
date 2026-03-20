@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://b1rtkf7hpv5m4"]
+
+[ext_resource type="PackedScene" uid="uid://c5wqyxr2hg4i4" path="res://blenderTutorial/dog.glb" id="1_qsnk3"]
+[ext_resource type="PackedScene" uid="uid://2cpvm84xgi8w" path="res://src/components/characterComponents/health_component.tscn" id="2_p7mbu"]
+[ext_resource type="PackedScene" uid="uid://c41kae2mksfw2" path="res://src/components/AiComponents/agent_follow_component.tscn" id="3_uuymc"]
+[ext_resource type="PackedScene" uid="uid://bgio0w4k1o78d" path="res://src/components/AiComponents/agent_idle_component.tscn" id="4_aoau8"]
+[ext_resource type="PackedScene" uid="uid://n16weacxue2m" path="res://src/components/characterComponents/stagger_component.tscn" id="5_d1hj7"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://bvjr18uix2as4" path="res://src/agents/enemies/testDog/myAnimations/dog_enemy_state_machine_with_impact.tres" id="6_p7mbu"]
+[ext_resource type="Script" uid="uid://c3v7rt2p3hquu" path="res://src/agents/enemies/test/CustomAnimationTree.cs" id="7_i11x5"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qsnk3"]
+height = 1.3600194
+
+[node name="dog" unique_id=998444361 instance=ExtResource("1_qsnk3")]
+collision_layer = 0
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="0" unique_id=1933990333]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.4986908, -0.006172061)
+shape = SubResource("CapsuleShape3D_qsnk3")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="1" unique_id=1865005134]
+
+[node name="FloorRayCast3D" type="RayCast3D" parent="." index="4" unique_id=83819101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.119152345, 0)
+target_position = Vector3(0, -0.3, 0)
+collision_mask = 3
+hit_from_inside = true
+
+[node name="Components" type="Node3D" parent="." index="5" unique_id=1142642922]
+
+[node name="HealthComponent" parent="Components" index="0" unique_id=1598417287 instance=ExtResource("2_p7mbu")]
+
+[node name="AgentFollowComponent" parent="Components" index="1" unique_id=901364353 node_paths=PackedStringArray("NavigationAgent3D", "Grunt") instance=ExtResource("3_uuymc")]
+NavigationAgent3D = NodePath("../../NavigationAgent3D")
+Grunt = NodePath("../..")
+
+[node name="AgentIdleComponent" parent="Components" index="2" unique_id=1896834887 node_paths=PackedStringArray("NavigationAgent3D", "Grunt") instance=ExtResource("4_aoau8")]
+NavigationAgent3D = NodePath("../../NavigationAgent3D")
+Grunt = NodePath("../..")
+
+[node name="StaggerComponent" parent="Components" index="3" unique_id=1046773979 instance=ExtResource("5_d1hj7")]
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="6" unique_id=666716647]
+tree_root = ExtResource("6_p7mbu")
+anim_player = NodePath("../AnimationPlayer")
+parameters/AnimationNodeBlendSpace2D/blend_position = Vector2(0, 0)
+parameters/AnimationNodeStateMachine/conditions/dead = false
+parameters/AnimationNodeStateMachine/conditions/inCombat = false
+parameters/AnimationNodeStateMachine/conditions/notInCombat = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/aiming = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/doneFiring = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/falling = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/moving = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/notFalling = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/notStaggered = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/staggered = false
+parameters/AnimationNodeStateMachine/InCombatStateMachine/conditions/stopped = false
+parameters/AnimationNodeStateMachine/NotInCombatStateMachine/conditions/falling = false
+parameters/AnimationNodeStateMachine/NotInCombatStateMachine/conditions/moving = false
+parameters/AnimationNodeStateMachine/NotInCombatStateMachine/conditions/notFalling = false
+parameters/AnimationNodeStateMachine/NotInCombatStateMachine/conditions/stopped = false
+parameters/OneShot/active = false
+parameters/OneShot/internal_active = false
+parameters/OneShot/request = 0
+script = ExtResource("7_i11x5")

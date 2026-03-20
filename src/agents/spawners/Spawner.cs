@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using Godot;
 
@@ -29,7 +30,7 @@ public partial class Spawner : Node3D
     public void Spawn()
     {
         if (_currentSpawnable is null) return;
-        var instance = _currentSpawnable.ToSpawn.Instantiate<Grunt>();
+        var instance = _currentSpawnable.ToSpawn.Instantiate<Enemy>();
         AddChild(instance);
         instance.Reparent(ParentOfSpawned);
         instance.PostSpawnInitialize(EncounterZone);

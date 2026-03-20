@@ -1,0 +1,18 @@
+[gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://bvjr18uix2as4"]
+
+[ext_resource type="AnimationNodeBlendSpace2D" uid="uid://70weimhb68gc" path="res://src/agents/enemies/test/myAnimations/grunt_impact_blend_space_2d.tres" id="1_qdxkd"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://22d6pu6ymuv2" path="res://src/agents/enemies/test/myAnimations/basic_enemy_state_machine.tres" id="2_qgmbx"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_6vck5"]
+filter_enabled = true
+filters = ["GruntRig/Skeleton3D:spine", "GruntRig/Skeleton3D:spine.001", "GruntRig/Skeleton3D:spine.002", "GruntRig/Skeleton3D:spine.003", "GruntRig/Skeleton3D:spine.004", "GruntRig/Skeleton3D:spine.005", "GruntRig/Skeleton3D:spine.006"]
+
+[resource]
+nodes/output/position = Vector2(848, 176)
+nodes/AnimationNodeBlendSpace2D/node = ExtResource("1_qdxkd")
+nodes/AnimationNodeBlendSpace2D/position = Vector2(48, 384)
+nodes/AnimationNodeStateMachine/node = ExtResource("2_qgmbx")
+nodes/AnimationNodeStateMachine/position = Vector2(48, 96)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_6vck5")
+nodes/OneShot/position = Vector2(480, 176)
+node_connections = [&"output", 0, &"OneShot", &"OneShot", 0, &"AnimationNodeStateMachine", &"OneShot", 1, &"AnimationNodeBlendSpace2D"]

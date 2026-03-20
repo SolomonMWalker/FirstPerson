@@ -13,21 +13,21 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             return;
         }
         
-        if (!Grunt.IsOnFloor())
+        if (!Enemy.IsOnFloor())
         {
-            Grunt.HandleFalling(delta);
+            Enemy.HandleFalling(delta);
             return;
         }
 
-        if (Grunt.CombatTarget == null) return;
+        if (Enemy.CombatTarget == null) return;
         
-        NavigationAgent3D.TargetPosition =  Grunt.CanMove()
-            ? Grunt.CombatTarget.GlobalPosition
-            : Grunt.GlobalPosition;
+        NavigationAgent3D.TargetPosition =  Enemy.CanMove()
+            ? Enemy.CombatTarget.GlobalPosition
+            : Enemy.GlobalPosition;
         
         if (NavigationAgent3D.IsNavigationFinished())
         {
-            Grunt.RotateToTarget();
+            Enemy.RotateToTarget();
             
             if (NavigationAgent3D.AvoidanceEnabled)
             {
@@ -35,23 +35,23 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             }
             else
             {
-                Grunt.OnVelocityComputed(Vector3.Zero);
+                Enemy.OnVelocityComputed(Vector3.Zero);
             }
             return;
         }
 
         var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
-        var direction = (nextPathPosition - Grunt.GlobalPosition).Normalized();
-        var currentVelocity = direction * Grunt.Speed;
+        var direction = (nextPathPosition - Enemy.GlobalPosition).Normalized();
+        var currentVelocity = direction * Enemy.Speed;
         currentVelocity = currentVelocity with { Y = 0 };
         
         if (direction.Length() > 0.01f)
         {
-            Grunt.RotateToGlobalPoint(direction);
+            Enemy.RotateToGlobalPoint(direction);
         }
         else
         {
-            Grunt.RotateToTarget();
+            Enemy.RotateToTarget();
         }
 
         if (NavigationAgent3D.AvoidanceEnabled)
@@ -60,7 +60,7 @@ public partial class AgentFollowComponent : BaseAiNavComponent
         }
         else
         {
-            Grunt.OnVelocityComputed(currentVelocity);
+            Enemy.OnVelocityComputed(currentVelocity);
         }
     }
 }

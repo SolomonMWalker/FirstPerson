@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cl2875e4cdiab"
-path.s3tc="res://.godot/imported/Arms_cylinderTexture.png-03b35de14e5e4d3bcc52f28cf6da2408.s3tc.ctex"
+path.s3tc="res://.godot/imported/Arms_cylinderTexture.png-78e6e0931779cd3e8c604faaceef1dd0.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://BlenderTutorial/Arms_cylinderTexture.png"
-dest_files=["res://.godot/imported/Arms_cylinderTexture.png-03b35de14e5e4d3bcc52f28cf6da2408.s3tc.ctex"]
+source_file="res://blenderTutorial/Arms_cylinderTexture.png"
+dest_files=["res://.godot/imported/Arms_cylinderTexture.png-78e6e0931779cd3e8c604faaceef1dd0.s3tc.ctex"]
 
 [params]
 
