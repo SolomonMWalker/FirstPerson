@@ -5,9 +5,12 @@ namespace FirstPerson.agents.enemies.test;
 
 public abstract partial class Enemy : CharacterBody3D
 {
-    public float Speed { get; set; }
-    public Node3D CombatTarget { get; set; }
-    public NavigationAgent3D NavigationAgent3D { get; set; }
+    [ExportCategory("Enemy Settings")]
+    [Export] public float Speed { get; set; }
+    
+    [ExportCategory("Enemy References")]
+    [Export] public Node3D CombatTarget { get; set; }
+    [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     
     public abstract void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint);
     public abstract void PostSpawnInitialize(EncounterZone encounterZone);

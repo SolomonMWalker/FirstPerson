@@ -1,15 +1,15 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
 
-public partial class Grunt : CharacterBody3D
+public partial class Grunt : Enemy
 {
     [ExportCategory("Enemy Settings")]
     [Export] public int Health { get; set; } = 50;
     [Export] public int StaggerAmount { get; set; } = 50;
-    [Export] public float Speed { get; set; } = 10f;
     [Export] public float MaxFallSpeed { get; set; } = 50f;
     [Export] public float FireRatePauseInSeconds { get; set; } = 2f;
     [Export] public float ShootRange { get; set; } = 50f;
@@ -26,8 +26,6 @@ public partial class Grunt : CharacterBody3D
     [Export] public Godot.Collections.Array<Hitbox> Hitboxes { get; set; }
     
     [ExportCategory("References")]
-    [Export] public Node3D CombatTarget { get; set; }
-
     [Export]
     public EncounterZone EncounterZone
     {
@@ -42,7 +40,6 @@ public partial class Grunt : CharacterBody3D
             };
         }
     } private EncounterZone _encounterZone;
-    [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
     [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
@@ -82,8 +79,8 @@ public partial class Grunt : CharacterBody3D
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
     
-    public virtual bool CanMove() => !(dead || ragdoll || firing || falling || Staggered);
-    public virtual bool CanRotate() => !(freezeRotation || Staggered);
+    public override bool CanMove() => !(dead || ragdoll || firing || falling || Staggered);
+    public override bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
@@ -93,7 +90,7 @@ public partial class Grunt : CharacterBody3D
     {
         if (IsFloorRaycastColliding()) ApplyFloorSnap();
     }
-    public void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
+    public override void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
     {
         //rotated because player forward is -z, it works
         dirLastDamage = (sourceGlobalPosition - collisionGlobalPoint).Rotated(Vector3.Up, Mathf.DegToRad(180))
@@ -231,7 +228,7 @@ public partial class Grunt : CharacterBody3D
         );
     }
 
-    public virtual void RotateToTarget()
+    public override void RotateToTarget()
     {
         if (CombatTarget is null || freezeRotation) return;
         var direction = (CombatTarget.GlobalPosition - GlobalPosition).Normalized();
@@ -239,14 +236,14 @@ public partial class Grunt : CharacterBody3D
         Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
 
-    public virtual void RotateToGlobalPoint(Vector3 globalPoint)
+    public override void RotateToGlobalPoint(Vector3 globalPoint)
     {
         if (freezeRotation) return;
         var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
         Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
     
-    public void OnVelocityComputed(Vector3 safeVelocity)
+    public override void OnVelocityComputed(Vector3 safeVelocity)
     {
         Velocity = safeVelocity;
         MoveAndSlide();
@@ -257,7 +254,12 @@ public partial class Grunt : CharacterBody3D
         return new Vector3(velocity.X, velocity.Y - Gravity * (float)delta, velocity.Z);
     }
 
-    public virtual void HandleFalling(double delta)
+    public override void SetAffectedBone(PhysicalBone3D physicalBone3D)
+    {
+        affectedBone = physicalBone3D;
+    }
+
+    public override void HandleFalling(double delta)
     {
         // Do not query when the map has never synchronized and is empty.
         if (NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
@@ -302,11 +304,16 @@ public partial class Grunt : CharacterBody3D
         }
     }
 
-    public void PostSpawnInitialize(EncounterZone encounterZone)
+    public override void PostSpawnInitialize(EncounterZone encounterZone)
     {
         EncounterZone = encounterZone;
         if (!EncounterZone.TryGetTarget(out var target)) return;
         CombatTarget = target;
         inCombat = true;
+    }
+
+    public override bool HasAffectedBone()
+    {
+        return true;
     }
 }
