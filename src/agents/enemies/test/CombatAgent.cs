@@ -7,7 +7,7 @@ using FirstPerson.scenes.enemies.test.states;
 
 public partial class CombatAgent : MovingAgent
 {
-    [ExportCategory("Enemy Settings")]
+    [ExportCategory("CombatAgent Settings")]
     [Export] public int Health { get; set; } = 50;
     [Export] public int StaggerAmount { get; set; } = 50;
     [Export] public int Damage { get; set; } = 10;
@@ -15,9 +15,7 @@ public partial class CombatAgent : MovingAgent
     [Export] public float StaggeredDamageReceivedMult { get; set; } = 1.0f;
     [Export] public float DefaultDamageReceivedMult { get; set; } = 1.0f;
 
-    [ExportCategory("Components")]
-    [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
-    [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
+    [ExportCategory("CombatAgent Components")]
     [Export] public HealthComponent HealthComponent { get; set; }
     [Export] public StaggerComponent StaggerComponent { get; set; }
     [Export] public Godot.Collections.Array<Hitbox> Hitboxes { get; set; }
@@ -67,10 +65,10 @@ public partial class CombatAgent : MovingAgent
     public Vector2 dirLastDamageXz; //determines impact animation blend
     public float previousFrameVelocityLengthSquared;
     
-    private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
-    private bool _ready;
-    private List<PhysicalBone3D> _allPBones = [];
-    private List<CollisionShape3D> _boneCollisionShapes = [];
+    protected float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+    protected bool _ready;
+    protected List<PhysicalBone3D> _allPBones = [];
+    protected List<CollisionShape3D> _boneCollisionShapes = [];
     
     public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
     public override bool CanRotate() => !(freezeRotation || Staggered);
@@ -100,7 +98,6 @@ public partial class CombatAgent : MovingAgent
         
         HealthComponent.SetHealth(Health, true);
         StaggerComponent.SetStagger(StaggerAmount,true);
-        CurrentNavComponent = AgentIdleComponent;
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
 
