@@ -13,8 +13,8 @@ public abstract partial class MovingAgent : CharacterBody3D
     [ExportCategory("Moving Agent References")]
     [Export] public Node3D CombatTarget { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
-    
-    public BaseAiNavComponent CurrentNavComponent { get; set; }
+
+    protected BaseAiNavComponent CurrentNavComponent { get; set; }
 
     public override void _PhysicsProcess(double delta)
     {

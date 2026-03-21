@@ -5,13 +5,11 @@ using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
 
-public partial class Grunt : MovingAgent
+public partial class CombatAgent : MovingAgent
 {
     [ExportCategory("Enemy Settings")]
     [Export] public int Health { get; set; } = 50;
     [Export] public int StaggerAmount { get; set; } = 50;
-    [Export] public float FireRatePauseInSeconds { get; set; } = 2f;
-    [Export] public float ShootRange { get; set; } = 50f;
     [Export] public int Damage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
     [Export] public float StaggeredDamageReceivedMult { get; set; } = 1.0f;
@@ -40,15 +38,12 @@ public partial class Grunt : MovingAgent
     } private EncounterZone _encounterZone;
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
-    [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
-    [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
     [Export] public EnemyStateMachine EnemyStateMachine { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
-    [Export] public FuzzyStartTimer FireRateTimer { get; set; }
-
+    
     public bool Staggered
     {
         get => _staggered;
@@ -64,8 +59,8 @@ public partial class Grunt : MovingAgent
                 HealthComponent.DamageMult = DefaultDamageReceivedMult;
             }
         }
-    }
-    public bool readyToFire, firing, freezeRotation, ragdoll, dead, falling, aimingOver, inCombat;
+    } private bool _staggered;
+    public bool freezeRotation, ragdoll, dead, falling, inCombat;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage; //vel of bones on ragdoll
@@ -73,15 +68,13 @@ public partial class Grunt : MovingAgent
     public float previousFrameVelocityLengthSquared;
     
     private float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
-    private bool _ready, _staggered;
+    private bool _ready;
     private List<PhysicalBone3D> _allPBones = [];
     private List<CollisionShape3D> _boneCollisionShapes = [];
     
-    public override bool CanMove() => !(dead || ragdoll || firing || falling || Staggered);
+    public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
     public override bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
-    public virtual void StopFiring() => firing = false;
-    public virtual void StopAiming() => aimingOver = true;
     public virtual void StopStagger() => Staggered = false;
     public virtual void SetTarget(Node3D target) => CombatTarget = target;
     public virtual void RaycastSnapToFloor()
@@ -95,8 +88,8 @@ public partial class Grunt : MovingAgent
             .Normalized();
         var relativeDirLastDamage = ToLocal(sourceGlobalPosition) - ToLocal(collisionGlobalPoint);
         dirLastDamageXz = new Vector2(relativeDirLastDamage.X, relativeDirLastDamage.Z).Normalized();
-        CustomAnimationTree.TrySetParam("impact", dirLastDamageXz);
-        CustomAnimationTree.TrySetParam("impactOneShot", 1);
+        //CustomAnimationTree.TrySetParam("impact", dirLastDamageXz);
+        //CustomAnimationTree.TrySetParam("impactOneShot", 1);
     }
 
     public override void _Ready()
@@ -108,13 +101,6 @@ public partial class Grunt : MovingAgent
         HealthComponent.SetHealth(Health, true);
         StaggerComponent.SetStagger(StaggerAmount,true);
         CurrentNavComponent = AgentIdleComponent;
-        
-        FireRateTimer.SetStartTime(FireRatePauseInSeconds);
-        FireRateTimer.Timeout += () =>
-        {
-            GD.Print("Ready to fire");
-            readyToFire = true;
-        };
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
 
@@ -142,7 +128,7 @@ public partial class Grunt : MovingAgent
         
         HealthComponent.OnDeath += () =>
         {
-            GD.Print("grunt died!");
+            GD.Print("combat agent died!");
             GetTree().CreateTimer(5).Timeout += () =>
             {
                 QueueFree();
@@ -161,16 +147,6 @@ public partial class Grunt : MovingAgent
         {
             var cShape = (CollisionShape3D) pBone.GetChild(0);
             _boneCollisionShapes.Add(cShape);
-        }
-        
-    }
-
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-        if (Input.IsKeyLabelPressed(Key.G))
-        {
-            HealthComponent.Kill();
         }
     }
 
@@ -191,26 +167,6 @@ public partial class Grunt : MovingAgent
         if (CombatTarget != null)
         {
             NavigationAgent3D.TargetPosition = CombatTarget.GlobalPosition;
-        }
-    }
-
-    public virtual void Aim()
-    {
-        freezeRotation = true;
-        shootTargetRelativePosition = ShootRaycast.ToLocal(CombatTarget.GlobalPosition);
-    }
-
-    public virtual void Fire()
-    {
-        ShootRaycast.TargetPosition = shootTargetRelativePosition;
-        ShootRaycast.ForceRaycastUpdate();
-        if (ShootRaycast.IsColliding())
-        {
-            var collided = ShootRaycast.GetCollider();
-            if (collided is Hitbox hitbox)
-            {
-                hitbox.Hit(BuildHitInformation(ShootRaycast.GetCollisionPoint()));
-            }
         }
     }
 
@@ -284,9 +240,8 @@ public partial class Grunt : MovingAgent
     private void SetBoneCollisionShapesDisabled(bool disabled) => 
         _boneCollisionShapes.ForEach(cs => cs.Disabled = disabled);
 
-    public void StartRagdoll()
+    public virtual void StartRagdoll()
     {
-        AnimationPlayer.Free();
         SetBoneCollisionShapesDisabled(false);
         CollisionShape3D.Disabled = true;
         FloorRaycast.Enabled = false;
