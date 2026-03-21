@@ -32,15 +32,15 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
         }
         _navMapId ??= NavigationAgent3D.GetNavigationMap();
         
-        if (!Enemy.IsOnFloor())
+        if (!MovingAgent.IsOnFloor())
         {
-            Enemy.HandleFalling(delta);
+            MovingAgent.HandleFalling(delta);
             return;
         }
 
-        if (Enemy.CombatTarget == null) return;
+        if (MovingAgent.CombatTarget == null) return;
 
-        if (Enemy.GlobalPosition.DistanceTo(Enemy.CombatTarget.GlobalPosition) < _zigzagLength/5f)
+        if (MovingAgent.GlobalPosition.DistanceTo(MovingAgent.CombatTarget.GlobalPosition) < _zigzagLength/5f)
         {
             AgentFollowComponent.HandleNavigation(delta);
             return;
@@ -53,22 +53,22 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
 
         if (_zigzagTarget != null)
         {
-            NavigationAgent3D.TargetPosition = Enemy.CanMove()
-                ? _zigzagTarget.Value : Enemy.GlobalPosition;
+            NavigationAgent3D.TargetPosition = MovingAgent.CanMove()
+                ? _zigzagTarget.Value : MovingAgent.GlobalPosition;
         }
 
         var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
-        var direction = (nextPathPosition - Enemy.GlobalPosition).Normalized();
-        var currentVelocity = direction * Enemy.Speed;
+        var direction = (nextPathPosition - MovingAgent.GlobalPosition).Normalized();
+        var currentVelocity = direction * MovingAgent.Speed;
         currentVelocity = currentVelocity with { Y = 0 };
         
         if (direction.Length() > 0.01f)
         {
-            Enemy.RotateToGlobalPoint(direction);
+            MovingAgent.RotateToGlobalPoint(direction);
         }
         else
         {
-            Enemy.RotateToTarget();
+            MovingAgent.RotateToTarget();
         }
 
         if (NavigationAgent3D.AvoidanceEnabled)
@@ -77,13 +77,13 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
         }
         else
         {
-            Enemy.OnVelocityComputed(currentVelocity);
+            MovingAgent.OnVelocityComputed(currentVelocity);
         }
     }
 
     public void SetZigZagTarget()
     {
-        var dirToTargetV3 = (Enemy.GlobalPosition - Enemy.CombatTarget.GlobalPosition)
+        var dirToTargetV3 = (MovingAgent.GlobalPosition - MovingAgent.CombatTarget.GlobalPosition)
             .Rotated(Vector3.Up, Mathf.DegToRad(180))
             .Normalized();
         if (!_doneWithFirstZigzag)
@@ -97,7 +97,7 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
         }
 
         dirToTargetV3 = dirToTargetV3.Rotated(Vector3.Up, _zigzagRight ? _zigzagAngleInRad : -_zigzagAngleInRad);
-        dirToTargetV3 += Enemy.GlobalPosition;
+        dirToTargetV3 += MovingAgent.GlobalPosition;
         this.SpawnPermaMarker(dirToTargetV3);
         _zigzagRight = !_zigzagRight;
         if (_navMapId != null) _zigzagTarget = NavigationServer3D.MapGetClosestPoint(_navMapId.Value, dirToTargetV3);

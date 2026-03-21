@@ -30,7 +30,7 @@ public partial class Spawner : Node3D
     public void Spawn()
     {
         if (_currentSpawnable is null) return;
-        var instance = _currentSpawnable.ToSpawn.Instantiate<Enemy>();
+        var instance = _currentSpawnable.ToSpawn.Instantiate<MovingAgent>();
         AddChild(instance);
         instance.Reparent(ParentOfSpawned);
         instance.PostSpawnInitialize(EncounterZone);

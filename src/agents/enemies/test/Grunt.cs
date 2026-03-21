@@ -5,7 +5,7 @@ using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
 
-public partial class Grunt : Enemy
+public partial class Grunt : MovingAgent
 {
     [ExportCategory("Enemy Settings")]
     [Export] public int Health { get; set; } = 50;
@@ -109,6 +109,7 @@ public partial class Grunt : Enemy
         
         HealthComponent.SetHealth(Health, true);
         StaggerComponent.SetStagger(StaggerAmount,true);
+        CurrentNavComponent = AgentIdleComponent;
         
         FireRateTimer.SetStartTime(FireRatePauseInSeconds);
         FireRateTimer.Timeout += () =>

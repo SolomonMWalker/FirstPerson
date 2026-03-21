@@ -69,7 +69,7 @@ public partial class Hitbox : Area3D
             }
             HealthComponent?.DepleteHealth(damage);
             if(IsDebug) DebugHit();
-            if (Parent is Enemy enemy && enemy.HasAffectedBone())
+            if (Parent is MovingAgent enemy && enemy.HasAffectedBone())
             {
                 enemy.SetAffectedBone(AffectedPhysicalBone);
                 if (hitInformation.SourceGlobalPosition is not null 

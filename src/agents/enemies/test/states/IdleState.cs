@@ -5,6 +5,12 @@ using Godot;
 
 public partial class IdleState : EnemyAtomicState
 {
+    public override void StateEntered()
+    {
+        base.StateEntered();
+        Grunt.SetCurrentNavComponent(Grunt.AgentIdleComponent);
+    }
+
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
@@ -25,7 +31,5 @@ public partial class IdleState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("DeadState"));
             return;
         }
-        
-        Grunt.AgentIdleComponent.HandleNavigation(delta);
     }
 }

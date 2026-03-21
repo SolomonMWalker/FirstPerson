@@ -13,21 +13,21 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             return;
         }
         
-        if (!Enemy.IsOnFloor())
+        if (!MovingAgent.IsOnFloor())
         {
-            Enemy.HandleFalling(delta);
+            MovingAgent.HandleFalling(delta);
             return;
         }
 
-        if (Enemy.CombatTarget == null) return;
+        if (MovingAgent.CombatTarget == null) return;
         
-        NavigationAgent3D.TargetPosition =  Enemy.CanMove()
-            ? Enemy.CombatTarget.GlobalPosition
-            : Enemy.GlobalPosition;
+        NavigationAgent3D.TargetPosition =  MovingAgent.CanMove()
+            ? MovingAgent.CombatTarget.GlobalPosition
+            : MovingAgent.GlobalPosition;
         
         if (NavigationAgent3D.IsNavigationFinished())
         {
-            Enemy.RotateToTarget();
+            MovingAgent.RotateToTarget();
             
             if (NavigationAgent3D.AvoidanceEnabled)
             {
@@ -35,23 +35,23 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             }
             else
             {
-                Enemy.OnVelocityComputed(Vector3.Zero);
+                MovingAgent.OnVelocityComputed(Vector3.Zero);
             }
             return;
         }
 
         var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
-        var direction = (nextPathPosition - Enemy.GlobalPosition).Normalized();
-        var currentVelocity = direction * Enemy.Speed;
+        var direction = (nextPathPosition - MovingAgent.GlobalPosition).Normalized();
+        var currentVelocity = direction * MovingAgent.Speed;
         currentVelocity = currentVelocity with { Y = 0 };
         
         if (direction.Length() > 0.01f)
         {
-            Enemy.RotateToGlobalPoint(direction);
+            MovingAgent.RotateToGlobalPoint(direction);
         }
         else
         {
-            Enemy.RotateToTarget();
+            MovingAgent.RotateToTarget();
         }
 
         if (NavigationAgent3D.AvoidanceEnabled)
@@ -60,7 +60,7 @@ public partial class AgentFollowComponent : BaseAiNavComponent
         }
         else
         {
-            Enemy.OnVelocityComputed(currentVelocity);
+            MovingAgent.OnVelocityComputed(currentVelocity);
         }
     }
 }

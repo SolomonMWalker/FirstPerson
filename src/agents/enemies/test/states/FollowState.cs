@@ -9,6 +9,7 @@ public partial class FollowState : EnemyAtomicState
     {
         base.StateEntered();
         Grunt.FireRateTimer.FuzzyStart();
+        Grunt.SetCurrentNavComponent(Grunt.AgentFollowComponent);
     }
 
     public override void StatePhysicsProcessing(double delta)
@@ -34,7 +35,5 @@ public partial class FollowState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;
         }
-
-        Grunt.AgentFollowComponent.HandleNavigation(delta);
     }
 }
