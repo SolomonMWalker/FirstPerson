@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b1rtkf7hpv5m4"]
 
-[ext_resource type="PackedScene" uid="uid://c5wqyxr2hg4i4" path="res://blenderTutorial/dog.glb" id="1_qsnk3"]
+[ext_resource type="PackedScene" uid="uid://c5wqyxr2hg4i4" path="res://BlenderTutorial/dog.glb" id="1_qsnk3"]
 [ext_resource type="PackedScene" uid="uid://2cpvm84xgi8w" path="res://src/components/characterComponents/health_component.tscn" id="2_p7mbu"]
 [ext_resource type="PackedScene" uid="uid://c41kae2mksfw2" path="res://src/components/AiComponents/agent_follow_component.tscn" id="3_uuymc"]
 [ext_resource type="PackedScene" uid="uid://bgio0w4k1o78d" path="res://src/components/AiComponents/agent_idle_component.tscn" id="4_aoau8"]
@@ -11,7 +11,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qsnk3"]
 height = 1.3600194
 
-[node name="dog" unique_id=998444361 instance=ExtResource("1_qsnk3")]
+[node name="dog" unique_id=1753896530 instance=ExtResource("1_qsnk3")]
 collision_layer = 0
 collision_mask = 3
 
@@ -21,27 +21,50 @@ shape = SubResource("CapsuleShape3D_qsnk3")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="." index="1" unique_id=1865005134]
 
-[node name="FloorRayCast3D" type="RayCast3D" parent="." index="4" unique_id=83819101]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.119152345, 0)
-target_position = Vector3(0, -0.3, 0)
-collision_mask = 3
-hit_from_inside = true
+[node name="Skeleton3D" parent="DogRig" parent_id_path=PackedInt32Array(211441508) index="0" unique_id=1470965517]
+bones/0/position = Vector3(-0.0026333933, 1.0770313, -0.47300375)
+bones/0/rotation = Quaternion(0.9999988, -6.602413e-11, 4.256041e-08, -0.0015512876)
+bones/3/rotation = Quaternion(-3.3957193e-08, 0.94932747, 0.31428885, -7.409649e-08)
+bones/4/rotation = Quaternion(-0.0013816468, 0.9830358, -0.14399318, -0.1135996)
+bones/5/rotation = Quaternion(-0.078576036, 1.9279369e-06, -2.6733325e-08, 0.9969082)
+bones/6/rotation = Quaternion(1.1794383e-07, 0.99334437, -0.11518288, 1.0224614e-06)
+bones/7/rotation = Quaternion(0.010958925, -1.9178897e-07, 2.4318527e-09, 0.99994)
+bones/8/rotation = Quaternion(0.08904421, 1.1861295e-07, -2.2515934e-08, 0.99602777)
+bones/9/rotation = Quaternion(0.41629526, 1.3829546e-07, -2.2894406e-09, 0.9092296)
+bones/10/rotation = Quaternion(0.18683264, -7.1550277e-10, 3.155782e-08, 0.9823918)
+bones/11/rotation = Quaternion(-0.08489793, 0.7816757, -0.5971027, -0.15888369)
+bones/12/rotation = Quaternion(0.5133959, 0.1469981, -0.055752505, 0.84362775)
+bones/13/rotation = Quaternion(-0.31238624, 0.022890233, 0.07755954, 0.946507)
+bones/14/rotation = Quaternion(-0.5270007, 0.010448392, -0.1178967, 0.84158266)
+bones/15/rotation = Quaternion(-0.07923442, -0.24271256, 0.0022282954, 0.96685445)
+bones/17/rotation = Quaternion(0.29387677, -0.090048864, 0.11412134, 0.9447243)
+bones/18/rotation = Quaternion(-0.3125539, -0.022896856, -0.07764958, 0.9464441)
+bones/19/rotation = Quaternion(-0.527288, -0.010443696, 0.11797501, 0.8413918)
+bones/20/rotation = Quaternion(-0.028591558, 0.2784997, 0.032997347, 0.95944345)
+bones/21/rotation = Quaternion(-7.9833505e-08, 0.89516854, -0.44572785, -1.7429572e-07)
+bones/22/rotation = Quaternion(-7.9833484e-08, 0.89516854, -0.44572788, -1.7429576e-07)
+bones/25/rotation = Quaternion(0.47294608, 0.07442277, 0.171449, 0.8610393)
+bones/26/rotation = Quaternion(0.61368906, -0.0066979723, 0.086057, 0.7848154)
+bones/27/rotation = Quaternion(-0.73340195, -0.00374862, -0.14041705, 0.66512454)
+bones/28/rotation = Quaternion(-0.12069563, -0.08702545, -0.1256969, 0.9808463)
+bones/29/rotation = Quaternion(0.5486748, -0.074587785, -0.2171068, 0.80390126)
+bones/30/rotation = Quaternion(0.59725016, 0.006152714, -0.08393941, 0.79762685)
+bones/31/rotation = Quaternion(-0.696516, 0.0035161208, 0.13290587, 0.70511645)
+bones/32/rotation = Quaternion(-0.23408376, 0.097121835, 0.17473282, 0.95144135)
+bones/33/position = Vector3(0.12460586, 0.98794633, 0.0955624)
+bones/33/rotation = Quaternion(-0.48750436, 0.020361578, -0.017625287, 0.87270516)
+bones/34/position = Vector3(0.42955774, 0.94425607, 0.81892955)
+bones/35/position = Vector3(-0.11929485, 0.9783892, 0.19000083)
+bones/35/rotation = Quaternion(-0.48324594, -0.020447668, 0.017526293, 0.87507033)
+bones/36/position = Vector3(-0.4242911, 0.9442562, 0.81892973)
+bones/37/position = Vector3(0.297984, 0.9696412, -0.8085505)
+bones/37/rotation = Quaternion(-0.61240274, 0.012655047, -0.016523898, 0.79027194)
+bones/38/position = Vector3(0.44395304, 0.96353257, -0.24065219)
+bones/39/position = Vector3(-0.29267442, 0.8596312, -0.98550415)
+bones/39/rotation = Quaternion(-0.7648081, -0.008899391, 0.018813951, 0.6439219)
+bones/40/position = Vector3(-0.43868622, 0.96353257, -0.24065217)
 
-[node name="Components" type="Node3D" parent="." index="5" unique_id=1142642922]
-
-[node name="HealthComponent" parent="Components" index="0" unique_id=1598417287 instance=ExtResource("2_p7mbu")]
-
-[node name="AgentFollowComponent" parent="Components" index="1" unique_id=901364353 node_paths=PackedStringArray("NavigationAgent3D", "Grunt") instance=ExtResource("3_uuymc")]
-NavigationAgent3D = NodePath("../../NavigationAgent3D")
-Grunt = NodePath("../..")
-
-[node name="AgentIdleComponent" parent="Components" index="2" unique_id=1896834887 node_paths=PackedStringArray("NavigationAgent3D", "Grunt") instance=ExtResource("4_aoau8")]
-NavigationAgent3D = NodePath("../../NavigationAgent3D")
-Grunt = NodePath("../..")
-
-[node name="StaggerComponent" parent="Components" index="3" unique_id=1046773979 instance=ExtResource("5_d1hj7")]
-
-[node name="AnimationTree" type="AnimationTree" parent="." index="6" unique_id=666716647]
+[node name="AnimationTree" type="AnimationTree" parent="." index="4" unique_id=666716647]
 tree_root = ExtResource("6_p7mbu")
 anim_player = NodePath("../AnimationPlayer")
 parameters/AnimationNodeBlendSpace2D/blend_position = Vector2(0, 0)
@@ -64,3 +87,21 @@ parameters/OneShot/active = false
 parameters/OneShot/internal_active = false
 parameters/OneShot/request = 0
 script = ExtResource("7_i11x5")
+
+[node name="FloorRayCast3D" type="RayCast3D" parent="." index="5" unique_id=83819101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.119152345, 0)
+target_position = Vector3(0, -0.3, 0)
+collision_mask = 3
+hit_from_inside = true
+
+[node name="Components" type="Node3D" parent="." index="6" unique_id=1142642922]
+
+[node name="HealthComponent" parent="Components" index="0" unique_id=1598417287 instance=ExtResource("2_p7mbu")]
+
+[node name="AgentFollowComponent" parent="Components" index="1" unique_id=901364353 node_paths=PackedStringArray("NavigationAgent3D") instance=ExtResource("3_uuymc")]
+NavigationAgent3D = NodePath("../../NavigationAgent3D")
+
+[node name="AgentIdleComponent" parent="Components" index="2" unique_id=1896834887 node_paths=PackedStringArray("NavigationAgent3D") instance=ExtResource("4_aoau8")]
+NavigationAgent3D = NodePath("../../NavigationAgent3D")
+
+[node name="StaggerComponent" parent="Components" index="3" unique_id=1046773979 instance=ExtResource("5_d1hj7")]

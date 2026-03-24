@@ -3,35 +3,43 @@ using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
 using Godot;
 
-public partial class FiringState : EnemyAtomicState
+public partial class GruntFiringState : EnemyAtomicState
 {
+    private Grunt Grunt { get; set; }
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        Grunt = (Grunt)CombatAgent;
+    }
+    
     public override void StateExited()
     {
         base.StateExited();
         Grunt.CustomAnimationTree.TrySetParam("doneFiring", true);
         Grunt.FireRateTimer.FuzzyStart();
-        Grunt.freezeRotation = false;
+        CombatAgent.freezeRotation = false;
     }
 
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Grunt is null) return;
+        if (CombatAgent is null) return;
         
-        if (Grunt.ragdoll || Grunt.dead)
+        if (CombatAgent.ragdoll || CombatAgent.dead)
         {
             Grunt.AnimationPlayer.Stop();
             OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
             return;
         }
         
-        if(!Grunt.IsOnFloor())
+        if(!CombatAgent.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
         }
 
-        if (Grunt.Staggered)
+        if (CombatAgent.Staggered)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;

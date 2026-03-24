@@ -6,7 +6,7 @@ namespace FirstPerson.scenes.enemies.test.states;
 [GlobalClass]
 public partial class EnemyStateMachine : StateMachine
 {
-    [Export] public Grunt Grunt { get; set; }
+    [Export] public CombatAgent CombatAgent { get; set; }
     [Export] public EnemyCompoundState BehaviorState { get; set; }
     [Export] public EnemyCompoundState ActionState { get; set; }
     [Export] public EnemyCompoundState CombatState { get; set; }

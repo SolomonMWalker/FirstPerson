@@ -1,8 +1,16 @@
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
 
-public partial class AimingState : EnemyAtomicState
+public partial class GruntAimingState : EnemyAtomicState
 {
+    private Grunt Grunt { get; set; }
+    
+    public override void _Ready()
+    {
+        base._Ready();
+        Grunt = (Grunt)CombatAgent;
+    }
+
     public override void StateEntered()
     {
         base.StateEntered();
@@ -23,21 +31,21 @@ public partial class AimingState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Grunt is null) return;
+        if (CombatAgent is null) return;
         
-        if (Grunt.ragdoll || Grunt.dead)
+        if (CombatAgent.ragdoll || CombatAgent.dead)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
             return;
         }
         
-        if(!Grunt.IsFloorRaycastColliding())
+        if(!CombatAgent.IsFloorRaycastColliding())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
         }
         
-        if (Grunt.Staggered)
+        if (CombatAgent.Staggered)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;

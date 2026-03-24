@@ -8,23 +8,23 @@ public partial class FollowState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.FireRateTimer.FuzzyStart();
-        Grunt.SetCurrentNavComponent(Grunt.AgentFollowComponent);
+        //CombatAgent.FireRateTimer.FuzzyStart();
+        //CombatAgent.SetCurrentNavComponent(CombatAgent.AgentFollowComponent);
     }
 
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
-        if (Grunt is null) return;
+        if (CombatAgent is null) return;
 
-        if (Grunt.dead)
+        if (CombatAgent.dead)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("DeadState"));
             return;
         }
 
-        if (Grunt.EnemyStateMachine.CurrentCombatState == "NotInCombatState"
-            || Grunt.CombatTarget is null)
+        if (CombatAgent.EnemyStateMachine.CurrentCombatState == "NotInCombatState"
+            || CombatAgent.CombatTarget is null)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
             return;

@@ -8,45 +8,45 @@ public partial class NoActionState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CustomAnimationTree.TrySetParam("stopped", true);
+        //CombatAgent.CustomAnimationTree.TrySetParam("stopped", true);
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("stopped", false);
+        //CombatAgent.CustomAnimationTree.TrySetParam("stopped", false);
     }
 
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
-        if (Grunt is null) return;
+        if (CombatAgent is null) return;
         
-        if (Grunt.ragdoll || Grunt.dead)
+        if (CombatAgent.ragdoll || CombatAgent.dead)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
             return;
         }
         
-        if(!Grunt.IsOnFloor())
+        if(!CombatAgent.IsOnFloor())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
         }
         
-        if (Grunt.Staggered)
+        if (CombatAgent.Staggered)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;
         }
         
-        if (Grunt.readyToFire)
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
-            return;
-        }
+        // if (CombatAgent.readyToFire)
+        // {
+        //     OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
+        //     return;
+        // }
         
-        if (Grunt.Velocity.LengthSquared() != 0)
+        if (CombatAgent.Velocity.LengthSquared() != 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IsMovingState"));
             return;

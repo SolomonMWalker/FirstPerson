@@ -9,31 +9,31 @@ public partial class NotInCombatState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CustomAnimationTree.TrySetParam("notInCombat", true);
+        //CombatAgent.CustomAnimationTree.TrySetParam("notInCombat", true);
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("notInCombat", false);
+        //CombatAgent.CustomAnimationTree.TrySetParam("notInCombat", false);
     }
     
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (Grunt is null || Grunt.firing || Grunt.dead) return;
-        if (Grunt.CombatTriggerArea.HasOverlappingAreas())
+        //if (CombatAgent is null || CombatAgent.firing || CombatAgent.dead) return;
+        if (CombatAgent.CombatTriggerArea.HasOverlappingAreas())
         {
-            var overlapArea = Grunt.CombatTriggerArea.GetOverlappingAreas().First();
+            var overlapArea = CombatAgent.CombatTriggerArea.GetOverlappingAreas().First();
             if (overlapArea is Hitbox hitbox)
             {
-                Grunt.CombatTarget = hitbox.Parent;
+                CombatAgent.CombatTarget = hitbox.Parent;
                 OnStateChangeRequired(new ChangeStateEventArgs("InCombatState"));
                 return;
             }
         }
 
-        if (Grunt.inCombat && Grunt.CombatTarget is not null)
+        if (CombatAgent.inCombat && CombatAgent.CombatTarget is not null)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("InCombatState"));
             return;

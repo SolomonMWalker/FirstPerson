@@ -86,8 +86,6 @@ public partial class CombatAgent : MovingAgent
             .Normalized();
         var relativeDirLastDamage = ToLocal(sourceGlobalPosition) - ToLocal(collisionGlobalPoint);
         dirLastDamageXz = new Vector2(relativeDirLastDamage.X, relativeDirLastDamage.Z).Normalized();
-        //CustomAnimationTree.TrySetParam("impact", dirLastDamageXz);
-        //CustomAnimationTree.TrySetParam("impactOneShot", 1);
     }
 
     public override void _Ready()

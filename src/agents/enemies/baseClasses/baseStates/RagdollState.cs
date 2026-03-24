@@ -8,6 +8,6 @@ public partial class RagdollState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.StartRagdoll();
+        CombatAgent.StartRagdoll();
     }
 }

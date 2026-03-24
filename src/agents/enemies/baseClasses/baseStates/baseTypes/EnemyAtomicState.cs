@@ -4,7 +4,7 @@ using Godot;
 namespace FirstPerson.scenes.enemies.test.states;
 
 [GlobalClass]
-public partial class EnemyCompoundState: CompoundState
+public partial class EnemyAtomicState: AtomicState
 {
-    [Export] public Grunt Grunt { get; set; }
+    [Export] public CombatAgent CombatAgent { get; set; }
 }
