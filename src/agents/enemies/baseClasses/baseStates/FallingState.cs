@@ -10,8 +10,6 @@ public partial class FallingState : EnemyAtomicState
         base.StateEntered();
         _doneFalling = false;
         CombatAgent.falling = true;
-        //CombatAgent.CustomAnimationTree.TrySetParam("notFalling", false);        
-        //CombatAgent.CustomAnimationTree.TrySetParam("falling", true);
     }
 
     public override void StateExited()
@@ -19,8 +17,6 @@ public partial class FallingState : EnemyAtomicState
         base.StateExited();
         CombatAgent.falling = false;
         CombatAgent.ApplyFloorSnap();
-        //CombatAgent.CustomAnimationTree.TrySetParam("notFalling", true);        
-        //CombatAgent.CustomAnimationTree.TrySetParam("falling", false);
     }
 
     public override void StatePhysicsProcessing(double delta)

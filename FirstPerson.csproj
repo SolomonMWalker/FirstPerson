@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="src\agents\enemies\baseClasses\baseStates\FallingState.cs.uid" />
+    <Content Include="src\agents\enemies\Grunt\states\GruntFallingState.cs.uid" />
     <Content Include="src\Resources\Images\Circle.png" />
     <Content Include="src\Resources\Images\Circle.png.import" />
     <Content Include="src\Resources\Images\icon.svg" />

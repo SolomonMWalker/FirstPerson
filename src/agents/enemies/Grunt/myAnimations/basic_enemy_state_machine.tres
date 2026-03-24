@@ -1,7 +1,7 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://22d6pu6ymuv2"]
 
-[ext_resource type="AnimationNodeStateMachine" uid="uid://buhpq7rv6hi5n" path="res://src/agents/enemies/test/myAnimations/basic_enemy_combat_state_machine.tres" id="1_s5qnx"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cwv3glh7km1h2" path="res://src/agents/enemies/test/myAnimations/basic_enemy_noncombat_state_machine.tres" id="2_oyqev"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://buhpq7rv6hi5n" path="res://src/agents/enemies/Grunt/myAnimations/basic_enemy_combat_state_machine.tres" id="1_s5qnx"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://cwv3glh7km1h2" path="res://src/agents/enemies/Grunt/myAnimations/basic_enemy_noncombat_state_machine.tres" id="2_oyqev"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t20en"]
 advance_mode = 2

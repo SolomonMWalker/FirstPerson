@@ -21,7 +21,7 @@ public partial class NotInCombatState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        //if (CombatAgent is null || CombatAgent.firing || CombatAgent.dead) return;
+        if (CombatAgent is null || CombatAgent.CanChangeState()) return;
         if (CombatAgent.CombatTriggerArea.HasOverlappingAreas())
         {
             var overlapArea = CombatAgent.CombatTriggerArea.GetOverlappingAreas().First();

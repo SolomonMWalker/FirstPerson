@@ -21,7 +21,6 @@ public abstract partial class MovingAgent : CharacterBody3D
         base._PhysicsProcess(delta);
         CurrentNavComponent.HandleNavigation(delta);
     }
-
     public void SetCurrentNavComponent(BaseAiNavComponent newNavComponent)
     {
         CurrentNavComponent = newNavComponent;

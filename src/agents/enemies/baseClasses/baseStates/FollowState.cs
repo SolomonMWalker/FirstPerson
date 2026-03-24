@@ -5,13 +5,6 @@ using FirstPerson.scenes.enemies.test.states;
 
 public partial class FollowState : EnemyAtomicState
 {
-    public override void StateEntered()
-    {
-        base.StateEntered();
-        //CombatAgent.FireRateTimer.FuzzyStart();
-        //CombatAgent.SetCurrentNavComponent(CombatAgent.AgentFollowComponent);
-    }
-
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);

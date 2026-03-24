@@ -10,12 +10,5 @@ public partial class InCombatState : EnemyAtomicState
     {
         base.StateEntered();
         CombatAgent.inCombat = true;
-        //CombatAgent.CustomAnimationTree.TrySetParam("inCombat", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        //CombatAgent.CustomAnimationTree.TrySetParam("inCombat", false);
     }
 }

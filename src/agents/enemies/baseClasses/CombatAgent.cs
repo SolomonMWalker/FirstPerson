@@ -8,7 +8,9 @@ using FirstPerson.scenes.enemies.test.states;
 public partial class CombatAgent : MovingAgent
 {
     [ExportCategory("CombatAgent Settings")]
-    [Export] public int Health { get; set; } = 50;
+    [Export]
+    public int Health { get; set; } = 50;
+
     [Export] public int StaggerAmount { get; set; } = 50;
     [Export] public int Damage { get; set; } = 10;
     [Export] public int StaggerDamage { get; set; } = 10;
@@ -16,18 +18,22 @@ public partial class CombatAgent : MovingAgent
     [Export] public float DefaultDamageReceivedMult { get; set; } = 1.0f;
 
     [ExportCategory("CombatAgent Components")]
-    [Export] public HealthComponent HealthComponent { get; set; }
+    [Export]
+    public HealthComponent HealthComponent { get; set; }
+
     [Export] public StaggerComponent StaggerComponent { get; set; }
     [Export] public Godot.Collections.Array<Hitbox> Hitboxes { get; set; }
-    
+
     [ExportCategory("References")]
-    [Export] public EncounterZone EncounterZone
+    [Export]
+    public EncounterZone EncounterZone
     {
         get => _encounterZone;
         set
         {
             _encounterZone = value;
-            EncounterZone.OnCombatStart += target =>
+            if (_encounterZone is null) return;
+            _encounterZone.OnCombatStart += target =>
             {
                 CombatTarget = target;
                 inCombat = true;
@@ -41,7 +47,7 @@ public partial class CombatAgent : MovingAgent
     [Export] public Area3D CombatTriggerArea { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
-    
+
     public bool Staggered
     {
         get => _staggered;
@@ -57,19 +63,22 @@ public partial class CombatAgent : MovingAgent
                 HealthComponent.DamageMult = DefaultDamageReceivedMult;
             }
         }
-    } private bool _staggered;
+    }
+
+    private bool _staggered;
     public bool freezeRotation, ragdoll, dead, falling, inCombat;
     public Vector3 shootTargetRelativePosition;
     public PhysicalBone3D affectedBone;
     public Vector3 dirLastDamage; //vel of bones on ragdoll
     public Vector2 dirLastDamageXz; //determines impact animation blend
     public float previousFrameVelocityLengthSquared;
-    
+
     protected float Gravity { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
     protected bool _ready;
     protected List<PhysicalBone3D> _allPBones = [];
     protected List<CollisionShape3D> _boneCollisionShapes = [];
-    
+
+    public virtual bool CanChangeState() => !(dead);
     public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
     public override bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
@@ -99,9 +108,9 @@ public partial class CombatAgent : MovingAgent
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
 
-        if (EncounterZone is not null)
+        if (_encounterZone is not null)
         {
-            EncounterZone.OnCombatStart += target =>
+            _encounterZone.OnCombatStart += target =>
             {
                 CombatTarget = target;
                 inCombat = true;
@@ -114,9 +123,9 @@ public partial class CombatAgent : MovingAgent
             {
                 CombatTarget = target;
                 inCombat = true;
-                if (EncounterZone is not null && !EncounterZone.Alerted)
+                if (_encounterZone is not null && !_encounterZone.Alerted && CombatTarget is not null)
                 {
-                    EncounterZone.AlertZone(CombatTarget);
+                    _encounterZone.AlertZone(CombatTarget);
                 }
             };
         }
@@ -255,6 +264,7 @@ public partial class CombatAgent : MovingAgent
 
     public override void PostSpawnInitialize(EncounterZone encounterZone)
     {
+        if (encounterZone is null) return;
         EncounterZone = encounterZone;
         if (!EncounterZone.TryGetTarget(out var target)) return;
         CombatTarget = target;

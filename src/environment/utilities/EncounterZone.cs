@@ -20,6 +20,7 @@ public partial class EncounterZone : Node3D
 
     public void AlertZone(Node3D target)
     {
+        if (target is null) return;
         Alerted = true;
         EmitSignalOnCombatStart(target);
     }

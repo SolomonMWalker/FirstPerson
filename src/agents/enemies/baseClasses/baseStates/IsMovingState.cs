@@ -5,18 +5,6 @@ using FirstPerson.scenes.enemies.test.states;
 
 public partial class IsMovingState : EnemyAtomicState
 {
-    public override void StateEntered()
-    {
-        base.StateEntered();
-        //CombatAgent.CustomAnimationTree.TrySetParam("moving", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        //CombatAgent.CustomAnimationTree.TrySetParam("moving", false);
-    }
-
     public override void StatePhysicsProcessing(double delta)
     {
         base.StatePhysicsProcessing(delta);
@@ -39,12 +27,6 @@ public partial class IsMovingState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
             return;
         }
-        
-        // if (CombatAgent.readyToFire)
-        // {
-        //     OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));
-        //     return;
-        // }
         
         if (CombatAgent.previousFrameVelocityLengthSquared == 0)
         {
