@@ -12,9 +12,9 @@ public partial class Grunt : CombatAgent
     [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
     
     [ExportCategory("References")]
-    
     [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
+    [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public FuzzyStartTimer FireRateTimer { get; set; }
 
     public bool readyToFire, firing, aimingOver;

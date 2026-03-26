@@ -4,6 +4,7 @@ using System.Linq;
 using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
+using EncounterZone = FirstPerson.environment.utilities.EncounterZone;
 
 public partial class CombatAgent : MovingAgent
 {
@@ -45,7 +46,6 @@ public partial class CombatAgent : MovingAgent
     [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
     [Export] public EnemyStateMachine EnemyStateMachine { get; set; }
     [Export] public Area3D CombatTriggerArea { get; set; }
-    [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public RayCast3D FloorRaycast { get; set; }
 
     public bool Staggered

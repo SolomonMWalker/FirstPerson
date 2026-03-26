@@ -24,6 +24,7 @@ public partial class GruntNoActionState : NoActionState
 
     public override void StatePhysicsProcessing(double delta)
     {
+        base.StatePhysicsProcessing(delta);
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));

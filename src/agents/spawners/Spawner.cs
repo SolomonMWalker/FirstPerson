@@ -2,6 +2,7 @@
 using FirstPerson.agents.enemies.test;
 using FirstPerson.scenes.enemies.test;
 using Godot;
+using EncounterZone = FirstPerson.environment.utilities.EncounterZone;
 
 namespace FirstPerson.agents.spawners;
 

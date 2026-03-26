@@ -1,7 +1,6 @@
 ﻿using Godot;
-using Godot.NativeInterop;
 
-namespace FirstPerson.scenes.enemies.test;
+namespace FirstPerson.environment.utilities;
 
 public partial class EncounterZone : Node3D
 {

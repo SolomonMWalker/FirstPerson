@@ -7,8 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_qts6i"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_ju488"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="8_4lq1p"]
+[ext_resource type="PackedScene" uid="uid://cjk53dyljkw1k" path="res://src/agents/spawners/spawner.tscn" id="8_qts6i"]
 [ext_resource type="Script" uid="uid://ca3rbsogipkiy" path="res://src/components/characterComponents/InteractHitbox.cs" id="8_v18j3"]
-[ext_resource type="PackedScene" uid="uid://c231ri1aeucyc" path="res://src/agents/enemies/Grunt/grunt_basic_enemy.tscn" id="9_ju488"]
+[ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="9_q644f"]
 [ext_resource type="Script" uid="uid://b8dusn8hkeft7" path="res://src/environment/TestInteractable.cs" id="9_qts6i"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
@@ -58,8 +59,13 @@ transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 
-[node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=1229731549 instance=ExtResource("9_ju488")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88.71499, 10.256916, -4.547268)
+[node name="Spawner" parent="Level/Enemies" unique_id=1038078890 node_paths=PackedStringArray("EncounterZone", "ParentOfSpawned") instance=ExtResource("8_qts6i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.46319, 3.7713165, 30.238743)
+EncounterZone = NodePath("../EncounterZone")
+ParentOfSpawned = NodePath("..")
+
+[node name="EncounterZone" type="Node3D" parent="Level/Enemies" unique_id=1531732731]
+script = ExtResource("9_q644f")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")
@@ -76,7 +82,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.978386, 2.41633, 36.54735)
 mesh = SubResource("SphereMesh_bynor")
 surface_material_override/0 = ExtResource("8_4lq1p")
 script = ExtResource("9_qts6i")
-Spawner = NodePath("")
+Spawner = NodePath("../Enemies/Spawner")
 InteractHitbox = NodePath("InteractHitbox")
 
 [node name="InteractHitbox" type="Area3D" parent="Level/TestInteractable" unique_id=952538197]

@@ -1,6 +1,7 @@
 ﻿using FirstPerson.agents.AiComponents;
 using FirstPerson.scenes.enemies.test;
 using Godot;
+using EncounterZone = FirstPerson.environment.utilities.EncounterZone;
 
 namespace FirstPerson.agents.enemies.test;
 

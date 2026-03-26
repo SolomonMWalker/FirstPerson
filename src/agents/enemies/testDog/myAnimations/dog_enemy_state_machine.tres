@@ -1,36 +1,33 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://u4ujikavbuex"]
 
-[ext_resource type="AnimationNodeStateMachine" uid="uid://buhpq7rv6hi5n" path="res://src/agents/enemies/test/myAnimations/basic_enemy_combat_state_machine.tres" id="1_go1cg"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://cwv3glh7km1h2" path="res://src/agents/enemies/test/myAnimations/basic_enemy_noncombat_state_machine.tres" id="2_omnk6"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://4idgs5ctv8mw" path="res://src/agents/enemies/testDog/myAnimations/dog_enemy_combat_state_machine.tres" id="1_g1s0m"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://hsgl71yieegs" path="res://src/agents/enemies/testDog/myAnimations/dog_enemy_noncombat_state_machine.tres" id="2_2dqdt"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t20en"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_40j0w"]
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_172i6"]
-xfade_time = 0.2
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2u5qy"]
 advance_mode = 2
 advance_condition = &"inCombat"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l1nqy"]
-xfade_time = 0.2
-break_loop_at_end = true
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fm06o"]
 advance_mode = 2
 advance_condition = &"notInCombat"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s5qnx"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g1s0m"]
 advance_mode = 2
 advance_condition = &"dead"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_oyqev"]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2dqdt"]
 advance_mode = 2
 advance_condition = &"dead"
 
 [resource]
 states/End/position = Vector2(669.9319, 296.50043)
-states/InCombatStateMachine/node = ExtResource("1_go1cg")
-states/InCombatStateMachine/position = Vector2(422.00003, 340.61728)
-states/NotInCombatStateMachine/node = ExtResource("2_omnk6")
-states/NotInCombatStateMachine/position = Vector2(420.88892, 245.61682)
 states/Start/position = Vector2(422.88892, 133.48148)
-transitions = ["Start", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_t20en"), "NotInCombatStateMachine", "InCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_172i6"), "InCombatStateMachine", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "NotInCombatStateMachine", "End", SubResource("AnimationNodeStateMachineTransition_s5qnx"), "InCombatStateMachine", "End", SubResource("AnimationNodeStateMachineTransition_oyqev")]
-graph_offset = Vector2(104.17786, 86.79616)
+states/dogCombatSM/node = ExtResource("1_g1s0m")
+states/dogCombatSM/position = Vector2(422.8018, 321.19617)
+states/dogNonCombatSM/node = ExtResource("2_2dqdt")
+states/dogNonCombatSM/position = Vector2(423.14673, 224.39616)
+transitions = ["Start", "dogNonCombatSM", SubResource("AnimationNodeStateMachineTransition_40j0w"), "dogNonCombatSM", "dogCombatSM", SubResource("AnimationNodeStateMachineTransition_2u5qy"), "dogCombatSM", "dogNonCombatSM", SubResource("AnimationNodeStateMachineTransition_fm06o"), "dogNonCombatSM", "End", SubResource("AnimationNodeStateMachineTransition_g1s0m"), "dogCombatSM", "End", SubResource("AnimationNodeStateMachineTransition_2dqdt")]
+graph_offset = Vector2(133.17786, 92.79616)

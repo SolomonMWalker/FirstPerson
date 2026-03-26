@@ -1,13 +1,13 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://hsgl71yieegs"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c2shi"]
-animation = &"falling"
+animation = &"dogFalling"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5xh8m"]
-animation = &"idleWithGunDown"
+animation = &"dogIdle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pchik"]
-animation = &"walkGunDown"
+animation = &"dogWalk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hehml"]
 xfade_time = 0.2
@@ -47,9 +47,9 @@ states/End/position = Vector2(512.37036, 366.66666)
 states/Start/position = Vector2(512.6666, 8.666664)
 states/falling/node = SubResource("AnimationNodeAnimation_c2shi")
 states/falling/position = Vector2(514, 274)
-states/idleWithGunDown/node = SubResource("AnimationNodeAnimation_5xh8m")
-states/idleWithGunDown/position = Vector2(380.00006, 99.893005)
-states/walkGunDown/node = SubResource("AnimationNodeAnimation_pchik")
-states/walkGunDown/position = Vector2(641.3334, 100.156395)
-transitions = ["idleWithGunDown", "walkGunDown", SubResource("AnimationNodeStateMachineTransition_hehml"), "walkGunDown", "idleWithGunDown", SubResource("AnimationNodeStateMachineTransition_7nw7a"), "idleWithGunDown", "falling", SubResource("AnimationNodeStateMachineTransition_t20en"), "falling", "idleWithGunDown", SubResource("AnimationNodeStateMachineTransition_172i6"), "walkGunDown", "falling", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Start", "idleWithGunDown", SubResource("AnimationNodeStateMachineTransition_a27f7"), "Start", "walkGunDown", SubResource("AnimationNodeStateMachineTransition_watkl")]
-graph_offset = Vector2(169, -31)
+states/idle/node = SubResource("AnimationNodeAnimation_5xh8m")
+states/idle/position = Vector2(380.00006, 99.893005)
+states/walk/node = SubResource("AnimationNodeAnimation_pchik")
+states/walk/position = Vector2(641.3334, 100.156395)
+transitions = ["idle", "walk", SubResource("AnimationNodeStateMachineTransition_hehml"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_7nw7a"), "idle", "falling", SubResource("AnimationNodeStateMachineTransition_t20en"), "falling", "idle", SubResource("AnimationNodeStateMachineTransition_172i6"), "walk", "falling", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_a27f7"), "Start", "walk", SubResource("AnimationNodeStateMachineTransition_watkl")]
+graph_offset = Vector2(92, -39)

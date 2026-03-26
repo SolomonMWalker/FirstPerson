@@ -1,4 +1,5 @@
 using FirstPerson.CustomTypes.StateMachine;
+using Godot;
 
 public partial class GruntIsMovingState : IsMovingState
 {
@@ -24,6 +25,7 @@ public partial class GruntIsMovingState : IsMovingState
 
     public override void StatePhysicsProcessing(double delta)
     {
+        base.StatePhysicsProcessing(delta);
         if (Grunt.readyToFire)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("AimingState"));

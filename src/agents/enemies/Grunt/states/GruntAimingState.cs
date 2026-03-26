@@ -31,26 +31,6 @@ public partial class GruntAimingState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (CombatAgent is null) return;
-        
-        if (CombatAgent.ragdoll || CombatAgent.dead)
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
-            return;
-        }
-        
-        if(!CombatAgent.IsFloorRaycastColliding())
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
-            return;
-        }
-        
-        if (CombatAgent.Staggered)
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
-            return;
-        }
-        
         if (Grunt.aimingOver)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FiringState"));

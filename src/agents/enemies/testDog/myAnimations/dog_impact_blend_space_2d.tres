@@ -1,16 +1,16 @@
 [gd_resource type="AnimationNodeBlendSpace2D" format=3 uid="uid://dqxp3i0psb0kj"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hehml"]
-animation = &"EditedGruntLibrary/editedImpactPushForward"
+animation = &"dogImpactForward"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7nw7a"]
-animation = &"EditedGruntLibrary/editedImpactPushBackward"
+animation = &"dogImpactBack"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t20en"]
-animation = &"EditedGruntLibrary/editedImpactPushLeft"
+animation = &"dogImpactRight"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_172i6"]
-animation = &"EditedGruntLibrary/editedImpactPushRight"
+animation = &"dogImpactLeft"
 
 [resource]
 blend_point_0/node = SubResource("AnimationNodeAnimation_hehml")
