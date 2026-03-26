@@ -22,11 +22,5 @@ public partial class FollowState : EnemyAtomicState
             OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
             return;
         }
-
-        if (Input.IsKeyLabelPressed(Key.H))
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
-            return;
-        }
     }
 }

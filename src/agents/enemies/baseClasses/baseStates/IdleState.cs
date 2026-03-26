@@ -5,12 +5,6 @@ using Godot;
 
 public partial class IdleState : EnemyAtomicState
 {
-    public override void StateEntered()
-    {
-        base.StateEntered();
-        //CombatAgent.SetCurrentNavComponent(CombatAgent.AgentIdleComponent);
-    }
-
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);

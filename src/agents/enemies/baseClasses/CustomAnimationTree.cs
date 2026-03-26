@@ -13,12 +13,14 @@ public partial class CustomAnimationTree : AnimationTree
         base._Ready();
         _parameterMap = BuildParameterMap();
 
-        if (!IsDebug) return;
-        foreach (var kvp in _parameterMap)
+        if (IsDebug)
         {
-            GD.Print($"Parameter: {kvp.Key}");
-            foreach (var path in kvp.Value)
-                GD.Print($"  -> {path}");
+            foreach (var kvp in _parameterMap)
+            {
+                GD.Print($"Parameter: {kvp.Key}");
+                foreach (var path in kvp.Value)
+                    GD.Print($"  -> {path}");
+            }
         }
     }
 
