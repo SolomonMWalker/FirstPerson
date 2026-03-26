@@ -1,57 +1,61 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class CustomAnimationTree : AnimationTree
 {
-    [Export] public Godot.Collections.Dictionary<StringName, Godot.Collections.Array<StringName>> ParamToPath;
-    
-    public bool TrySetParam(string param, bool value)
+    [Export] public bool IsDebug { get; set; }
+    private Dictionary<string, List<string>> _parameterMap = [];
+
+    //Thanks for the help, Claude
+    public override void _Ready()
     {
-        if (!ParamToPath.ContainsKey(param)) return false;
-        foreach (var path in ParamToPath[param])
+        base._Ready();
+        _parameterMap = BuildParameterMap();
+
+        if (!IsDebug) return;
+        foreach (var kvp in _parameterMap)
         {
-            Set(path, value);
+            GD.Print($"Parameter: {kvp.Key}");
+            foreach (var path in kvp.Value)
+                GD.Print($"  -> {path}");
         }
-        return true;
     }
 
-    public bool TrySetParam(string param, float value)
+    private Dictionary<string, List<string>> BuildParameterMap()
     {
-        if (!ParamToPath.ContainsKey(param)) return false;
-        foreach (var path in ParamToPath[param])
+        var map = new Dictionary<string, List<string>>();
+
+        foreach (Godot.Collections.Dictionary prop in GetPropertyList())
         {
-            Set(path, value);
+            string fullPath = prop["name"].AsString();
+            if (!fullPath.StartsWith("parameters/"))
+                continue;
+
+            // Extract just the parameter name — the last segment of the path
+            // e.g. "parameters/StateMachineA/playback" -> "playback"
+            string paramName = fullPath.Split('/')[^1];
+
+            if (!map.ContainsKey(paramName))
+                map[paramName] = new List<string>();
+
+            map[paramName].Add(fullPath);
         }
-        return true;
+
+        return map;
     }
-    
-    public bool TrySetParam(string param, int value)
+
+    private void SetAllByName(string paramName, Variant value)
     {
-        if (!ParamToPath.ContainsKey(param)) return false;
-        foreach (var path in ParamToPath[param])
-        {
+        if (!_parameterMap.TryGetValue(paramName, out var paths)) return;
+        foreach (var path in paths)
             Set(path, value);
-        }
-        return true;
     }
-    
-    public bool TrySetParam(string param, Vector2 value)
+
+    public bool TrySetParam(string paramName, Variant value)
     {
-        if (!ParamToPath.ContainsKey(param)) return false;
-        foreach (var path in ParamToPath[param])
-        {
-            Set(path, value);
-        }
-        return true;
-    }
-    
-    public bool TrySetParam(string param, string value)
-    {
-        if (!ParamToPath.ContainsKey(param)) return false;
-        foreach (var path in ParamToPath[param])
-        {
-            Set(path, value);
-        }
+        if (!_parameterMap.ContainsKey(paramName)) return false;
+        SetAllByName(paramName, value);
         return true;
     }
 }

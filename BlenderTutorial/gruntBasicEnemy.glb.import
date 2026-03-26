@@ -4,18 +4,18 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dkixj2758ascw"
-path="res://.godot/imported/gruntBasicEnemy.glb-38b4bea67586d46334287ade7a37d533.scn"
+path="res://.godot/imported/gruntBasicEnemy.glb-2c7e2d2b37349f1389981002f5627486.scn"
 
 [deps]
 
-source_file="res://BlenderTutorial/gruntBasicEnemy.glb"
-dest_files=["res://.godot/imported/gruntBasicEnemy.glb-38b4bea67586d46334287ade7a37d533.scn"]
+source_file="res://blenderTutorial/gruntBasicEnemy.glb"
+dest_files=["res://.godot/imported/gruntBasicEnemy.glb-2c7e2d2b37349f1389981002f5627486.scn"]
 
 [params]
 
 nodes/root_type="CharacterBody3D"
 nodes/root_name=""
-nodes/root_script=Resource("uid://bw7rxgwmc78ob", "res://src/agents/enemies/test/Grunt.cs")
+nodes/root_script=Resource("uid://bw7rxgwmc78ob", "res://src/agents/enemies/Grunt/Grunt.cs")
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 nodes/import_as_skeleton_bones=false
@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "ImpactPushBackward": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/myAnimations/editedImpactPushBackward.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/myAnimations/editedImpactPushBackward.res",
 "save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://iugtdh5v870e",
 "settings/loop_mode": 0,
@@ -2097,7 +2097,7 @@ _subresources={
 },
 "ImpactPushForward": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/myAnimations/editedImpactPushForward.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/myAnimations/editedImpactPushForward.res",
 "save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://dfb5t20e317tv",
 "settings/loop_mode": 0,
@@ -4153,7 +4153,7 @@ _subresources={
 },
 "ImpactPushLeft": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/myAnimations/editedImpactPushLeft.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/myAnimations/editedImpactPushLeft.res",
 "save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://dpx5ijjyptpm1",
 "settings/loop_mode": 0,
@@ -6209,7 +6209,7 @@ _subresources={
 },
 "ImpactPushRight": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/myAnimations/editedImpactPushRight.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/myAnimations/editedImpactPushRight.res",
 "save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "uid://dxfdr32bl5rnb",
 "settings/loop_mode": 0,
@@ -8265,7 +8265,7 @@ _subresources={
 },
 "aimGun": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/aimGun.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/aimGun.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://y5hojemu3du4",
 "settings/loop_mode": 0,
@@ -10321,7 +10321,7 @@ _subresources={
 },
 "falling": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/falling.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/falling.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dtb0vaaxy5orj",
 "settings/loop_mode": 1,
@@ -12377,7 +12377,7 @@ _subresources={
 },
 "fallingToIdle": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/fallingToIdle.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/fallingToIdle.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://c5v06k7bboniu",
 "settings/loop_mode": 0,
@@ -14433,7 +14433,7 @@ _subresources={
 },
 "fireGun": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/fireGun.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/fireGun.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://c374f50il4b6d",
 "settings/loop_mode": 0,
@@ -16489,7 +16489,7 @@ _subresources={
 },
 "idleToFalling": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleToFalling.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/idleToFalling.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bnemrylo0j8yd",
 "settings/loop_mode": 0,
@@ -18545,7 +18545,7 @@ _subresources={
 },
 "idleToWalkGunDown": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleToWalkGunDown.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/idleToWalkGunDown.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://b1gf7gckxrrk2",
 "settings/loop_mode": 0,
@@ -20601,7 +20601,7 @@ _subresources={
 },
 "idleToWalkGunReady": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleToWalkGunReady.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/idleToWalkGunReady.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://mikii077w0ko",
 "settings/loop_mode": 0,
@@ -22657,7 +22657,7 @@ _subresources={
 },
 "idleWithGunDown": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleWithGunDown.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/idleWithGunDown.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://c43hr48gd5k25",
 "settings/loop_mode": 1,
@@ -24713,7 +24713,7 @@ _subresources={
 },
 "idleWithGunReady": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/idleWithGunReady.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/idleWithGunReady.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://cj6a140cmovq3",
 "settings/loop_mode": 1,
@@ -26769,7 +26769,7 @@ _subresources={
 },
 "stagger": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/myAnimations/editedStagger.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/myAnimations/editedStagger.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dv4xbnglt1iyd",
 "settings/loop_mode": 0,
@@ -28825,7 +28825,7 @@ _subresources={
 },
 "tPose": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/tPose.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/tPose.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://b5ngsbhe4hpt7",
 "settings/loop_mode": 0,
@@ -30881,7 +30881,7 @@ _subresources={
 },
 "walkGunDown": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/walkGunDown.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/walkGunDown.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dsluert36c5e4",
 "settings/loop_mode": 1,
@@ -32937,7 +32937,7 @@ _subresources={
 },
 "walkGunReady": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://src/agents/enemies/test/blenderAnimations/walkGunReady.res",
+"save_to_file/fallback_path": "res://src/agents/enemies/Grunt/blenderAnimations/walkGunReady.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://dm2xmyrgp4hyp",
 "settings/loop_mode": 1,

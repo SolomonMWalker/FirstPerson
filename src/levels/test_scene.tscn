@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://1beqxuwtx1mb"]
 
-[ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/system/WeaponManager.cs" id="1_bynor"]
-[ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="2_v18j3"]
-[ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_4alok"]
-[ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/system/GameManager.cs" id="4_4lq1p"]
-[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_qts6i"]
-[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_ju488"]
-[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="8_4lq1p"]
-[ext_resource type="PackedScene" uid="uid://cjk53dyljkw1k" path="res://src/agents/spawners/spawner.tscn" id="8_qts6i"]
-[ext_resource type="Script" uid="uid://ca3rbsogipkiy" path="res://src/components/characterComponents/InteractHitbox.cs" id="8_v18j3"]
-[ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="9_q644f"]
-[ext_resource type="Script" uid="uid://b8dusn8hkeft7" path="res://src/environment/TestInteractable.cs" id="9_qts6i"]
+[ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/system/WeaponManager.cs" id="1_n3mjx"]
+[ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="2_vgf4w"]
+[ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_m7jhp"]
+[ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/system/GameManager.cs" id="4_tp0mb"]
+[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_8uess"]
+[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_1qm7u"]
+[ext_resource type="PackedScene" uid="uid://cjk53dyljkw1k" path="res://src/agents/spawners/spawner.tscn" id="7_1nmgg"]
+[ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="8_mm0el"]
+[ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="9_bf4gv"]
+[ext_resource type="Script" uid="uid://b8dusn8hkeft7" path="res://src/environment/TestInteractable.cs" id="10_48iew"]
+[ext_resource type="Script" uid="uid://ca3rbsogipkiy" path="res://src/components/characterComponents/InteractHitbox.cs" id="11_l7taq"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -36,36 +36,36 @@ glow_normalized = true
 [node name="Managers" type="Node" parent="." unique_id=1348320096]
 
 [node name="WeaponManager" type="Node" parent="Managers" unique_id=1945228329 node_paths=PackedStringArray("PlayerController")]
-script = ExtResource("1_bynor")
-Weapons = Dictionary[int, ExtResource("2_v18j3")]({
-1: ExtResource("3_4alok")
+script = ExtResource("1_n3mjx")
+Weapons = Dictionary[int, ExtResource("2_vgf4w")]({
+1: ExtResource("3_m7jhp")
 })
 PlayerController = NodePath("../../Level/Player")
 
 [node name="GameManager" type="Node" parent="Managers" unique_id=1197770358]
-script = ExtResource("4_4lq1p")
+script = ExtResource("4_tp0mb")
 
 [node name="Level" type="Node3D" parent="." unique_id=1045081351]
 
 [node name="ProjectileParent" type="Node3D" parent="Level" unique_id=1728880348 groups=["projectileParent"]]
 unique_name_in_owner = true
 
-[node name="Player" parent="Level" unique_id=1478597815 instance=ExtResource("5_qts6i")]
+[node name="Player" parent="Level" unique_id=1478597815 instance=ExtResource("5_8uess")]
 transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, 46.812, 2.3894086, 36.988)
 
 [node name="Map" type="Node3D" parent="Level" unique_id=39033084]
 
-[node name="funcGodotTest" parent="Level/Map" unique_id=552549584 instance=ExtResource("6_ju488")]
+[node name="funcGodotTest" parent="Level/Map" unique_id=552549584 instance=ExtResource("6_1qm7u")]
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 
-[node name="Spawner" parent="Level/Enemies" unique_id=1038078890 node_paths=PackedStringArray("EncounterZone", "ParentOfSpawned") instance=ExtResource("8_qts6i")]
+[node name="Spawner" parent="Level/Enemies" unique_id=1038078890 node_paths=PackedStringArray("EncounterZone", "ParentOfSpawned") instance=ExtResource("7_1nmgg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.46319, 3.7713165, 30.238743)
 EncounterZone = NodePath("../EncounterZone")
 ParentOfSpawned = NodePath("..")
 
 [node name="EncounterZone" type="Node3D" parent="Level/Enemies" unique_id=1531732731]
-script = ExtResource("9_q644f")
+script = ExtResource("8_mm0el")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")
@@ -80,15 +80,15 @@ shadow_opacity = 0.66
 [node name="TestInteractable" type="MeshInstance3D" parent="Level" unique_id=1555373907 node_paths=PackedStringArray("Spawner", "InteractHitbox")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.978386, 2.41633, 36.54735)
 mesh = SubResource("SphereMesh_bynor")
-surface_material_override/0 = ExtResource("8_4lq1p")
-script = ExtResource("9_qts6i")
+surface_material_override/0 = ExtResource("9_bf4gv")
+script = ExtResource("10_48iew")
 Spawner = NodePath("../Enemies/Spawner")
 InteractHitbox = NodePath("InteractHitbox")
 
 [node name="InteractHitbox" type="Area3D" parent="Level/TestInteractable" unique_id=952538197]
 collision_layer = 16
 collision_mask = 0
-script = ExtResource("8_v18j3")
+script = ExtResource("11_l7taq")
 metadata/_custom_type_script = "uid://ca3rbsogipkiy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Level/TestInteractable/InteractHitbox" unique_id=1194022531]

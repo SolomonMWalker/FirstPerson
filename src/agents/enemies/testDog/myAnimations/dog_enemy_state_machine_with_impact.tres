@@ -8,7 +8,6 @@ filter_enabled = true
 filters = ["GruntRig/Skeleton3D:spine", "GruntRig/Skeleton3D:spine.001", "GruntRig/Skeleton3D:spine.002", "GruntRig/Skeleton3D:spine.003", "GruntRig/Skeleton3D:spine.004", "GruntRig/Skeleton3D:spine.005", "GruntRig/Skeleton3D:spine.006"]
 
 [resource]
-graph_offset = Vector2(-268.65244, -60.760693)
 nodes/output/position = Vector2(848, 176)
 nodes/OneShot/node = SubResource("AnimationNodeOneShot_6vck5")
 nodes/OneShot/position = Vector2(480, 176)
