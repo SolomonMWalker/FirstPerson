@@ -8,10 +8,11 @@ public partial class IdleState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (CombatAgent is null || CombatAgent.CanChangeState()) return;
-        if (CombatAgent.EnemyStateMachine.CurrentCombatState == "InCombatState")
+        if (CombatAgent is null || !CombatAgent.CanChangeState()) return;
+        if (CombatAgent.inCombat)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FollowState"));
+            return;
         }
     }
 

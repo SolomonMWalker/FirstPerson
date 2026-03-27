@@ -16,8 +16,8 @@ public partial class Dog : CombatAgent
     public override void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
     {
         base.SetLastDamageDirection(sourceGlobalPosition, collisionGlobalPoint);
-        CustomAnimationTree.TrySetParam("impact", dirLastDamageXz);
-        CustomAnimationTree.TrySetParam("impactOneShot", 1);
+        CustomAnimationTree.TrySetParam("blend_position", dirLastDamageXz);
+        CustomAnimationTree.TrySetParam("request", (int)AnimationNodeOneShot.OneShotRequest.Fire);
     }
     
     public override void _Ready()

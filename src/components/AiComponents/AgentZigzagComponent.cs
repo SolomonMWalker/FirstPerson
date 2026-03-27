@@ -13,6 +13,7 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
     private bool _zigzagRight;
     private float _zigzagLength = 15f;
     private float _zigzagAngleInDeg = 20f;
+    private float _zigzagStopLength = 5f;
     private float _zigzagAngleInRad;
     private Vector3? _zigzagTarget;
     private Rid? _navMapId;
@@ -38,9 +39,9 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
             return;
         }
 
-        if (MovingAgent.CombatTarget == null) return;
+        if (MovingAgent.MovementTarget == null) return;
 
-        if (MovingAgent.GlobalPosition.DistanceTo(MovingAgent.CombatTarget.GlobalPosition) < _zigzagLength/5f)
+        if (MovingAgent.GlobalPosition.DistanceTo(MovingAgent.MovementTarget.GlobalPosition) < _zigzagStopLength)
         {
             AgentFollowComponent.HandleNavigation(delta);
             return;
@@ -83,7 +84,7 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
 
     public void SetZigZagTarget()
     {
-        var dirToTargetV3 = (MovingAgent.GlobalPosition - MovingAgent.CombatTarget.GlobalPosition)
+        var dirToTargetV3 = (MovingAgent.GlobalPosition - MovingAgent.MovementTarget.GlobalPosition)
             .Rotated(Vector3.Up, Mathf.DegToRad(180))
             .Normalized();
         if (!_doneWithFirstZigzag)
@@ -98,7 +99,6 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
 
         dirToTargetV3 = dirToTargetV3.Rotated(Vector3.Up, _zigzagRight ? _zigzagAngleInRad : -_zigzagAngleInRad);
         dirToTargetV3 += MovingAgent.GlobalPosition;
-        this.SpawnPermaMarker(dirToTargetV3);
         _zigzagRight = !_zigzagRight;
         if (_navMapId != null) _zigzagTarget = NavigationServer3D.MapGetClosestPoint(_navMapId.Value, dirToTargetV3);
     }

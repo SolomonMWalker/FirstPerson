@@ -6,34 +6,12 @@ using FirstPerson.scenes.enemies.test.states;
 
 public partial class NotInCombatState : EnemyAtomicState
 {
-    public override void StateEntered()
-    {
-        base.StateEntered();
-        //CombatAgent.CustomAnimationTree.TrySetParam("notInCombat", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        //CombatAgent.CustomAnimationTree.TrySetParam("notInCombat", false);
-    }
-    
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
-        if (CombatAgent is null || CombatAgent.CanChangeState()) return;
-        if (CombatAgent.CombatTriggerArea.HasOverlappingAreas())
-        {
-            var overlapArea = CombatAgent.CombatTriggerArea.GetOverlappingAreas().First();
-            if (overlapArea is Hitbox hitbox)
-            {
-                CombatAgent.CombatTarget = hitbox.Parent;
-                OnStateChangeRequired(new ChangeStateEventArgs("InCombatState"));
-                return;
-            }
-        }
+        if (CombatAgent is null || !CombatAgent.CanChangeState()) return;
 
-        if (CombatAgent.inCombat && CombatAgent.CombatTarget is not null)
+        if (CombatAgent.inCombat && CombatAgent.MovementTarget is not null)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("InCombatState"));
             return;

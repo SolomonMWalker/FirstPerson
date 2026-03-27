@@ -16,8 +16,7 @@ public partial class FollowState : EnemyAtomicState
             return;
         }
 
-        if (CombatAgent.EnemyStateMachine.CurrentCombatState == "NotInCombatState"
-            || CombatAgent.CombatTarget is null)
+        if (!CombatAgent.inCombat || CombatAgent.MovementTarget is null)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
             return;

@@ -1,3 +1,5 @@
+using Godot;
+
 public partial class DogFollowState : FollowState
 {
     private Dog Dog { get; set; }
@@ -11,6 +13,6 @@ public partial class DogFollowState : FollowState
     public override void StateEntered()
     {
         base.StateEntered();
-        Dog.SetCurrentNavComponent(Dog.AgentFollowComponent);
+        Dog.SetCurrentNavComponent(Dog.AgentZigzagComponent);
     }
 }

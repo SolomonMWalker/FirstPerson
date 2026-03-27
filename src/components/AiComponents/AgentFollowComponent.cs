@@ -7,7 +7,6 @@ public partial class AgentFollowComponent : BaseAiNavComponent
 {
     public override void HandleNavigation(double delta)
     {
-        GD.Print("following");
         // Do not query when the map has never synchronized and is empty.
         if (NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
         {
@@ -21,10 +20,10 @@ public partial class AgentFollowComponent : BaseAiNavComponent
             return;
         }
 
-        if (MovingAgent.CombatTarget == null) return;
+        if (MovingAgent.MovementTarget == null) return;
         
         NavigationAgent3D.TargetPosition =  MovingAgent.CanMove()
-            ? MovingAgent.CombatTarget.GlobalPosition
+            ? MovingAgent.MovementTarget.GlobalPosition
             : MovingAgent.GlobalPosition;
         
         if (NavigationAgent3D.IsNavigationFinished())
@@ -46,7 +45,6 @@ public partial class AgentFollowComponent : BaseAiNavComponent
         var direction = (nextPathPosition - MovingAgent.GlobalPosition).Normalized();
         var currentVelocity = direction * MovingAgent.Speed;
         currentVelocity = currentVelocity with { Y = 0 };
-        GD.Print($"set velocity to {currentVelocity}");
         
         if (direction.Length() > 0.01f)
         {

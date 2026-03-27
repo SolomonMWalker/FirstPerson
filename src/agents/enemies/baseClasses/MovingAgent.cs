@@ -12,7 +12,7 @@ public abstract partial class MovingAgent : CharacterBody3D
     [Export] public float MaxFallSpeed { get; set; } = 50f;
     
     [ExportCategory("Moving Agent References")]
-    [Export] public Node3D CombatTarget { get; set; }
+    [Export] public Node3D MovementTarget { get; set; }
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
 
     protected BaseAiNavComponent CurrentNavComponent { get; set; }

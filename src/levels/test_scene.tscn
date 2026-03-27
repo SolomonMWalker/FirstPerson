@@ -68,9 +68,10 @@ ParentOfSpawned = NodePath("..")
 [node name="EncounterZone" type="Node3D" parent="Level/Enemies" unique_id=1531732731]
 script = ExtResource("8_mm0el")
 
-[node name="dog" parent="Level/Enemies" unique_id=1242258460 node_paths=PackedStringArray("CombatTarget") instance=ExtResource("9_vgf4w")]
+[node name="dog" parent="Level/Enemies" unique_id=1242258460 instance=ExtResource("9_vgf4w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.24826, 6.6362877, 32.31333)
-CombatTarget = NodePath("../../Player")
+Health = 5000
+StaggerAmount = 5000
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
 environment = SubResource("Environment_ykrsh")

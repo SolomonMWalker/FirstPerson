@@ -21,7 +21,7 @@ public partial class AgentIdleComponent : BaseAiNavComponent
             return;
         }
 
-        if (MovingAgent.CombatTarget is not null && MovingAgent.CanRotate())
+        if (MovingAgent.MovementTarget is not null && MovingAgent.CanRotate())
         {
             MovingAgent.RotateToTarget();
         }

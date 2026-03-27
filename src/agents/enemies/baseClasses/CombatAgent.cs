@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Linq;
 using FirstPerson.agents.enemies.test;
+using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
 using EncounterZone = FirstPerson.environment.utilities.EncounterZone;
@@ -36,7 +37,7 @@ public partial class CombatAgent : MovingAgent
             if (_encounterZone is null) return;
             _encounterZone.OnCombatStart += target =>
             {
-                CombatTarget = target;
+                MovementTarget = target;
                 inCombat = true;
             };
         }
@@ -78,12 +79,12 @@ public partial class CombatAgent : MovingAgent
     protected List<PhysicalBone3D> _allPBones = [];
     protected List<CollisionShape3D> _boneCollisionShapes = [];
 
-    public virtual bool CanChangeState() => !(dead);
+    public virtual bool CanChangeState() => !dead;
     public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
     public override bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
     public virtual void StopStagger() => Staggered = false;
-    public virtual void SetTarget(Node3D target) => CombatTarget = target;
+    public virtual void SetTarget(Node3D target) => MovementTarget = target;
     public virtual void RaycastSnapToFloor()
     {
         if (IsFloorRaycastColliding()) ApplyFloorSnap();
@@ -112,7 +113,7 @@ public partial class CombatAgent : MovingAgent
         {
             _encounterZone.OnCombatStart += target =>
             {
-                CombatTarget = target;
+                MovementTarget = target;
                 inCombat = true;
             };
         }
@@ -121,11 +122,11 @@ public partial class CombatAgent : MovingAgent
         {
             hitbox.OnHitSetCombatTarget += target =>
             {
-                CombatTarget = target;
+                MovementTarget = target;
                 inCombat = true;
-                if (_encounterZone is not null && !_encounterZone.Alerted && CombatTarget is not null)
+                if (_encounterZone is not null && !_encounterZone.Alerted && MovementTarget is not null)
                 {
-                    _encounterZone.AlertZone(CombatTarget);
+                    _encounterZone.AlertZone(MovementTarget);
                 }
             };
         }
@@ -159,6 +160,17 @@ public partial class CombatAgent : MovingAgent
         base._PhysicsProcess(delta);
         ApplyFloorSnap();
         previousFrameVelocityLengthSquared = Velocity.LengthSquared();
+        
+        if (!inCombat && CombatTriggerArea.HasOverlappingAreas())
+        {
+            var overlapArea = CombatTriggerArea.GetOverlappingAreas().First();
+            if (overlapArea is Hitbox hitbox)
+            {
+                MovementTarget = hitbox.Parent;
+                EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("InCombatState"));
+                inCombat = true;
+            }
+        }
     }
 
     private async void ActorSetup()
@@ -168,9 +180,9 @@ public partial class CombatAgent : MovingAgent
         await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 
         // Now that the navigation map is no longer empty, set the movement target.
-        if (CombatTarget != null)
+        if (MovementTarget != null)
         {
-            NavigationAgent3D.TargetPosition = CombatTarget.GlobalPosition;
+            NavigationAgent3D.TargetPosition = MovementTarget.GlobalPosition;
         }
     }
 
@@ -189,8 +201,8 @@ public partial class CombatAgent : MovingAgent
 
     public override void RotateToTarget()
     {
-        if (CombatTarget is null || freezeRotation) return;
-        var direction = (CombatTarget.GlobalPosition - GlobalPosition).Normalized();
+        if (MovementTarget is null || freezeRotation) return;
+        var direction = (MovementTarget.GlobalPosition - GlobalPosition).Normalized();
         var targetRotation = Mathf.Atan2(direction.X, direction.Z);
         Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
     }
@@ -267,7 +279,7 @@ public partial class CombatAgent : MovingAgent
         if (encounterZone is null) return;
         EncounterZone = encounterZone;
         if (!EncounterZone.TryGetTarget(out var target)) return;
-        CombatTarget = target;
+        MovementTarget = target;
         inCombat = true;
     }
 
