@@ -19,7 +19,7 @@ public partial class Grunt : CombatAgent
 
     public bool readyToFire, firing, aimingOver;
 
-    public override bool CanChangeState() => base.CanChangeState() && firing;
+    public override bool CanChangeState() => base.CanChangeState() && !firing;
     public override bool CanMove() => !firing && base.CanMove();
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
