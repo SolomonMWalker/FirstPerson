@@ -50,6 +50,6 @@ states/falling/position = Vector2(514, 274)
 states/idleWithGunDown/node = SubResource("AnimationNodeAnimation_5xh8m")
 states/idleWithGunDown/position = Vector2(380.00006, 99.893005)
 states/walkGunDown/node = SubResource("AnimationNodeAnimation_pchik")
-states/walkGunDown/position = Vector2(641.3334, 100.156395)
+states/walkGunDown/position = Vector2(641.3334, 99.94569)
 transitions = ["idleWithGunDown", "walkGunDown", SubResource("AnimationNodeStateMachineTransition_hehml"), "walkGunDown", "idleWithGunDown", SubResource("AnimationNodeStateMachineTransition_7nw7a"), "idleWithGunDown", "falling", SubResource("AnimationNodeStateMachineTransition_t20en"), "falling", "idleWithGunDown", SubResource("AnimationNodeStateMachineTransition_172i6"), "walkGunDown", "falling", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Start", "idleWithGunDown", SubResource("AnimationNodeStateMachineTransition_a27f7"), "Start", "walkGunDown", SubResource("AnimationNodeStateMachineTransition_watkl")]
 graph_offset = Vector2(169, -31)
