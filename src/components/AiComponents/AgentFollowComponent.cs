@@ -22,7 +22,7 @@ public partial class AgentFollowComponent : BaseAiNavComponent
 
         if (MovingAgent.MovementTarget == null) return;
         
-        NavigationAgent3D.TargetPosition =  MovingAgent.CanMove()
+        NavigationAgent3D.TargetPosition =  MovingAgent.CanMove() || MovingAgent.TurnOffAi()
             ? MovingAgent.MovementTarget.GlobalPosition
             : MovingAgent.GlobalPosition;
         

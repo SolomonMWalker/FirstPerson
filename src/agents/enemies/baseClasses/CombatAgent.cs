@@ -80,6 +80,7 @@ public partial class CombatAgent : MovingAgent
     protected List<CollisionShape3D> _boneCollisionShapes = [];
 
     public virtual bool CanChangeState() => !dead;
+    public override bool TurnOffAi() => dead || ragdoll || falling || Staggered;
     public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
     public override bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
@@ -186,7 +187,7 @@ public partial class CombatAgent : MovingAgent
         }
     }
 
-    private HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
+    protected HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
     {
         return new HitInformation(
             healthDamage: Damage,

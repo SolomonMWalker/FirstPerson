@@ -84,8 +84,8 @@ advance_mode = 2
 advance_condition = &"attackOver"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eot6w"]
+switch_mode = 2
 advance_mode = 2
-advance_condition = &"attackOver"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tsx77"]
 advance_mode = 2
@@ -93,6 +93,7 @@ advance_condition = &"stationaryAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sowni"]
 advance_mode = 2
+advance_condition = &"stationaryAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ggec2"]
 advance_mode = 2
@@ -126,4 +127,4 @@ states/run/position = Vector2(572.6667, 77.86396)
 states/stagger/node = SubResource("AnimationNodeAnimation_fkb5v")
 states/stagger/position = Vector2(83.27323, 59.204082)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_t20en"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_nswck"), "idle", "falling", SubResource("AnimationNodeStateMachineTransition_0dmmb"), "run", "falling", SubResource("AnimationNodeStateMachineTransition_in0d3"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_c2shi"), "falling", "idle", SubResource("AnimationNodeStateMachineTransition_fkb5v"), "Start", "run", SubResource("AnimationNodeStateMachineTransition_1kqji"), "idle", "stagger", SubResource("AnimationNodeStateMachineTransition_medd3"), "run", "stagger", SubResource("AnimationNodeStateMachineTransition_g8uci"), "stagger", "idle", SubResource("AnimationNodeStateMachineTransition_mgirg"), "stagger", "falling", SubResource("AnimationNodeStateMachineTransition_bsjv1"), "idle", "Edited_editedDogLeapAttack", SubResource("AnimationNodeStateMachineTransition_tu6g2"), "Edited_editedDogLeapAttack", "stagger", SubResource("AnimationNodeStateMachineTransition_63ie3"), "Edited_editedDogLeapAttack", "idle", SubResource("AnimationNodeStateMachineTransition_msjxh"), "Edited_editedDogStationaryAttack", "idle", SubResource("AnimationNodeStateMachineTransition_eot6w"), "idle", "Edited_editedDogStationaryAttack", SubResource("AnimationNodeStateMachineTransition_tsx77"), "run", "Edited_editedDogStationaryAttack", SubResource("AnimationNodeStateMachineTransition_sowni"), "run", "Edited_editedDogLeapAttack", SubResource("AnimationNodeStateMachineTransition_ggec2"), "Edited_editedDogLeapAttack", "falling", SubResource("AnimationNodeStateMachineTransition_n541a"), "Edited_editedDogStationaryAttack", "falling", SubResource("AnimationNodeStateMachineTransition_ccnre"), "Edited_editedDogStationaryAttack", "stagger", SubResource("AnimationNodeStateMachineTransition_e5pdf")]
-graph_offset = Vector2(-128, 61.537415)
+graph_offset = Vector2(-71, 61.173077)

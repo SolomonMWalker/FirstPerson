@@ -28,7 +28,7 @@ public partial class IsMovingState : EnemyAtomicState
             return;
         }
         
-        if (CombatAgent.previousFrameVelocityLengthSquared == 0)
+        if (CombatAgent.Velocity.LengthSquared() == 0)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;

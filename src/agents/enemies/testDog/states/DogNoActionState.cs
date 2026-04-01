@@ -21,4 +21,14 @@ public partial class DogNoActionState : NoActionState
         base.StateExited();
         Dog.CustomAnimationTree.TrySetParam("stopped", false);
     }
+    
+    public override void StatePhysicsProcessing(double delta)
+    {
+        base.StatePhysicsProcessing(delta);
+        if (Dog.meleeAttacking)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("MeleeAttackState"));
+            return;
+        }
+    }
 }

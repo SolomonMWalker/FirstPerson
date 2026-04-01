@@ -22,4 +22,14 @@ public partial class DogIsMovingState : IsMovingState
         base.StateExited();
         Dog.CustomAnimationTree.TrySetParam("moving", false);
     }
+
+    public override void StatePhysicsProcessing(double delta)
+    {
+        base.StatePhysicsProcessing(delta);
+        if (Dog.meleeAttacking)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("MeleeAttackState"));
+            return;
+        }
+    }
 }
