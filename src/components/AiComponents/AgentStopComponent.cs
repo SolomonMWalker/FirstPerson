@@ -3,7 +3,7 @@ using System;
 using FirstPerson.agents.AiComponents;
 
 [GlobalClass]
-public partial class AgentIdleComponent : BaseAiNavComponent
+public partial class AgentStopComponent : BaseAiNavComponent
 {
     public override void HandleNavigation(double delta)
     {

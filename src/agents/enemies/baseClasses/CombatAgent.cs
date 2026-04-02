@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using FirstPerson.agents.AiComponents;
 using FirstPerson.agents.enemies.test;
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test;
@@ -78,14 +79,20 @@ public partial class CombatAgent : MovingAgent
     protected bool _ready;
     protected List<PhysicalBone3D> _allPBones = [];
     protected List<CollisionShape3D> _boneCollisionShapes = [];
+    protected BaseAiNavComponent defaultCombatAi;
+    protected BaseAiNavComponent defaultNoncombatAi;
 
     public virtual bool CanChangeState() => !dead;
-    public override bool TurnOffAi() => dead || ragdoll || falling || Staggered;
     public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
     public override bool CanRotate() => !(freezeRotation || Staggered);
     public virtual bool IsFloorRaycastColliding() => FloorRaycast.IsColliding();
     public virtual void StopStagger() => Staggered = false;
     public virtual void SetTarget(Node3D target) => MovementTarget = target;
+
+    public virtual void ResetCurrentAiComponent()
+    {
+        CurrentNavComponent = inCombat ? defaultCombatAi : defaultNoncombatAi;
+    }
     public virtual void RaycastSnapToFloor()
     {
         if (IsFloorRaycastColliding()) ApplyFloorSnap();

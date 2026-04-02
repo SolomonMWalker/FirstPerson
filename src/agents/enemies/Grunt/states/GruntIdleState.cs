@@ -11,6 +11,6 @@ public partial class GruntIdleState : IdleState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.SetCurrentNavComponent(Grunt.AgentIdleComponent);
+        Grunt.SetCurrentNavComponent(Grunt.AgentStopComponent);
     }
 }

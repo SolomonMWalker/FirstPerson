@@ -10,11 +10,14 @@ public partial class FuzzyStartTimer : Timer
     public override void _Ready()
     {
         base._Ready();
-        _accessibleWaitTime = WaitTime;
         _random = new Random();
     }
 
-    public void SetStartTime(float time) => _accessibleWaitTime = time;
+    public void SetStartTime(float time)
+    {
+        _accessibleWaitTime = time;
+        WaitTime = time;
+    } 
 
     public void FuzzyStart()
     {

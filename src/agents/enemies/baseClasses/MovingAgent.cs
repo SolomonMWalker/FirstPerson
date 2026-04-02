@@ -32,7 +32,6 @@ public abstract partial class MovingAgent : CharacterBody3D
     public abstract void SetAffectedBone(PhysicalBone3D physicalBone3D);
     public abstract void HandleFalling(double delta);
     public abstract void RotateToTarget();
-    public abstract bool TurnOffAi();
     public abstract bool CanMove();
     public abstract bool CanRotate();
     public abstract void RotateToGlobalPoint(Vector3 globalPoint);

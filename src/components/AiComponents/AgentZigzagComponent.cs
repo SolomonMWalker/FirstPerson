@@ -54,7 +54,7 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
 
         if (_zigzagTarget != null)
         {
-            NavigationAgent3D.TargetPosition = MovingAgent.CanMove() || MovingAgent.TurnOffAi()
+            NavigationAgent3D.TargetPosition = MovingAgent.CanMove()
                 ? _zigzagTarget.Value : MovingAgent.GlobalPosition;
         }
 

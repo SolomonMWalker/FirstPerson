@@ -11,6 +11,6 @@ public partial class DogIdleState : IdleState
     public override void StateEntered()
     {
         base.StateEntered();
-        Dog.SetCurrentNavComponent(Dog.AgentIdleComponent);
+        Dog.SetCurrentNavComponent(Dog.AgentStopComponent);
     }
 }

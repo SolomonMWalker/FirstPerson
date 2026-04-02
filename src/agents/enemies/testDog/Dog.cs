@@ -1,15 +1,17 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class Dog : CombatAgent
 {
     [ExportCategory("Dog Settings")]
     [Export] public float AttackRate { get; set; } = 2.0f;
-    
+    [Export] public float LeapAttackSpeed { get; set; } = 5.0f;
+
     [ExportCategory("Components")]
     [Export] public AgentZigzagComponent AgentZigzagComponent { get; set; }
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
-    [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
+    [Export] public AgentStopComponent AgentStopComponent { get; set; }
     
     [ExportCategory("References")]
     [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
@@ -20,11 +22,21 @@ public partial class Dog : CombatAgent
 
     public bool meleeAttacking, leapAttacking, nextAttackIsLeap;
     public bool Attacking { get => _attacking; }
+    public bool RotationEnabled { get; set; }
     private bool _attacking;
-    public override bool TurnOffAi() => base.TurnOffAi() && _attacking;
-    public override bool CanRotate() => base.CanRotate() && !_attacking;
+    private List<GodotObject> meleeAttackObjectsHit = [];
+    public override bool CanRotate() => base.CanRotate() && RotationEnabled;
+    public void DisableRotation() => RotationEnabled = false;
+    public void EnableRotation() => RotationEnabled = true;
     public void StartAttacking() => _attacking = true;
-    public void StopAttacking() => _attacking = false;
+
+    public void StopAttacking()
+    {
+        _attacking = false;
+        CustomAnimationTree.TrySetParam("stationaryAttack", false);
+        CloseAttackRangeShapeCast.Enabled = false;
+    }
+
     public void EnableMeleeHitbox() => CloseAttackRangeShapeCast.Enabled = true;
     public void DisableMeleeHitbox() => CloseAttackRangeShapeCast.Enabled = false;
     
@@ -38,14 +50,16 @@ public partial class Dog : CombatAgent
     public override void _Ready()
     {
         base._Ready();
-        CurrentNavComponent = AgentIdleComponent;
-        foreach (var hitbox in Hitboxes)
-        {
-            CloseAttackRangeShapeCast.AddException(hitbox);
-            ShouldCloseAttackShapeCast.AddException(hitbox);
-        }
+        defaultCombatAi = AgentZigzagComponent;
+        defaultNoncombatAi = AgentStopComponent;
+        CurrentNavComponent = AgentStopComponent;
+
         AttackRateTimer.SetStartTime(AttackRate);
         AttackRateTimer.FuzzyStart();
+        AttackRateTimer.Timeout += () =>
+        {
+            ShouldCloseAttackShapeCast.Enabled = true;
+        };
     }
 
     public override void _PhysicsProcess(double delta)
@@ -63,26 +77,26 @@ public partial class Dog : CombatAgent
 
     public void HandleCloseMeleeAttackStart()
     {
-        if (!meleeAttacking && ShouldCloseAttackShapeCast.IsColliding())
+        if (!meleeAttacking && ShouldCloseAttackShapeCast.Enabled && ShouldCloseAttackShapeCast.IsColliding())
         {
-            GD.Print("melee attacking");
+            meleeAttackObjectsHit = [];
             meleeAttacking = true;
             Velocity = Vector3.Zero;
             NavigationAgent3D.Velocity = Vector3.Zero;
+            CurrentNavComponent = AgentStopComponent;
         }
     }
 
     public void HandleCloseMeleeAttackCollision()
     {
         if (!CloseAttackRangeShapeCast.IsColliding()) return;
-        GD.Print("attack hit");
         for (int i = 0; i < CloseAttackRangeShapeCast.GetCollisionCount(); i++)
         {
             var collided = CloseAttackRangeShapeCast.GetCollider(i);
-            if (collided is Hitbox hitbox)
+            if (collided is Hitbox hitbox && !meleeAttackObjectsHit.Contains(hitbox.Parent))
             {
                 hitbox.Hit(BuildHitInformation(CloseAttackRangeShapeCast.GetCollisionPoint(i)));
-                CloseAttackRangeShapeCast.AddException(hitbox);
+                meleeAttackObjectsHit.Add(hitbox.Parent);
             }
         }
     }

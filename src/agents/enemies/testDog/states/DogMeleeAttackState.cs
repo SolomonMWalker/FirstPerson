@@ -1,5 +1,6 @@
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
+using Godot;
 
 public partial class DogMeleeAttackState : EnemyAtomicState
 {
@@ -14,8 +15,8 @@ public partial class DogMeleeAttackState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        Dog.ShouldCloseAttackShapeCast.Enabled = false;
         Dog.StartAttacking();
-        //Dog.CustomAnimationTree.TrySetParam("attackOver", false);
         Dog.CustomAnimationTree.TrySetParam("stationaryAttack", true);
     }
 
@@ -24,9 +25,9 @@ public partial class DogMeleeAttackState : EnemyAtomicState
         base.StateExited();
         Dog.meleeAttacking = false;
         Dog.StopAttacking();
-        //Dog.CustomAnimationTree.TrySetParam("attackOver", true);
         Dog.CustomAnimationTree.TrySetParam("stationaryAttack", false);
         Dog.AttackRateTimer.Start();
+        Dog.ResetCurrentAiComponent();
     }
 
     public override void StatePhysicsProcessing(double delta)
@@ -54,7 +55,7 @@ public partial class DogMeleeAttackState : EnemyAtomicState
 
         if (!Dog.Attacking)
         {
-            OnStateChangeRequired(new ChangeStateEventArgs("IdleState"));
+            OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));
             return;
         }
     }

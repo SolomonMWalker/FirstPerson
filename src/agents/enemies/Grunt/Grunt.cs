@@ -9,7 +9,7 @@ public partial class Grunt : CombatAgent
 
     [ExportCategory("Components")]
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
-    [Export] public AgentIdleComponent AgentIdleComponent { get; set; }
+    [Export] public AgentStopComponent AgentStopComponent { get; set; }
     
     [ExportCategory("References")]
     [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
@@ -42,7 +42,7 @@ public partial class Grunt : CombatAgent
             readyToFire = true;
         };
 
-        CurrentNavComponent = AgentIdleComponent;
+        CurrentNavComponent = AgentStopComponent;
     }
 
     public virtual void Aim()
