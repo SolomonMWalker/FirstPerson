@@ -25,6 +25,7 @@
     - leap melee attack
         - code velocity or animation root movement?
             - probably code velocity, still don't know root movement
+        - switch to separating animations and handling it like a jump that quits out when it gets grounded
     - generic melee attack (bite)
 - exploder
     - slowly move towards target

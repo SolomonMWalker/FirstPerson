@@ -1,14 +1,18 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using FirstPerson.agents.enemies.testDog;
 
 public partial class Dog : CombatAgent
 {
     [ExportCategory("Dog Settings")]
     [Export] public float AttackRate { get; set; } = 2.0f;
-    [Export] public float LeapAttackSpeed { get; set; } = 5.0f;
+
+    [Export] public float LeapAttackSpeed { get; set; } = 25;
+    [Export] public float LeapAttackJumpForce { get; set; } = 15;
 
     [ExportCategory("Components")]
+    [Export] public LeapAttackAiComponent LeapAttackAiComponent { get; set; }
     [Export] public AgentZigzagComponent AgentZigzagComponent { get; set; }
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
     [Export] public AgentStopComponent AgentStopComponent { get; set; }
@@ -17,12 +21,15 @@ public partial class Dog : CombatAgent
     [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public ShapeCast3D ShouldCloseAttackShapeCast { get; set; }
+    [Export] public ShapeCast3D ShouldLeapAttackShapeCast { get; set; }
     [Export] public ShapeCast3D CloseAttackRangeShapeCast { get; set; }
     [Export] public FuzzyStartTimer AttackRateTimer { get; set; }
 
-    public bool meleeAttacking, leapAttacking, nextAttackIsLeap;
+    public bool nextAttackIsLeap = false;
+    public bool meleeAttacking, leapAttacking, leapAttackInProgress, leapAttackDone;
     public bool Attacking { get => _attacking; }
     public bool RotationEnabled { get; set; }
+    public float leapAttackOffset;
     private bool _attacking;
     private List<GodotObject> meleeAttackObjectsHit = [];
     public override bool CanRotate() => base.CanRotate() && RotationEnabled;
@@ -34,11 +41,16 @@ public partial class Dog : CombatAgent
     {
         _attacking = false;
         CustomAnimationTree.TrySetParam("stationaryAttack", false);
+        CustomAnimationTree.TrySetParam("leapAttack", false);
         CloseAttackRangeShapeCast.Enabled = false;
     }
 
     public void EnableMeleeHitbox() => CloseAttackRangeShapeCast.Enabled = true;
     public void DisableMeleeHitbox() => CloseAttackRangeShapeCast.Enabled = false;
+    public void EnableLeapAttackTrigger() => ShouldLeapAttackShapeCast.Enabled = true;
+    public void DisableLeapAttackTrigger() => ShouldLeapAttackShapeCast.Enabled = false;
+    public void EnableMeleeAttackTrigger() => ShouldCloseAttackShapeCast.Enabled = true;
+    public void DisableMeleeAttackTrigger() => ShouldCloseAttackShapeCast.Enabled = false;
     
     public override void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
     {
@@ -58,15 +70,31 @@ public partial class Dog : CombatAgent
         AttackRateTimer.FuzzyStart();
         AttackRateTimer.Timeout += () =>
         {
-            ShouldCloseAttackShapeCast.Enabled = true;
+            if (nextAttackIsLeap)
+            {
+                ShouldLeapAttackShapeCast.Enabled = true;
+            }
+            else
+            {
+                ShouldCloseAttackShapeCast.Enabled = true;
+            }
         };
+
+        ShouldCloseAttackShapeCast.Enabled = true;
     }
 
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        HandleCloseMeleeAttackStart();
-        HandleCloseMeleeAttackCollision();
+        if (nextAttackIsLeap)
+        {
+            HandleLeapAttackStart();
+        }
+        else
+        {
+            HandleCloseMeleeAttackStart();
+        }
+        HandleMeleeAttackCollision();
     }
 
     public override void StartRagdoll()
@@ -77,7 +105,8 @@ public partial class Dog : CombatAgent
 
     public void HandleCloseMeleeAttackStart()
     {
-        if (!meleeAttacking && ShouldCloseAttackShapeCast.Enabled && ShouldCloseAttackShapeCast.IsColliding())
+        if (!_attacking && !meleeAttacking && ShouldCloseAttackShapeCast.Enabled 
+            && ShouldCloseAttackShapeCast.IsColliding())
         {
             meleeAttackObjectsHit = [];
             meleeAttacking = true;
@@ -87,7 +116,27 @@ public partial class Dog : CombatAgent
         }
     }
 
-    public void HandleCloseMeleeAttackCollision()
+    public void HandleLeapAttackStart()
+    {
+        if (!_attacking && !leapAttacking && ShouldLeapAttackShapeCast.Enabled
+            && ShouldLeapAttackShapeCast.IsColliding())
+        {
+            meleeAttackObjectsHit = [];
+            leapAttacking = true;
+            Velocity = Vector3.Zero;
+            NavigationAgent3D.Velocity = Vector3.Zero;
+            LeapAttackAiComponent.StartLeapAttack();
+            SetCurrentNavComponent(LeapAttackAiComponent);
+        }
+    }
+
+    public void StartLeapAttackMovement()
+    {
+        leapAttackInProgress = true;
+        LeapAttackAiComponent.CheckGroundedTimer.Start();
+    }
+
+    public void HandleMeleeAttackCollision()
     {
         if (!CloseAttackRangeShapeCast.IsColliding()) return;
         for (int i = 0; i < CloseAttackRangeShapeCast.GetCollisionCount(); i++)

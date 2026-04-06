@@ -1,4 +1,5 @@
 using FirstPerson.CustomTypes.StateMachine;
+using Godot;
 
 public partial class DogNoActionState : NoActionState
 {
@@ -28,6 +29,13 @@ public partial class DogNoActionState : NoActionState
         if (Dog.meleeAttacking)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("MeleeAttackState"));
+            return;
+        }
+
+        if (Dog.leapAttacking)
+        {
+            GD.Print("switching to leap attack");
+            OnStateChangeRequired(new ChangeStateEventArgs("LeapAttackState"));
             return;
         }
     }

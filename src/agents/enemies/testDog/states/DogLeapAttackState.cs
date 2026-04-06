@@ -2,7 +2,7 @@ using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
 using Godot;
 
-public partial class DogMeleeAttackState : EnemyAtomicState
+public partial class DogLeapAttackState : EnemyAtomicState
 {
     private Dog Dog { get; set; }
     
@@ -15,18 +15,23 @@ public partial class DogMeleeAttackState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        Dog.ShouldCloseAttackShapeCast.Enabled = false;
+        Dog.NavigationAgent3D.AvoidanceEnabled = false;
+        Dog.ShouldLeapAttackShapeCast.Enabled = false;
         Dog.StartAttacking();
-        Dog.CustomAnimationTree.TrySetParam("stationaryAttack", true);
+        Dog.CustomAnimationTree.TrySetParam("leapAttack", true);
+        Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", false);
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        Dog.meleeAttacking = false;
-        Dog.nextAttackIsLeap = true;
+        Dog.leapAttacking = false;
+        Dog.nextAttackIsLeap = false;
+        Dog.ShouldLeapAttackShapeCast.Enabled = false;
+        Dog.NavigationAgent3D.AvoidanceEnabled = true;
         Dog.StopAttacking();
-        Dog.CustomAnimationTree.TrySetParam("stationaryAttack", false);
+        Dog.CustomAnimationTree.TrySetParam("leapAttack", false);
+        Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", false);
         Dog.AttackRateTimer.Start();
         Dog.ResetCurrentAiComponent();
     }
@@ -39,12 +44,6 @@ public partial class DogMeleeAttackState : EnemyAtomicState
         if (CombatAgent.ragdoll || CombatAgent.dead)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("RagdollState"));
-            return;
-        }
-        
-        if(!CombatAgent.IsOnFloor())
-        {
-            OnStateChangeRequired(new ChangeStateEventArgs("FallingState"));
             return;
         }
         

@@ -31,5 +31,11 @@ public partial class DogIsMovingState : IsMovingState
             OnStateChangeRequired(new ChangeStateEventArgs("MeleeAttackState"));
             return;
         }
+        
+        if (Dog.leapAttacking)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("LeapAttackState"));
+            return;
+        }
     }
 }
