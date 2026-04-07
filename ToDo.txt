@@ -21,12 +21,12 @@
 - grunt enemy
     - add quick melee when too close
 - dog enemy
-    - zigzag to target
-    - leap melee attack
+    - DONE - zigzag to target
+    - DONE - leap melee attack
         - code velocity or animation root movement?
             - probably code velocity, still don't know root movement
-        - switch to separating animations and handling it like a jump that quits out when it gets grounded
-    - generic melee attack (bite)
+        - DONE - switch to separating animations and handling it like a jump that quits out when it gets grounded
+    - DONE - generic melee attack (bite)
 - exploder
     - slowly move towards target
     - explodes when close enough
@@ -34,3 +34,4 @@
     - holds shield, tough to normally shoot
     - charges, which exposes weakspot on front
     - has a weakspot on the back which can be hit when you dodge the charge
+- get rid of behavior state, just control it all in an ai control component of enemy
