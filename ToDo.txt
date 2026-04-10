@@ -34,4 +34,4 @@
     - holds shield, tough to normally shoot
     - charges, which exposes weakspot on front
     - has a weakspot on the back which can be hit when you dodge the charge
-- get rid of behavior state, just control it all in an ai control component of enemy
+- Don't need to change this yet - get rid of behavior state, just control it all in an ai control component of enemy

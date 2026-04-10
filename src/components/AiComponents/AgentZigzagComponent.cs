@@ -52,34 +52,14 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
             SetZigZagTarget();
         }
 
-        if (_zigzagTarget != null)
-        {
-            NavigationAgent3D.TargetPosition = MovingAgent.CanMove()
-                ? _zigzagTarget.Value : MovingAgent.GlobalPosition;
-        }
-
-        var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
-        var direction = (nextPathPosition - MovingAgent.GlobalPosition).Normalized();
-        var currentVelocity = direction * MovingAgent.Speed;
-        currentVelocity = currentVelocity with { Y = 0 };
+        var targetPosition = MovingAgent.GlobalPosition;
         
-        if (direction.Length() > 0.01f)
+        if (_zigzagTarget != null && MovingAgent.CanMove())
         {
-            MovingAgent.RotateToGlobalPoint(direction);
-        }
-        else
-        {
-            MovingAgent.RotateToTarget();
+            targetPosition = _zigzagTarget.Value;
         }
 
-        if (NavigationAgent3D.AvoidanceEnabled)
-        {
-            NavigationAgent3D.Velocity = currentVelocity;
-        }
-        else
-        {
-            MovingAgent.OnVelocityComputed(currentVelocity);
-        }
+        MovingAgent.MoveToPoint(delta, targetPosition, MovingAgent.Speed);
     }
 
     public void SetZigZagTarget()

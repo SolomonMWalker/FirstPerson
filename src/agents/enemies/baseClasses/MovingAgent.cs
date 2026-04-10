@@ -16,6 +16,8 @@ public abstract partial class MovingAgent : CharacterBody3D
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
 
     protected BaseAiNavComponent CurrentNavComponent { get; set; }
+    protected Vector3 _moveToPoint;
+    protected Rid? _navMapId;
 
     public override void _PhysicsProcess(double delta)
     {
@@ -37,4 +39,57 @@ public abstract partial class MovingAgent : CharacterBody3D
     public abstract void RotateToGlobalPoint(Vector3 globalPoint);
     public abstract void OnVelocityComputed(Vector3 safeVelocity);
 
+    //Auto-assume rotate to direction moving or rotate to target if not moving
+    public virtual void MoveToPoint(double delta, Vector3? globalPoint, float speed)
+    {
+        _navMapId ??= NavigationAgent3D.GetNavigationMap();
+        
+        if (globalPoint.HasValue)
+        {
+            _moveToPoint = globalPoint.Value;
+        }
+
+        NavigationAgent3D.TargetPosition =  CanMove()
+            ? _moveToPoint : GlobalPosition;
+        NavigationAgent3D.TargetPosition = NavigationServer3D
+            .MapGetClosestPoint(_navMapId.Value, NavigationAgent3D.TargetPosition);
+        
+        if (NavigationAgent3D.IsNavigationFinished())
+        {
+            RotateToTarget();
+            
+            if (NavigationAgent3D.AvoidanceEnabled)
+            {
+                NavigationAgent3D.Velocity = Vector3.Zero;
+            }
+            else
+            {
+                OnVelocityComputed(Vector3.Zero);
+            }
+            return;
+        }
+        
+        var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
+        var direction = (nextPathPosition - GlobalPosition).Normalized();
+        var currentVelocity = direction * speed;
+        currentVelocity = currentVelocity with { Y = 0 };
+        
+        if (direction.Length() > 0.01f)
+        {
+            RotateToGlobalPoint(direction);
+        }
+        else
+        {
+            RotateToTarget();
+        }
+
+        if (NavigationAgent3D.AvoidanceEnabled)
+        {
+            NavigationAgent3D.Velocity = currentVelocity;
+        }
+        else
+        {
+            OnVelocityComputed(currentVelocity);
+        }
+    }
 }

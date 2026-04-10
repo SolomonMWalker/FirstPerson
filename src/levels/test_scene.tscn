@@ -103,3 +103,14 @@ metadata/_custom_type_script = "uid://ca3rbsogipkiy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Level/TestInteractable/InteractHitbox" unique_id=1194022531]
 shape = SubResource("SphereShape3D_4alok")
+
+[node name="PatrolPoints" type="Node3D" parent="Level" unique_id=547706090]
+
+[node name="PatrolPoint1" type="Node3D" parent="Level/PatrolPoints" unique_id=1887261080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.98085, 0, -9.584106)
+
+[node name="PatrolPoint2" type="Node3D" parent="Level/PatrolPoints" unique_id=858884461]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1613836, 0, 21.724457)
+
+[node name="PatrolPoint3" type="Node3D" parent="Level/PatrolPoints" unique_id=1174152619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.561016, 0, 17.821571)

@@ -1,3 +1,5 @@
+using FirstPerson.agents.AiComponents;
+using FirstPerson.CustomTypes.StateMachine;
 using Godot;
 using FirstPerson.scenes.enemies.test;
 
@@ -6,10 +8,14 @@ public partial class Grunt : CombatAgent
     [ExportCategory("Enemy Settings")]
     [Export] public float FireRatePauseInSeconds { get; set; } = 2f;
     [Export] public float ShootRange { get; set; } = 50f;
+    
+    [ExportCategory("Patrol Points")]
+    [Export] public Godot.Collections.Array<Node3D> PatrolPoints;
 
     [ExportCategory("Components")]
     [Export] public AgentFollowComponent AgentFollowComponent { get; set; }
     [Export] public AgentStopComponent AgentStopComponent { get; set; }
+    [Export] public AgentPatrolComponent AgentPatrolComponent { get; set; }
     
     [ExportCategory("References")]
     [Export] public CustomAnimationTree CustomAnimationTree { get; set; }
@@ -42,7 +48,17 @@ public partial class Grunt : CombatAgent
             readyToFire = true;
         };
 
-        CurrentNavComponent = AgentStopComponent;
+        if (PatrolPoints.Count > 0)
+        {
+            AgentPatrolComponent.PatrolPoints = PatrolPoints;
+            CurrentNavComponent = AgentPatrolComponent;
+            EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("PatrolState"));
+        }
+        else
+        {
+            CurrentNavComponent = AgentStopComponent;
+            EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("IdleState"));
+        }
     }
 
     public virtual void Aim()
