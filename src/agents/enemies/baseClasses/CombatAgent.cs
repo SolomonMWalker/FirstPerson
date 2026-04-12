@@ -136,6 +136,7 @@ public partial class CombatAgent : MovingAgent
                 {
                     _encounterZone.AlertZone(MovementTarget);
                 }
+                ResetCurrentAiComponent();
             };
         }
         
