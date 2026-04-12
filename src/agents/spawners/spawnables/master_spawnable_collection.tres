@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://c8ojmnf71e0nm" path="res://src/agents/spawners/SpawnableCollection.cs" id="1_mlabe"]
 [ext_resource type="Resource" uid="uid://b54320x52f0il" path="res://src/agents/spawners/spawnables/grunt_spawnable.tres" id="1_q02ct"]
+[ext_resource type="Resource" uid="uid://2f1by0eoqn1b" path="res://src/agents/spawners/spawnables/dog_spawnable.tres" id="2_1g5o5"]
 
 [resource]
 script = ExtResource("1_mlabe")
-SpawnableList = Array[Object]([ExtResource("1_q02ct")])
+SpawnableList = Array[Object]([ExtResource("1_q02ct"), ExtResource("2_1g5o5")])
 metadata/_custom_type_script = "uid://c8ojmnf71e0nm"

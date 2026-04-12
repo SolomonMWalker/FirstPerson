@@ -15,9 +15,11 @@ public partial class DogLeapAttackState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
+        GD.Print("leap attacking");
         Dog.NavigationAgent3D.AvoidanceEnabled = false;
         Dog.ShouldLeapAttackShapeCast.Enabled = false;
         Dog.StartAttacking();
+        Dog.CustomAnimationTree.TrySetParam("stationaryAttack", false);
         Dog.CustomAnimationTree.TrySetParam("leapAttack", true);
         Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", false);
     }
@@ -28,8 +30,10 @@ public partial class DogLeapAttackState : EnemyAtomicState
         Dog.leapAttacking = false;
         Dog.nextAttackIsLeap = false;
         Dog.ShouldLeapAttackShapeCast.Enabled = false;
+        Dog.ShouldCloseAttackShapeCast.Enabled = false;
         Dog.NavigationAgent3D.AvoidanceEnabled = true;
         Dog.StopAttacking();
+        Dog.CustomAnimationTree.TrySetParam("stationaryAttack", false);
         Dog.CustomAnimationTree.TrySetParam("leapAttack", false);
         Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", false);
         Dog.AttackRateTimer.Start();

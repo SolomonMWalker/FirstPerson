@@ -34,7 +34,6 @@ public partial class DogNoActionState : NoActionState
 
         if (Dog.leapAttacking)
         {
-            GD.Print("switching to leap attack");
             OnStateChangeRequired(new ChangeStateEventArgs("LeapAttackState"));
             return;
         }

@@ -11,6 +11,7 @@ public partial class Spawnable : Resource
 
     public enum SpawnableType
     {
-        grunt
+        grunt,
+        dog
     }
 }

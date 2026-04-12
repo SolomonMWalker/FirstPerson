@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Spawnable" format=3 uid="uid://2f1by0eoqn1b"]
+
+[ext_resource type="PackedScene" uid="uid://b1rtkf7hpv5m4" path="res://src/agents/enemies/testDog/dog.tscn" id="1_4nit7"]
+[ext_resource type="Script" uid="uid://hc2lexfp0xdn" path="res://src/agents/spawners/Spawnable.cs" id="2_8lheg"]
+
+[resource]
+script = ExtResource("2_8lheg")
+ToSpawn = ExtResource("1_4nit7")
+Type = 1
+metadata/_custom_type_script = "uid://hc2lexfp0xdn"
