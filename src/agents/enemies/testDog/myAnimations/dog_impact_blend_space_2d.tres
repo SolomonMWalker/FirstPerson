@@ -7,10 +7,10 @@ animation = &"dogImpactForward"
 animation = &"dogImpactBack"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t20en"]
-animation = &"dogImpactRight"
+animation = &"dogImpactLeft"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_172i6"]
-animation = &"dogImpactLeft"
+animation = &"dogImpactRight"
 
 [resource]
 blend_point_0/node = SubResource("AnimationNodeAnimation_hehml")

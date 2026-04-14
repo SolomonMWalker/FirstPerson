@@ -1,5 +1,8 @@
 [gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://hsgl71yieegs"]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x81yj"]
+animation = &"Edited/editedDogStaggered"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c2shi"]
 animation = &"dogFalling"
 
@@ -44,7 +47,25 @@ xfade_time = 0.2
 advance_mode = 2
 advance_condition = &"moving"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nepdd"]
+advance_mode = 2
+advance_condition = &"staggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_aulmu"]
+advance_mode = 2
+advance_condition = &"notStaggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_80hv3"]
+advance_mode = 2
+advance_condition = &"staggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_jub0u"]
+advance_mode = 2
+advance_condition = &"falling"
+
 [resource]
+states/Edited_editedDogStaggered/node = SubResource("AnimationNodeAnimation_x81yj")
+states/Edited_editedDogStaggered/position = Vector2(742.60004, 192.6)
 states/End/position = Vector2(512.37036, 366.66666)
 states/Start/position = Vector2(512.6666, 8.666664)
 states/falling/node = SubResource("AnimationNodeAnimation_c2shi")
@@ -53,5 +74,5 @@ states/idle/node = SubResource("AnimationNodeAnimation_5xh8m")
 states/idle/position = Vector2(380.00006, 99.893005)
 states/walk/node = SubResource("AnimationNodeAnimation_pchik")
 states/walk/position = Vector2(641.3334, 100.156395)
-transitions = ["idle", "walk", SubResource("AnimationNodeStateMachineTransition_hehml"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_7nw7a"), "idle", "falling", SubResource("AnimationNodeStateMachineTransition_t20en"), "falling", "idle", SubResource("AnimationNodeStateMachineTransition_172i6"), "walk", "falling", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_a27f7"), "Start", "walk", SubResource("AnimationNodeStateMachineTransition_watkl")]
-graph_offset = Vector2(92, -39)
+transitions = ["idle", "walk", SubResource("AnimationNodeStateMachineTransition_hehml"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_7nw7a"), "idle", "falling", SubResource("AnimationNodeStateMachineTransition_t20en"), "falling", "idle", SubResource("AnimationNodeStateMachineTransition_172i6"), "walk", "falling", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_a27f7"), "Start", "walk", SubResource("AnimationNodeStateMachineTransition_watkl"), "idle", "Edited_editedDogStaggered", SubResource("AnimationNodeStateMachineTransition_nepdd"), "Edited_editedDogStaggered", "idle", SubResource("AnimationNodeStateMachineTransition_aulmu"), "walk", "Edited_editedDogStaggered", SubResource("AnimationNodeStateMachineTransition_80hv3"), "Edited_editedDogStaggered", "falling", SubResource("AnimationNodeStateMachineTransition_jub0u")]
+graph_offset = Vector2(248, 37)

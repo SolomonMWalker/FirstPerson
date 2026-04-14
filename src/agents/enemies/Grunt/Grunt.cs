@@ -47,15 +47,18 @@ public partial class Grunt : CombatAgent
             GD.Print("Ready to fire");
             readyToFire = true;
         };
-
+        defaultCombatAi = AgentFollowComponent;
+        
         if (PatrolPoints.Count > 0)
         {
             AgentPatrolComponent.PatrolPoints = PatrolPoints;
+            defaultNoncombatAi = AgentPatrolComponent;
             CurrentNavComponent = AgentPatrolComponent;
             EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("PatrolState"));
         }
         else
         {
+            defaultNoncombatAi = AgentStopComponent;
             CurrentNavComponent = AgentStopComponent;
             EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("IdleState"));
         }

@@ -79,7 +79,7 @@ script = ExtResource("8_mm0el")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.24826, 6.6362877, 32.31333)
 AttackRate = 2.0
 Health = 5000
-StaggerAmount = 5000
+StaggerAmount = 10
 
 [node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=1229731549 instance=ExtResource("10_m7jhp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.949516, 3.3735943, 45.35493)
