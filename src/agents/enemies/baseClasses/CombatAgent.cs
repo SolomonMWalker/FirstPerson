@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,7 @@ public partial class CombatAgent : MovingAgent
         }
     }
 
+    private readonly Dictionary<Hitbox, Hitbox.OnHitSetCombatTargetEventHandler> _hitboxHandlers = new();
     private bool _staggered;
     public bool freezeRotation, ragdoll, dead, falling, inCombat;
     public Vector3 shootTargetRelativePosition;
@@ -128,7 +130,7 @@ public partial class CombatAgent : MovingAgent
 
         foreach (var hitbox in Hitboxes)
         {
-            hitbox.OnHitSetCombatTarget += target =>
+            void Handler(Node3D target)
             {
                 MovementTarget = target;
                 inCombat = true;
@@ -137,7 +139,10 @@ public partial class CombatAgent : MovingAgent
                     _encounterZone.AlertZone(MovementTarget);
                 }
                 ResetCurrentAiComponent();
-            };
+            }
+
+            _hitboxHandlers[hitbox] = Handler;
+            hitbox.OnHitSetCombatTarget += Handler;
         }
         
         HealthComponent.OnDeath += () =>
@@ -162,6 +167,27 @@ public partial class CombatAgent : MovingAgent
             var cShape = (CollisionShape3D) pBone.GetChild(0);
             _boneCollisionShapes.Add(cShape);
         }
+
+        CombatTriggerArea.AreaEntered += area =>
+        {
+            if (!inCombat && area is Hitbox hitbox)
+            {
+                MovementTarget = hitbox.Parent;
+                EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("InCombatState"));
+                inCombat = true;
+            }
+        };
+    }
+    
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        foreach (var (hitbox, handler) in _hitboxHandlers)
+        {
+            if (IsInstanceValid(hitbox))
+                hitbox.OnHitSetCombatTarget -= handler;
+        }
+        _hitboxHandlers.Clear();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -169,17 +195,6 @@ public partial class CombatAgent : MovingAgent
         base._PhysicsProcess(delta);
         ApplyFloorSnap();
         previousFrameVelocityLengthSquared = Velocity.LengthSquared();
-        
-        if (!inCombat && CombatTriggerArea.HasOverlappingAreas())
-        {
-            var overlapArea = CombatTriggerArea.GetOverlappingAreas().First();
-            if (overlapArea is Hitbox hitbox)
-            {
-                MovementTarget = hitbox.Parent;
-                EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("InCombatState"));
-                inCombat = true;
-            }
-        }
     }
 
     private async void ActorSetup()

@@ -16,7 +16,7 @@ public abstract partial class MovingAgent : CharacterBody3D
     [Export] public NavigationAgent3D NavigationAgent3D { get; set; }
 
     protected BaseAiNavComponent CurrentNavComponent { get; set; }
-    protected Vector3 _moveToPoint;
+    protected Vector3 _moveToPoint, _targetLastPosition = Vector3.Zero;
     protected Rid? _navMapId;
 
     public override void _PhysicsProcess(double delta)
@@ -51,8 +51,12 @@ public abstract partial class MovingAgent : CharacterBody3D
 
         NavigationAgent3D.TargetPosition =  CanMove()
             ? _moveToPoint : GlobalPosition;
-        NavigationAgent3D.TargetPosition = NavigationServer3D
-            .MapGetClosestPoint(_navMapId.Value, NavigationAgent3D.TargetPosition);
+        if (_targetLastPosition != NavigationAgent3D.TargetPosition)
+        {
+            NavigationAgent3D.TargetPosition = NavigationServer3D
+                .MapGetClosestPoint(_navMapId.Value, NavigationAgent3D.TargetPosition);
+        }
+        _targetLastPosition = NavigationAgent3D.TargetPosition;
         
         if (NavigationAgent3D.IsNavigationFinished())
         {

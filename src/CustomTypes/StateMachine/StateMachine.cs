@@ -15,7 +15,7 @@ public partial class StateMachine: Node
 {
     [Export] public State RootState { get; set; }
     public List<State> States { get; set; }
-    public List<PathToAtomicState> PathsToAtomicStates { get; set; } = [];
+    public Dictionary<string, PathToAtomicState> PathsToAtomicStatesDict { get; set; } = [];
 
     public override void _Ready()
     {
@@ -41,7 +41,7 @@ public partial class StateMachine: Node
         var atomicStates = States.OfType<AtomicState>().ToList();
         foreach (var aState in atomicStates)
         {
-            PathsToAtomicStates.Add(new PathToAtomicState(aState));
+            PathsToAtomicStatesDict.Add(aState.Name, new PathToAtomicState(aState));
         }
 
         // foreach (var path in PathsToAtomicStates)
@@ -59,8 +59,7 @@ public partial class StateMachine: Node
     
     public void HandleChangeStateEvent(object sender, ChangeStateEventArgs args)
     {
-        var path = PathsToAtomicStates.FirstOrDefault(p => p.AtomicState.Name == args.StateName);
-        if (path is null)
+        if (!PathsToAtomicStatesDict.TryGetValue(args.StateName, out var path))
         {
             throw new Exception($"Path to state {args.StateName} not in this state machine");
         }
