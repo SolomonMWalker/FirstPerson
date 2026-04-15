@@ -35,3 +35,6 @@
     - charges, which exposes weakspot on front
     - has a weakspot on the back which can be hit when you dodge the charge
 - Don't need to change this yet - get rid of behavior state, just control it all in an ai control component of enemy
+- Watch video on creating trenchbroom objects in Godot and porting to Trenchbroom
+    - https://www.youtube.com/watch?v=Y_QPQRuPIgs&list=PLEHvj4yeNfeGSiiTn_D4fv0XF5zf6ghoU&index=1&t=1s
+- Make some trenchbroom objects to help with level creation
