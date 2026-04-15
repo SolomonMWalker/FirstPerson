@@ -17,7 +17,6 @@ public partial class ClamberController : Node3D
 
     private List<List<RayCast3D>> Raycasts { get; set; } = [];
     private Node3D RaycastsParent { get; set; }
-    private Vector2 TopLeftCorner { get; set; }
     
     private float ClamberXzDistanceSquared { get; set; }
     private Vector3 ClamberDestination { get; set; }
@@ -104,8 +103,7 @@ public partial class ClamberController : Node3D
         ClamberDestinationXz = new Vector2(ClamberDestination.X, ClamberDestination.Z);
         ClamberStartPoint = GlobalPosition;
         ClamberStartPointXz = new Vector2(GlobalPosition.X, GlobalPosition.Z);
-        ClamberXzDirection = ClamberStartPointXz
-            .DirectionTo(new Vector2(ClamberDestination.X, ClamberDestination.Z));
+        ClamberXzDirection = ClamberStartPointXz.DirectionTo(ClamberDestinationXz);
         ClamberXzDistanceSquared = ClamberStartPointXz.DistanceSquaredTo(ClamberDestinationXz);
         return true;
     }
