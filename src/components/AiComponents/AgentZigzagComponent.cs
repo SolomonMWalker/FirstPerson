@@ -54,7 +54,7 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
 
         var targetPosition = MovingAgent.GlobalPosition;
         
-        if (_zigzagTarget != null && MovingAgent.CanMove())
+        if (MovingAgent.CanMove())
         {
             targetPosition = _zigzagTarget.Value;
         }
@@ -64,18 +64,14 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
 
     public void SetZigZagTarget()
     {
-        var dirToTargetV3 = (MovingAgent.GlobalPosition - MovingAgent.MovementTarget.GlobalPosition)
-            .Rotated(Vector3.Up, Mathf.DegToRad(180))
-            .Normalized();
+        var dirToTargetV3 = (MovingAgent.MovementTarget.GlobalPosition - MovingAgent.GlobalPosition).Normalized();
         if (!_doneWithFirstZigzag)
         {
             dirToTargetV3 *= _zigzagLength / 2f;
-        }
-        else
-        {
-            dirToTargetV3 *= _zigzagLength;
             _doneWithFirstZigzag = true;
         }
+        else
+            dirToTargetV3 *= _zigzagLength;
 
         dirToTargetV3 = dirToTargetV3.Rotated(Vector3.Up, _zigzagRight ? _zigzagAngleInRad : -_zigzagAngleInRad);
         dirToTargetV3 += MovingAgent.GlobalPosition;
