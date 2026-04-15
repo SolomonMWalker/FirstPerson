@@ -38,3 +38,8 @@
 - Watch video on creating trenchbroom objects in Godot and porting to Trenchbroom
     - https://www.youtube.com/watch?v=Y_QPQRuPIgs&list=PLEHvj4yeNfeGSiiTn_D4fv0XF5zf6ghoU&index=1&t=1s
 - Make some trenchbroom objects to help with level creation
+    - definitely some objects, maybe game mechanics too, like spawners
+- Make death and retry mechanics
+- Make settings scene
+- Make debug display
+    - maybe a ui display if I need it
