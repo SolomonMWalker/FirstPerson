@@ -192,8 +192,11 @@ public partial class CombatAgent : MovingAgent
 
     public override void _PhysicsProcess(double delta)
     {
-        base._PhysicsProcess(delta);
-        ApplyFloorSnap();
+        if (!ragdoll)
+        {
+            base._PhysicsProcess(delta);
+            ApplyFloorSnap();
+        }
         previousFrameVelocityLengthSquared = Velocity.LengthSquared();
     }
 
@@ -282,6 +285,7 @@ public partial class CombatAgent : MovingAgent
 
     public virtual void StartRagdoll()
     {
+        Velocity = Vector3.Zero;
         SetBoneCollisionShapesDisabled(false);
         CollisionShape3D.Disabled = true;
         FloorRaycast.Enabled = false;

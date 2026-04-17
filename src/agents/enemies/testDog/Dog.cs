@@ -81,6 +81,7 @@ public partial class Dog : CombatAgent
         };
 
         ShouldCloseAttackShapeCast.Enabled = true;
+        DebugMenu.Register("DogState", () => EnemyStateMachine.GetStateMachineString());
     }
 
     public override void _PhysicsProcess(double delta)
@@ -99,8 +100,9 @@ public partial class Dog : CombatAgent
 
     public override void StartRagdoll()
     {
+        CustomAnimationTree.Active = false;
         base.StartRagdoll();
-        AnimationPlayer.Free();
+        AnimationPlayer.QueueFree();
     }
 
     public void HandleCloseMeleeAttackStart()

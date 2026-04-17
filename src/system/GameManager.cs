@@ -4,19 +4,41 @@ namespace FirstPerson.scripts.system;
 
 public partial class GameManager : Node
 {
-    public override void _UnhandledInput(InputEvent @event)
-    {
-        base._UnhandledKeyInput(@event);
-        if (@event.IsActionPressed("DevExit"))
-        {
-            GetTree().Quit();
-            return;
-        }
+    [Export] public PauseMenu PauseMenu { get; set; }
+    
+    public bool IsPaused { get; set; }
 
-        if (@event.IsActionPressed("DevReload"))
+    public override void _Ready()
+    {
+        base._Ready();
+        WireUpSignals();
+    }
+
+    public void WireUpSignals()
+    {
+        PauseMenu.OnRestartGame += () =>
         {
-            GetTree().ReloadCurrentScene();
-            return;
-        }
+            PauseMenu.UnPauseGame();
+            RestartGame();
+        };
+        PauseMenu.OnQuitGame += QuitGame;
+        PauseMenu.OnPauseGame += () =>
+        {
+            IsPaused = true;
+        };
+        PauseMenu.OnUnpauseGame += () =>
+        {
+            IsPaused = false;
+        };
+    }
+
+    public void QuitGame()
+    {
+        GetTree().Quit();
+    }
+
+    public void RestartGame()
+    {
+        GetTree().ReloadCurrentScene();
     }
 }

@@ -5,7 +5,9 @@
 [ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_m7jhp"]
 [ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/system/GameManager.cs" id="4_tp0mb"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="5_8uess"]
+[ext_resource type="PackedScene" uid="uid://cbksj516y8onf" path="res://src/ui/pause_menu.tscn" id="5_tp0mb"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="6_1qm7u"]
+[ext_resource type="PackedScene" uid="uid://dbvut18df46dk" path="res://src/ui/debug_menu.tscn" id="6_8uess"]
 [ext_resource type="PackedScene" uid="uid://cjk53dyljkw1k" path="res://src/agents/spawners/spawner.tscn" id="7_1nmgg"]
 [ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="8_mm0el"]
 [ext_resource type="Material" uid="uid://btqfxfrd66qh6" path="res://src/assets/materials/testEnemyMat.tres" id="9_bf4gv"]
@@ -44,8 +46,13 @@ Weapons = Dictionary[int, ExtResource("2_vgf4w")]({
 })
 PlayerController = NodePath("../../Level/Player")
 
-[node name="GameManager" type="Node" parent="Managers" unique_id=1197770358]
+[node name="GameManager" type="Node" parent="Managers" unique_id=1197770358 node_paths=PackedStringArray("PauseMenu") groups=["gameManager"]]
 script = ExtResource("4_tp0mb")
+PauseMenu = NodePath("PauseMenu")
+
+[node name="PauseMenu" parent="Managers/GameManager" unique_id=1985137828 instance=ExtResource("5_tp0mb")]
+
+[node name="DebugMenu" parent="Managers" unique_id=1359591418 groups=["debugMenu"] instance=ExtResource("6_8uess")]
 
 [node name="Level" type="Node3D" parent="." unique_id=1045081351]
 
@@ -78,8 +85,7 @@ script = ExtResource("8_mm0el")
 [node name="dog" parent="Level/Enemies" unique_id=1242258460 instance=ExtResource("9_vgf4w")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69.24826, 6.6362877, 32.31333)
 AttackRate = 2.0
-Health = 5000
-StaggerAmount = 10
+StaggerAmount = 15
 
 [node name="GruntBasicEnemy" parent="Level/Enemies" unique_id=1229731549 instance=ExtResource("10_m7jhp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27.949516, 3.3735943, 45.35493)

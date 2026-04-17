@@ -72,6 +72,8 @@ public partial class PlayerController : CharacterBody3D
         {
             CameraEffects.AddDamageKick(pitch, roll, source);
         };
+
+        DebugMenu.Register("PlayerState", () => PlayerStateMachine.GetStateMachineString());
     }
 
     public override void _Process(double delta)

@@ -15,7 +15,6 @@ public partial class DogLeapAttackState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        GD.Print("leap attacking");
         Dog.NavigationAgent3D.AvoidanceEnabled = false;
         Dog.ShouldLeapAttackShapeCast.Enabled = false;
         Dog.StartAttacking();

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://dbvut18df46dk"]
+
+[ext_resource type="Script" uid="uid://tj3ydpap836t" path="res://src/ui/DebugMenu.cs" id="1_5g3s2"]
+
+[node name="DebugMenu" type="Control" unique_id=1359591418 node_paths=PackedStringArray("ValuesContainer")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_5g3s2")
+ValuesContainer = NodePath("PanelContainer/ValuesContainer")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=275648970]
+layout_mode = 0
+offset_right = 311.0
+offset_bottom = 341.0
+mouse_filter = 2
+
+[node name="ValuesContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1030763900]
+layout_mode = 2
+mouse_filter = 2

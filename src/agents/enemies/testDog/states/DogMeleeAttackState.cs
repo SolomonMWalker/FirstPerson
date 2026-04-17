@@ -15,7 +15,6 @@ public partial class DogMeleeAttackState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        GD.Print("Melee attacking");
         Dog.ShouldCloseAttackShapeCast.Enabled = false;
         Dog.StartAttacking();
         Dog.CustomAnimationTree.TrySetParam("stationaryAttack", true);
