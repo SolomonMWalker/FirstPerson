@@ -144,17 +144,8 @@ public partial class CombatAgent : MovingAgent
             _hitboxHandlers[hitbox] = Handler;
             hitbox.OnHitSetCombatTarget += Handler;
         }
-        
-        HealthComponent.OnDeath += () =>
-        {
-            GD.Print("combat agent died!");
-            GetTree().CreateTimer(5).Timeout += () =>
-            {
-                QueueFree();
-            };
-            dead = true;
-            ragdoll = true;
-        };
+
+        HealthComponent.OnDeath += OnDeath;
 
         StaggerComponent.OnStagger += () =>
         {
@@ -211,6 +202,14 @@ public partial class CombatAgent : MovingAgent
         {
             NavigationAgent3D.TargetPosition = MovementTarget.GlobalPosition;
         }
+    }
+
+    protected void OnDeath()
+    {
+        GD.Print("combat agent died!");
+        GetTree().CreateTimer(5).Timeout += QueueFree;
+        dead = true;
+        ragdoll = true;
     }
 
     protected HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)

@@ -9,6 +9,7 @@ class_name FuncGodotMap extends Node3D
 ## the correct [FuncGodotMapSettings].
 
 const _SIGNATURE: String = "[MAP]"
+const _MapSettingsScript = preload("res://addons/func_godot/src/map/func_godot_map_settings.gd")
 
 ## Bitflag settings that control various aspects of the build process.
 enum BuildFlags {
@@ -37,7 +38,7 @@ signal build_complete
 var _map_file_internal: String = ""
 
 ## Map settings resource that defines map build scale, textures location, entity definitions, and more.
-@export var map_settings: FuncGodotMapSettings = load(ProjectSettings.get_setting("func_godot/default_map_settings", "res://addons/func_godot/func_godot_default_map_settings.tres"))
+@export var map_settings: Resource = load(ProjectSettings.get_setting("func_godot/default_map_settings", "res://addons/func_godot/func_godot_default_map_settings.tres"))
 
 @export_category("Build")
 ## [enum BuildFlags] that can affect certain aspects of the build process.

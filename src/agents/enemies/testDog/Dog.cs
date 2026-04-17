@@ -102,6 +102,7 @@ public partial class Dog : CombatAgent
     {
         CustomAnimationTree.Active = false;
         base.StartRagdoll();
+        AnimationPlayer.Stop();
         AnimationPlayer.QueueFree();
     }
 

@@ -100,6 +100,8 @@ public partial class Grunt : CombatAgent
     public override void StartRagdoll()
     {
         base.StartRagdoll();
-        AnimationPlayer.Free();
+        CustomAnimationTree.Active = false;
+        AnimationPlayer.Stop();
+        AnimationPlayer.QueueFree();
     }
 }
