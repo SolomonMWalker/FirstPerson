@@ -1,0 +1,73 @@
+FPS First Level Plan
+
+WHAT WE'RE MAKING
+    The first level of the Bert Vs The Devil Game
+    Fight through a small town taken over by the Demon Fascists
+        get to the retirement home where Auntie Aggy lives
+        get her wheelchair out of her van
+        get Aggy back home
+    Showcase the enemies, two weapons, and mechanics
+
+ELEMENTS
+    Setting - small town strip next to a train track, taken over by demon fascists
+        retirement home relatively unscathed, but the demon fascists are there and shits getting rough
+    Enemies
+        grunt with pistol
+        demon dog
+        exploder
+        charger
+        (possibly) storm trooper
+    Gameplay
+        run and gun, shooting enemy weakspots
+    Buildings in downtown
+        El Bueno Taco
+        Its Better Jerked Jamaican Cuisine
+        Dry Cleaning
+        Police department
+    Environmental hazards
+        burning cars and puddles of hellfire limit path
+    Pickups
+        health pickups
+        shield (grit) enhancers
+        weapon upgrades
+
+    
+SEQUENCE
+    Get to downtown from the trailer, see Demon Fascists (DF) breaking into and harrassing a store
+        store - El Bueno Taco
+    Get into a fight outside and this leads into the store
+        Secret inside the store - grit enhancer
+    When all of the enemies are beat, a car drives into the fence, letting more enemies into the fight
+        also opens up a path to the rest of the level
+        car driving into the fence gives the player a path to vault/jump over the fence further into town
+    After fight, continue down strip into town
+    Next fight occurs near a train that has derailed into a store in the strip
+        store - Kids Clothes and Scream Pillows Inc
+            irony: train is stopped by a bunch of pillows
+            secret in store behind train engine: health enhancement
+    train stops progress down strip, so you have to go over a pedestrian bridge to get past the train
+    on other side of tracks, have your first fight with demon dogs
+        joke: "Release the hounds! I've always wanted to say that"
+        takes place in a small parking lot and playground, relatively open
+        at other end of open area of fight, there is another ped bridge going back to the strip
+    On the second ped bridge, come across your first exploder slowly approaching from the other side of the bridge
+    At bottom of ped bridge have another fight in front of the police station
+        start feeling the pressure of only having the pistol
+        secret: turning towards the train and exploring reveals a pistol dmg upgrade
+    Hellfire and burning cars blocks the path down the strip, so you have to go into the police station
+    In the police station, its obvious that interior sabotage broke the wall between the police station and their neighbor, Jamaican
+        In the police station, find shotgun that was taken by the police
+            character moment: Bert hopes that the cop that got him back home and took his shotgun is ok
+    In Jamaican, fight some demon dogs and exploders in close quarters, allow shotgun to shine
+    Jamaican wall is broken into Confederate Loser Memorial Museum next to it
+    Go out back of Museum to downtown parking lot
+        secret: in the parking lot, turn left (back towards beginning behind strip) to find a secret
+    Go further down strip to DF Forward Operating Base (FOB)
+        Introduce chargers and have large scale battle
+            use explosive barrels to help with large number of enemies
+    After fight, another car runs into the building providing a way to climb to the downtown store roofs
+    Fight across roofs to a sign you can knock over onto the train
+    Fight over the train, on ceiling and down into open-top train cars, to the caboose
+    Lose the DF in the woods on the way to the retirement home
+    
+    
