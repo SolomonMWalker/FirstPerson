@@ -212,7 +212,7 @@ public partial class CombatAgent : MovingAgent
         ragdoll = true;
     }
 
-    protected HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
+    protected virtual HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
     {
         return new HitInformation(
             healthDamage: Damage,

@@ -102,20 +102,18 @@ public partial class CameraController : Node3D
 
     public override void _Process(double delta)
     {
-        Position = InitialPosition + CameraOffset;
-        UpdateCameraRotation(MouseCaptureComponent.RelativeMouseInputWithSens);
-
         if (_stepSmoothing)
         {
-            _targetHeight = Mathf.Lerp(_targetHeight, 0.0f, StepSpeed * (float)delta);
-            if (Mathf.Abs(_targetHeight) < 0.01)
+            _targetHeight *= Mathf.Exp(-StepSpeed * (float)delta);
+            if (Mathf.Abs(_targetHeight) < 0.01f)
             {
-                _targetHeight = 0;
+                _targetHeight = 0f;
                 _stepSmoothing = false;
             }
-
-            Position = Position with { Y = _targetHeight };
         }
+
+        Position = InitialPosition + CameraOffset + new Vector3(0, _targetHeight, 0);
+        UpdateCameraRotation(MouseCaptureComponent.RelativeMouseInputWithSens);
     }
 
     public void UpdateCameraRotation(Vector2 input)

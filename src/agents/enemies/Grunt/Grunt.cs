@@ -84,7 +84,7 @@ public partial class Grunt : CombatAgent
         }
     }
 
-    private HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
+    protected override HitInformation BuildHitInformation(Vector3 collisionGlobalPosition)
     {
         return new HitInformation(
             healthDamage: Damage,
