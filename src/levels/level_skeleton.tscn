@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://vyshphvcv46s"]
+
+[ext_resource type="Script" uid="uid://bmatbvxk5bgk4" path="res://src/system/WeaponManager.cs" id="1_1v5du"]
+[ext_resource type="Script" uid="uid://bri1qicowwv8g" path="res://src/assets/weapons/scripts/WeaponData.cs" id="2_utjqr"]
+[ext_resource type="Resource" uid="uid://dnqfmu70to5tg" path="res://src/assets/weapons/resources/pistol_data.tres" id="3_2obnl"]
+[ext_resource type="Script" uid="uid://2skp65ka1h5" path="res://src/system/GameManager.cs" id="4_bs443"]
+[ext_resource type="PackedScene" uid="uid://cbksj516y8onf" path="res://src/ui/pause_menu.tscn" id="5_c7n31"]
+[ext_resource type="PackedScene" uid="uid://dbvut18df46dk" path="res://src/ui/debug_menu.tscn" id="6_k5aik"]
+[ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="7_wf74i"]
+[ext_resource type="PackedScene" uid="uid://bk6dtdwyybxdo" path="res://src/levels/first_level.tscn" id="8_85cyf"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_ppyta"]
+sky_material = SubResource("ProceduralSkyMaterial_6uqi0")
+
+[sub_resource type="Environment" id="Environment_ykrsh"]
+background_mode = 2
+background_color = Color(0.35083738, 0.27109975, 0.39447403, 1)
+sky = SubResource("Sky_ppyta")
+tonemap_mode = 2
+glow_enabled = true
+glow_normalized = true
+
+[node name="TestScene" type="Node" unique_id=1584830458]
+
+[node name="Managers" type="Node" parent="." unique_id=1348320096]
+
+[node name="WeaponManager" type="Node" parent="Managers" unique_id=1945228329 node_paths=PackedStringArray("PlayerController")]
+script = ExtResource("1_1v5du")
+Weapons = Dictionary[int, ExtResource("2_utjqr")]({
+1: ExtResource("3_2obnl")
+})
+PlayerController = NodePath("../../Level/Player")
+
+[node name="GameManager" type="Node" parent="Managers" unique_id=1197770358 node_paths=PackedStringArray("PauseMenu") groups=["gameManager"]]
+script = ExtResource("4_bs443")
+PauseMenu = NodePath("PauseMenu")
+
+[node name="PauseMenu" parent="Managers/GameManager" unique_id=1985137828 instance=ExtResource("5_c7n31")]
+
+[node name="DebugMenu" parent="Managers" unique_id=1359591418 groups=["debugMenu"] instance=ExtResource("6_k5aik")]
+
+[node name="Level" type="Node3D" parent="." unique_id=1045081351]
+
+[node name="ProjectileParent" type="Node3D" parent="Level" unique_id=1728880348 groups=["projectileParent"]]
+unique_name_in_owner = true
+
+[node name="Player" parent="Level" unique_id=1478597815 instance=ExtResource("7_wf74i")]
+transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, -20.194635, 2.6496248, -18.96125)
+
+[node name="Map" type="Node3D" parent="Level" unique_id=39033084]
+
+[node name="FirstLevel" parent="Level/Map" unique_id=790342440 instance=ExtResource("8_85cyf")]
+
+[node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Level" unique_id=1218943228]
+environment = SubResource("Environment_ykrsh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Level/WorldEnvironment" unique_id=1385687857]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_bake_mode = 1
+shadow_enabled = true
+shadow_transmittance_bias = 9.138
+shadow_opacity = 0.66

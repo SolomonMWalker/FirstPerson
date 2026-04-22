@@ -79,24 +79,27 @@ public partial class WeaponController : Node
         var mouseMovement = MouseCaptureComponent.RawRelativeMouseInput.Clamp(
             CurrentWeapon.SwayMin, CurrentWeapon.SwayMax);
         if (Aiming) mouseMovement *= AimSwayMult;
+        var airYOffset = Player.InAir ? Player.Velocity.Y : 0f;
         var pos = WeaponModelParent.Position;
         var rot = WeaponModelParent.Rotation;
         WeaponModelParent.Position = pos with
         {
-            X = Mathf.Lerp(pos.X, 
+            X = Mathf.Lerp(pos.X,
                 -mouseMovement.X * CurrentWeapon.SwayAmountPosition * fDelta,
                 CurrentWeapon.SwaySpeedPosition),
-            Y = Mathf.Lerp(pos.Y, 
-                mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta,
+            Y = Mathf.Lerp(pos.Y,
+                mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta
+                + airYOffset * CurrentWeapon.AirSwayAmountPosition,
                 CurrentWeapon.SwaySpeedPosition),
         };
         WeaponModelParent.Rotation = rot with
         {
-            Y = Mathf.DegToRad(Mathf.Lerp(rot.Y, 
+            Y = Mathf.DegToRad(Mathf.Lerp(rot.Y,
                 mouseMovement.X * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
                 CurrentWeapon.SwaySpeedRotation)),
-            X = Mathf.DegToRad(Mathf.Lerp(rot.X, 
-                -mouseMovement.Y * CurrentWeapon.SwayAmountRotationInDeg * fDelta,
+            X = Mathf.DegToRad(Mathf.Lerp(rot.X,
+                -mouseMovement.Y * CurrentWeapon.SwayAmountRotationInDeg * fDelta
+                + airYOffset * CurrentWeapon.AirSwayAmountRotationInDeg,
                 CurrentWeapon.SwaySpeedRotation)),
         };
     }

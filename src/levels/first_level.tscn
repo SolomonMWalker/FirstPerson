@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://bk6dtdwyybxdo"]
+
+[ext_resource type="Material" uid="uid://cl0fi7o1dmgkg" path="res://trenchbroom/textures/GrayBoxWhiteOutline.tres" id="1_lh8em"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lh8em"]
+albedo_color = Color(1, 0.16078432, 0.12156863, 1)
+
+[node name="FirstLevel" type="Node3D" unique_id=5869458]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1091610357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -36)
+use_collision = true
+size = Vector3(60, 1, 72)
+material = ExtResource("1_lh8em")
+
+[node name="Store" type="Node3D" parent="." unique_id=1180378619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.5, 0, -41.5)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Store" unique_id=1314000371]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 3.5, 2.5)
+use_collision = true
+size = Vector3(1, 6, 32)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Store" unique_id=1873727463]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 5, 2.5)
+use_collision = true
+size = Vector3(24, 1, 32)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Store" unique_id=376233742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 3.5, 2.5)
+operation = 2
+use_collision = true
+size = Vector3(1, 6, 32)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Store/CSGBox3D4" unique_id=309124244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.75, 0)
+operation = 2
+size = Vector3(1, 2.5, 2)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Store" unique_id=1535872464]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 3.5, 19)
+use_collision = true
+size = Vector3(26, 6, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Store" unique_id=2078346335]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 3.5, -14)
+use_collision = true
+size = Vector3(26, 6, 1)
+
+[node name="Fence" type="Node3D" parent="." unique_id=954119646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0, -57.5)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Fence" unique_id=1023591445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, 1)
+use_collision = true
+size = Vector3(36, 5, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Fence" unique_id=1420524155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 27, 3, 1)
+use_collision = true
+size = Vector3(18, 5, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Fence" unique_id=570727521]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 3, 1)
+use_collision = true
+size = Vector3(6, 5, 1)
+material = SubResource("StandardMaterial3D_lh8em")
