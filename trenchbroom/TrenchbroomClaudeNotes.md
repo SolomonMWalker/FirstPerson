@@ -46,12 +46,35 @@ If copies need to differ slightly (e.g. doors with different `targetname` values
 
 ## Cross-Map Reuse (Copy/Paste Between Files)
 
-TrenchBroom copies objects as plain text in `.map` format, so you can:
+In TrenchBroom, a level/scene is called a **map** and is stored as a `.map` text file. TrenchBroom's clipboard format is literally plain `.map` text, which means cross-map reuse is built on top of plain copy/paste.
 
-- Copy a group or structure in one map (`Ctrl+C`)
-- Open a different map and paste (`Ctrl+V`)
+### Basic: copy from one map and paste into another
 
-You can also save that clipboard text into a `.map` snippet file to paste into future projects.
+1. Open the source map. Select the objects you want to reuse (select a whole group with one click, or select individual brushes/entities).
+2. `Ctrl+C` — TrenchBroom writes the selection to the clipboard as `.map` text.
+3. Open the destination map (File → Open, or open a second TrenchBroom window).
+4. Paste using one of two modes:
+   - **`Ctrl+V` (Paste)** — positions the pasted objects near your current mouse cursor in the viewport. The bounding box snaps to the grid. Use this when you want to place the piece somewhere new.
+   - **`Ctrl+Shift+V` (Paste at Original Position)** — pastes at the exact world coordinates from the source map. Use this when coordinates matter (e.g. a modular room that must align on a grid).
+
+### Saving a reusable piece as a snippet file
+
+Because the clipboard is plain `.map` text, you can persist any piece as its own file:
+
+1. Select the objects in TrenchBroom and `Ctrl+C`.
+2. Open a text editor and paste — you'll see raw `.map` format (brush plane definitions, entity properties, etc.).
+3. Save the file with a `.map` extension somewhere you can find it (e.g. `trenchbroom/snippets/doorway_arch.map`).
+4. To reuse later: open the snippet file in a text editor, `Ctrl+A` → `Ctrl+C`, then switch back to TrenchBroom and `Ctrl+V`.
+
+Alternatively, just open the snippet file directly in TrenchBroom, select all (`Ctrl+A`), copy, then switch to your working map and paste.
+
+### When to use snippets vs linked groups
+
+| Situation | Best tool |
+|---|---|
+| Multiple copies **in the same map** that must stay in sync | Linked Groups (`Ctrl+Shift+D`) |
+| A piece you want to place in **different maps** | Snippet `.map` file + copy/paste |
+| A piece that recurs often and needs editable properties | Define it as a brush or point entity class (see entity browser section) |
 
 ---
 
