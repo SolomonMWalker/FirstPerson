@@ -1,0 +1,10 @@
+﻿- Take the time to fix reticle (how do angle accuracy changes affect reticle line distance)
+    - maybe we should switch to a static reticle, not sure yet
+- grunts can aim and shoot similar to quake grunts
+    - hitscan, but takes a tiny amount of time between aim and shoot, so player can dodge if they keep moving
+    - gets close enough to shoot, then stops to shoot, then moves close until they can shoot again
+- storm trooper can implement circle strafe and a different enemy can implement zigzag
+    - dog enemy: dog robot body with demon head in tank futurama style on it
+- Make some trenchbroom objects to help with level creation
+    - definitely some objects, maybe game mechanics too, like spawners
+- Make settings scene
