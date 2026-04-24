@@ -1,0 +1,137 @@
+﻿Code Review                                                                                                                                                                       
+                                                                                                                                                                                    
+  Here are the standout issues across the repo, organized by impact.                                                                                                                
+                                                                                                                                                                                    
+  ---             
+  Bugs
+
+  1. Double OnCombatStart subscription in CombatAgent — CombatAgent.cs:40–46 and :122–125
+
+  _encounterZone.OnCombatStart is subscribed to twice. The EncounterZone property setter subscribes a lambda, and _Ready() subscribes the same lambda again if _encounterZone is not
+   null. Since Godot populates [Export] properties (calling the setter) before _Ready() runs, any editor-assigned encounter zone results in two handlers firing. The consequence is
+  MovementTarget and inCombat being set twice. For PostSpawnInitialize, calling it after _Ready() causes a third subscription.
+
+  Fix: remove the subscription block from the property setter and keep only the one in _Ready().
+
+  ---
+  2. Shield overflow damage is silently eaten — ShieldComponent.cs:33–38
+
+  if (CurrentAmount == 0) return false;
+  CurrentAmount -= damageAmount;
+  CurrentAmount = Mathf.Max(0, CurrentAmount);
+  return true;
+
+  If the shield has 5 points left and the player takes a 100 damage shot, the method clamps to zero and returns true. HealthComponent.DepleteHealth sees true and bails out
+  completely — the remaining 95 damage is dropped. A single sliver of shield makes the character invincible to any single hit. The fix is to return the overflow damage (or return
+  false for overkill hits so health takes the remainder).
+
+  ---
+  3. HealthComponent.OnDeath can fire multiple times — HealthComponent.cs:37–47
+
+  There is no guard against taking damage while already dead. CurrentHealth goes increasingly negative on each subsequent hit, and OnDeath fires every time. In CombatAgent.OnDeath,
+   this schedules extra QueueFree timers on the same instance. Fix: early-return from DepleteHealth when CurrentHealth <= 0.
+
+  ---
+  4. Unsafe cast in CameraController.GetWhatInteractRaycastIsHitting — CameraController.cs:165–167
+
+  return ... (true, (InteractHitbox)InteractRaycast.GetCollider());
+
+  If the interact raycast touches anything that isn't an InteractHitbox — a wall, floor, physics prop — this throws InvalidCastException at runtime. Fix: use as InteractHitbox and
+  check for null, returning (false, null) when it isn't the right type.
+
+  ---
+  5. UpdateScreenShake mutates _screenShakeAmount each tween tick — CameraEffects.cs:213–215
+
+  _screenShakeAmount = Mathf.Remap(_screenShakeAmount, 0.0f, 1.0f, MinimumScreenShake, MaximumScreenShake);
+  var currentShakeAmount = _screenShakeAmount * (1.0 - alpha);
+
+  The remap permanently changes _screenShakeAmount on every callback. With amount = 1.0f: first tick it becomes MaximumScreenShake (0.5f), second tick ~0.275f, and so on — the
+  shake weakens exponentially through its own field mutation rather than through alpha. Fix: use a local variable for the remapped value and don't write back to the field.
+
+  ---
+  6. Fireball and Explosion have broken scene paths — Fireball.cs:6, Explosion.cs:7, Fireball.cs:39
+
+  private static string PathToFireballScene = $"/fireball.tscn";    // not a valid res:// path
+  private static string PathToExplosionScene = $"/explosion.tscn";
+  ...
+  ProjectilesParent = GetNode<Node3D>("/root/Test/ProjectilesParent"); // hardcoded scene name
+
+  Neither path loads anything. The scenes exist under src/projectiles/ with proper res:// paths. The Fireball also hardcodes an absolute node path that only works in a scene named
+  Test. These classes are non-functional outside a very specific test setup. They should use exported PackedScene references (like every other instantiated scene in the project)
+  and get their parent through the group system already in use.
+
+  ---
+  Design Issues
+
+  7. GruntAimingState can't exit to stagger or ragdoll — GruntAimingState.cs
+
+  When the grunt enters aiming, firing = true is set and StateProcessing only ever waits for aimingOver. There's no check for Staggered or dead. Compare to NoActionState which
+  checks both. If you stagger the grunt during its aim windup, it stays locked in the aiming animation until aimingOver fires via the animation callback. The same issue exists in
+  GruntFiringState. Both need the same stagger/ragdoll guards present in NoActionState.
+
+  ---
+  8. FollowState missing stagger and falling checks — FollowState.cs
+
+  FollowState.StatePhysicsProcessing only checks dead and inCombat. It doesn't check Staggered or falling. An enemy following the player while staggered just keeps navigating,
+  ignoring the stagger state. NoActionState and StaggeredState both have the full guard set — FollowState should too.
+
+  ---
+  9. WeaponController.Aiming defaults to true — WeaponController.cs:29
+
+  public bool Aiming { get; set; } = true;
+
+  The player starts hip-firing. Defaulting to true means weapon sway starts at AimSwayMult (0.25×), headbob is reduced, and the reticle extra is hidden until the first aim-in.
+  Should default to false.
+
+  ---
+  10. DebugMenu static registry is never cleared — DebugMenu.cs:12
+
+  private static readonly Dictionary<string, Func<object>> _registry = new();
+
+  On scene reload the old scene's nodes are freed but the lambdas (which close over those freed nodes) stay in _registry. When _Process calls getter() on a stale entry it's
+  accessing a freed Godot object, which throws in Godot 4. Fix: either clear _registry when the DebugMenu exits the tree, or use weak references, or use an instance-based registry
+  pattern.
+
+  ---
+  11. AgentPatrolComponent.PatrolPoints is duplicated in Grunt — Grunt.cs:13, AgentPatrolComponent.cs:7
+
+  Grunt exports PatrolPoints and copies them to AgentPatrolComponent.PatrolPoints in _Ready(). A designer editing the scene has two arrays to maintain and only one is
+  authoritative. Remove the PatrolPoints export from Grunt and just read them directly from AgentPatrolComponent — or remove them from the component and own them entirely in Grunt.
+
+  ---
+  12. Navigation map guard copy-pasted across three components — AgentFollowComponent.cs:11–14, AgentPatrolComponent.cs:16–19, AgentZigzagComponent.cs:29–32
+
+  if (NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
+  {
+      GD.Print("nav map shenanigans");
+      return;
+  }
+
+  This is identical in all three. It belongs as a protected bool IsNavMapReady() method in BaseAiNavComponent. The debug print should also be removed or made conditional — it fires
+   every frame until the nav map syncs, spamming the console.
+
+  ---
+  13. NoActionState velocity check is an exact float comparison — NoActionState.cs:31
+
+  if (CombatAgent.Velocity.LengthSquared() != 0)
+
+  Floating-point velocity from MoveAndSlide is almost never exactly zero due to rounding. This should be > 0.01f (or use !CombatAgent.Velocity.IsZeroApprox()). Currently enemies
+  can flicker between NoActionState and IsMovingState on a single idle frame.
+
+  ---
+  14. PlayerController._Process polls UI labels every frame — PlayerController.cs:83–84
+
+  HealthLabel.Text = $"Health: {(int)HealthComponent.CurrentHealth}/{HealthComponent.CurrentMax}";
+  ShieldLabel.Text = $"Shield : {(int)ShieldComponent.CurrentAmount}/{ShieldComponent.CurrentMax}";
+
+  HealthComponent already emits OnHealthDepleted and OnDeath. Connect the labels to those signals (and add a shield-changed signal) and update only when values change. This also
+  keeps display logic out of PlayerController.
+
+  ---
+  15. MovingAgent._PhysicsProcess has no null-guard on CurrentNavComponent — MovingAgent.cs:22–26
+
+  CurrentNavComponent.HandleNavigation(delta);
+
+  CurrentNavComponent is not initialized in MovingAgent itself — each subclass sets it in its own _Ready(). If something triggers _PhysicsProcess before the subclass _Ready() runs
+  (e.g., a deferred spawn scenario), this NRE will crash the frame loop silently. A simple CurrentNavComponent?.HandleNavigation(delta) or a null-check with early return is
+  sufficient.

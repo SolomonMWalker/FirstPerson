@@ -22,6 +22,7 @@
     <Content Include="src\Resources\Textures\testText.tres" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\projectiles\" />
     <Folder Include="src\Resources\BlenderFiles\" />
     <Folder Include="src\Resources\PhysicsMaterials\" />
     <Folder Include="src\Resources\ShaderMaterials\" />

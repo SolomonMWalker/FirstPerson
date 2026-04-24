@@ -30,20 +30,7 @@ public partial class CombatAgent : MovingAgent
 
     [ExportCategory("References")]
     [Export]
-    public EncounterZone EncounterZone
-    {
-        get => _encounterZone;
-        set
-        {
-            _encounterZone = value;
-            if (_encounterZone is null) return;
-            _encounterZone.OnCombatStart += target =>
-            {
-                MovementTarget = target;
-                inCombat = true;
-            };
-        }
-    } private EncounterZone _encounterZone;
+    public EncounterZone EncounterZone { get; private set; }
     [Export] public CollisionShape3D CollisionShape3D { get; set; }
     [Export] public Skeleton3D Skeleton3D { get; set; }
     [Export] public PhysicalBoneSimulator3D PhysicalBoneSimulator3D { get; set; }
@@ -119,9 +106,9 @@ public partial class CombatAgent : MovingAgent
         
         NavigationAgent3D.VelocityComputed += OnVelocityComputed;
 
-        if (_encounterZone is not null)
+        if (EncounterZone is not null)
         {
-            _encounterZone.OnCombatStart += target =>
+            EncounterZone.OnCombatStart += target =>
             {
                 MovementTarget = target;
                 inCombat = true;
@@ -134,9 +121,9 @@ public partial class CombatAgent : MovingAgent
             {
                 MovementTarget = target;
                 inCombat = true;
-                if (_encounterZone is not null && !_encounterZone.Alerted && MovementTarget is not null)
+                if (EncounterZone is not null && !EncounterZone.Alerted && MovementTarget is not null)
                 {
-                    _encounterZone.AlertZone(MovementTarget);
+                    EncounterZone.AlertZone(MovementTarget);
                 }
                 ResetCurrentAiComponent();
             }
@@ -305,8 +292,13 @@ public partial class CombatAgent : MovingAgent
     {
         if (encounterZone is null) return;
         EncounterZone = encounterZone;
-        if (!EncounterZone.TryGetTarget(out var target)) return;
-        MovementTarget = target;
+        EncounterZone.OnCombatStart += target =>
+        {
+            MovementTarget = target;
+            inCombat = true;
+        };
+        if (!EncounterZone.TryGetTarget(out var encZTarget)) return;
+        MovementTarget = encZTarget;
         inCombat = true;
     }
 

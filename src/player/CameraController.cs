@@ -163,7 +163,11 @@ public partial class CameraController : Node3D
     
     public (bool successful, InteractHitbox interactable) GetWhatInteractRaycastIsHitting()
     {
-        return !InteractRaycast.IsColliding() ? (false, null) : (true, (InteractHitbox)InteractRaycast.GetCollider());
+        if (InteractRaycast.IsColliding() && InteractRaycast.GetCollider() is InteractHitbox interactable)
+        {
+            return (true, interactable);
+        }
+        return (false, null);
     }
 
     public bool AreCrouchTweensRunning() => IsEnterCrouchTweenRunning() || IsExitCrouchTweenRunning();

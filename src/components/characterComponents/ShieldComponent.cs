@@ -29,6 +29,8 @@ public partial class ShieldComponent : Node
         }
     }
 
+    //On Shield break, eat any more damage that would go to health
+    //Whatever damage amount breaks the shield won't be attributed to health
     public bool TryBlockWithShield(float damageAmount)
     {
         RechargeTimer.Start();

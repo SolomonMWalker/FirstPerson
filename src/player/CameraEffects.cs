@@ -212,8 +212,8 @@ public partial class CameraEffects : Node3D
 
     private void UpdateScreenShake(float alpha)
     {
-        _screenShakeAmount = Mathf.Remap(_screenShakeAmount, 0.0f, 1.0f, MinimumScreenShake, MaximumScreenShake);
-        var currentShakeAmount = _screenShakeAmount * (1.0 - alpha);
+        var maxShakeForAmount = Mathf.Remap(_screenShakeAmount, 0.0f, 1.0f, MinimumScreenShake, MaximumScreenShake);
+        var currentShakeAmount = maxShakeForAmount * (1.0 - alpha);
         var hRand = (float) Random.NextDouble() > 0.5 ? Random.NextDouble() : -Random.NextDouble();
         var vRand = (float) Random.NextDouble() > 0.5 ? Random.NextDouble() : -Random.NextDouble();
         var hOffset = hRand * currentShakeAmount;

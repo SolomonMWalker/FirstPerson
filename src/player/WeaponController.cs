@@ -26,8 +26,7 @@ public partial class WeaponController : Node
     public Node ProjectileParent { get; set; }
     public WeaponRig CurrentWeaponModel { get; set; }
     public float CurrentAccuracyAnglePenalty { get; private set; }
-    public bool Aiming { get; set; } = true;
-
+    public bool Aiming { get; set; }
     private (bool hasStarted, string name) _bulletAddedAnimStartedAndName;
     private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
 

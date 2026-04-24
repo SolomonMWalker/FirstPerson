@@ -36,6 +36,7 @@ public partial class HealthComponent : Node
 
     public void DepleteHealth(float amount)
     {
+        if (CurrentHealth <= 0) return;
         if (ShieldComponent is not null && ShieldComponent.TryBlockWithShield(amount)) return;
         CurrentHealth -= amount;
         if (CurrentHealth <= 0)
