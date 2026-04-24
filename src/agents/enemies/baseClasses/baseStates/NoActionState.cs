@@ -28,7 +28,7 @@ public partial class NoActionState : EnemyAtomicState
             return;
         }
         
-        if (CombatAgent.Velocity.LengthSquared() != 0)
+        if (!CombatAgent.Velocity.IsZeroApprox())
         {
             OnStateChangeRequired(new ChangeStateEventArgs("IsMovingState"));
             return;

@@ -27,7 +27,7 @@ public partial class AgentZigzagComponent : BaseAiNavComponent
     public override void HandleNavigation(double delta)
     {
         // Do not query when the map has never synchronized and is empty.
-        if (NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) == 0)
+        if (!HasNavMap())
         {
             return;
         }

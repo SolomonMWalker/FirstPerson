@@ -31,6 +31,14 @@ public partial class GruntAimingState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
+
+        if (Grunt.dead || Grunt.ragdoll) return;
+
+        if (Grunt.Staggered)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
+        }
+        
         if (Grunt.aimingOver)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("FiringState"));

@@ -10,4 +10,9 @@ public abstract partial class BaseAiNavComponent : Node
     [Export] public MovingAgent MovingAgent { get; private set; }
 
     public abstract void HandleNavigation(double delta);
+
+    protected bool HasNavMap()
+    {
+        return NavigationServer3D.MapGetIterationId(NavigationAgent3D.GetNavigationMap()) != 0;
+    }
 }

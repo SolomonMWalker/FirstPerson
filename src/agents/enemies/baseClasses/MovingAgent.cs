@@ -22,7 +22,7 @@ public abstract partial class MovingAgent : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        CurrentNavComponent.HandleNavigation(delta);
+        CurrentNavComponent?.HandleNavigation(delta);
     }
     public void SetCurrentNavComponent(BaseAiNavComponent newNavComponent)
     {
