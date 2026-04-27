@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dvgsa217oahxo"
-path="res://.godot/imported/human5.fbx-99e294dabb1e0fdf95044c31f6f4ad08.scn"
+path="res://.godot/imported/human5.fbx-fd11794bcacb091d3a3dc0ba9adbb5cd.scn"
 
 [deps]
 
-source_file="res://blenderTutorial/human5.fbx"
-dest_files=["res://.godot/imported/human5.fbx-99e294dabb1e0fdf95044c31f6f4ad08.scn"]
+source_file="res://BlenderTutorial/human5.fbx"
+dest_files=["res://.godot/imported/human5.fbx-fd11794bcacb091d3a3dc0ba9adbb5cd.scn"]
 
 [params]
 

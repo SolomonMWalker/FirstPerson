@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cbksj516y8onf" path="res://src/ui/pause_menu.tscn" id="5_c7n31"]
 [ext_resource type="PackedScene" uid="uid://dbvut18df46dk" path="res://src/ui/debug_menu.tscn" id="6_k5aik"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="7_wf74i"]
-[ext_resource type="PackedScene" uid="uid://bk6dtdwyybxdo" path="res://src/levels/first_level.tscn" id="8_85cyf"]
+[ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="8_85cyf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -49,11 +49,11 @@ PauseMenu = NodePath("PauseMenu")
 unique_name_in_owner = true
 
 [node name="Player" parent="Level" unique_id=1478597815 instance=ExtResource("7_wf74i")]
-transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, -20.194635, 2.6496248, -18.96125)
+transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, -16.679579, 2.6496248, 13.387135)
 
 [node name="Map" type="Node3D" parent="Level" unique_id=39033084]
 
-[node name="FirstLevel" parent="Level/Map" unique_id=790342440 instance=ExtResource("8_85cyf")]
+[node name="funcGodotTest" parent="Level/Map" unique_id=248070281 instance=ExtResource("8_85cyf")]
 
 [node name="Enemies" type="Node3D" parent="Level" unique_id=994313516]
 

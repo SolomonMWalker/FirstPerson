@@ -1,0 +1,6 @@
+﻿Constant measurements
+
+Ceiling Height = 128
+Door Height = 96
+Double Door Width = 128
+Wall Thickness = 32
