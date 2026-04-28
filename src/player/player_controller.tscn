@@ -32,6 +32,7 @@
 [node name="PlayerController" type="CharacterBody3D" unique_id=760432825 node_paths=PackedStringArray("StepHandlerComponent", "HealthComponent", "ShieldComponent", "ClamberController", "WeaponController", "CameraController", "HealthLabel", "ShieldLabel", "InteractLabel", "CameraEffects", "PlayerStateMachine", "AnimationPlayer", "Reticle", "StandingCollisionShape", "CrouchingCollisionShape", "StandingHitbox", "CrouchingHitbox", "BottomOfPlayer") groups=["player"]]
 collision_layer = 0
 collision_mask = 99
+floor_snap_length = 0.15
 script = ExtResource("1_r8ls8")
 StepHandlerComponent = NodePath("Components/StepHandlerComponent")
 HealthComponent = NodePath("Components/HealthComponent")
