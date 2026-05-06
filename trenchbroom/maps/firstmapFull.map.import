@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://dfb3ucwimmyxf"
+path="res://.godot/imported/firstmapFull.map-350ac0e455563207a0f1b5643348d3eb.tres"
+
+[deps]
+
+source_file="res://trenchbroom/maps/firstmapFull.map"
+dest_files=["res://.godot/imported/firstmapFull.map-350ac0e455563207a0f1b5643348d3eb.tres"]
+
+[params]
+

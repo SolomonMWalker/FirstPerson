@@ -49,7 +49,7 @@ PauseMenu = NodePath("PauseMenu")
 unique_name_in_owner = true
 
 [node name="Player" parent="Level" unique_id=1478597815 instance=ExtResource("7_wf74i")]
-transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, -16.679579, 2.6496248, 13.387135)
+transform = Transform3D(0.99862677, 0, -0.05238828, 0, 1, 0, 0.05238828, 0, 0.99862677, 15.320421, 2.6496248, -0.61286545)
 
 [node name="Map" type="Node3D" parent="Level" unique_id=39033084]
 
