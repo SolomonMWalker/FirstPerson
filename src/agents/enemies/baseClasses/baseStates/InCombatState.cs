@@ -10,5 +10,7 @@ public partial class InCombatState : EnemyAtomicState
     {
         base.StateEntered();
         CombatAgent.inCombat = true;
+        OnStateChangeRequired(new ChangeStateEventArgs(CombatAgent.DefaultCombatBehaviorStateName));
+        CombatAgent.ResetCurrentAiComponent();
     }
 }

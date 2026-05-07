@@ -174,7 +174,6 @@ public partial class WeaponController : Node
             (GodotObject gdObj, Vector3 point) hit;
             var accuracyXy = new Vector2((float) GD.RandRange(-CurrentAccuracyAnglePenalty, CurrentAccuracyAnglePenalty),
                 (float) GD.RandRange(-CurrentAccuracyAnglePenalty, CurrentAccuracyAnglePenalty));
-            var direction = forward * CameraController.Camera.GlobalTransform.Basis;
             if (CurrentWeapon.PelletCount > 1)
             {
                 if (i != 0)

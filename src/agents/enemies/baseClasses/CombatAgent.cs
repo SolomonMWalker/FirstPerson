@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using FirstPerson.agents.AiComponents;
 using FirstPerson.agents.enemies.test;
-using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.scenes.enemies.test.states;
 using EncounterZone = FirstPerson.environment.utilities.EncounterZone;
@@ -55,7 +54,7 @@ public partial class CombatAgent : MovingAgent
         }
     }
 
-    private readonly Dictionary<Hitbox, Hitbox.OnHitSetCombatTargetEventHandler> _hitboxHandlers = new();
+    //private readonly Dictionary<Hitbox, Hitbox.OnHitSetCombatTargetEventHandler> _hitboxHandlers = new();
     private bool _staggered;
     public bool freezeRotation, ragdoll, dead, falling, inCombat;
     public Vector3 shootTargetRelativePosition;
@@ -70,6 +69,9 @@ public partial class CombatAgent : MovingAgent
     protected List<CollisionShape3D> _boneCollisionShapes = [];
     protected BaseAiNavComponent defaultCombatAi;
     protected BaseAiNavComponent defaultNoncombatAi;
+
+    public virtual string DefaultCombatBehaviorStateName => "FollowState";
+    public virtual string DefaultNonCombatBehaviorStateName => "IdleState";
 
     public virtual bool CanChangeState() => !dead;
     public override bool CanMove() => !(dead || ragdoll || falling || Staggered);
@@ -117,19 +119,7 @@ public partial class CombatAgent : MovingAgent
 
         foreach (var hitbox in Hitboxes)
         {
-            void Handler(Node3D target)
-            {
-                MovementTarget = target;
-                inCombat = true;
-                if (EncounterZone is not null && !EncounterZone.Alerted && MovementTarget is not null)
-                {
-                    EncounterZone.AlertZone(MovementTarget);
-                }
-                ResetCurrentAiComponent();
-            }
-
-            _hitboxHandlers[hitbox] = Handler;
-            hitbox.OnHitSetCombatTarget += Handler;
+            hitbox.OnHitSetCombatTarget += OnHit;
         }
 
         HealthComponent.OnDeath += OnDeath;
@@ -151,21 +141,20 @@ public partial class CombatAgent : MovingAgent
             if (!inCombat && area is Hitbox hitbox)
             {
                 MovementTarget = hitbox.Parent;
-                EnemyStateMachine.HandleChangeStateEvent(this, new ChangeStateEventArgs("InCombatState"));
                 inCombat = true;
             }
         };
     }
-    
-    public override void _ExitTree()
+
+    protected virtual void OnHit(Node3D target)
     {
-        base._ExitTree();
-        foreach (var (hitbox, handler) in _hitboxHandlers)
+        GD.Print("got emitted signal");
+        MovementTarget = target;
+        inCombat = true;
+        if (EncounterZone is not null && !EncounterZone.Alerted && MovementTarget is not null)
         {
-            if (IsInstanceValid(hitbox))
-                hitbox.OnHitSetCombatTarget -= handler;
+            EncounterZone.AlertZone(MovementTarget);
         }
-        _hitboxHandlers.Clear();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -294,12 +283,18 @@ public partial class CombatAgent : MovingAgent
         EncounterZone = encounterZone;
         EncounterZone.OnCombatStart += target =>
         {
+            if (inCombat) return;
             MovementTarget = target;
             inCombat = true;
         };
         if (!EncounterZone.TryGetTarget(out var encZTarget)) return;
         MovementTarget = encZTarget;
         inCombat = true;
+    }
+
+    public virtual void Die()
+    {
+        
     }
 
     public override bool HasAffectedBone()

@@ -7,6 +7,7 @@ using FirstPerson.Scenes.Player;
 [GlobalClass]
 public partial class Hitbox : Area3D
 {
+
     [Signal]
     public delegate void OnHitSetImpulseReactionEventHandler(float pitch, float roll, Vector3 source);
     [Signal]
@@ -91,11 +92,8 @@ public partial class Hitbox : Area3D
             }
             StaggerComponent?.DepleteStagger(damage);
         }
-
-        if (hitInformation.SourceCombatTargetNode3D is not null)
-        {
-            EmitSignalOnHitSetCombatTarget(hitInformation.SourceCombatTargetNode3D);
-        }
+        GD.Print("emitting signal");
+        EmitSignalOnHitSetCombatTarget(hitInformation.SourceCombatTargetNode3D);
     }
 
     public void DebugHit()

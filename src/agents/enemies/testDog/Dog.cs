@@ -62,6 +62,7 @@ public partial class Dog : CombatAgent
     public override void _Ready()
     {
         base._Ready();
+        CustomAnimationTree.Active = true;
         defaultCombatAi = AgentZigzagComponent;
         defaultNoncombatAi = AgentStopComponent;
         CurrentNavComponent = AgentStopComponent;

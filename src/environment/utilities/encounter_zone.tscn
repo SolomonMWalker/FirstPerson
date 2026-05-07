@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bkvy80lgfi1ku"]
+
+[ext_resource type="Script" uid="uid://d1yk738cvsfwa" path="res://src/environment/utilities/EncounterZone.cs" id="1_33lbk"]
+
+[node name="EncounterZone" type="Node3D" unique_id=744440169 node_paths=PackedStringArray("EncounterAgents")]
+script = ExtResource("1_33lbk")
+EncounterAgents = []

@@ -101,8 +101,8 @@ advance_condition = &"staggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mgirg"]
 xfade_time = 0.2
+switch_mode = 2
 advance_mode = 2
-advance_condition = &"notStaggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bsjv1"]
 xfade_time = 0.2
@@ -125,4 +125,4 @@ states/stagger/position = Vector2(82.47323, 59.204082)
 states/walkGunReady/node = SubResource("AnimationNodeAnimation_7nw7a")
 states/walkGunReady/position = Vector2(572.6667, 77.86396)
 transitions = ["Start", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_t20en"), "idleWithGunReady", "Edited_editedAimGun", SubResource("AnimationNodeStateMachineTransition_172i6"), "Edited_editedAimGun", "Edited_editedFireGun", SubResource("AnimationNodeStateMachineTransition_l1nqy"), "Edited_editedFireGun", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_51ae0"), "idleWithGunReady", "walkGunReady", SubResource("AnimationNodeStateMachineTransition_nswck"), "idleWithGunReady", "falling", SubResource("AnimationNodeStateMachineTransition_0dmmb"), "Edited_editedAimGun", "falling", SubResource("AnimationNodeStateMachineTransition_wnh2b"), "Edited_editedFireGun", "falling", SubResource("AnimationNodeStateMachineTransition_f80lm"), "walkGunReady", "falling", SubResource("AnimationNodeStateMachineTransition_in0d3"), "walkGunReady", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_c2shi"), "falling", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_fkb5v"), "walkGunReady", "Edited_editedAimGun", SubResource("AnimationNodeStateMachineTransition_fbwej"), "Start", "walkGunReady", SubResource("AnimationNodeStateMachineTransition_1kqji"), "Edited_editedAimGun", "stagger", SubResource("AnimationNodeStateMachineTransition_mjf2y"), "Edited_editedFireGun", "stagger", SubResource("AnimationNodeStateMachineTransition_owpqq"), "idleWithGunReady", "stagger", SubResource("AnimationNodeStateMachineTransition_medd3"), "walkGunReady", "stagger", SubResource("AnimationNodeStateMachineTransition_g8uci"), "stagger", "idleWithGunReady", SubResource("AnimationNodeStateMachineTransition_mgirg"), "stagger", "falling", SubResource("AnimationNodeStateMachineTransition_bsjv1")]
-graph_offset = Vector2(-189, -41.462585)
+graph_offset = Vector2(25, -18.690025)

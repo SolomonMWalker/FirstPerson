@@ -29,6 +29,11 @@ public partial class Grunt : CombatAgent
     public override bool CanMove() => !firing && base.CanMove();
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
+    public override void StopStagger()
+    {
+        base.StopStagger();
+        CustomAnimationTree.TrySetParam("staggered", false);
+    }
 
     public override void SetLastDamageDirection(Vector3 sourceGlobalPosition, Vector3 collisionGlobalPoint)
     {
@@ -40,7 +45,7 @@ public partial class Grunt : CombatAgent
     public override void _Ready()
     {
         base._Ready();
-
+        CustomAnimationTree.Active = true;
         FireRateTimer.SetStartTime(FireRatePauseInSeconds);
         FireRateTimer.Timeout += () =>
         {
