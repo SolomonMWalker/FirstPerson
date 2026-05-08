@@ -17,6 +17,16 @@ public partial class DebugMenu : Control
         _instance?.AddWatchedLabel(name, getter);
     }
 
+    public static void Unregister(string name)
+    {
+        _registry.Remove(name);
+        if (_instance != null && _instance._labels.TryGetValue(name, out var label))
+        {
+            label.QueueFree();
+            _instance._labels.Remove(name);
+        }
+    }
+
     public override void _Ready()
     {
         base._Ready();

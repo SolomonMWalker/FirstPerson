@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7hmbn353qv2b"
-path="res://.godot/imported/revolver reference.jpg-043d8a45e67e63250b8dd8448861fbdc.ctex"
+path="res://.godot/imported/revolver reference.jpg-93f5eb60f0f228fe1be43cb63d8f5d11.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://BlenderTutorial/revolver reference.jpg"
-dest_files=["res://.godot/imported/revolver reference.jpg-043d8a45e67e63250b8dd8448861fbdc.ctex"]
+source_file="res://blenderTutorial/revolver reference.jpg"
+dest_files=["res://.godot/imported/revolver reference.jpg-93f5eb60f0f228fe1be43cb63d8f5d11.ctex"]
 
 [params]
 

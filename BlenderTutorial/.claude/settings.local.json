@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem \"E:\\\\Godot\\\\GodotProjects\\\\FirstPerson\\\\blenderTutorial\" -Name)",
+      "Bash(Select-Object -First 60)"
+    ]
+  }
+}

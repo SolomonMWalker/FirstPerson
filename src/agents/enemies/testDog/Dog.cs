@@ -112,6 +112,12 @@ public partial class Dog : CombatAgent
         HandleMeleeAttackCollision();
     }
 
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        DebugMenu.Unregister("DogState");
+    }
+
     public override void StartRagdoll()
     {
         CustomAnimationTree.Active = false;

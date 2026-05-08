@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://dmtaboa7oloj1"
-path="res://.godot/imported/Arms.glb-f6d2bbdfe36706c60e863d0b1c90bd6e.scn"
+path="res://.godot/imported/Arms.glb-337ea7e6d5bfff14f73ce918f27bdabf.scn"
 
 [deps]
 
-source_file="res://BlenderTutorial/Arms.glb"
-dest_files=["res://.godot/imported/Arms.glb-f6d2bbdfe36706c60e863d0b1c90bd6e.scn"]
+source_file="res://blenderTutorial/Arms.glb"
+dest_files=["res://.godot/imported/Arms.glb-337ea7e6d5bfff14f73ce918f27bdabf.scn"]
 
 [params]
 
