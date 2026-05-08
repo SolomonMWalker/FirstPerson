@@ -10,12 +10,6 @@ public partial class GruntInCombatState : InCombatState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CustomAnimationTree.TrySetParam("inCombat", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("inCombat", false);
+        Grunt.combatStateSwitchStateMachine.Travel("InCombatStateMachine");
     }
 }

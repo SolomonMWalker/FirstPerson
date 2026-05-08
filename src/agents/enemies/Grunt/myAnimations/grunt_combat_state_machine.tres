@@ -1,0 +1,75 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://buhpq7rv6hi5n"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tn6ko"]
+animation = &"EditedGruntLibrary/editedAimGun"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bukcf"]
+animation = &"EditedGruntLibrary/editedFireGun"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t8pan"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c16i0"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ctu6o"]
+states/End/position = Vector2(584, 100.42342)
+states/aimGun/node = SubResource("AnimationNodeAnimation_tn6ko")
+states/aimGun/position = Vector2(323.59998, 100.93394)
+states/fireGun/node = SubResource("AnimationNodeAnimation_bukcf")
+states/fireGun/position = Vector2(438.00003, 192.64641)
+transitions = ["Start", "aimGun", SubResource("AnimationNodeStateMachineTransition_t8pan"), "aimGun", "fireGun", SubResource("AnimationNodeStateMachineTransition_c16i0")]
+graph_offset = Vector2(122.56997, -35)
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pchik"]
+animation = &"falling"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hehml"]
+animation = &"idleWithGunReady"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7nw7a"]
+animation = &"walkGunReady"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fkb5v"]
+animation = &"EditedGruntLibrary/editedStagger"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tn6ko"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bukcf"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ctu6o"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tum8g"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ktbvf"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ux8do"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wfp5r"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5r03g"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_88yk7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_420up"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2sxyd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b75c2"]
+
+[resource]
+states/End/position = Vector2(425.37775, -69.014206)
+states/Start/position = Vector2(125.21481, -69.90642)
+states/aimAndFire/node = SubResource("AnimationNodeStateMachine_ctu6o")
+states/aimAndFire/position = Vector2(365.51666, 237.33937)
+states/falling/node = SubResource("AnimationNodeAnimation_pchik")
+states/falling/position = Vector2(277.88028, 65.57367)
+states/idle/node = SubResource("AnimationNodeAnimation_hehml")
+states/idle/position = Vector2(277.8985, -70.11998)
+states/moving/node = SubResource("AnimationNodeAnimation_7nw7a")
+states/moving/position = Vector2(476.6667, 151.26012)
+states/stagger/node = SubResource("AnimationNodeAnimation_fkb5v")
+states/stagger/position = Vector2(56.07322, 151.25957)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_tn6ko"), "idle", "stagger", SubResource("AnimationNodeStateMachineTransition_bukcf"), "idle", "moving", SubResource("AnimationNodeStateMachineTransition_ctu6o"), "moving", "stagger", SubResource("AnimationNodeStateMachineTransition_tum8g"), "idle", "falling", SubResource("AnimationNodeStateMachineTransition_ktbvf"), "moving", "falling", SubResource("AnimationNodeStateMachineTransition_ux8do"), "stagger", "falling", SubResource("AnimationNodeStateMachineTransition_wfp5r"), "idle", "aimAndFire", SubResource("AnimationNodeStateMachineTransition_5r03g"), "moving", "aimAndFire", SubResource("AnimationNodeStateMachineTransition_88yk7"), "aimAndFire", "idle", SubResource("AnimationNodeStateMachineTransition_420up"), "aimAndFire", "stagger", SubResource("AnimationNodeStateMachineTransition_2sxyd"), "moving", "idle", SubResource("AnimationNodeStateMachineTransition_b75c2")]
+graph_offset = Vector2(6, -99.88208)

@@ -13,13 +13,8 @@ public partial class GruntNoActionState : NoActionState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CustomAnimationTree.TrySetParam("stopped", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("stopped", false);
+        var stateMachine = Grunt.inCombat ? Grunt.inCombatStateMachine : Grunt.notInCombatStateMachine;
+        stateMachine.Travel("idle");
     }
 
     public override void StatePhysicsProcessing(double delta)

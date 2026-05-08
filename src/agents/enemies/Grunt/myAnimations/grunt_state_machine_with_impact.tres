@@ -1,7 +1,7 @@
 [gd_resource type="AnimationNodeBlendTree" format=3 uid="uid://dp10gbl65t103"]
 
 [ext_resource type="AnimationNodeBlendSpace2D" uid="uid://70weimhb68gc" path="res://src/agents/enemies/Grunt/myAnimations/grunt_impact_blend_space_2d.tres" id="1_6vck5"]
-[ext_resource type="AnimationNodeStateMachine" uid="uid://22d6pu6ymuv2" path="res://src/agents/enemies/Grunt/myAnimations/basic_enemy_state_machine.tres" id="2_561oq"]
+[ext_resource type="AnimationNodeStateMachine" uid="uid://22d6pu6ymuv2" path="res://src/agents/enemies/Grunt/myAnimations/grunt_state_machine.tres" id="2_561oq"]
 
 [sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_6vck5"]
 filter_enabled = true

@@ -1,5 +1,6 @@
 using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.scenes.enemies.test.states;
+using Godot;
 
 public partial class GruntAimingState : EnemyAtomicState
 {
@@ -18,8 +19,9 @@ public partial class GruntAimingState : EnemyAtomicState
         Grunt.readyToFire = false;
         Grunt.firing = true;
         Grunt.aimingOver = false;
-        Grunt.CustomAnimationTree.TrySetParam("doneFiring", false);
-        Grunt.CustomAnimationTree.TrySetParam("aiming", true);
+        //Grunt.CustomAnimationTree.TrySetParam("doneFiring", false);
+        //Grunt.CustomAnimationTree.TrySetParam("aiming", true);
+        Grunt.inCombatStateMachine.Travel("aimAndFire");
     }
 
     public override void StateExited()

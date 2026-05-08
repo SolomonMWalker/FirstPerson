@@ -14,13 +14,8 @@ public partial class GruntIsMovingState : IsMovingState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CustomAnimationTree.TrySetParam("moving", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("moving", false);
+        var stateMachine = Grunt.inCombat ? Grunt.inCombatStateMachine : Grunt.notInCombatStateMachine;
+        stateMachine.Travel("moving");
     }
 
     public override void StatePhysicsProcessing(double delta)

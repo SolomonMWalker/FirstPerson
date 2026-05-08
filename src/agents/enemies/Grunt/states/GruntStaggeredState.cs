@@ -11,17 +11,12 @@ public partial class GruntStaggeredState : StaggeredState
     public override void StateEntered()
     {
         base.StateEntered();
-        if (Grunt is null) return;
-        Grunt.CustomAnimationTree.TrySetParam("notStaggered", false);
-        Grunt.CustomAnimationTree.TrySetParam("staggered", true);
+        Grunt?.inCombatStateMachine.Travel("staggered");
     }
 
     public override void StateExited()
     {
         base.StateExited();
-        if (Grunt is null) return;
-        Grunt.FireRateTimer.FuzzyStart();
-        Grunt.CustomAnimationTree.TrySetParam("notStaggered", true);
-        Grunt.CustomAnimationTree.TrySetParam("staggered", false);
+        Grunt?.FireRateTimer.FuzzyStart();
     }
 }

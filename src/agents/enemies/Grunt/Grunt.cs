@@ -22,6 +22,15 @@ public partial class Grunt : CombatAgent
     [Export] public AnimationPlayer AnimationPlayer { get; set; }
     [Export] public RayCast3D ShootRaycast { get; set; }
     [Export] public FuzzyStartTimer FireRateTimer { get; set; }
+    
+    [ExportCategory("Paths")]
+    [Export] public StringName CombatStateSwitchStateMachinePath { get; set; }
+    [Export] public StringName InCombatStateMachinePath { get; set; }
+    [Export] public StringName NotInCombatStateMachinePath { get; set; }
+
+    public AnimationNodeStateMachinePlayback combatStateSwitchStateMachine,
+        inCombatStateMachine,
+        notInCombatStateMachine;
 
     public bool readyToFire, firing, aimingOver;
 
@@ -29,6 +38,7 @@ public partial class Grunt : CombatAgent
     public override bool CanMove() => !firing && base.CanMove();
     public virtual void StopFiring() => firing = false;
     public virtual void StopAiming() => aimingOver = true;
+    
     public override void StopStagger()
     {
         base.StopStagger();
@@ -46,6 +56,12 @@ public partial class Grunt : CombatAgent
     {
         base._Ready();
         CustomAnimationTree.Active = true;
+        combatStateSwitchStateMachine = (AnimationNodeStateMachinePlayback)
+            CustomAnimationTree.Get(CombatStateSwitchStateMachinePath);
+        inCombatStateMachine = (AnimationNodeStateMachinePlayback)
+            CustomAnimationTree.Get(InCombatStateMachinePath);
+        notInCombatStateMachine = (AnimationNodeStateMachinePlayback)
+            CustomAnimationTree.Get(NotInCombatStateMachinePath);
         FireRateTimer.SetStartTime(FireRatePauseInSeconds);
         FireRateTimer.Timeout += () =>
         {

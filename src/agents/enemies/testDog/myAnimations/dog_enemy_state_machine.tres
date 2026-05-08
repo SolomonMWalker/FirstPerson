@@ -28,10 +28,10 @@ advance_condition = &"dead"
 
 [resource]
 states/End/position = Vector2(669.9319, 296.50043)
+states/InCombatStateMachine/node = ExtResource("1_g1s0m")
+states/InCombatStateMachine/position = Vector2(422.8018, 321.19617)
+states/NotInCombatStateMachine/node = ExtResource("2_2dqdt")
+states/NotInCombatStateMachine/position = Vector2(423.1005, 224.39616)
 states/Start/position = Vector2(422.88892, 133.48148)
-states/dogCombatSM/node = ExtResource("1_g1s0m")
-states/dogCombatSM/position = Vector2(422.8018, 321.19617)
-states/dogNonCombatSM/node = ExtResource("2_2dqdt")
-states/dogNonCombatSM/position = Vector2(423.1005, 224.39616)
-transitions = ["Start", "dogNonCombatSM", SubResource("AnimationNodeStateMachineTransition_40j0w"), "dogNonCombatSM", "dogCombatSM", SubResource("AnimationNodeStateMachineTransition_2u5qy"), "dogCombatSM", "dogNonCombatSM", SubResource("AnimationNodeStateMachineTransition_fm06o"), "dogNonCombatSM", "End", SubResource("AnimationNodeStateMachineTransition_g1s0m"), "dogCombatSM", "End", SubResource("AnimationNodeStateMachineTransition_2dqdt")]
+transitions = ["Start", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_40j0w"), "NotInCombatStateMachine", "InCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_2u5qy"), "InCombatStateMachine", "NotInCombatStateMachine", SubResource("AnimationNodeStateMachineTransition_fm06o"), "NotInCombatStateMachine", "End", SubResource("AnimationNodeStateMachineTransition_g1s0m"), "InCombatStateMachine", "End", SubResource("AnimationNodeStateMachineTransition_2dqdt")]
 graph_offset = Vector2(133.17786, 92.79616)

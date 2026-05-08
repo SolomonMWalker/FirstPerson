@@ -16,7 +16,6 @@ public partial class GruntFiringState : EnemyAtomicState
     public override void StateExited()
     {
         base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("doneFiring", true);
         Grunt.FireRateTimer.FuzzyStart();
         CombatAgent.freezeRotation = false;
     }
@@ -24,6 +23,14 @@ public partial class GruntFiringState : EnemyAtomicState
     public override void StateProcessing(double delta)
     {
         base.StateProcessing(delta);
+        
+        if (Grunt.dead || Grunt.ragdoll) return;
+
+        if (Grunt.Staggered)
+        {
+            OnStateChangeRequired(new ChangeStateEventArgs("StaggeredState"));
+        }
+        
         if (!Grunt.firing)
         {
             OnStateChangeRequired(new ChangeStateEventArgs("NoActionState"));

@@ -17,12 +17,6 @@ public partial class GruntNotInCombatState : NotInCombatState
     public override void StateEntered()
     {
         base.StateEntered();
-        Grunt.CustomAnimationTree.TrySetParam("notInCombat", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Grunt.CustomAnimationTree.TrySetParam("notInCombat", false);
+        Grunt.combatStateSwitchStateMachine.Travel("NotInCombatStateMachine");
     }
 }
