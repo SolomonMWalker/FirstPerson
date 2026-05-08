@@ -38,8 +38,7 @@ public partial class LeapAttackAiComponent : BaseAiNavComponent
 
         if (_canCheckGrounded && Dog.IsOnFloor())
         {
-            Dog.CustomAnimationTree.TrySetParam("leapAttack", false);
-            Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", true);
+            Dog.inCombatStateMachine.Travel("leapAttackEnd");
             Dog.leapAttackInProgress = false;
             Dog.leapAttacking = false;
             Dog.SetCurrentNavComponent(Dog.AgentStopComponent);

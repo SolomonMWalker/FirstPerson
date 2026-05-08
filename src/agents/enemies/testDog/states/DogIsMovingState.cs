@@ -14,13 +14,8 @@ public partial class DogIsMovingState : IsMovingState
     public override void StateEntered()
     {
         base.StateEntered();
-        Dog.CustomAnimationTree.TrySetParam("moving", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Dog.CustomAnimationTree.TrySetParam("moving", false);
+        var sm = Dog.inCombat ? Dog.inCombatStateMachine : Dog.notInCombatStateMachine;
+        sm.Travel("moving");
     }
 
     public override void StatePhysicsProcessing(double delta)

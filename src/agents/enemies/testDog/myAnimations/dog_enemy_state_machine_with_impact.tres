@@ -8,7 +8,6 @@ filter_enabled = true
 filters = ["DogRig/Skeleton3D:root", "DogRig/Skeleton3D:spine.002", "DogRig/Skeleton3D:spine.003", "DogRig/Skeleton3D:spine.004", "DogRig/Skeleton3D:spine.005", "DogRig/Skeleton3D:spine.006", "DogRig/Skeleton3D:spine.007", "DogRig/Skeleton3D:spine.008", "DogRig/Skeleton3D:spine.009", "DogRig/Skeleton3D:spine.010", "DogRig/Skeleton3D:spine.011", "GruntRig/Skeleton3D:spine", "GruntRig/Skeleton3D:spine.001", "GruntRig/Skeleton3D:spine.002", "GruntRig/Skeleton3D:spine.003", "GruntRig/Skeleton3D:spine.004", "GruntRig/Skeleton3D:spine.005", "GruntRig/Skeleton3D:spine.006"]
 
 [resource]
-graph_offset = Vector2(-95.66492, -22.395609)
 nodes/output/position = Vector2(848, 176)
 nodes/OneShot/node = SubResource("AnimationNodeOneShot_6vck5")
 nodes/OneShot/position = Vector2(480, 176)

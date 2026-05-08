@@ -25,6 +25,15 @@ public partial class Dog : CombatAgent
     [Export] public ShapeCast3D CloseAttackRangeShapeCast { get; set; }
     [Export] public FuzzyStartTimer AttackRateTimer { get; set; }
 
+    [ExportCategory("Paths")]
+    [Export] public StringName CombatStateSwitchStateMachinePath { get; set; }
+    [Export] public StringName InCombatStateMachinePath { get; set; }
+    [Export] public StringName NotInCombatStateMachinePath { get; set; }
+
+    public AnimationNodeStateMachinePlayback combatStateSwitchStateMachine,
+        inCombatStateMachine,
+        notInCombatStateMachine;
+
     public bool nextAttackIsLeap = false;
     public bool meleeAttacking, leapAttacking, leapAttackInProgress, leapAttackDone;
     public bool Attacking { get => _attacking; }
@@ -40,8 +49,6 @@ public partial class Dog : CombatAgent
     public void StopAttacking()
     {
         _attacking = false;
-        CustomAnimationTree.TrySetParam("stationaryAttack", false);
-        CustomAnimationTree.TrySetParam("leapAttack", false);
         CloseAttackRangeShapeCast.Enabled = false;
     }
 
@@ -63,6 +70,12 @@ public partial class Dog : CombatAgent
     {
         base._Ready();
         CustomAnimationTree.Active = true;
+        combatStateSwitchStateMachine = (AnimationNodeStateMachinePlayback)
+            CustomAnimationTree.Get(CombatStateSwitchStateMachinePath);
+        inCombatStateMachine = (AnimationNodeStateMachinePlayback)
+            CustomAnimationTree.Get(InCombatStateMachinePath);
+        notInCombatStateMachine = (AnimationNodeStateMachinePlayback)
+            CustomAnimationTree.Get(NotInCombatStateMachinePath);
         defaultCombatAi = AgentZigzagComponent;
         defaultNoncombatAi = AgentStopComponent;
         CurrentNavComponent = AgentStopComponent;

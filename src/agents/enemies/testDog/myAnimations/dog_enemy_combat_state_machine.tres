@@ -30,53 +30,33 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nswck"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"moving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0dmmb"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"falling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_in0d3"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"falling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c2shi"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"stopped"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fkb5v"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"notFalling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1kqji"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"moving"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_medd3"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"staggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g8uci"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"staggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mgirg"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"notStaggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bsjv1"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"falling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_eot6w"]
 switch_mode = 2
@@ -84,57 +64,37 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tsx77"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"stationaryAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sowni"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"stationaryAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ccnre"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"falling"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_e5pdf"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"staggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_msjxh"]
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ggec2"]
-advance_mode = 2
-advance_condition = &"leapAttackGrounded"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sk4ia"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"leapAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_w8hxi"]
 xfade_time = 0.2
-advance_mode = 2
-advance_condition = &"leapAttack"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tu6g2"]
 switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_63ie3"]
-advance_mode = 2
-advance_condition = &"staggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n541a"]
-advance_mode = 2
-advance_condition = &"staggered"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wpdal"]
-advance_mode = 2
-advance_condition = &"staggered"
 
 [resource]
 states/End/position = Vector2(571.7778, -20.892345)
@@ -156,4 +116,4 @@ states/stagger/position = Vector2(10.473236, -34.083744)
 states/stationaryAttack/node = SubResource("AnimationNodeAnimation_w8hxi")
 states/stationaryAttack/position = Vector2(299.21185, 355.8464)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_t20en"), "idle", "moving", SubResource("AnimationNodeStateMachineTransition_nswck"), "idle", "falling", SubResource("AnimationNodeStateMachineTransition_0dmmb"), "moving", "falling", SubResource("AnimationNodeStateMachineTransition_in0d3"), "moving", "idle", SubResource("AnimationNodeStateMachineTransition_c2shi"), "falling", "idle", SubResource("AnimationNodeStateMachineTransition_fkb5v"), "Start", "moving", SubResource("AnimationNodeStateMachineTransition_1kqji"), "idle", "stagger", SubResource("AnimationNodeStateMachineTransition_medd3"), "moving", "stagger", SubResource("AnimationNodeStateMachineTransition_g8uci"), "stagger", "idle", SubResource("AnimationNodeStateMachineTransition_mgirg"), "stagger", "falling", SubResource("AnimationNodeStateMachineTransition_bsjv1"), "stationaryAttack", "idle", SubResource("AnimationNodeStateMachineTransition_eot6w"), "idle", "stationaryAttack", SubResource("AnimationNodeStateMachineTransition_tsx77"), "moving", "stationaryAttack", SubResource("AnimationNodeStateMachineTransition_sowni"), "stationaryAttack", "falling", SubResource("AnimationNodeStateMachineTransition_ccnre"), "stationaryAttack", "stagger", SubResource("AnimationNodeStateMachineTransition_e5pdf"), "leapAttackStart", "leapAttackInProgress", SubResource("AnimationNodeStateMachineTransition_msjxh"), "leapAttackInProgress", "leapAttackEnd", SubResource("AnimationNodeStateMachineTransition_ggec2"), "idle", "leapAttackStart", SubResource("AnimationNodeStateMachineTransition_sk4ia"), "moving", "leapAttackStart", SubResource("AnimationNodeStateMachineTransition_w8hxi"), "leapAttackEnd", "idle", SubResource("AnimationNodeStateMachineTransition_tu6g2"), "leapAttackStart", "stagger", SubResource("AnimationNodeStateMachineTransition_63ie3"), "leapAttackInProgress", "stagger", SubResource("AnimationNodeStateMachineTransition_n541a"), "leapAttackEnd", "stagger", SubResource("AnimationNodeStateMachineTransition_wpdal")]
-graph_offset = Vector2(-417, -65.783875)
+graph_offset = Vector2(-84, -68.783875)

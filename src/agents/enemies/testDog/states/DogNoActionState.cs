@@ -14,13 +14,8 @@ public partial class DogNoActionState : NoActionState
     public override void StateEntered()
     {
         base.StateEntered();
-        Dog.CustomAnimationTree.TrySetParam("stopped", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Dog.CustomAnimationTree.TrySetParam("stopped", false);
+        var sm = Dog.inCombat ? Dog.inCombatStateMachine : Dog.notInCombatStateMachine;
+        sm.Travel("idle");
     }
     
     public override void StatePhysicsProcessing(double delta)

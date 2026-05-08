@@ -12,15 +12,9 @@ public partial class DogStaggeredState : StaggeredState
     {
         base.StateEntered();
         if (Dog is null) return;
-        Dog.CustomAnimationTree.TrySetParam("notStaggered", false);
-        Dog.CustomAnimationTree.TrySetParam("staggered", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        if (Dog is null) return;
-        Dog.CustomAnimationTree.TrySetParam("notStaggered", true);
-        Dog.CustomAnimationTree.TrySetParam("staggered", false);
+        if (Dog.inCombat)
+            Dog.inCombatStateMachine.Travel("stagger");
+        else
+            Dog.notInCombatStateMachine.Travel("staggered");
     }
 }

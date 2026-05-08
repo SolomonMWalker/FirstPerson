@@ -17,9 +17,7 @@ public partial class DogMeleeAttackState : EnemyAtomicState
         base.StateEntered();
         Dog.ShouldCloseAttackShapeCast.Enabled = false;
         Dog.StartAttacking();
-        Dog.CustomAnimationTree.TrySetParam("stationaryAttack", true);
-        Dog.CustomAnimationTree.TrySetParam("leapAttack", false);
-        Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", false);
+        Dog.inCombatStateMachine.Travel("stationaryAttack");
     }
 
     public override void StateExited()
@@ -30,9 +28,6 @@ public partial class DogMeleeAttackState : EnemyAtomicState
         Dog.ShouldCloseAttackShapeCast.Enabled = false;
         Dog.ShouldLeapAttackShapeCast.Enabled = false;
         Dog.StopAttacking();
-        Dog.CustomAnimationTree.TrySetParam("stationaryAttack", false);
-        Dog.CustomAnimationTree.TrySetParam("leapAttack", false);
-        Dog.CustomAnimationTree.TrySetParam("leapAttackGrounded", false);
         Dog.AttackRateTimer.Start();
         Dog.ResetCurrentAiComponent();
     }

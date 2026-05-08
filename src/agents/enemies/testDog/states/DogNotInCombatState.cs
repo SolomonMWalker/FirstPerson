@@ -17,12 +17,6 @@ public partial class DogNotInCombatState : NotInCombatState
     public override void StateEntered()
     {
         base.StateEntered();
-        Dog.CustomAnimationTree.TrySetParam("notInCombat", true);
-    }
-
-    public override void StateExited()
-    {
-        base.StateExited();
-        Dog.CustomAnimationTree.TrySetParam("notInCombat", false);
+        Dog.combatStateSwitchStateMachine.Travel("NotInCombatStateMachine");
     }
 }
