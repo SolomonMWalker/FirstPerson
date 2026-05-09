@@ -353,15 +353,16 @@ script = ExtResource("26_4556c")
 script = ExtResource("27_a3051")
 PlayerController = NodePath("../..")
 
-[node name="WeaponController" type="Node" parent="Components" unique_id=1331549062 node_paths=PackedStringArray("Player", "CameraController", "CameraEffects", "WeaponModelParent", "MouseCaptureComponent", "Reticle") groups=["weaponController"]]
+[node name="WeaponController" type="Node" parent="Components" unique_id=1331549062 node_paths=PackedStringArray("PlayerController", "CameraController", "CameraEffects", "WeaponModelParent", "MouseCaptureComponent", "Reticle") groups=["weaponController"]]
 unique_name_in_owner = true
 script = ExtResource("28_v0tgu")
-Player = NodePath("../..")
+PlayerController = NodePath("../..")
 CameraController = NodePath("../../CameraController")
 CameraEffects = NodePath("../../CameraEffects")
 WeaponModelParent = NodePath("../../CameraController/WeaponRig/WeaponParent")
 MouseCaptureComponent = NodePath("../MouseCaptureComponent")
 Reticle = NodePath("../../UserInterface/Reticle")
+MouseSwayDamping = 20.0
 
 [node name="HealthComponent" type="Node" parent="Components" unique_id=376964098 node_paths=PackedStringArray("ShieldComponent")]
 script = ExtResource("24_5n4gj")

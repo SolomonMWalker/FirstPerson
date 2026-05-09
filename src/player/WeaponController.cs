@@ -5,17 +5,28 @@ using FirstPerson.CustomTypes.StateMachine;
 using FirstPerson.Helpers;
 using FirstPerson.scenes.enemies.test;
 using FirstPerson.Scenes.Player;
+using FirstPerson.utilities;
 
 public partial class WeaponController : Node
 {
     [ExportCategory("References")] 
-    [Export] public PlayerController Player;
+    [Export] public PlayerController PlayerController;
     [Export] public CameraController CameraController;
     [Export] public CameraEffects CameraEffects;
     [Export] public Node3D WeaponModelParent { get; set; }
     [Export] public MouseCaptureComponent MouseCaptureComponent { get; set; }
     [Export] public Reticle Reticle { get; set; }
     //[Export] public Label StateLabel {get; set;}
+
+    [ExportCategory("Idle Sway")]
+    [Export] public float IdleSwayFrequency { get; set; } = 0.8f;
+    [Export] public Vector2 IdleSwayAmplitube { get; set; } = new Vector2(0.003f, 0.002f);
+    [Export] public float IdleSwayStiffness { get; set; } = 40f;
+    [Export] public float IdleSwayDamping { get; set; } = 6f;
+
+    [ExportCategory("Mouse Sway")]
+    [Export] public float MouseSwayStiffness { get; set; } = 80f;
+    [Export] public float MouseSwayDamping { get; set; } = 12f;
 
     [ExportCategory("Weapon Settings")]
     [Export] public int MaxAngleAccuracyPenalty { get; set; } = 8;
@@ -27,14 +38,15 @@ public partial class WeaponController : Node
     public WeaponRig CurrentWeaponModel { get; set; }
     public float CurrentAccuracyAnglePenalty { get; private set; }
     public bool Aiming { get; set; }
-    private (bool hasStarted, string name) _bulletAddedAnimStartedAndName;
-    private Vector3 WeaponModelParentDefaultPosition, WeaponModelParentDefaultRotation;
+    private Vector3 _weaponModelParentDefaultPosition, _weaponModelParentDefaultRotation, _baseWeaponPosition;
+    private float _idleTime, _idleX, _idleXVelocity, _idleY, _idleYVelocity;
+    private float _mouseSwayX, _mouseSwayXVelocity, _mouseSwayY, _mouseSwayYVelocity;
 
     public override void _Ready()
     {
         base._Ready();
-        WeaponModelParentDefaultPosition = WeaponModelParent.Position;
-        WeaponModelParentDefaultRotation = WeaponModelParent.Rotation;
+        _weaponModelParentDefaultPosition = WeaponModelParent.Position;
+        _weaponModelParentDefaultRotation = WeaponModelParent.Rotation;
         WeaponManager = (WeaponManager) GetTree().GetFirstNodeInGroup("WeaponManager");
         CurrentWeapon = GetCurrentWeaponData().Weapon;
         
@@ -68,28 +80,44 @@ public partial class WeaponController : Node
             WeaponModelParent.AddChild(CurrentWeaponModel);
             CurrentWeaponModel.Position = CurrentWeapon.WeaponPosition;
             CurrentWeaponModel.PlayHipIdleAnimation();
+            _baseWeaponPosition = CurrentWeaponModel.Position;
         }
     }
 
     public void SwayWeaponRig(double delta)
     {
+        Vector3 offset = Vector3.Zero;
+
+        if (PlayerController.Idling)
+        {
+            offset = UpdateIdleSwayOffset((float)delta);
+        }
+        
         //default pos and rotation of weapon rig are 0
         var fDelta = (float)delta;
         var mouseMovement = MouseCaptureComponent.RawRelativeMouseInput.Clamp(
             CurrentWeapon.SwayMin, CurrentWeapon.SwayMax);
         if (Aiming) mouseMovement *= AimSwayMult;
-        var airYOffset = Player.InAir ? Player.Velocity.Y : 0f;
-        var pos = WeaponModelParent.Position;
+        var airYOffset = PlayerController.InAir ? PlayerController.Velocity.Y : 0f;
+        var mouseSwayResultX = SpringUtility.ApplySpring(
+            _mouseSwayX, _mouseSwayXVelocity,
+            -mouseMovement.X * CurrentWeapon.SwayAmountPosition * fDelta,
+            MouseSwayStiffness, MouseSwayDamping, fDelta);
+        _mouseSwayX = mouseSwayResultX.value;
+        _mouseSwayXVelocity = mouseSwayResultX.velocity;
+
+        var mouseSwayResultY = SpringUtility.ApplySpring(
+            _mouseSwayY, _mouseSwayYVelocity,
+            mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta
+            + airYOffset * CurrentWeapon.AirSwayAmountPosition,
+            MouseSwayStiffness, MouseSwayDamping, fDelta);
+        _mouseSwayY = mouseSwayResultY.value;
+        _mouseSwayYVelocity = mouseSwayResultY.velocity;
         var rot = WeaponModelParent.Rotation;
-        WeaponModelParent.Position = pos with
+        WeaponModelParent.Position = _weaponModelParentDefaultPosition with
         {
-            X = Mathf.Lerp(pos.X,
-                -mouseMovement.X * CurrentWeapon.SwayAmountPosition * fDelta,
-                CurrentWeapon.SwaySpeedPosition),
-            Y = Mathf.Lerp(pos.Y,
-                mouseMovement.Y * CurrentWeapon.SwayAmountPosition * fDelta
-                + airYOffset * CurrentWeapon.AirSwayAmountPosition,
-                CurrentWeapon.SwaySpeedPosition),
+            X = _weaponModelParentDefaultPosition.X + _mouseSwayX + offset.X,
+            Y = _weaponModelParentDefaultPosition.Y + _mouseSwayY + offset.Y,
         };
         WeaponModelParent.Rotation = rot with
         {
@@ -101,6 +129,38 @@ public partial class WeaponController : Node
                 + airYOffset * CurrentWeapon.AirSwayAmountRotationInDeg,
                 CurrentWeapon.SwaySpeedRotation)),
         };
+    }
+
+    public Vector3 UpdateIdleSwayOffset(float delta)
+    {
+        if (CurrentWeaponModel is null) return Vector3.Zero;
+        
+        //increment idle time
+        _idleTime += delta;
+        
+        //calculate sine wave targets (figure 8 pattern)
+        var targetX = Mathf.Sin(_idleTime * IdleSwayFrequency) * IdleSwayAmplitube.X;
+        var targetY = Mathf.Sin(_idleTime * IdleSwayFrequency * 0.618f) * IdleSwayAmplitube.Y;
+
+        //apply spring
+        var resultX = SpringUtility.ApplySpring(
+            _idleX, _idleXVelocity, targetX, IdleSwayStiffness,
+            IdleSwayDamping, delta);
+        _idleX = resultX.value;
+        _idleXVelocity = resultX.velocity;
+        
+        var resultY = SpringUtility.ApplySpring(
+            _idleY, _idleYVelocity, targetY, IdleSwayStiffness,
+            IdleSwayDamping, delta);
+        _idleY = resultY.value;
+        _idleYVelocity = resultY.velocity;
+
+        return new Vector3(_idleX, _idleY, 0f);
+    }
+
+    public void EndIdleSway()
+    {
+        _idleTime = 0;
     }
 
     public bool CanFire()
@@ -153,7 +213,7 @@ public partial class WeaponController : Node
     public float GetCurrentAccuracyPenalty()
     {
         //retrieves gun accuracy and player real velocity to calculate accuracy
-        var speedPercent = Player.PreviousFrameVelocityLength / (Player.Speed * Player.SprintMovementMult);
+        var speedPercent = PlayerController.PreviousFrameVelocityLength / (PlayerController.Speed * PlayerController.SprintMovementMult);
         var weaponAccuracyPenalty =
             Aiming ? CurrentWeapon.AccuracyErrorAngleWhenAiming : CurrentWeapon.AccuracyErrorAngle;
         var accuracySpeedPenalty = speedPercent * CurrentWeapon.AccuracyErrorAngleAtMaxMovementSpeed;
@@ -210,8 +270,8 @@ public partial class WeaponController : Node
         return new HitInformation(
             healthDamage: (int) CurrentWeapon.Damage,
             staggerDamage: (int) CurrentWeapon.StaggerDamage,
-            sourceCombatTargetNode3D: Player,
-            sourceGlobalPosition: Player.GlobalPosition,
+            sourceCombatTargetNode3D: PlayerController,
+            sourceGlobalPosition: PlayerController.GlobalPosition,
             collisionGlobalPosition: collisionGlobalPosition
         );
     }

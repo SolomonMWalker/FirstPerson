@@ -46,6 +46,7 @@ public partial class PlayerController : CharacterBody3D
     public Vector2 InputDirections = Vector2.Zero;
     public float DefaultMovementMult { get; private set; } = 1f;
     public float CurrentMovementMult { get; set; } = 1f;
+    public bool Idling { get; set; }
     public bool InAir { get; set; } = true; //always start "in air"
     public bool Clambering { get; set; }
     public bool Sprinting { get; set; }
