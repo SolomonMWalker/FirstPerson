@@ -6,7 +6,7 @@ public partial class DeadState : EnemyAtomicState
     public override void StateEntered()
     {
         base.StateEntered();
-        CombatAgent.NavigationAgent3D.TargetPosition = CombatAgent.NavigationAgent3D.TargetPosition;
+        CombatAgent.NavigationAgent3D.SetNavigationMap(new Rid());
         CombatAgent.OnVelocityComputed(Vector3.Zero);
         //CombatAgent.CustomAnimationTree.TrySetParam("dead", true);
     }

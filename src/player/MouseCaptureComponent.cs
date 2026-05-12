@@ -25,7 +25,7 @@ public partial class MouseCaptureComponent : Node
                 Y = RelativeMouseInputWithSens.Y + -mouseMotionEvent.ScreenRelative.Y * MouseSensitivity
             };
 
-            RawRelativeMouseInput = mouseMotionEvent.Relative;
+            RawRelativeMouseInput += mouseMotionEvent.Relative;
         }
     }
 
@@ -33,11 +33,13 @@ public partial class MouseCaptureComponent : Node
     {
         base._Ready();
         Input.MouseMode = CurrentMouseMode;
+        ProcessPriority = 1;
     }
 
     public override void _Process(double delta)
     {
         base._Process(delta);
         RelativeMouseInputWithSens = Vector2.Zero;
+        RawRelativeMouseInput = Vector2.Zero;
     }
 }

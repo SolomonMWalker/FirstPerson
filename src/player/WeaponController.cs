@@ -61,9 +61,9 @@ public partial class WeaponController : Node
         SpawnWeaponModel();
     }
 
-    public override void _PhysicsProcess(double delta)
+    public override void _Process(double delta)
     {
-        base._PhysicsProcess(delta);
+        base._Process(delta);
         SwayWeaponRig(delta);
         CurrentAccuracyAnglePenalty = GetCurrentAccuracyPenalty();
     }

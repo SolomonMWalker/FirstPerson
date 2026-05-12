@@ -5,7 +5,9 @@
       "Bash(cd /e)",
       "Bash(sed -n '/\\\\[node name=\"Physical Bone/,/^\\\\[node/p' Godot/GodotProjects/ragdoll_physics/ragdoll_physics.tscn)",
       "Bash(awk '/\\\\[node name=\"Physical Bone/{flag=1;next} flag && /^\\\\[/{flag=0} flag' mannequiny_ragdoll.tscn)",
-      "Bash(python3)"
+      "Bash(python3)",
+      "Bash(Get-ChildItem -Recurse \"C:\\\\Trenchbroom\\\\games\\\\GodotFirstPerson\")",
+      "Bash(Select-Object FullName)"
     ]
   }
 }

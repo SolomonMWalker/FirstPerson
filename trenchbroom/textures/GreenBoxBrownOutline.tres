@@ -1,8 +1,0 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dfr3odvnnhtm8"]
-
-[ext_resource type="Texture2D" uid="uid://npf6o8s6ittd" path="res://trenchbroom/textures/GreenBoxBrownOutline.png" id="1_veox6"]
-
-[resource]
-albedo_texture = ExtResource("1_veox6")
-metallic_specular = 0.0
-texture_filter = 2

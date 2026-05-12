@@ -36,10 +36,7 @@ public partial class ParallelState : State
     public override string GetFullStateString()
     {
         var s = $"{Name}(";
-        s = ChildrenStates
-            .Aggregate(s, (current, childState) => current + $"{childState.GetFullStateString()}, ");
-        s += ")";
-        return s;
+        return string.Join(", ", ChildrenStates.Select(s => s.GetFullStateString()));
     }
 
     public override void _Ready()
