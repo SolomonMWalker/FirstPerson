@@ -25,7 +25,7 @@ public partial class AgentPatrolComponent : BaseAiNavComponent
 
         if (PatrolPoints.Count < 1)
         {
-            MovingAgent.RotateToTarget();
+            MovingAgent.RotateToTarget(delta);
             return;
         }
 

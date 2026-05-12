@@ -23,7 +23,7 @@ public partial class AgentStopComponent : BaseAiNavComponent
 
         if (MovingAgent.MovementTarget is not null && MovingAgent.CanRotate())
         {
-            MovingAgent.RotateToTarget();
+            MovingAgent.RotateToTarget(delta);
         }
     }
 }

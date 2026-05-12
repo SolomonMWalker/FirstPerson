@@ -201,19 +201,19 @@ public partial class CombatAgent : MovingAgent
         );
     }
 
-    public override void RotateToTarget()
+    public override void RotateToTarget(double delta)
     {
         if (MovementTarget is null || freezeRotation) return;
         var direction = (MovementTarget.GlobalPosition - GlobalPosition).Normalized();
-        var targetRotation = Mathf.Atan2(direction.X, direction.Z);
-        Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+        var targetRotation = Mathf.Atan2(direction.X, direction.Z) + Mathf.DegToRad(180);
+        Rotation = Rotation with { Y = Mathf.LerpAngle(Rotation.Y, targetRotation, (float)(RotationSpeed * delta)) };
     }
 
-    public override void RotateToGlobalPoint(Vector3 globalPoint)
+    public override void RotateToGlobalPoint(Vector3 globalPoint, double delta)
     {
         if (freezeRotation) return;
-        var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z);
-        Rotation = Rotation with { Y = targetRotation + Mathf.DegToRad(180) };
+        var targetRotation = Mathf.Atan2(globalPoint.X, globalPoint.Z) + Mathf.DegToRad(180);
+        Rotation = Rotation with { Y = Mathf.LerpAngle(Rotation.Y, targetRotation, (float)(RotationSpeed * delta)) };
     }
     
     public override void OnVelocityComputed(Vector3 safeVelocity)

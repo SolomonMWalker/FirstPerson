@@ -10,6 +10,7 @@ public abstract partial class MovingAgent : CharacterBody3D
     [ExportCategory("Moving Agent Settings")]
     [Export] public float Speed { get; set; }
     [Export] public float MaxFallSpeed { get; set; } = 50f;
+    [Export] public float RotationSpeed { get; set; } = 10f;
     
     [ExportCategory("Moving Agent References")]
     [Export] public Node3D MovementTarget { get; set; }
@@ -33,10 +34,10 @@ public abstract partial class MovingAgent : CharacterBody3D
     public abstract bool HasAffectedBone();
     public abstract void SetAffectedBone(PhysicalBone3D physicalBone3D);
     public abstract void HandleFalling(double delta);
-    public abstract void RotateToTarget();
+    public abstract void RotateToTarget(double delta);
     public abstract bool CanMove();
     public abstract bool CanRotate();
-    public abstract void RotateToGlobalPoint(Vector3 globalPoint);
+    public abstract void RotateToGlobalPoint(Vector3 globalPoint, double delta);
     public abstract void OnVelocityComputed(Vector3 safeVelocity);
 
     //Auto-assume rotate to direction moving or rotate to target if not moving
@@ -60,8 +61,8 @@ public abstract partial class MovingAgent : CharacterBody3D
         
         if (NavigationAgent3D.IsNavigationFinished())
         {
-            RotateToTarget();
-            
+            RotateToTarget(delta);
+
             if (NavigationAgent3D.AvoidanceEnabled)
             {
                 NavigationAgent3D.Velocity = Vector3.Zero;
@@ -72,19 +73,19 @@ public abstract partial class MovingAgent : CharacterBody3D
             }
             return;
         }
-        
+
         var nextPathPosition = NavigationAgent3D.GetNextPathPosition();
         var direction = (nextPathPosition - GlobalPosition).Normalized();
         var currentVelocity = direction * speed;
         currentVelocity = currentVelocity with { Y = 0 };
-        
+
         if (direction.Length() > 0.01f)
         {
-            RotateToGlobalPoint(direction);
+            RotateToGlobalPoint(direction, delta);
         }
         else
         {
-            RotateToTarget();
+            RotateToTarget(delta);
         }
 
         if (NavigationAgent3D.AvoidanceEnabled)
