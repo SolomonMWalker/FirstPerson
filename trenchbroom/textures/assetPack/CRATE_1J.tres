@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://6tl1nqjjf3g2"]
+
+[ext_resource type="Texture2D" uid="uid://bmn4h3uge4vas" path="res://trenchbroom/textures/CRATE_1J.png" id="1_q78fj"]
+
+[resource]
+albedo_texture = ExtResource("1_q78fj")
+metallic_specular = 0.0
+texture_filter = 2

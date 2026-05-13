@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bxulh0gp82naj"]
+
+[ext_resource type="Texture2D" uid="uid://be47oayfhjlti" path="res://trenchbroom/textures/assetPack/RIVET_1A.png" id="1_oj777"]
+
+[resource]
+albedo_texture = ExtResource("1_oj777")
+metallic_specular = 0.0
+texture_filter = 2

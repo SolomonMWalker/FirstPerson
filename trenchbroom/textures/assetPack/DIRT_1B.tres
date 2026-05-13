@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://3gf1holf4yek"]
+
+[ext_resource type="Texture2D" uid="uid://bw8dc4bvcyu0o" path="res://trenchbroom/textures/assetPack/DIRT_1B.png" id="1_31jbg"]
+
+[resource]
+albedo_texture = ExtResource("1_31jbg")
+metallic_specular = 0.0
+texture_filter = 2

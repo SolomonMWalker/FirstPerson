@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://3v7cue5ym22x"]
+
+[ext_resource type="Texture2D" uid="uid://cmn7gu0lf7ym8" path="res://trenchbroom/textures/assetPack/FENCE_4A.png" id="1_brcyg"]
+
+[resource]
+albedo_texture = ExtResource("1_brcyg")
+metallic_specular = 0.0
+texture_filter = 2
