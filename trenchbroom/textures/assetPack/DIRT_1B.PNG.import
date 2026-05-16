@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bw8dc4bvcyu0o"
-path.s3tc="res://.godot/imported/DIRT_1B.png-05a27ca2d7bf124f964ab4629278c5d8.s3tc.ctex"
+path.s3tc="res://.godot/imported/DIRT_1B.PNG-668b2a040104f4b60398fbca1324cae9.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/DIRT_1B.png"
-dest_files=["res://.godot/imported/DIRT_1B.png-05a27ca2d7bf124f964ab4629278c5d8.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/DIRT_1B.PNG"
+dest_files=["res://.godot/imported/DIRT_1B.PNG-668b2a040104f4b60398fbca1324cae9.s3tc.ctex"]
 
 [params]
 

@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://0i4y66g1h4e5"
-path="res://.godot/imported/grunt.glb-4f34a89153031c63f008f0ea332ee735.scn"
+path="res://.godot/imported/grunt.glb-3605aac1cc4179c00c7a7556d3d2971d.scn"
 
 [deps]
 
-source_file="res://BlenderTutorial/grunt.glb"
-dest_files=["res://.godot/imported/grunt.glb-4f34a89153031c63f008f0ea332ee735.scn"]
+source_file="res://blenderTutorial/grunt.glb"
+dest_files=["res://.godot/imported/grunt.glb-3605aac1cc4179c00c7a7556d3d2971d.scn"]
 
 [params]
 

@@ -137,6 +137,11 @@ public partial class PlayerController : CharacterBody3D
 
     public void Jump() => Velocity = Velocity with { Y = JumpVelocity };
 
+    public void TakeDamage(float amount)
+    {
+        HealthComponent.DepleteHealth(amount);
+    }
+
     private void HandleInteractCheck()
     {
         var interactHit = CameraController.GetWhatInteractRaycastIsHitting();

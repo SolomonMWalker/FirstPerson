@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cmn7gu0lf7ym8"
-path.s3tc="res://.godot/imported/FENCE_4A.png-b8062217ea63c7ee44993cba8a3baa6c.s3tc.ctex"
+path.s3tc="res://.godot/imported/FENCE_4A.PNG-a4838d7e1a549118090f24183840ff50.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/FENCE_4A.png"
-dest_files=["res://.godot/imported/FENCE_4A.png-b8062217ea63c7ee44993cba8a3baa6c.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/FENCE_4A.PNG"
+dest_files=["res://.godot/imported/FENCE_4A.PNG-a4838d7e1a549118090f24183840ff50.s3tc.ctex"]
 
 [params]
 

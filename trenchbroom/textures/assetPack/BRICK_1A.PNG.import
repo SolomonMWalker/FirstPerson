@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cunarauwkicqa"
-path.s3tc="res://.godot/imported/BRICK_1A.png-707232312c52302c650a0a6646433bf3.s3tc.ctex"
+path.s3tc="res://.godot/imported/BRICK_1A.PNG-49187c2139a20ba1340f42d35a25ad40.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/BRICK_1A.png"
-dest_files=["res://.godot/imported/BRICK_1A.png-707232312c52302c650a0a6646433bf3.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/BRICK_1A.PNG"
+dest_files=["res://.godot/imported/BRICK_1A.PNG-49187c2139a20ba1340f42d35a25ad40.s3tc.ctex"]
 
 [params]
 

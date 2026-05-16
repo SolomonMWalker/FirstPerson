@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnpn1okp4nhis"
-path.s3tc="res://.godot/imported/CRATE_3C.png-bc3aee54f4f1c9ed74d6c3aabd9b3324.s3tc.ctex"
+path.s3tc="res://.godot/imported/CRATE_3C.PNG-157501de55a794dc31fba6890b78a790.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/CRATE_3C.png"
-dest_files=["res://.godot/imported/CRATE_3C.png-bc3aee54f4f1c9ed74d6c3aabd9b3324.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/CRATE_3C.PNG"
+dest_files=["res://.godot/imported/CRATE_3C.PNG-157501de55a794dc31fba6890b78a790.s3tc.ctex"]
 
 [params]
 

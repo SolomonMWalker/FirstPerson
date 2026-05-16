@@ -179,6 +179,11 @@ public partial class CombatAgent : MovingAgent
         }
     }
 
+    public void TakeDamage(float damage)
+    {
+        HealthComponent.DepleteHealth(damage);
+    }
+
     protected void OnDeath()
     {
         GD.Print("combat agent died!");
