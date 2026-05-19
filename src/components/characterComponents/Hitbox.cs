@@ -16,7 +16,9 @@ public partial class Hitbox : Area3D
     public enum Type
     {
         Regular,
-        Weakspot
+        Weakspot,
+        Hazard,
+        RegularAndHazard, //for entities, like the player, that only have one hitbox
     }
 
     [Export] public Type HitboxType;
@@ -53,7 +55,8 @@ public partial class Hitbox : Area3D
 
     public void Hit(HitInformation hitInformation)
     {
-        if (hitInformation.Pitch.HasValue 
+        if (hitInformation.HitType == HitType.Regular
+            && hitInformation.Pitch.HasValue 
             && hitInformation.Roll.HasValue 
             && hitInformation.SourceGlobalPosition is not null)
         {
@@ -73,7 +76,8 @@ public partial class Hitbox : Area3D
             if (Parent is MovingAgent enemy && enemy.HasAffectedBone())
             {
                 enemy.SetAffectedBone(AffectedPhysicalBone);
-                if (hitInformation.SourceGlobalPosition is not null 
+                if (hitInformation.HitType == HitType.Regular
+                    && hitInformation.SourceGlobalPosition is not null 
                     && hitInformation.CollisionGlobalPosition.HasValue
                     && HealthComponent?.CurrentHealth > 0)
                 {
@@ -92,8 +96,9 @@ public partial class Hitbox : Area3D
             }
             StaggerComponent?.DepleteStagger(damage);
         }
-        GD.Print("emitting signal");
-        EmitSignalOnHitSetCombatTarget(hitInformation.SourceCombatTargetNode3D);
+        
+        if(hitInformation.HitType == HitType.Regular)
+            EmitSignalOnHitSetCombatTarget(hitInformation.SourceCombatTargetNode3D);
     }
 
     public void DebugHit()

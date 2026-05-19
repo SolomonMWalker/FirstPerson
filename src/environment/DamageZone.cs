@@ -1,22 +1,28 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using FirstPerson.Scenes.Player;
+using System.Linq;
+using FirstPerson.scenes.enemies.test;
 
+[Tool]
 public partial class DamageZone : Area3D
 {
-    [Export] public float DamagePerTick = 10;
-    [Export] public double TicksPerSecond = 2;
+    [Export] public float DamagePerTick { get; set; } = 10;
+    [Export] public float TicksPerSecond { get; set; } = 2;
 
-    private Dictionary<Node3D, double> _agentToTimeInHazard = [];
+    private readonly Dictionary<Hitbox, double> _hitboxToTimeInHazard = [];
     private double _timePerTickInSec;
-    
-    //Make HazardHitbox, possibly give it direct access to agent HealthComponent so it doesn't worry about 
-    //agent class when dealing damage.
-    //Also, put it on its own collision layer as it will be separate from other hitboxes
-    
+
+    public void _func_godot_apply_properties(Godot.Collections.Dictionary<string, Variant> props)
+    {
+        DamagePerTick  = (float) props["damage_per_tick"];
+        TicksPerSecond = (float) props["ticks_per_second"];
+    }
+
+    public void _func_godot_build_complete() { }
+
     public override void _Ready()
     {
+        if (Engine.IsEditorHint()) return;
         base._Ready();
         _timePerTickInSec = 1.0 / TicksPerSecond;
         AreaEntered += OnAreaEntered;
@@ -26,10 +32,10 @@ public partial class DamageZone : Area3D
     public override void _PhysicsProcess(double delta)
     {
         base._PhysicsProcess(delta);
-        foreach (var agent in _agentToTimeInHazard.Keys)
+        foreach (var agent in _hitboxToTimeInHazard.Keys.ToList())
         {
-            _agentToTimeInHazard[agent] += delta;
-            if (_agentToTimeInHazard[agent] > _timePerTickInSec)
+            _hitboxToTimeInHazard[agent] += delta;
+            if (_hitboxToTimeInHazard[agent] > _timePerTickInSec)
             {
                 DamageAgentAndResetTick(agent);
             }
@@ -38,25 +44,27 @@ public partial class DamageZone : Area3D
 
     public void OnAreaEntered(Area3D area)
     {
-        if (area is not Hitbox hitbox || !_agentToTimeInHazard.TryAdd(hitbox.Parent, _timePerTickInSec)) return;
+        if (area is not Hitbox hitbox) return;
+        _hitboxToTimeInHazard.TryAdd(hitbox, _timePerTickInSec);
     }
 
     public void OnAreaExited(Area3D area)
     {
-        if (area is not Hitbox hitbox || !_agentToTimeInHazard.Remove(hitbox.Parent)) return;
+        if (area is not Hitbox hitbox || !_hitboxToTimeInHazard.Remove(hitbox)) return;
     }
 
-    public void DamageAgentAndResetTick(Node3D agent)
+    public void DamageAgentAndResetTick(Hitbox hitbox)
     {
-        if (agent is CombatAgent combatAgent)
-        {
-            combatAgent.TakeDamage(DamagePerTick);
-        }
-        else if (agent is PlayerController playerController)
-        {
-            playerController.TakeDamage(DamagePerTick);
-        }
+        hitbox.Hit(BuildHitInformation());
+        _hitboxToTimeInHazard[hitbox] = 0;
+    }
 
-        _agentToTimeInHazard[agent] = 0;
+    public HitInformation BuildHitInformation()
+    {
+        return new HitInformation(
+            hitType: HitType.Hazard,
+            healthDamage: (int) DamagePerTick,
+            staggerDamage: 0
+        );
     }
 }
