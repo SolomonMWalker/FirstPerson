@@ -19,7 +19,7 @@ public class HitInformation(
     float? pitch = null,
     float? roll = null)
 {
-    public HitType HitType = HitType.Regular;
+    public HitType HitType = hitType;
     public float? HealthDamage = healthDamage;
     public float? StaggerDamage = staggerDamage;
     public readonly Node3D SourceCombatTargetNode3D = sourceCombatTargetNode3D;

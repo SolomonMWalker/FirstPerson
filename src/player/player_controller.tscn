@@ -23,6 +23,7 @@
 [ext_resource type="Script" uid="uid://c1p7jhp7jmapy" path="res://src/player/PlayerUserInterface.cs" id="21_oyw5u"]
 [ext_resource type="LabelSettings" uid="uid://8xah8hla61bd" path="res://src/player/ui/font_settings.tres" id="22_8fim5"]
 [ext_resource type="Script" uid="uid://30kyxeyoy43d" path="res://src/components/characterComponents/HealthComponent.cs" id="24_5n4gj"]
+[ext_resource type="Script" uid="uid://y776iyu25ebn" path="res://src/player/OwLabel.cs" id="24_llg34"]
 [ext_resource type="Script" uid="uid://bfvves23iusw7" path="res://src/ui/Reticle.cs" id="25_dxex4"]
 [ext_resource type="Script" uid="uid://3qw3nf2366ej" path="res://src/player/MouseCaptureComponent.cs" id="26_4556c"]
 [ext_resource type="PackedScene" uid="uid://qprpio4lvlfc" path="res://src/components/characterComponents/shield_component.tscn" id="26_arxxo"]
@@ -64,7 +65,7 @@ disabled = true
 debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
 [node name="StandingHitbox" type="Area3D" parent="." unique_id=846555808 node_paths=PackedStringArray("HealthComponent", "Parent")]
-collision_layer = 8
+collision_layer = 136
 collision_mask = 0
 script = ExtResource("4_xmnbv")
 HitboxType = 3
@@ -78,7 +79,7 @@ debug_color = Color(0, 0.6, 0.69803923, 0.7411765)
 
 [node name="CrouchingHitbox" type="Area3D" parent="." unique_id=1342054131 node_paths=PackedStringArray("HealthComponent", "Parent")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-collision_layer = 8
+collision_layer = 136
 collision_mask = 0
 monitoring = false
 monitorable = false
@@ -345,6 +346,25 @@ grow_horizontal = 0
 grow_vertical = 2
 label_settings = ExtResource("22_8fim5")
 autowrap_mode = 3
+
+[node name="OwLabel" type="Label" parent="UserInterface" unique_id=956712817 node_paths=PackedStringArray("HealthComponent", "Timer")]
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "ow"
+script = ExtResource("24_llg34")
+HealthComponent = NodePath("../../Components/HealthComponent")
+Timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="UserInterface/OwLabel" unique_id=122414500]
+wait_time = 0.3
+one_shot = true
 
 [node name="Components" type="Node" parent="." unique_id=617439353]
 

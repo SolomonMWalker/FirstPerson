@@ -137,7 +137,7 @@ Pause={
 3d_physics/layer_5="Interactable"
 3d_physics/layer_6="Enemy"
 3d_physics/layer_7="HittableNonCharacters"
-3d_physics/layer_8="Hazards"
+3d_physics/layer_8="HazardAffected"
 
 [physics]
 

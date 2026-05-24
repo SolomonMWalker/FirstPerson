@@ -15,7 +15,7 @@ radius = 0.008898026
 
 [node name="RevolverBulletCasingPhysics" type="RigidBody3D" unique_id=945389864]
 collision_layer = 0
-collision_mask = 256
+collision_mask = 3
 mass = 0.2
 physics_material_override = SubResource("PhysicsMaterial_eh6ek")
 script = ExtResource("1_sj24r")

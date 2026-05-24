@@ -63,7 +63,10 @@ public partial class DamageZone : Area3D
     {
         return new HitInformation(
             hitType: HitType.Hazard,
+            pitch: 1,
+            roll: 1,
             healthDamage: (int) DamagePerTick,
+            sourceGlobalPosition: GlobalPosition,
             staggerDamage: 0
         );
     }

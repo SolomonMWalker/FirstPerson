@@ -13,6 +13,9 @@ public partial class Hitbox : Area3D
     [Signal]
     public delegate void OnHitSetCombatTargetEventHandler(Node3D combatTarget);
 
+    [Signal]
+    public delegate void OnHitEventHandler(float damage);
+
     public enum Type
     {
         Regular,
@@ -55,8 +58,7 @@ public partial class Hitbox : Area3D
 
     public void Hit(HitInformation hitInformation)
     {
-        if (hitInformation.HitType == HitType.Regular
-            && hitInformation.Pitch.HasValue 
+        if (hitInformation.Pitch.HasValue 
             && hitInformation.Roll.HasValue 
             && hitInformation.SourceGlobalPosition is not null)
         {
@@ -71,6 +73,7 @@ public partial class Hitbox : Area3D
             {
                 damage *= WeakspotDamageMult;
             }
+            EmitSignalOnHit(damage);
             HealthComponent?.DepleteHealth(damage);
             if(IsDebug) DebugHit();
             if (Parent is MovingAgent enemy && enemy.HasAffectedBone())

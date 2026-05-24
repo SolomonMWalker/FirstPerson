@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://dbvut18df46dk" path="res://src/ui/debug_menu.tscn" id="6_k5aik"]
 [ext_resource type="PackedScene" uid="uid://drh54gr5j0mhi" path="res://src/player/player_controller.tscn" id="7_wf74i"]
 [ext_resource type="PackedScene" uid="uid://m6g0ehgunohp" path="res://src/map/func_godot_test.tscn" id="8_85cyf"]
-[ext_resource type="PackedScene" uid="uid://b1rtkf7hpv5m4" path="res://src/agents/enemies/testDog/dog.tscn" id="9_6k473"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_6uqi0"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -67,6 +66,3 @@ light_bake_mode = 1
 shadow_enabled = true
 shadow_transmittance_bias = 9.138
 shadow_opacity = 0.66
-
-[node name="dog" parent="." unique_id=2124321720 instance=ExtResource("9_6k473")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.048685, -0.07698052, -4.58233)
