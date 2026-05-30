@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" format=3 uid="uid://ndbsqp410ck0"]
+
+[ext_resource type="Script" uid="uid://5cow84q03m6a" path="res://addons/func_godot/src/fgd/func_godot_fgd_solid_class.gd" id="1_6etj2"]
+[ext_resource type="Script" uid="uid://b1wlb27ljo7ji" path="res://src/environment/trenchbroomUsedClasses/ClamberableStaticGeometry.cs" id="2_x8nvl"]
+
+[resource]
+script = ExtResource("1_6etj2")
+collision_shape_type = 2
+collision_layer = 5
+collision_mask = 0
+script_class = ExtResource("2_x8nvl")
+classname = "func_clamberableStaticGeometry"
+description = "clamberable static geometry"
+node_class = "StaticBody3D"
+metadata/_custom_type_script = "uid://5cow84q03m6a"

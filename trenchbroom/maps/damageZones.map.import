@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://dc2ojfgankbe0"
+path="res://.godot/imported/damageZones.map-c8fa2900c6f3885cd10334d1c58ec1dc.tres"
+
+[deps]
+
+source_file="res://trenchbroom/maps/damageZones.map"
+dest_files=["res://.godot/imported/damageZones.map-c8fa2900c6f3885cd10334d1c58ec1dc.tres"]
+
+[params]
+

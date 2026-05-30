@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://b6i6015yin1x4"]
+
+[ext_resource type="Script" uid="uid://ghfnnr1d5026" path="res://src/environment/trenchbroomUsedClasses/NonclamberableStaticGeometry.cs" id="1_wylhu"]
+
+[node name="NonClamberableStaticGeometry" type="StaticBody3D" unique_id=488598192]
+collision_mask = 0
+script = ExtResource("1_wylhu")

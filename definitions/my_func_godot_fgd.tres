@@ -2,6 +2,8 @@
 
 [ext_resource type="Resource" uid="uid://crgpdahjaj" path="res://addons/func_godot/fgd/func_godot_fgd.tres" id="1_watpy"]
 [ext_resource type="Resource" uid="uid://dh1rno5u6y2rq" path="res://trenchbroom/fgd/solid/func_damageZone.tres" id="4_fn53b"]
+[ext_resource type="Resource" uid="uid://ndbsqp410ck0" path="res://trenchbroom/fgd/solid/func_clamberableStaticGeometry.tres" id="5_ye5of"]
+[ext_resource type="Resource" uid="uid://diekpjo5cfnr" path="res://trenchbroom/fgd/solid/func_nonClamberableStaticGeometry.tres" id="6_w230i"]
 [ext_resource type="Script" uid="uid://drlmgulwbjwqu" path="res://addons/func_godot/src/fgd/func_godot_fgd_file.gd" id="9_c0uyg"]
 [ext_resource type="Resource" uid="uid://b4gwruefp141d" path="res://trenchbroom/fgd/solid/func_MovingPlarform.tres" id="9_s1c8t"]
 [ext_resource type="Resource" uid="uid://bt1eov0583fkk" path="res://trenchbroom/fgd/point/func_light.tres" id="10_c2bqa"]
@@ -10,4 +12,4 @@
 script = ExtResource("9_c0uyg")
 fgd_name = "GodotFirstPerson"
 base_fgd_files = Array[Resource]([ExtResource("1_watpy")])
-entity_definitions = Array[Resource]([ExtResource("9_s1c8t"), ExtResource("10_c2bqa"), ExtResource("4_fn53b")])
+entity_definitions = Array[Resource]([ExtResource("9_s1c8t"), ExtResource("10_c2bqa"), ExtResource("4_fn53b"), ExtResource("5_ye5of"), ExtResource("6_w230i")])

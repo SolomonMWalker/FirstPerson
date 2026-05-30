@@ -17,7 +17,7 @@
 [ext_resource type="Material" uid="uid://bgxe8cxh822py" path="res://trenchbroom/textures/assetPack/GRASS_1A.tres" id="14_uvx7b"]
 [ext_resource type="Material" uid="uid://3v7cue5ym22x" path="res://trenchbroom/textures/assetPack/FENCE_4A.tres" id="15_efchv"]
 [ext_resource type="Material" uid="uid://bxulh0gp82naj" path="res://trenchbroom/textures/assetPack/RIVET_1A.tres" id="15_i2hjv"]
-[ext_resource type="Script" uid="uid://c1vfmcgs2akub" path="res://src/environment/DamageZone.cs" id="18_4624u"]
+[ext_resource type="Script" uid="uid://c1vfmcgs2akub" path="res://src/environment/trenchbroomUsedClasses/DamageZone.cs" id="18_4624u"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4624u"]
 albedo_texture = ExtResource("6_tcnp5")

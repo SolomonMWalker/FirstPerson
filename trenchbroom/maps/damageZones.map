@@ -1,0 +1,39 @@
+// Game: GodotFirstPerson
+// Format: Valve
+// entity 0
+{
+"mapversion" "220"
+"wad" ""
+"classname" "worldspawn"
+}
+// entity 1
+{
+"classname" "func_group"
+"_tb_type" "_tb_group"
+"_tb_name" "fire_damageZone"
+"_tb_id" "1"
+"_tb_linked_group_id" "{b2432601-3fb4-4e58-b45f-857da6d4a2f8}"
+// brush 0
+{
+( -64 64 0 ) ( -64 -64 0 ) ( -64 -64 -32 ) special/skip [ 0 -1 0 0 ] [ 0 0 -1 -48 ] 90 1 1
+( -64 -64 0 ) ( 64 -64 0 ) ( 64 -64 -32 ) special/skip [ 1 0 0 0 ] [ 0 0 -1 -48 ] 90 1 1
+( 64 -64 -32 ) ( 64 64 -32 ) ( -64 64 -32 ) special/skip [ -1 0 0 0 ] [ 0 -1 0 0 ] 90 1 1
+( -64 64 0 ) ( 64 64 0 ) ( 64 -64 0 ) assetPack/BLOOD_1A [ 1 0 0 0 ] [ 0 -1 0 0 ] 90 1 1
+( 64 64 -32 ) ( 64 64 0 ) ( -64 64 0 ) special/skip [ -1 0 0 0 ] [ 0 0 -1 -48 ] 90 1 1
+( 64 -64 0 ) ( 64 64 0 ) ( 64 64 -32 ) special/skip [ 0 1 0 0 ] [ 0 0 -1 -48 ] 90 1 1
+}
+}
+// entity 2
+{
+"classname" "func_damageZone"
+"_tb_group" "1"
+// brush 0
+{
+( -64 -64 -32 ) ( -64 -63 -32 ) ( -64 -64 -31 ) special/skip [ 0 -1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -64 -64 -32 ) ( -64 -64 -31 ) ( -63 -64 -32 ) special/skip [ 1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( -64 -64 -32 ) ( -63 -64 -32 ) ( -64 -63 -32 ) special/skip [ -1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( 64 64 32 ) ( 64 65 32 ) ( 65 64 32 ) special/skip [ 1 0 0 0 ] [ 0 -1 0 0 ] 0 1 1
+( 64 64 32 ) ( 65 64 32 ) ( 64 64 33 ) special/skip [ -1 0 0 0 ] [ 0 0 -1 0 ] 0 1 1
+( 64 64 32 ) ( 64 64 33 ) ( 64 65 32 ) special/skip [ 0 1 0 0 ] [ 0 0 -1 0 ] 0 1 1
+}
+}

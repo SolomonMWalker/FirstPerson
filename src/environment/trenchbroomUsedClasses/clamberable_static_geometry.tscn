@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cujv6iriw7iob"]
+
+[ext_resource type="Script" uid="uid://b1wlb27ljo7ji" path="res://src/environment/trenchbroomUsedClasses/ClamberableStaticGeometry.cs" id="1_6o0ku"]
+
+[node name="ClamberableStaticGeometry" type="StaticBody3D" unique_id=488598192]
+collision_layer = 5
+collision_mask = 0
+script = ExtResource("1_6o0ku")
