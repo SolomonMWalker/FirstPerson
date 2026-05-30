@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cxq0cv3e1kcnc"
-path.s3tc="res://.godot/imported/LIGHT_3B.png-40e20a676edc258120eb9a1d2f0701bc.s3tc.ctex"
+path.s3tc="res://.godot/imported/LIGHT_3B.PNG-7f4f8295999d9c7f3b66f8b8c176a02b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/LIGHT_3B.png"
-dest_files=["res://.godot/imported/LIGHT_3B.png-40e20a676edc258120eb9a1d2f0701bc.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/LIGHT_3B.PNG"
+dest_files=["res://.godot/imported/LIGHT_3B.PNG-7f4f8295999d9c7f3b66f8b8c176a02b.s3tc.ctex"]
 
 [params]
 

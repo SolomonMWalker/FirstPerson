@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://vkdou6vaknaq"
-path.s3tc="res://.godot/imported/PANEL_1C.png-e4a0391c78683e07f6f51a804e2eae65.s3tc.ctex"
+path.s3tc="res://.godot/imported/PANEL_1C.PNG-7e826154f03f866030b8287f5554ccfa.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/PANEL_1C.png"
-dest_files=["res://.godot/imported/PANEL_1C.png-e4a0391c78683e07f6f51a804e2eae65.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/PANEL_1C.PNG"
+dest_files=["res://.godot/imported/PANEL_1C.PNG-7e826154f03f866030b8287f5554ccfa.s3tc.ctex"]
 
 [params]
 

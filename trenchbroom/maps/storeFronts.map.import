@@ -1,0 +1,14 @@
+[remap]
+
+importer="func_godot.map"
+type="Resource"
+uid="uid://b1kjrknrgcch3"
+path="res://.godot/imported/storeFronts.map-8dac7c7c3644cbfdd864e9acc3e5a649.tres"
+
+[deps]
+
+source_file="res://trenchbroom/maps/storeFronts.map"
+dest_files=["res://.godot/imported/storeFronts.map-8dac7c7c3644cbfdd864e9acc3e5a649.tres"]
+
+[params]
+

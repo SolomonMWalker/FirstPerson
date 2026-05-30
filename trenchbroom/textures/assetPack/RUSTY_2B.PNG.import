@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bgh06dg3p8n03"
-path.s3tc="res://.godot/imported/RUSTY_2B.png-eddf261fff73d1b41048d1d6167c6f9c.s3tc.ctex"
+path.s3tc="res://.godot/imported/RUSTY_2B.PNG-e9eada319efcf9bb0fc5b69a421216ca.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/RUSTY_2B.png"
-dest_files=["res://.godot/imported/RUSTY_2B.png-eddf261fff73d1b41048d1d6167c6f9c.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/RUSTY_2B.PNG"
+dest_files=["res://.godot/imported/RUSTY_2B.PNG-e9eada319efcf9bb0fc5b69a421216ca.s3tc.ctex"]
 
 [params]
 

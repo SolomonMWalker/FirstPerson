@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by6ymh4gaqoco"
-path.s3tc="res://.godot/imported/STEEL_4C.png-6b97351894d7066e5aad231a4fd0966d.s3tc.ctex"
+path.s3tc="res://.godot/imported/STEEL_4C.PNG-471fd8489e1ba9816ae27b987a44a06b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/STEEL_4C.png"
-dest_files=["res://.godot/imported/STEEL_4C.png-6b97351894d7066e5aad231a4fd0966d.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/STEEL_4C.PNG"
+dest_files=["res://.godot/imported/STEEL_4C.PNG-471fd8489e1ba9816ae27b987a44a06b.s3tc.ctex"]
 
 [params]
 

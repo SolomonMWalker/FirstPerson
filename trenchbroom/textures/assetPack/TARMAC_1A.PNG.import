@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://drgneau1uiyrh"
-path.s3tc="res://.godot/imported/TARMAC_1A.png-73035cf5e180908f1a083dc08f3922b8.s3tc.ctex"
+path.s3tc="res://.godot/imported/TARMAC_1A.PNG-99cf41c936d97a2d874564f0ada7854e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/TARMAC_1A.png"
-dest_files=["res://.godot/imported/TARMAC_1A.png-73035cf5e180908f1a083dc08f3922b8.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/TARMAC_1A.PNG"
+dest_files=["res://.godot/imported/TARMAC_1A.PNG-99cf41c936d97a2d874564f0ada7854e.s3tc.ctex"]
 
 [params]
 

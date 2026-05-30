@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b7abvryxex5lx"
-path.s3tc="res://.godot/imported/RIVET_1B.png-d2ba951ae898fcde7e3897ab06c2774d.s3tc.ctex"
+path.s3tc="res://.godot/imported/RIVET_1B.PNG-4f8ec793f7ef789fd117512157d2e507.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/RIVET_1B.png"
-dest_files=["res://.godot/imported/RIVET_1B.png-d2ba951ae898fcde7e3897ab06c2774d.s3tc.ctex"]
+source_file="res://trenchbroom/textures/assetPack/RIVET_1B.PNG"
+dest_files=["res://.godot/imported/RIVET_1B.PNG-4f8ec793f7ef789fd117512157d2e507.s3tc.ctex"]
 
 [params]
 
