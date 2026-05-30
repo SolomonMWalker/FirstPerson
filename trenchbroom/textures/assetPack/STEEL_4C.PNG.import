@@ -3,19 +3,20 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://by6ymh4gaqoco"
-path="res://.godot/imported/STEEL_4C.PNG-471fd8489e1ba9816ae27b987a44a06b.ctex"
+path.s3tc="res://.godot/imported/STEEL_4C.png-6b97351894d7066e5aad231a4fd0966d.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 
 [deps]
 
-source_file="res://trenchbroom/textures/assetPack/STEEL_4C.PNG"
-dest_files=["res://.godot/imported/STEEL_4C.PNG-471fd8489e1ba9816ae27b987a44a06b.ctex"]
+source_file="res://trenchbroom/textures/assetPack/STEEL_4C.png"
+dest_files=["res://.godot/imported/STEEL_4C.png-6b97351894d7066e5aad231a4fd0966d.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -23,7 +24,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -37,4 +38,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

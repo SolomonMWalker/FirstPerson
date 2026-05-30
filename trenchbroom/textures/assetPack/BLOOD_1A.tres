@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://jnemeq11aaso"]
+
+[ext_resource type="Texture2D" uid="uid://014pao7wo4gs" path="res://trenchbroom/textures/assetPack/BLOOD_1A.png" id="1_ps8m0"]
+
+[resource]
+albedo_texture = ExtResource("1_ps8m0")
+metallic_specular = 0.0
+texture_filter = 2
